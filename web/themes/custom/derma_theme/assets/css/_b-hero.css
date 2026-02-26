@@ -1,0 +1,142 @@
+/* --- HERO STYLES --- */
+.du-hero {
+  width: 100%;
+  position: relative;
+}
+.du-hero__container {
+  position: relative;
+    z-index: 1;
+    color: #fff;
+}
+
+.du-hero__wrapper {
+  position: relative;
+    z-index: 3;
+    max-width: 800px;
+    color: #fff;
+    padding: 50px;
+}
+
+.du-hero__bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+}
+
+.du-hero__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+  z-index: 2;
+}
+
+.du-hero__title {
+  font-size: 48px;
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 25px;
+}
+
+.du-hero__title span {
+  color: var(--du-color-primary);
+}
+
+.du-hero__text {
+  list-style: none;
+  margin-bottom: 35px;
+  max-height: 150px;
+  font-size: 16px;
+  line-height: 1.5;
+  overflow: hidden;
+}
+
+/* Botones */
+.du-hero__actions {
+  display: flex;
+  gap: 20px;
+}
+
+
+.du-hero__detail{ 
+  display: flex;
+  align-items: center; 
+}
+.du-hero__detail-icon{}
+.du-hero__detail-icon img{
+  width: 134px;
+  height: auto;
+}
+.du-hero__detail-options{
+  display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: #d6ecffad;
+    border-radius: 8px;
+    max-width: 280px;
+    padding: 20px;
+}
+.du-hero__detail-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.du-hero__detail[data-variation="big"] .du-hero__detail-options{
+  max-width: 700px;
+  max-height: 100px;
+}
+.du-hero__detail[data-variation="big"] .du-hero__detail-option {
+  flex:auto;
+}
+
+@media (max-width: 768px) {
+  .du-hero__wrapper {
+    padding: 20px;
+  }
+  .du-hero__content {
+    min-height: 480px;
+  }
+  .du-hero__title {
+    font-size: 32px;
+  }
+  .du-hero__actions {
+    flex-direction: column;
+  }
+
+  .du-hero__detail {
+    position: relative;
+    justify-content: center;
+  }
+
+  .du-hero__detail-icon {
+    position: absolute;
+    bottom: -30px;
+    right: 0;
+  }
+
+  .du-hero__detail-icon img {
+    width: 70px;
+    height: auto;
+  }
+
+  .du-hero__detail-options{
+    max-width: 280px !important;
+    max-height: initial !important;
+  }
+
+}

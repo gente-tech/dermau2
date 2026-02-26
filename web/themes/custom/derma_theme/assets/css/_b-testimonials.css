@@ -1,0 +1,83 @@
+.du-testimonials {
+  padding-top: 60px;
+  background-color: white;
+  background-image: url(../img/bg-onda-lg.png);
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: contain;
+  font-family: var(--du-font-main);
+}
+
+.du-testimonials__title {
+  text-align: center;
+  color: var(--du-color-secondary-dark);
+  font-size: 28px;
+  font-weight: 900;
+  margin-bottom: 20px;
+}
+
+.du-testimonials__title--highlight,  .du-testimonials__title span{
+  color: var(--du-color-primary);
+}
+
+.du-testimonials__slider-wrapper {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 50px;
+}
+
+
+/* Botón Final */
+.du-testimonials__actions {
+  text-align: center;
+  margin-top: 35px;
+}
+
+.du-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--du-color-secondary-dark);
+  color: white;
+  padding: 14px 30px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.du-btn-secondary:hover {
+  background-color: var(--du-color-primary);
+  transform: translateY(-3px);
+}
+
+
+.du-btn-secondary span {
+  color: var(--du-color-primary);
+}
+/* Responsive Móvil */
+@media (max-width: 992px) {
+  .du-testimonials {
+    padding-top: 30px;
+    background-image: url(../img/bg-onda-sm.png);
+    background-position: left 150px;
+    background-size: cover;
+  }
+
+  .du-testimonials__slider-wrapper {
+    padding: 0;
+  }
+
+  .du-testimonials__next,
+  .du-testimonials__prev {
+    top: calc(50% - 140px);
+  }
+}
+
+
+@media (min-width: 992px) {
+  .du-testimonials__pagination {
+    display: none !important;
+  }
+}

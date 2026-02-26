@@ -1,0 +1,60 @@
+.du-icon__next {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  background-color: currentColor; 
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M7.80533 14.8607C9.67652 14.8607 11.4711 14.1173 12.7942 12.7942C14.1173 11.4711 14.8607 9.67653 14.8607 7.80534C14.8607 5.93414 14.1173 4.13959 12.7942 2.81646C11.4711 1.49333 9.67652 0.75 7.80533 0.75' stroke='currentColor' stroke-width='1.5' stroke-linecap='round'/><path d='M0.75 7.80533H9.56917M9.56917 7.80533L6.92342 5.15958M9.56917 7.80533L6.92342 10.4511' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat center;
+  -webkit-mask-size: contain;
+  mask: url("data:image/svg+xml;utf8,<svg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M7.80533 14.8607C9.67652 14.8607 11.4711 14.1173 12.7942 12.7942C14.1173 11.4711 14.8607 9.67653 14.8607 7.80534C14.8607 5.93414 14.1173 4.13959 12.7942 2.81646C11.4711 1.49333 9.67652 0.75 7.80533 0.75' stroke='currentColor' stroke-width='1.5' stroke-linecap='round'/><path d='M0.75 7.80533H9.56917M9.56917 7.80533L6.92342 5.15958M9.56917 7.80533L6.92342 10.4511' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat center;
+  mask-size: contain;
+}
+
+ .du-icon__down {
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'><path d='M1 1L5 5L9 1' stroke='currentColor' stroke-width='1.5'/></svg>") no-repeat center;
+  -webkit-mask-size: contain;
+  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'><path d='M1 1L5 5L9 1' stroke='currentColor' stroke-width='1.5'/></svg>") no-repeat center;
+  mask-size: contain;
+}
+
+
+
+/*  ICONO DINÁMICO + / -  */
+.du-icon-trigger__plus {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    border: 1px solid #929292;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.du-icon-trigger__plus::before,
+.du-icon-trigger__plus::after {
+    content: '';
+    position: absolute;
+    background: black;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease;
+}
+/* Línea horizontal */
+.du-icon-trigger__plus::before {
+    width: 10px;
+    height: 2px;
+}
+/* Línea vertical */
+.du-icon-trigger__plus::after {
+    width: 2px;
+    height: 100%;
+    max-height: 10px;
+}
+/* Estado abierto: Quita la línea vertical para formar el menos (-) */
+.is-open .du-icon-trigger__plus::after {
+    transform: translate(-50%, -50%) rotate(90deg);
+    opacity: 0;
+}

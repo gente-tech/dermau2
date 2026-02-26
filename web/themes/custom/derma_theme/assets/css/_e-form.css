@@ -1,0 +1,128 @@
+.du-form-register {
+  max-width: 300px;
+  position: absolute;
+  top: 20px;
+  right: 60px;
+  z-index: 1;
+  min-height: 300px;
+}
+
+.du-form-register__container{
+  width: 100%;
+  background: white;
+  border: 1px solid #f3f3f3;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 4px 4px 4px 0px #0000001c;
+}
+
+.du-form-register__subtitle {
+  font-size: 17px;
+  font-weight: 600;
+  text-align: center;
+  margin-block: 15px;
+}
+
+.du-form-register__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.du-form-input,
+.du-form-select,
+.du-form-textarea {
+  width: 100%;
+  border-radius: 30px;
+  outline: none;
+  background: #ecf6ff;
+  color: #464646;
+  border: 0;
+  padding: 5px;
+  margin-block: 6px;
+  min-height: 42px;
+}
+
+.du-form-textarea {
+  min-height: 80px;
+  border-radius: 10px;
+}
+
+.du-form-select {
+}
+
+.du-form-phone-group {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  min-height: 42px;
+  border-radius: 30px;
+  background: #ecf6ff;
+  color: #464646;
+  border: 0;
+  padding: 5px;
+  margin-block: 6px;
+}
+.du-form-phone-group input,
+.du-form-phone-group select {
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #464646;
+}
+
+.du-form-label-checkbox {
+  font-size: 9px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 5px;
+  margin-block: 10px;
+  cursor: pointer;
+}
+
+
+/* Variación para formulario grande */
+.du-form-register[data-variation="big"] {
+  max-width: 700px;
+  .du-form-register__container {
+    padding-inline: 30px;
+  }
+  .du-form-register__form-group-container {
+    display: flex;
+    gap: 10px;
+  }
+  .du-form-register__form-group {
+    width: 50%;
+  }
+
+ .du-btn {
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .du-form-register {
+    position: relative;
+    top: auto;
+    right: auto;
+    margin-inline: auto;
+    margin-top: -30px;
+  }
+
+  .du-form-register .du-btn {
+    max-width: 100% !important;
+  }
+
+  .du-form-register[data-variation="big"] {
+    max-width: 400px;
+    padding-inline: 15px;
+    .du-form-register__form-group-container {
+      display: block;
+    }
+    .du-form-register__form-group {
+      width: 100%;
+    }
+  }
+
+}

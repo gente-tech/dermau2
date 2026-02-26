@@ -1,0 +1,7 @@
+name: Derma Menu
+type: module
+description: Bloque personalizado para renderizar menú principal con estructura DermaU.
+core_version_requirement: ^10 || ^11
+package: Custom
+dependencies:
+  - system

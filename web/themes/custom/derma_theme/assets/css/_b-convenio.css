@@ -1,0 +1,63 @@
+.du-convenio-block{
+  border: 4px solid #60E0FF;
+  background: #edf7ff;
+      margin-top: -110px;
+}
+.du-convenio-block__container{
+   padding-block: 60px;
+  max-width: var(--du-max-width);
+  margin: 0 auto;
+}
+.du-convenio-block__header{
+  text-align: center;
+  line-height: 2rem;
+}
+.du-convenio-block__title{}
+.du-convenio-block__title span{}
+.du-convenio-block__info{
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+.du-convenio-block__description{}
+.du-convenio-block__subtitle{
+  font-weight: 600;
+  color: var(--du-color-primary);
+  margin-block: 15px;
+}
+.du-convenio-block__tags{
+      display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.du-convenio-block__tag{
+  border-radius: 4px;
+    background: white;
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    max-width: 350px;
+    align-items: center;
+}
+
+
+
+
+
+.du-agreements .swiper-slide-active {
+    border-bottom: 5px solid #60e0ff;
+}
+
+.du-agreements .swiper-slide-active::after {
+  content: "";
+  position: absolute;
+  bottom: -20px; /* justo debajo del borde */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 12px solid #60e0ff; /* color igual al borde */
+}

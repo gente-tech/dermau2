@@ -1,0 +1,16 @@
+.du-about-block{}
+.du-about-block__container{
+  padding-block:50px;
+  max-width: var(--du-container-max-width);
+  margin: 0 auto;
+}
+.du-about-block__wrapper{
+  display: flex;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .du-about-block__wrapper{
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,13 @@
+<?php
+
+function derma_menu_theme($existing, $type, $theme, $path) {
+  return [
+    'derma_menu_block' => [
+      'variables' => [
+        'items' => NULL,
+      ],
+      'template' => 'derma-menu-block',
+      'path' => $path . '/templates',
+    ],
+  ];
+}

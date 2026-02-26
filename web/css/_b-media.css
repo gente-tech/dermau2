@@ -1,0 +1,121 @@
+.du-media-block {
+    padding: 50px;
+    background-color: white;
+}
+
+.du-media-block__container {
+    max-width: var(--du-max-width-left);
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr; /* Video ligeramente más ancho */
+    gap: 40px;
+}
+
+/* --- CONTENEDOR DE VIDEO --- */
+.du-media-block__video-side {
+    position: relative;
+}
+
+.du-video-player {
+    position: relative;
+    padding-bottom: 56.25%; /* Relación 16:9 */
+    height: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    background: black;
+}
+
+.du-video-player iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* --- SECCIÓN DE TEXTO --- */
+.du-media-block__title {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--du-color-secondary-dark);
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.du-media-block__title span {
+    color: var(--du-color-primary);
+}
+
+.du-media-block__description {
+    font-size: 16px;
+    color: var(--du-color-text-dark);
+    line-height: 1.7;
+    margin-bottom: 25px;
+}
+
+
+.du-media-block__detail{
+    display:flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+.du-media-block__detail-item {
+    display: flex;
+    align-items: baseline;
+    flex-direction: column;
+}
+.du-media-block__detail-header{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 12px;
+}
+.du-media-block__detail-icon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+    background-color: #212750;
+    border-radius: 8px;
+}
+.du-media-block__detail-title{
+    font-weight: 700;
+    color: var(--du-color-primary);
+    text-align: left;
+}
+.du-media-block__detail-text {
+    color: var(--du-color-text-dark);
+    text-align: left;
+}
+
+
+/* --- ADAPTACIÓN RESPONSIVA --- */
+@media (max-width: 992px) {
+    .du-media-block {
+        padding: 20px 0;
+    }
+
+    .du-media-block__container {
+        max-width: 100%;
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .du-video-player {
+        border-radius: 0;
+    }
+
+    .du-media-block__text-side {
+        text-align: center;
+        padding: 0 20px;
+    }
+
+    .du-media-block__title {
+        font-size: 28px;
+    }
+}

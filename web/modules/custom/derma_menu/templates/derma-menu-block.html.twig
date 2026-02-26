@@ -1,0 +1,41 @@
+<nav class="du-header__nav">
+  <ul class="du-header__nav-list" id="duNavList">
+
+    {% for element in items %}
+      {% set url = element.link.getUrlObject() %}
+      {% set title = element.link.getTitle() %}
+
+      <li class="du-header__nav-item">
+
+        <a href="{{ url.toString() }}"
+           class="du-header__nav-link {{ element.in_active_trail ? 'du-header__nav-link--active' }}">
+          {{ title }}
+        </a>
+
+        {% if element.subtree %}
+          <ul class="du-header__nav-dropdown">
+            {% for child in element.subtree %}
+              {% set child_url = child.link.getUrlObject() %}
+              {% set child_title = child.link.getTitle() %}
+
+              <li>
+                <a href="{{ child_url.toString() }}"
+                   class="du-header__nav-dropdown-link {{ child.in_active_trail ? 'du-header__nav-dropdown-link--active' }}">
+                  {{ child_title }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+      </li>
+    {% endfor %}
+
+    <li class="du-header__nav-item du-header__nav-item--campus">
+      <a href="#" class="du-btn-campus">
+        Ingresar al campus <span class="du-icon__next"></span>
+      </a>
+    </li>
+
+  </ul>
+</nav>

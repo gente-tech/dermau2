@@ -1,0 +1,38 @@
+/* import external styles */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css');
+
+/* import internal styles */
+/* globales */
+@import url('./_v-global.css');
+@import url('./_c-header.css');
+@import url('./_c-footer.css');
+
+/* elementos / componentes reutilizables */
+@import url('./_e-btn.css');
+@import url('./_e-icon.css');
+@import url('./_e-form.css');
+@import url('./_e-card.css');
+@import url('./_e-seach.css');
+@import url('./_e-modal.css');
+@import url('./_e-general.css');
+
+/* bloques específicos / secciones */
+@import url('./_b-bar-menu.css');
+@import url('./_b-hero-swiper.css');
+@import url('./_b-stats.css');
+@import url('./_b-oferta.css');
+@import url('./_b-agreements.css');
+@import url('./_b-testimonials.css');
+@import url('./_b-faq.css');
+@import url('./_b-footer-info.css');
+@import url('./_b-about.css');
+@import url('./_b-convenio.css');
+
+
+/* --- PROGRAMA --- */
+@import url('./_b-hero.css');
+@import url('./_b-media.css');
+@import url('./_b-accordion.css');
+@import url('./_b-panel.css');
+@import url('./_b-generic-swiper.css');

@@ -1,0 +1,25 @@
+<header class="du-header">
+  <div class="du-header__container">
+
+    {# LOGO #}
+    <a href="{{ path('<front>') }}" class="du-header__logo">
+      <img
+        src="{{ base_path ~ directory }}/assets/img/logo-derma-u.png"
+        alt="DermaU"
+        class="du-header__logo-img"
+      />
+    </a>
+
+    {# REGION HEADER (Aquí entra el bloque derma_menu) #}
+    {{ page.header }}
+
+    {# BOTÓN MOBILE TOGGLE #}
+    <button class="du-header__nav-toggle" id="duMenuToggle">
+      ☰
+    </button>
+
+    {# Overlay mobile #}
+    <div class="du-header__nav-overlay" id="duNavOverlay"></div>
+
+  </div>
+</header>

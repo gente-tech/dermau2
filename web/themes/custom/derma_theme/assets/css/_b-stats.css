@@ -1,0 +1,123 @@
+/* --- BLOQUE ESTADÍSTICAS --- */
+.du-stats {
+  background: var(--du-color-gray-02);
+}
+
+.du-stats__container{
+  padding-block:60px;
+  max-width: 1366px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.du-stats__header {
+  margin-bottom: 40px;
+}
+
+.du-stats__title {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--du-color-text-dark);
+  margin-bottom: 10px;
+}
+
+.du-stats__title span {
+  color: var(--du-color-primary);
+}
+
+.du-stats__subtitle {
+  font-size: 16px;
+  color: var(--du-color-text-dark);
+  opacity: 0.8;
+}
+
+/* GRID DE CONTADORES */
+.du-stats__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columnas en desk */
+  gap: 20px;
+}
+
+.du-stats__card {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  gap: 5px;
+}
+
+/* ICONOS CON FONDO */
+.du-stats__icon-wrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.du-stats__icon-wrapper--light {
+  background-color: rgba(102, 219, 255, 0.2);
+  color: var(--du-color-primary);
+}
+.du-stats__icon-wrapper--dark {
+  background-color: var(--du-color-secondary-dark);
+  color: #fff;
+}
+
+.du-stats__icon-wrapper svg {
+  width: 40px;
+  height: 40px;
+}
+
+.du-stats__number {
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--du-color-secondary-dark);
+  line-height: 1;
+}
+
+.du-stats__card-info {
+    text-align: left;
+}
+
+.du-stats__card--alt .du-stats__number {
+  color: var(--du-color-primary);
+}
+
+.du-stats__label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--du-color-text-dark);
+  margin-top: 5px;
+}
+
+/* --- RESPONSIVE MÓVIL --- */
+@media (max-width: 768px) {
+  .du-stats {
+    text-align: center;
+  }
+
+  .du-stats__grid {
+    grid-template-columns: repeat(2, 1fr); /* 2x2 en móvil */
+    gap: 40px 20px;
+  }
+
+  .du-stats__number {
+    font-size: 28px;
+  }
+
+  .du-stats__icon-wrapper {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+@media (max-width: 992px) {
+  .du-stats__card {
+    flex-direction: column;
+  }
+  .du-stats__card-info {
+    text-align: center;
+  }
+}

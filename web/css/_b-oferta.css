@@ -1,0 +1,84 @@
+/* --- SECCIÓN OFERTA ACADÉMICA --- */
+.du-oferta {
+  background-color: white;
+  background-image: url("../img/bg-honey.png");
+  background-size: cover;
+}
+
+.du-oferta__container {
+  padding-inline: 80px;
+  max-width: 1400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.du-oferta__header {
+  margin-bottom: 40px;
+}
+.du-oferta__title {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--du-color-text-dark);
+  margin-bottom: 10px;
+}
+.du-oferta__title span {
+  color: var(--du-color-primary);
+}
+.du-oferta__subtitle {
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+/* FILTROS */
+.du-oferta__filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 50px;
+}
+
+.filter-btn {
+  padding: 10px 25px;
+  border-radius: 25px;
+  border: none;
+  background: #eee;
+  color: var(--du-color-text-dark);
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--du-transition);
+}
+
+.filter-btn--active,
+.filter-btn:hover {
+  background-color: var(--du-color-primary);
+  color: var(--du-color-text-dark);
+}
+
+/* GRID DE TARJETAS */
+.du-oferta__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 30px;
+  margin-bottom: 50px;
+}
+
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+  .du-oferta__title {
+    font-size: 26px;
+  }
+  .du-oferta__grid {
+    grid-template-columns: 1fr;
+  }
+  .du-oferta__filters {
+    gap: 8px;
+  }
+  .filter-btn {
+    padding: 8px 18px;
+    font-size: 13px;
+  }
+}

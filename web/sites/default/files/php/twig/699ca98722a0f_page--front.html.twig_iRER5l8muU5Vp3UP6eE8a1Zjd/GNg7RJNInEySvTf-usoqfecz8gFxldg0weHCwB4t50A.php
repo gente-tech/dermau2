@@ -1,0 +1,952 @@
+<?php
+
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Extension\CoreExtension;
+use Twig\Extension\SandboxExtension;
+use Twig\Markup;
+use Twig\Sandbox\SecurityError;
+use Twig\Sandbox\SecurityNotAllowedTagError;
+use Twig\Sandbox\SecurityNotAllowedFilterError;
+use Twig\Sandbox\SecurityNotAllowedFunctionError;
+use Twig\Source;
+use Twig\Template;
+use Twig\TemplateWrapper;
+
+/* themes/custom/derma_theme/templates/layout/page--front.html.twig */
+class __TwigTemplate_473b22d9c20fc28d93d5388686edb998 extends Template
+{
+    private Source $source;
+    /**
+     * @var array<string, Template>
+     */
+    private array $macros = [];
+
+    public function __construct(Environment $env)
+    {
+        parent::__construct($env);
+
+        $this->source = $this->getSourceContext();
+
+        $this->parent = false;
+
+        $this->blocks = [
+        ];
+        $this->sandbox = $this->extensions[SandboxExtension::class];
+        $this->checkSecurity();
+    }
+
+    protected function doDisplay(array $context, array $blocks = []): iterable
+    {
+        $macros = $this->macros;
+        // line 1
+        yield $this->extensions['Drupal\Core\Template\TwigExtension']->escapeFilter($this->env, $this->extensions['Drupal\Core\Template\TwigExtension']->attachLibrary("derma_theme/global"), "html", null, true);
+        yield "
+";
+        // line 2
+        yield $this->extensions['Drupal\Core\Template\TwigExtension']->escapeFilter($this->env, $this->extensions['Drupal\Core\Template\TwigExtension']->attachLibrary("derma_theme/swiper"), "html", null, true);
+        yield "
+
+";
+        // line 4
+        yield from $this->load("@derma_theme/includes/header.html.twig", 4)->unwrap()->yield($context);
+        // line 5
+        yield "
+<main class=\"du-main\">
+
+      <section class=\"du-bar-menu\">
+        <ul class=\"du-bar-menu__list\">
+          <li class=\"du-bar-menu__item\">
+            <a href=\"#\" class=\"du-bar-menu__link\">
+              <span class=\"du-bar-menu__icon\">
+                <svg
+                  width=\"20\"
+                  height=\"16\"
+                  viewBox=\"0 0 20 16\"
+                  fill=\"none\"
+                  xmlns=\"http://www.w3.org/2000/svg\"
+                >
+                  <path
+                    d=\"M0 0.625C0 0.45924 0.065848 0.300269 0.183058 0.183058C0.300268 0.0658481 0.45924 9.75268e-08 0.625 9.75268e-08H6.8725C8.1775 9.75268e-08 9.32667 0.666667 9.99833 1.67833C10.3404 1.16218 10.805 0.738778 11.3506 0.445918C11.8962 0.153058 12.5058 -0.000141109 13.125 9.75268e-08H19.375C19.5408 9.75268e-08 19.6997 0.0658481 19.8169 0.183058C19.9342 0.300269 20 0.45924 20 0.625V13.1775C20 13.2599 19.9837 13.3415 19.952 13.4176C19.9204 13.4937 19.8739 13.5628 19.8155 13.6209C19.757 13.679 19.6876 13.725 19.6113 13.7561C19.535 13.7873 19.4533 13.8031 19.3708 13.8025L12.9692 13.7592C12.638 13.7568 12.3097 13.8203 12.0033 13.9459C11.6968 14.0715 11.4184 14.2567 11.1842 14.4908L10.4425 15.2333C10.3845 15.2914 10.3155 15.3375 10.2397 15.3689C10.1638 15.4004 10.0825 15.4165 10.0004 15.4165C9.91831 15.4165 9.837 15.4004 9.76115 15.3689C9.68529 15.3375 9.61637 15.2914 9.55833 15.2333L8.80667 14.4825C8.33793 14.0136 7.70215 13.7501 7.03917 13.75H0.625C0.45924 13.75 0.300268 13.6842 0.183058 13.5669C0.065848 13.4497 0 13.2908 0 13.125L0 0.625ZM10.625 13.3183C11.2942 12.7888 12.1241 12.5033 12.9775 12.5092L18.75 12.5483V1.25H13.125C12.462 1.25 11.8261 1.51339 11.3572 1.98223C10.8884 2.45107 10.625 3.08696 10.625 3.75V13.3183ZM9.3725 3.7475C9.37184 3.08489 9.10815 2.44965 8.63938 1.98135C8.17061 1.51305 7.53511 1.25 6.8725 1.25H1.25V12.5H7.03917C7.8875 12.5 8.71083 12.7883 9.375 13.3167L9.3725 3.7475Z\"
+                    fill=\"#60E0FF\"
+                  />
+                </svg>
+              </span>
+              <span class=\"du-bar-menu__text\">Oferta Académica</span>
+            </a>
+          </li>
+
+          <div class=\"du-bar-menu__divider\"></div>
+          <li class=\"du-bar-menu__item\">
+            <a href=\"#\" class=\"du-bar-menu__link\">
+              <span class=\"du-bar-menu__icon\">
+                <svg
+                  width=\"25\"
+                  height=\"22\"
+                  viewBox=\"0 0 25 22\"
+                  fill=\"none\"
+                  xmlns=\"http://www.w3.org/2000/svg\"
+                >
+                  <path
+                    d=\"M2.31236 7.37932V17.2752M1.29778 6.62671C0.577987 6.28192 0.577987 5.35171 1.29778 5.00692C2.24153 4.55484 3.65142 3.91317 5.6457 3.08244C8.41653 1.92827 10.3092 1.2439 11.3254 0.897024C11.8976 0.700992 12.5188 0.700992 13.091 0.897024C14.1066 1.2439 16.0004 1.92827 18.7707 3.08244C20.7655 3.91317 22.1749 4.55484 23.1191 5.00692C23.8379 5.35171 23.8379 6.28192 23.1191 6.62671C22.1749 7.0788 20.765 7.72046 18.7707 8.55119C15.9999 9.70536 14.1072 10.3897 13.091 10.7366C12.5188 10.9326 11.8976 10.9326 11.3254 10.7366C10.3098 10.3897 8.41601 9.70536 5.6457 8.55119C3.6509 7.71994 2.24153 7.0788 1.29778 6.62671Z\"
+                    stroke=\"#60E0FF\"
+                    stroke-width=\"1.5\"
+                    stroke-linecap=\"round\"
+                    stroke-linejoin=\"round\"
+                  />
+                  <path
+                    d=\"M5.49062 8.48608C5.45401 9.18704 5.43629 9.88886 5.4375 10.5908C5.4375 12.2022 5.52031 13.2142 5.60156 13.8199C5.67292 14.3491 5.97604 14.7991 6.44896 15.0465C7.36354 15.5257 9.22135 16.2335 12.2083 16.2335C15.1953 16.2335 17.0531 15.5262 17.9677 15.047C18.4406 14.7996 18.7437 14.3496 18.8151 13.821C18.8964 13.2147 18.9792 12.2028 18.9792 10.5918C18.9804 9.88973 18.9627 9.18774 18.926 8.4866M3.875 18.8376C3.875 19.252 3.71038 19.6495 3.41735 19.9425C3.12433 20.2355 2.7269 20.4001 2.3125 20.4001C1.8981 20.4001 1.50067 20.2355 1.20765 19.9425C0.91462 19.6495 0.75 19.252 0.75 18.8376C0.75 18.4232 0.91462 18.0258 1.20765 17.7328C1.50067 17.4398 1.8981 17.2751 2.3125 17.2751C2.7269 17.2751 3.12433 17.4398 3.41735 17.7328C3.71038 18.0258 3.875 18.4232 3.875 18.8376Z\"
+                    stroke=\"#60E0FF\"
+                    stroke-width=\"1.5\"
+                    stroke-linecap=\"round\"
+                    stroke-linejoin=\"round\"
+                  />
+                </svg>
+              </span>
+              <span class=\"du-bar-menu__text\">Convenios universitarios</span>
+            </a>
+          </li>
+
+          <div class=\"du-bar-menu__divider\"></div>
+          <li class=\"du-bar-menu__item\">
+            <a href=\"#\" class=\"du-bar-menu__link\">
+              <span class=\"du-bar-menu__icon\">
+                <svg
+                  width=\"23\"
+                  height=\"23\"
+                  viewBox=\"0 0 23 23\"
+                  fill=\"none\"
+                  xmlns=\"http://www.w3.org/2000/svg\"
+                >
+                  <path
+                    d=\"M11.5 8.14583C11.1187 8.14583 10.7531 8.29728 10.4835 8.56687C10.2139 8.83645 10.0625 9.20208 10.0625 9.58333V9.68588C10.0625 9.81296 10.012 9.93484 9.92211 10.0247C9.83225 10.1146 9.71038 10.165 9.58329 10.165C9.45621 10.165 9.33433 10.1146 9.24447 10.0247C9.15461 9.93484 9.10413 9.81296 9.10413 9.68588V9.58333C9.10413 8.94792 9.35654 8.33853 9.80585 7.88922C10.2552 7.43992 10.8645 7.1875 11.5 7.1875H11.6111C12.0777 7.18764 12.5331 7.33066 12.9161 7.59732C13.299 7.86398 13.5911 8.2415 13.753 8.6791C13.915 9.11671 13.9391 9.59341 13.8221 10.0451C13.7051 10.4968 13.4525 10.9019 13.0985 11.2058L12.3596 11.8393C12.2404 11.9416 12.1448 12.0685 12.0791 12.2113C12.0135 12.354 11.9793 12.5092 11.9791 12.6663V13.1771C11.9791 13.3042 11.9286 13.426 11.8388 13.5159C11.7489 13.6058 11.627 13.6562 11.5 13.6562C11.3729 13.6562 11.251 13.6058 11.1611 13.5159C11.0713 13.426 11.0208 13.3042 11.0208 13.1771V12.6663C11.0208 12.0683 11.2824 11.501 11.7357 11.1119L12.4736 10.4794C12.6794 10.3031 12.8263 10.0679 12.8944 9.80567C12.9625 9.54338 12.9487 9.26653 12.8547 9.01234C12.7608 8.75816 12.5912 8.53886 12.3689 8.38394C12.1466 8.22902 11.8821 8.14593 11.6111 8.14583H11.5ZM11.5 15.8125C11.6906 15.8125 11.8734 15.7368 12.0082 15.602C12.143 15.4672 12.2187 15.2844 12.2187 15.0938C12.2187 14.9031 12.143 14.7203 12.0082 14.5855C11.8734 14.4507 11.6906 14.375 11.5 14.375C11.3093 14.375 11.1265 14.4507 10.9917 14.5855C10.8569 14.7203 10.7812 14.9031 10.7812 15.0938C10.7812 15.2844 10.8569 15.4672 10.9917 15.602C11.1265 15.7368 11.3093 15.8125 11.5 15.8125Z\"
+                    fill=\"#60E0FF\"
+                  />
+                  <path
+                    d=\"M3.35413 11.5C3.35413 9.33959 4.21235 7.26766 5.73999 5.74002C7.26763 4.21238 9.33955 3.35416 11.5 3.35416C13.6604 3.35416 15.7323 4.21238 17.2599 5.74002C18.7876 7.26766 19.6458 9.33959 19.6458 11.5C19.6458 13.6604 18.7876 15.7323 17.2599 17.26C15.7323 18.7876 13.6604 19.6458 11.5 19.6458C9.33955 19.6458 7.26763 18.7876 5.73999 17.26C4.21235 15.7323 3.35413 13.6604 3.35413 11.5ZM11.5 4.3125C9.59372 4.3125 7.76555 5.06975 6.41763 6.41767C5.06971 7.76558 4.31246 9.59375 4.31246 11.5C4.31246 13.4062 5.06971 15.2344 6.41763 16.5823C7.76555 17.9302 9.59372 18.6875 11.5 18.6875C13.4062 18.6875 15.2344 17.9302 16.5823 16.5823C17.9302 15.2344 18.6875 13.4062 18.6875 11.5C18.6875 9.59375 17.9302 7.76558 16.5823 6.41767C15.2344 5.06975 13.4062 4.3125 11.5 4.3125Z\"
+                    fill=\"#60E0FF\"
+                  />
+                </svg>
+              </span>
+              <span class=\"du-bar-menu__text\">Preguntas frecuentes</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section class=\"du-hero-swiper\">
+        <div class=\"swiper\">
+          <div class=\"swiper-wrapper\">
+            <div class=\"swiper-slide du-hero-swiper__slide\">
+              <div
+                class=\"du-hero-swiper__bg\"
+                style=\"
+                  background-image: url(&quot;https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=2070&quot;);
+                \"
+              ></div>
+              <div class=\"du-hero-swiper__overlay\"></div>
+              <div class=\"du-hero-swiper__container\">
+                <div class=\"du-hero-swiper__content\">
+                  <h1 class=\"du-hero-swiper__title\">
+                    ¿Por qué escoger
+                    <span class=\"du-hero-swiper__title--highlight\">DermaU</span
+                    >?
+                  </h1>
+                  <ul class=\"du-hero-swiper__list\">
+                    <li class=\"du-hero-swiper__item\">
+                      Excelencia en Educación Dermatológica
+                    </li>
+                    <li class=\"du-hero-swiper__item\">
+                      Formación para profesionales de la salud
+                    </li>
+                  </ul>
+                  <div class=\"du-hero-swiper__actions\">
+                    <a href=\"#\" class=\"du-btn du-btn--primary\"
+                      >Ver programas <span class=\"du-icon__next\"></span
+                    ></a>
+                    <a href=\"#\" class=\"du-btn du-btn--secundary-dark\"
+                      >Conoce los convenios</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class=\"swiper-slide du-hero-swiper__slide\">
+              <div
+                class=\"du-hero-swiper__bg\"
+                style=\"
+                  background-image: url(&quot;https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=2080&quot;);
+                \"
+              ></div>
+              <div class=\"du-hero-swiper__overlay\"></div>
+              <div class=\"du-hero-swiper__container\">
+                <div class=\"du-hero-swiper__content\">
+                  <h1 class=\"du-hero-swiper__title\">
+                    Innova en tu
+                    <span class=\"du-hero-swiper__title--highlight\"
+                      >Carrera</span
+                    >
+                  </h1>
+                  <ul class=\"du-hero-swiper__list\">
+                    <li class=\"du-hero-swiper__item\">
+                      Diplomados con aval internacional
+                    </li>
+                    <li class=\"du-hero-swiper__item\">
+                      Metodología 100% online y flexible
+                    </li>
+                  </ul>
+                  <div class=\"du-hero-swiper__actions\">
+                    <a href=\"#\" class=\"du-btn du-btn--primary\"
+                      >Explorar Cursos <span class=\"du-icon__next\"></span
+                    ></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class=\"swiper-slide du-hero-swiper__slide\">
+              <div
+                class=\"du-hero-swiper__bg\"
+                style=\"
+                  background-image: url(&quot;https://images.unsplash.com/photo-1581056771107-24ca5f033842?q=80&w=2070&quot;);
+                \"
+              ></div>
+              <div class=\"du-hero-swiper__overlay\"></div>
+              <div class=\"du-hero-swiper__container\">
+                <div class=\"du-hero-swiper__content\">
+                  <h1 class=\"du-hero-swiper__title\">
+                    Únete a la
+                    <span class=\"du-hero-swiper__title--highlight\"
+                      >Comunidad</span
+                    >
+                  </h1>
+                  <ul class=\"du-hero-swiper__list\">
+                    <li class=\"du-hero-swiper__item\">
+                      Más de 5,000 egresados en Latinoamérica
+                    </li>
+                    <li class=\"du-hero-swiper__item\">
+                      Networking con expertos del sector
+                    </li>
+                  </ul>
+                  <div class=\"du-hero-swiper__actions\">
+                    <a href=\"#\" class=\"du-btn du-btn--primary\"
+                      >Registrarme ahora <span class=\"du-icon__next\"></span
+                    ></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class=\"swiper-pagination\"></div>
+        </div>
+
+        <div class=\"du-float-chat\">
+          <a href=\"#\" class=\"du-float-chat__link\">
+            <svg
+              width=\"29\"
+              height=\"29\"
+              viewBox=\"0 0 29 29\"
+              fill=\"none\"
+              xmlns=\"http://www.w3.org/2000/svg\"
+            >
+              <path
+                d=\"M6.00039 10.8C6.00039 8.57218 6.88539 6.43561 8.46069 4.8603C10.036 3.285 12.1726 2.4 14.4004 2.4C16.6282 2.4 18.7648 3.285 20.3401 4.8603C21.9154 6.43561 22.8004 8.57218 22.8004 10.8V12.042C24.8356 12.3336 26.4004 14.0844 26.4004 16.2V16.5C26.4004 18.63 24.5632 20.4972 22.402 20.3976C21.514 22.9416 19.2556 24.6564 16.8184 25.0908C16.2544 25.2972 15.5872 25.2 15.0004 25.2C14.523 25.2 14.0652 25.0104 13.7276 24.6728C13.39 24.3352 13.2004 23.8774 13.2004 23.4C13.2004 22.9226 13.39 22.4648 13.7276 22.1272C14.0652 21.7896 14.523 21.6 15.0004 21.6C15.952 21.6 17.0056 21.462 17.6488 22.3308C19.204 21.5904 20.4004 20.0268 20.4004 18V10.8C20.4004 9.2087 19.7682 7.68258 18.643 6.55736C17.5178 5.43214 15.9917 4.8 14.4004 4.8C12.8091 4.8 11.283 5.43214 10.1578 6.55736C9.03253 7.68258 8.40039 9.2087 8.40039 10.8V18.3C8.40039 18.857 8.17914 19.3911 7.78532 19.7849C7.39149 20.1788 6.85735 20.4 6.30039 20.4C5.26605 20.4 4.27407 19.9891 3.54267 19.2577C2.81128 18.5263 2.40039 17.5343 2.40039 16.5V16.2C2.40013 15.1899 2.76394 14.2135 3.42514 13.4498C4.08633 12.6861 5.00061 12.1863 6.00039 12.042V10.8Z\"
+                fill=\"#60E0FF\"
+              />
+            </svg>
+          </a>
+        </div>
+
+        <div class=\"du-form-register\" data-variation=\"\">
+          <div class=\"du-form-register__container\">
+            <h2 class=\"du-form-register__subtitle\">Solicita más información</h2>
+            <form class=\"du-form-register__form\">
+              <div class=\"du-form-register__form-group-container\">
+                <div class=\"du-form-register__form-group\">
+                  <select
+                    id=\"du-reg-program\"
+                    name=\"du-reg-program\"
+                    required
+                    class=\"du-form-select\"
+                  >
+                    <option value=\"\" disabled>Seleccione tu programa</option>
+                    <option value=\"1\">Programa 1</option>
+                  </select>
+                  <input
+                    type=\"text\"
+                    id=\"du-reg-name\"
+                    name=\"du-reg-name\"
+                    placeholder=\"Nombre\"
+                    required
+                    class=\"du-form-input\"
+                  />
+                  <input
+                    type=\"text\"
+                    id=\"du-reg-lastname\"
+                    name=\"du-reg-lastname\"
+                    placeholder=\"Apellido\"
+                    required
+                    class=\"du-form-input\"
+                  />
+                </div>
+
+                <div class=\"du-form-register__form-group\">
+                  <div class=\"du-form-phone-group\">
+                    <select id=\"du-reg-country\" name=\"du-reg-country\" required>
+                      <option value=\"+57\" selected>Co</option>
+                      <option value=\"+52\">Mx</option>
+                      <option value=\"+54\">Ar</option>
+                      <option value=\"+56\">Ch</option>
+                    </select>
+                    <input
+                      type=\"tel\"
+                      id=\"du-reg-phone\"
+                      name=\"du-reg-phone\"
+                      placeholder=\"Teléfono\"
+                      required
+                      value=\"+57\"
+                    />
+                  </div>
+                  <select
+                    id=\"du-reg-city\"
+                    name=\"du-reg-city\"
+                    required
+                    class=\"du-form-select\"
+                  >
+                    <option value=\"\" disabled>Seleccione tu ciudad</option>
+                    <option value=\"1\">Ciudad 1</option>
+                  </select>
+                  <select
+                    id=\"du-reg-profesion\"
+                    name=\"du-reg-profesion\"
+                    required
+                    class=\"du-form-select\"
+                  >
+                    <option value=\"\" disabled>Seleccione tu profesión</option>
+                    <option value=\"1\">Profesión 1</option>
+                  </select>
+                </div>
+              </div>
+
+              <textarea
+                id=\"du-reg-message\"
+                name=\"du-reg-message\"
+                placeholder=\"Mensaje (opcional)\"
+                class=\"du-form-textarea\"
+              ></textarea>
+
+              <label for=\"du-reg-consent\" class=\"du-form-label-checkbox\">
+                <input
+                  type=\"checkbox\"
+                  id=\"du-reg-consent\"
+                  name=\"du-reg-consent\"
+                  required
+                  class=\"du-form-checkbox\"
+                />
+                Autorizo a eClass a enviarme información vía email
+              </label>
+
+              <button type=\"submit\" class=\"du-btn du-btn--primary\">
+                Contáctame
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section class=\"du-stats\">
+        <div class=\"du-stats__container\">
+          <div class=\"du-stats__header\">
+            <h2 class=\"du-stats__title\"><span>DermaU</span> en números</h2>
+            <p class=\"du-stats__subtitle\">
+              Lideramos la educación en dermatología en Colombia con resultados
+              que hablan por sí solos.
+            </p>
+          </div>
+
+          <div class=\"du-stats__grid\">
+            <div class=\"du-stats__card\">
+              <div class=\"du-stats__icon-wrapper du-stats__icon-wrapper--light\">
+                <svg
+                  width=\"49\"
+                  height=\"42\"
+                  viewBox=\"0 0 49 42\"
+                  fill=\"none\"
+                  xmlns=\"http://www.w3.org/2000/svg\"
+                >
+                  <path
+                    d=\"M4.14097 14.3274V34.2217M2.10128 12.8144C0.654229 12.1212 0.654229 10.2511 2.10128 9.55798C3.99856 8.64913 6.83298 7.35914 10.8422 5.68907C16.4126 3.36877 20.2176 1.99292 22.2605 1.29557C23.4108 0.901476 24.6597 0.901476 25.81 1.29557C27.8518 1.99292 31.659 3.36877 37.2283 5.68907C41.2386 7.35914 44.0719 8.64913 45.9703 9.55798C47.4152 10.2511 47.4152 12.1212 45.9703 12.8144C44.0719 13.7232 41.2375 15.0132 37.2283 16.6833C31.6579 19.0036 27.8529 20.3794 25.81 21.0768C24.6597 21.4709 23.4108 21.4709 22.2605 21.0768C20.2187 20.3794 16.4116 19.0036 10.8422 16.6833C6.83193 15.0122 3.99856 13.7232 2.10128 12.8144Z\"
+                    stroke=\"#279CFF\"
+                    stroke-width=\"2\"
+                    stroke-linecap=\"round\"
+                    stroke-linejoin=\"round\"
+                  />
+                  <path
+                    d=\"M10.5304 16.5524C10.4568 17.9616 10.4212 19.3725 10.4236 20.7836C10.4236 24.0232 10.5901 26.0576 10.7534 27.2754C10.8969 28.3392 11.5063 29.2439 12.457 29.7412C14.2957 30.7045 18.0306 32.1275 24.0355 32.1275C30.0404 32.1275 33.7753 30.7056 35.614 29.7423C36.5647 29.2449 37.1741 28.3403 37.3176 27.2775C37.4809 26.0587 37.6474 24.0242 37.6474 20.7857C37.6498 19.3742 37.6142 17.9629 37.5406 16.5534M7.28241 37.3628C7.28241 38.1959 6.95146 38.9949 6.36237 39.584C5.77328 40.1731 4.9743 40.504 4.1412 40.504C3.3081 40.504 2.50913 40.1731 1.92004 39.584C1.33095 38.9949 1 38.1959 1 37.3628C1 36.5297 1.33095 35.7308 1.92004 35.1417C2.50913 34.5526 3.3081 34.2216 4.1412 34.2216C4.9743 34.2216 5.77328 34.5526 6.36237 35.1417C6.95146 35.7308 7.28241 36.5297 7.28241 37.3628Z\"
+                    stroke=\"#279CFF\"
+                    stroke-width=\"2\"
+                    stroke-linecap=\"round\"
+                    stroke-linejoin=\"round\"
+                  />
+                </svg>
+              </div>
+              <div class=\"du-stats__card-info\">
+                <div class=\"du-stats__number\">5,000+</div>
+                <div class=\"du-stats__label\">Estudiantes Graduados</div>
+              </div>
+            </div>
+
+            <div class=\"du-stats__card du-stats__card--alt\">
+              <div class=\"du-stats__icon-wrapper du-stats__icon-wrapper--dark\">
+                <svg
+                  width=\"43\"
+                  height=\"43\"
+                  viewBox=\"0 0 43 43\"
+                  fill=\"none\"
+                  xmlns=\"http://www.w3.org/2000/svg\"
+                >
+                  <path
+                    d=\"M28.6667 37.625V34.0416C28.6667 32.1409 27.9116 30.3181 26.5676 28.974C25.2236 27.63 23.4007 26.875 21.5 26.875H10.75C8.84929 26.875 7.02642 27.63 5.68241 28.974C4.3384 30.3181 3.58334 32.1409 3.58334 34.0416V37.625M28.6667 5.60431C30.2035 6.00272 31.5645 6.90016 32.5361 8.15575C33.5077 9.41135 34.0349 10.954 34.0349 12.5416C34.0349 14.1293 33.5077 15.6719 32.5361 16.9275C31.5645 18.1831 30.2035 19.0806 28.6667 19.479M39.4167 37.625V34.0416C39.4155 32.4537 38.887 30.9112 37.9141 29.6562C36.9413 28.4012 35.5792 27.5049 34.0417 27.1079\"
+                    stroke=\"#98D0FF\"
+                    stroke-width=\"2.5\"
+                    stroke-linecap=\"round\"
+                    stroke-linejoin=\"round\"
+                  />
+                  <path
+                    d=\"M16.125 19.7083C20.0831 19.7083 23.2917 16.4997 23.2917 12.5417C23.2917 8.58363 20.0831 5.375 16.125 5.375C12.167 5.375 8.95834 8.58363 8.95834 12.5417C8.95834 16.4997 12.167 19.7083 16.125 19.7083Z\"
+                    stroke=\"#98D0FF\"
+                    stroke-width=\"2.5\"
+                    stroke-linecap=\"round\"
+                    stroke-linejoin=\"round\"
+                  />
+                </svg>
+              </div>
+              <div class=\"du-stats__card-info\">
+                <div class=\"du-stats__number\">45</div>
+                <div class=\"du-stats__label\">Docentes Expertos</div>
+              </div>
+            </div>
+
+            <div class=\"du-stats__card\">
+              <div class=\"du-stats__icon-wrapper du-stats__icon-wrapper--light\">
+                <svg
+                  width=\"40\"
+                  height=\"31\"
+                  viewBox=\"0 0 40 31\"
+                  fill=\"none\"
+                  xmlns=\"http://www.w3.org/2000/svg\"
+                >
+                  <path
+                    d=\"M0 1.25C0 0.91848 0.131696 0.600537 0.366116 0.366117C0.600537 0.131696 0.918479 1.95054e-07 1.25 1.95054e-07H13.745C16.355 1.95054e-07 18.6533 1.33333 19.9967 3.35667C20.6808 2.32437 21.61 1.47756 22.7012 0.891835C23.7923 0.306115 25.0116 -0.000282219 26.25 1.95054e-07H38.75C39.0815 1.95054e-07 39.3995 0.131696 39.6339 0.366117C39.8683 0.600537 40 0.91848 40 1.25V26.355C40 26.5199 39.9674 26.6831 39.9041 26.8353C39.8407 26.9875 39.7479 27.1257 39.6309 27.2418C39.514 27.358 39.3752 27.4499 39.2226 27.5123C39.07 27.5746 38.9065 27.6061 38.7417 27.605L25.9383 27.5183C25.276 27.5136 24.6194 27.6406 24.0065 27.8918C23.3936 28.143 22.8368 28.5135 22.3683 28.9817L20.885 30.4667C20.7689 30.5828 20.6311 30.675 20.4794 30.7378C20.3277 30.8007 20.1651 30.8331 20.0008 30.8331C19.8366 30.8331 19.674 30.8007 19.5223 30.7378C19.3706 30.675 19.2327 30.5828 19.1167 30.4667L17.6133 28.965C16.6759 28.0273 15.4043 27.5003 14.0783 27.5H1.25C0.918479 27.5 0.600537 27.3683 0.366116 27.1339C0.131696 26.8995 0 26.5815 0 26.25L0 1.25ZM21.25 26.6367C22.5885 25.5776 24.2482 25.0067 25.955 25.0183L37.5 25.0967V2.5H26.25C24.9239 2.5 23.6521 3.02678 22.7145 3.96447C21.7768 4.90215 21.25 6.17392 21.25 7.5V26.6367ZM18.745 7.495C18.7437 6.16979 18.2163 4.8993 17.2788 3.9627C16.3412 3.0261 15.0702 2.5 13.745 2.5H2.5V25H14.0783C15.775 25 17.4217 25.5767 18.75 26.6333L18.745 7.495Z\"
+                    fill=\"#279CFF\"
+                  />
+                </svg>
+              </div>
+              <div class=\"du-stats__card-info\">
+                <div class=\"du-stats__number\">210</div>
+                <div class=\"du-stats__label\">Cursos Disponibles</div>
+              </div>
+            </div>
+
+            <div class=\"du-stats__card du-stats__card--alt\">
+              <div class=\"du-stats__icon-wrapper du-stats__icon-wrapper--dark\">
+                <svg
+                  width=\"30\"
+                  height=\"39\"
+                  viewBox=\"0 0 30 39\"
+                  fill=\"none\"
+                  xmlns=\"http://www.w3.org/2000/svg\"
+                >
+                  <path
+                    d=\"M14.875 18.4344L11.5494 21.0333C11.3638 21.1565 11.1853 21.1586 11.0139 21.0396C10.8425 20.9206 10.7922 20.7648 10.863 20.5721L12.121 16.354L8.81025 13.9528C8.63317 13.8295 8.58713 13.6666 8.67213 13.464C8.75713 13.2614 8.89596 13.1594 9.08863 13.158H13.209L14.467 8.96538C14.5378 8.77271 14.6738 8.67638 14.875 8.67638C15.0762 8.67638 15.2122 8.77271 15.283 8.96538L16.5431 13.158H20.6486C20.8427 13.158 20.9844 13.2593 21.0736 13.4619C21.1629 13.6645 21.1182 13.8274 20.9398 13.9506L17.6184 16.354L18.8764 20.5721C18.9472 20.7648 18.8969 20.9206 18.7255 21.0396C18.5541 21.1586 18.3756 21.1565 18.19 21.0333L14.875 18.4344ZM14.875 36.0443L6.45362 38.5602C5.90821 38.7543 5.40458 38.6729 4.94275 38.3159C4.48092 37.9589 4.25 37.4942 4.25 36.9219V25.2259C2.90417 23.9027 1.85938 22.3529 1.11563 20.5764C0.371875 18.7999 0 16.8994 0 14.875C0 10.7284 1.44217 7.21296 4.3265 4.32863C7.21083 1.44429 10.727 0.00141771 14.875 1.04269e-06C19.023 -0.00141562 22.5392 1.44075 25.4235 4.3265C28.3078 7.21225 29.75 10.7284 29.75 14.875C29.75 16.8994 29.3781 18.7999 28.6344 20.5764C27.8906 22.3529 26.8458 23.902 25.5 25.2238V36.9198C25.5 37.4921 25.2691 37.9568 24.8072 38.3138C24.3454 38.6707 23.8425 38.7522 23.2985 38.5581L14.875 36.0443ZM14.875 27.625C18.4167 27.625 21.4271 26.3854 23.9062 23.9063C26.3854 21.4271 27.625 18.4167 27.625 14.875C27.625 11.3333 26.3854 8.32292 23.9062 5.84375C21.4271 3.36458 18.4167 2.125 14.875 2.125C11.3333 2.125 8.32292 3.36458 5.84375 5.84375C3.36458 8.32292 2.125 11.3333 2.125 14.875C2.125 18.4167 3.36458 21.4271 5.84375 23.9063C8.32292 26.3854 11.3333 27.625 14.875 27.625ZM6.375 36.2185L14.875 33.8364L23.375 36.2185V27.0173C22.1907 27.8885 20.8739 28.5614 19.4246 29.036C17.9782 29.512 16.4617 29.75 14.875 29.75C13.2883 29.75 11.7718 29.5127 10.3254 29.0381C8.87896 28.5635 7.56217 27.8899 6.375 27.0173V36.2185Z\"
+                    fill=\"#98D0FF\"
+                  />
+                </svg>
+              </div>
+              <div class=\"du-stats__card-info\">
+                <div class=\"du-stats__number\">18</div>
+                <div class=\"du-stats__label\">Años de Experiencia</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class=\"du-oferta\">
+        <div class=\"du-oferta__container\">
+          <div class=\"du-oferta__header\">
+            <h2 class=\"du-oferta__title\">
+              Explora nuestra <span>oferta académica</span>
+            </h2>
+            <p class=\"du-oferta__subtitle\">
+              Encuentra el programa ideal para tu especialización académica y
+              profesional en el área de la salud.
+            </p>
+          </div>
+
+          <div class=\"du-oferta__filters\">
+            <button class=\"filter-btn filter-btn--active\">Todos</button>
+            <button class=\"filter-btn\">Diplomados</button>
+            <button class=\"filter-btn\">Curso</button>
+            <button class=\"filter-btn\">Programas Especiales</button>
+            <button class=\"filter-btn\">Webinars</button>
+          </div>
+
+          <div class=\"du-oferta__grid\">
+            <article class=\"du-card__diplomat\">
+              <div class=\"du-card__diplomat-image-container\">
+                <span class=\"du-card__diplomat-badge\">Diplomado</span>
+                <img
+                  src=\"https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=400\"
+                  alt=\"Curso\"
+                  class=\"du-card__diplomat-image\"
+                />
+              </div>
+              <div class=\"du-card__diplomat-content\">
+                <h3 class=\"du-card__diplomat-title\">
+                  Diplomado en dermoscopia facial estándar y avanzada
+                </h3>
+                <p class=\"du-card__diplomat-description\">
+                  Aprende las técnicas más avanzadas de dermoscopia digital para
+                  el diagnóstico precoz de lesiones cutáneas.
+                </p>
+
+                <div class=\"du-card__diplomat-info\">
+                  <div class=\"du-card__diplomat-info-item\">
+                    <svg
+                      width=\"15\"
+                      height=\"15\"
+                      viewBox=\"0 0 15 15\"
+                      fill=\"none\"
+                      xmlns=\"http://www.w3.org/2000/svg\"
+                    >
+                      <path
+                        d=\"M7.22917 13.9583C10.9456 13.9583 13.9583 10.9456 13.9583 7.22917C13.9583 3.51275 10.9456 0.5 7.22917 0.5C3.51275 0.5 0.5 3.51275 0.5 7.22917C0.5 10.9456 3.51275 13.9583 7.22917 13.9583Z\"
+                        stroke=\"#007BE3\"
+                      />
+                      <path
+                        d=\"M10.7916 7.22921H7.42704C7.37455 7.22921 7.32421 7.20836 7.28709 7.17124C7.24998 7.13412 7.22913 7.08378 7.22913 7.03129V4.45837\"
+                        stroke=\"#007BE3\"
+                        stroke-linecap=\"round\"
+                      />
+                    </svg>
+                    6 meses
+                  </div>
+                  <div class=\"du-card__diplomat-info-item\">
+                    <svg
+                      width=\"20\"
+                      height=\"16\"
+                      viewBox=\"0 0 20 16\"
+                      fill=\"none\"
+                      xmlns=\"http://www.w3.org/2000/svg\"
+                    >
+                      <path
+                        d=\"M0 0.625C0 0.45924 0.065848 0.300269 0.183058 0.183058C0.300268 0.0658481 0.45924 9.75268e-08 0.625 9.75268e-08H6.8725C8.1775 9.75268e-08 9.32667 0.666667 9.99833 1.67833C10.3404 1.16218 10.805 0.738778 11.3506 0.445918C11.8962 0.153058 12.5058 -0.000141109 13.125 9.75268e-08H19.375C19.5408 9.75268e-08 19.6997 0.0658481 19.8169 0.183058C19.9342 0.300269 20 0.45924 20 0.625V13.1775C20 13.2599 19.9837 13.3415 19.952 13.4176C19.9204 13.4937 19.8739 13.5628 19.8155 13.6209C19.757 13.679 19.6876 13.725 19.6113 13.7561C19.535 13.7873 19.4533 13.8031 19.3708 13.8025L12.9692 13.7592C12.638 13.7568 12.3097 13.8203 12.0033 13.9459C11.6968 14.0715 11.4184 14.2567 11.1842 14.4908L10.4425 15.2333C10.3845 15.2914 10.3155 15.3375 10.2397 15.3689C10.1638 15.4004 10.0825 15.4165 10.0004 15.4165C9.91831 15.4165 9.837 15.4004 9.76115 15.3689C9.68529 15.3375 9.61637 15.2914 9.55833 15.2333L8.80667 14.4825C8.33793 14.0136 7.70215 13.7501 7.03917 13.75H0.625C0.45924 13.75 0.300268 13.6842 0.183058 13.5669C0.065848 13.4497 0 13.2908 0 13.125L0 0.625ZM10.625 13.3183C11.2942 12.7888 12.1241 12.5033 12.9775 12.5092L18.75 12.5483V1.25H13.125C12.462 1.25 11.8261 1.51339 11.3572 1.98223C10.8884 2.45107 10.625 3.08696 10.625 3.75V13.3183ZM9.3725 3.7475C9.37184 3.08489 9.10815 2.44965 8.63938 1.98135C8.17061 1.51305 7.53511 1.25 6.8725 1.25H1.25V12.5H7.03917C7.8875 12.5 8.71083 12.7883 9.375 13.3167L9.3725 3.7475Z\"
+                        fill=\"#007BE3\"
+                      />
+                    </svg>
+                    8 módulos
+                  </div>
+                  <div class=\"du-card__diplomat-info-item\">
+                    <svg
+                      width=\"16\"
+                      height=\"14\"
+                      viewBox=\"0 0 16 14\"
+                      fill=\"none\"
+                      xmlns=\"http://www.w3.org/2000/svg\"
+                    >
+                      <path
+                        d=\"M10.6111 13.5V12.0555C10.6111 11.2893 10.3067 10.5545 9.76497 10.0128C9.2232 9.47099 8.4884 9.16663 7.72222 9.16663H3.38889C2.62271 9.16663 1.88791 9.47099 1.34614 10.0128C0.804364 10.5545 0.5 11.2893 0.5 12.0555V13.5M10.6111 0.592407C11.2306 0.753008 11.7792 1.11476 12.1709 1.6209C12.5625 2.12703 12.775 2.74888 12.775 3.38885C12.775 4.02882 12.5625 4.65067 12.1709 5.15681C11.7792 5.66294 11.2306 6.0247 10.6111 6.1853M14.9444 13.5V12.0555C14.944 11.4154 14.7309 10.7936 14.3388 10.2877C13.9466 9.78186 13.3975 9.42054 12.7778 9.26052\"
+                        stroke=\"#007BE3\"
+                        stroke-linecap=\"round\"
+                        stroke-linejoin=\"round\"
+                      />
+                      <path
+                        d=\"M5.55551 6.27778C7.151 6.27778 8.4444 4.98438 8.4444 3.38889C8.4444 1.7934 7.151 0.5 5.55551 0.5C3.96003 0.5 2.66663 1.7934 2.66663 3.38889C2.66663 4.98438 3.96003 6.27778 5.55551 6.27778Z\"
+                        stroke=\"#007BE3\"
+                        stroke-linecap=\"round\"
+                        stroke-linejoin=\"round\"
+                      />
+                    </svg>
+                    <span class=\"du-card__diplomat-info-text\"
+                      >Cupos limitados</span
+                    >
+                  </div>
+                </div>
+
+                <a href=\"#\" class=\"du-card__diplomat-btn\">Ver detalle</a>
+              </div>
+            </article>
+          </div>
+
+          <a href=\"#\" class=\"du-oferta__footer-btn\">
+            <svg
+              width=\"16\"
+              height=\"14\"
+              viewBox=\"0 0 16 14\"
+              fill=\"none\"
+              xmlns=\"http://www.w3.org/2000/svg\"
+            >
+              <path
+                d=\"M1.523 4.84077V11.3204M0.858669 4.34797C0.387361 4.12221 0.387361 3.51312 0.858669 3.28736C1.47662 2.99134 2.3998 2.57119 3.70561 2.02724C5.51991 1.27151 6.75922 0.823397 7.42458 0.596269C7.79926 0.46791 8.206 0.46791 8.58068 0.596269C9.2457 0.823397 10.4857 1.27151 12.2996 2.02724C13.6058 2.57119 14.5286 2.99134 15.1469 3.28736C15.6176 3.51312 15.6176 4.12221 15.1469 4.34797C14.5286 4.64399 13.6055 5.06414 12.2996 5.60809C10.4854 6.36382 9.24604 6.81194 8.58068 7.03907C8.206 7.16742 7.79926 7.16742 7.42458 7.03907C6.75957 6.81194 5.51957 6.36382 3.70561 5.60809C2.39946 5.0638 1.47662 4.64399 0.858669 4.34797Z\"
+                stroke=\"white\"
+                stroke-linecap=\"round\"
+                stroke-linejoin=\"round\"
+              />
+              <path
+                d=\"M3.60408 5.56543C3.58011 6.02441 3.56851 6.48394 3.5693 6.94354C3.5693 7.9987 3.62352 8.66133 3.67672 9.05795C3.72345 9.40444 3.92193 9.69909 4.23158 9.86108C4.83044 10.1748 6.0469 10.6383 8.00273 10.6383C9.95855 10.6383 11.175 10.1752 11.7739 9.86142C12.0835 9.69943 12.282 9.40478 12.3287 9.05863C12.3819 8.66167 12.4362 7.99904 12.4362 6.94423C12.437 6.48451 12.4254 6.02486 12.4014 5.56577M2.5462 12.3435C2.5462 12.6148 2.43841 12.875 2.24654 13.0669C2.05467 13.2588 1.79444 13.3666 1.5231 13.3666C1.25176 13.3666 0.991527 13.2588 0.799659 13.0669C0.607791 12.875 0.5 12.6148 0.5 12.3435C0.5 12.0721 0.607791 11.8119 0.799659 11.62C0.991527 11.4282 1.25176 11.3204 1.5231 11.3204C1.79444 11.3204 2.05467 11.4282 2.24654 11.62C2.43841 11.8119 2.5462 12.0721 2.5462 12.3435Z\"
+                stroke=\"white\"
+                stroke-linecap=\"round\"
+                stroke-linejoin=\"round\"
+              />
+            </svg>
+            Ver todos los programas
+          </a>
+        </div>
+      </section>
+
+      <section class=\"du-agreements\">
+        <div class=\"du-agreements__container\">
+          <div class=\"du-agreements__header\">
+            <h2 class=\"du-agreements__title\">
+              <span>Convenios</span> Universitarios
+            </h2>
+            <p class=\"du-agreements__subtitle\">
+              Nuestros convenios fortalecen el aprendizaje y aseguran que cada
+              programa cumpla con estándares educativos.
+            </p>
+          </div>
+
+          <div class=\"swiper swiper-container\">
+            <div class=\"swiper-wrapper\">
+              <div class=\"swiper-slide du-agreements__slide\">
+                <a
+                  href=\"https://www.unal.edu.co/\"
+                  target=\"_blank\"
+                  rel=\"noopener\"
+                >
+                  <img src=\"";
+        // line 581
+        yield $this->extensions['Drupal\Core\Template\TwigExtension']->escapeFilter($this->env, (($context["base_path"] ?? null) . ($context["directory"] ?? null)), "html", null, true);
+        yield "/assets/img/logo-ref-1.png\" alt=\"Universidad Nacional\" />
+                </a>
+              </div>
+              <div class=\"swiper-slide\">
+                <a
+                  href=\"https://www.utadeo.edu.co/\"
+                  target=\"_blank\"
+                  rel=\"noopener\"
+                >
+                  <img src=\"";
+        // line 590
+        yield $this->extensions['Drupal\Core\Template\TwigExtension']->escapeFilter($this->env, (($context["base_path"] ?? null) . ($context["directory"] ?? null)), "html", null, true);
+        yield "/assets/img/logo-ref-2.png\" alt=\"UTADEO\" />
+                </a>
+              </div>
+              <div class=\"swiper-slide\">
+                <a
+                  href=\"https://www.udea.edu.co/\"
+                  target=\"_blank\"
+                  rel=\"noopener\"
+                >
+                  <img src=\"";
+        // line 599
+        yield $this->extensions['Drupal\Core\Template\TwigExtension']->escapeFilter($this->env, (($context["base_path"] ?? null) . ($context["directory"] ?? null)), "html", null, true);
+        yield "/assets/img/logo-ref-3.png\" alt=\"UdeA\" />
+                </a>
+              </div>
+              <div class=\"swiper-slide\">
+                <a
+                  href=\"https://www.unbosque.edu.co/\"
+                  target=\"_blank\"
+                  rel=\"noopener\"
+                >
+                  <img src=\"";
+        // line 608
+        yield $this->extensions['Drupal\Core\Template\TwigExtension']->escapeFilter($this->env, (($context["base_path"] ?? null) . ($context["directory"] ?? null)), "html", null, true);
+        yield "/assets/img/logo-ref-4.png\" alt=\"El Bosque\" />
+                </a>
+              </div>
+            </div>
+
+            <div class=\"swiper-button-prev\"></div>
+            <div class=\"swiper-button-next\"></div>
+
+            <div class=\"swiper-pagination\"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class=\"du-testimonials\">
+        <div class=\"du-testimonials__container\">
+          <h2 class=\"du-testimonials__title\">
+            Somos la Plataforma de Educación Dermatológica
+            <span class=\"du-testimonials__title--highlight\"
+              >Líder en Colombia</span
+            >
+          </h2>
+
+          <div class=\"du-testimonials__slider-wrapper\">
+            <div class=\"swiper du-testimonials__swiper\">
+              <div class=\"swiper-wrapper\">
+                <div class=\"swiper-slide\">
+                  <article class=\"du-card__testimonial\">
+                    <div class=\"du-card__testimonial-image-box\">
+                      <img
+                        src=\"https://images.unsplash.com/photo-1527613426441-4da17471b66d?q=80&w=400\"
+                        alt=\"Dra. Sofía Mendoza\"
+                        class=\"du-card__testimonial-img\"
+                      />
+                    </div>
+                    <div class=\"du-card__testimonial-content\">
+                      <span
+                        class=\"du-card__testimonial-quote du-card__testimonial-quote--open\"
+                        >“</span
+                      >
+                      <p class=\"du-card__testimonial-text\">
+                        Gracias a DermaU pude especializarme en procedimientos
+                        estéticos sin dejar de atender a mis pacientes. La
+                        modalidad online es perfecta para profesionales activos.
+                      </p>
+                      <span
+                        class=\"du-card__testimonial-quote du-card__testimonial-quote--close\"
+                        >”</span
+                      >
+                      <div class=\"du-card__testimonial-author\">
+                        <h4 class=\"du-card__testimonial-name\">
+                          Dra. Sofía Mendoza
+                        </h4>
+                        <p class=\"du-card__testimonial-role\">
+                          Médica Estética, Centro Médico Estético Bogotá
+                        </p>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+
+            <div class=\"swiper-button-prev du-testimonials__prev\"></div>
+            <div class=\"swiper-button-next du-testimonials__next\"></div>
+            <div class=\"swiper-pagination du-testimonials__pagination\"></div>
+          </div>
+
+          <div class=\"du-testimonials__actions\">
+            <a href=\"#\" class=\"du-btn-secondary\">
+              <svg
+                width=\"16\"
+                height=\"14\"
+                viewBox=\"0 0 16 14\"
+                fill=\"none\"
+                xmlns=\"http://www.w3.org/2000/svg\"
+              >
+                <path
+                  d=\"M1.523 4.84077V11.3204M0.858669 4.34797C0.387361 4.12221 0.387361 3.51312 0.858669 3.28736C1.47662 2.99134 2.3998 2.57119 3.70561 2.02724C5.51991 1.27151 6.75922 0.823397 7.42458 0.596269C7.79926 0.46791 8.206 0.46791 8.58068 0.596269C9.2457 0.823397 10.4857 1.27151 12.2996 2.02724C13.6058 2.57119 14.5286 2.99134 15.1469 3.28736C15.6176 3.51312 15.6176 4.12221 15.1469 4.34797C14.5286 4.64399 13.6055 5.06414 12.2996 5.60809C10.4854 6.36382 9.24604 6.81194 8.58068 7.03907C8.206 7.16742 7.79926 7.16742 7.42458 7.03907C6.75957 6.81194 5.51957 6.36382 3.70561 5.60809C2.39946 5.0638 1.47662 4.64399 0.858669 4.34797Z\"
+                  stroke=\"white\"
+                  stroke-linecap=\"round\"
+                  stroke-linejoin=\"round\"
+                ></path>
+                <path
+                  d=\"M3.60408 5.56543C3.58011 6.02441 3.56851 6.48394 3.5693 6.94354C3.5693 7.9987 3.62352 8.66133 3.67672 9.05795C3.72345 9.40444 3.92193 9.69909 4.23158 9.86108C4.83044 10.1748 6.0469 10.6383 8.00273 10.6383C9.95855 10.6383 11.175 10.1752 11.7739 9.86142C12.0835 9.69943 12.282 9.40478 12.3287 9.05863C12.3819 8.66167 12.4362 7.99904 12.4362 6.94423C12.437 6.48451 12.4254 6.02486 12.4014 5.56577M2.5462 12.3435C2.5462 12.6148 2.43841 12.875 2.24654 13.0669C2.05467 13.2588 1.79444 13.3666 1.5231 13.3666C1.25176 13.3666 0.991527 13.2588 0.799659 13.0669C0.607791 12.875 0.5 12.6148 0.5 12.3435C0.5 12.0721 0.607791 11.8119 0.799659 11.62C0.991527 11.4282 1.25176 11.3204 1.5231 11.3204C1.79444 11.3204 2.05467 11.4282 2.24654 11.62C2.43841 11.8119 2.5462 12.0721 2.5462 12.3435Z\"
+                  stroke=\"white\"
+                  stroke-linecap=\"round\"
+                  stroke-linejoin=\"round\"
+                ></path>
+              </svg>
+              Conoce más sobre <span>DermaU</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class=\"du-faq\">
+        <div class=\"du-faq__container\">
+          <div class=\"du-faq__header\">
+            <h2 class=\"du-faq__title\">Preguntas <span>frecuentes</span></h2>
+            <p class=\"du-faq__detail\">
+              Encuentra respuestas rápidas sobre nuestros programas, modalidad
+              de estudio y procesos de inscripción en DermaU.
+            </p>
+          </div>
+
+          <div class=\"du-faq__tabs-desktop\">
+            <button class=\"du-faq__tab-btn active\" data-tab=\"academicos\">
+              Sobre los programas académicos
+            </button>
+            <button class=\"du-faq__tab-btn\" data-tab=\"inscripcion\">
+              Inscripción, requisitos y soporte
+            </button>
+            <button class=\"du-faq__tab-btn\" data-tab=\"modalidad\">
+              Modalidad y metodología
+            </button>
+          </div>
+
+          <div class=\"du-faq__main-content\">
+            <div class=\"du-faq__group-wrapper active\" id=\"academicos\">
+              <button class=\"du-faq__mobile-trigger\">
+                Sobre los programas académicos
+                <span class=\"du-faq__arrow-icon\"></span>
+              </button>
+              <div class=\"du-faq__accordion-container\">
+                <div class=\"du-accordion-item\">
+                  <button class=\"du-accordion-header\">
+                    ¿Cuál es la diferencia entre un curso y un diplomado?
+                    <span class=\"du-icon-trigger__plus\"></span>
+                  </button>
+                  <div class=\"du-accordion-body\">
+                    <p>
+                      Contenido detallado sobre la estructura de los
+                      programas...
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class=\"du-faq__group-wrapper\" id=\"inscripcion\">
+              <button class=\"du-faq__mobile-trigger\">
+                Inscripción, requisitos y soporte
+                <span class=\"du-faq__arrow-icon\"></span>
+              </button>
+              <div class=\"du-faq__accordion-container\">
+                <div class=\"du-accordion-item\">
+                  <button class=\"du-accordion-header\">
+                    ¿Cómo me inscribo?
+                    <span class=\"du-icon-trigger__plus\"></span>
+                  </button>
+                  <div class=\"du-accordion-body\">
+                    <p>Proceso de inscripción paso a paso...</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class=\"du-faq__group-wrapper\" id=\"modalidad\">
+              <button class=\"du-faq__mobile-trigger\">
+                Modalidad y metodología <span class=\"du-faq__arrow-icon\"></span>
+              </button>
+              <div class=\"du-faq__accordion-container\">
+                <div class=\"du-accordion-item\">
+                  <button class=\"du-accordion-header\">
+                    ¿Qué modalidad de estudio ofrecen?
+                    <span class=\"du-icon-trigger__plus\"></span>
+                  </button>
+                  <div class=\"du-accordion-body\">
+                    <p>Proceso de modalidad paso a paso...</p>
+                  </div>
+                </div>
+
+                <div class=\"du-accordion-item\">
+                  <button class=\"du-accordion-header\">
+                    ¿Qué modalidad de estudio ofrecen?
+                    <span class=\"du-icon-trigger__plus\"></span>
+                  </button>
+                  <div class=\"du-accordion-body\">
+                    <p>Proceso de modalidad paso a paso...</p>
+                  </div>
+                </div>
+
+                <div class=\"du-accordion-item\">
+                  <button class=\"du-accordion-header\">
+                    ¿Qué modalidad de estudio ofrecen?
+                    <span class=\"du-icon-trigger__plus\"></span>
+                  </button>
+                  <div class=\"du-accordion-body\">
+                    <p>Proceso de modalidad paso a paso...</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class=\"du-footer-info\" data-variation=\"\">
+        <div class=\"du-footer-info__text\">
+          <h2 class=\"du-footer-info__title\">
+            ¿Listo para dar el siguiente paso en tu <span>carrera</span> ?
+          </h2>
+          <p class=\"du-footer-info__description\">
+            Únete a más de 5,000 profesionales que han transformado su práctica
+            clínica con DermaU. Inscripciones abiertas para el periodo 2026.
+          </p>
+        </div>
+        <div class=\"du-footer-info__image\">
+          <img
+            src=\"https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=400\"
+            alt=\"Profesional de la salud\"
+          />
+          <a href=\"#\" class=\"du-footer-info__link\">Solicitar Información</a>
+        </div>
+      </section>
+    
+</main>
+
+";
+        // line 826
+        yield from $this->load("@derma_theme/includes/footer.html.twig", 826)->unwrap()->yield($context);
+        $this->env->getExtension('\Drupal\Core\Template\TwigExtension')
+            ->checkDeprecations($context, ["base_path", "directory"]);        yield from [];
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function getTemplateName(): string
+    {
+        return "themes/custom/derma_theme/templates/layout/page--front.html.twig";
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function isTraitable(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function getDebugInfo(): array
+    {
+        return array (  890 => 826,  669 => 608,  657 => 599,  645 => 590,  633 => 581,  55 => 5,  53 => 4,  48 => 2,  44 => 1,);
+    }
+
+    public function getSourceContext(): Source
+    {
+        return new Source("", "themes/custom/derma_theme/templates/layout/page--front.html.twig", "/var/www/html/web/themes/custom/derma_theme/templates/layout/page--front.html.twig");
+    }
+    
+    public function checkSecurity()
+    {
+        static $tags = ["include" => 4];
+        static $filters = ["escape" => 1];
+        static $functions = ["attach_library" => 1];
+
+        try {
+            $this->sandbox->checkSecurity(
+                ['include'],
+                ['escape'],
+                ['attach_library'],
+                $this->source
+            );
+        } catch (SecurityError $e) {
+            $e->setSourceContext($this->source);
+
+            if ($e instanceof SecurityNotAllowedTagError && isset($tags[$e->getTagName()])) {
+                $e->setTemplateLine($tags[$e->getTagName()]);
+            } elseif ($e instanceof SecurityNotAllowedFilterError && isset($filters[$e->getFilterName()])) {
+                $e->setTemplateLine($filters[$e->getFilterName()]);
+            } elseif ($e instanceof SecurityNotAllowedFunctionError && isset($functions[$e->getFunctionName()])) {
+                $e->setTemplateLine($functions[$e->getFunctionName()]);
+            }
+
+            throw $e;
+        }
+
+    }
+}

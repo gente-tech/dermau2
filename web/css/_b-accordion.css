@@ -1,0 +1,77 @@
+.du-accordion-block {
+    padding: 50px;
+}
+
+.du-accordion-block__container {
+    max-width: var(--du-max-width-left);
+}
+
+.du-accordion-block__items {
+    background: var(--du-color-gray-02);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+.du-accordion-block__item {
+    border-bottom: 1px solid var(--du-color-text-light);
+}
+
+.du-accordion-block__item:last-child {
+    border-bottom: none;
+}
+
+.du-accordion-block__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 30px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.du-accordion-block__header:hover {
+    background: var(--du-color-gray);
+}
+
+.du-accordion-block__title-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.du-accordion-block__title-group h3 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--du-color-primary-02);
+    font-weight: 700;
+}
+
+/* --- CUERPO DEL ACORDEÓN --- */
+.du-accordion-block__body {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0 30px 0 70px;
+    color: #555;
+    line-height: 1.6;
+    font-size: 15px;
+}
+
+.du-accordion-block__body p{
+    padding-block: 15px;
+}
+
+.du-accordion-block__item.is-open .du-accordion-block__body {
+    max-height: 500px;
+}
+
+/* Ajuste móvil */
+@media (max-width: 992px) {
+    .du-accordion-block__header { padding: 15px 20px; }
+    .du-accordion-block__body { padding: 0 20px 20px 20px; }
+    .du-accordion-block__container { max-width: 100%; }
+}

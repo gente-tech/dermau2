@@ -1,0 +1,342 @@
+/* ------------ Card Expert ------------ */
+
+.du-card__expert {
+  background: var(--du-color-gray-02);
+  border: 1px solid var(--du-color-gray);
+  border-radius: 8px;
+  padding: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.3s ease;
+  margin-inline: 1rem;
+}
+.du-card__expert:nth-child(even) {
+  background: color-mix(in srgb, var(--du-color-secondary) 5%, white);
+}
+.du-card__expert-main {
+  display: flex;
+  gap: 15px;
+}
+.du-card__expert-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+.du-card__expert-title {
+  font-size: 18px;
+  color: var(--du-color-secondary-dark);
+  margin: 0;
+  font-weight: 700;
+}
+.du-card__expert-role {
+  font-size: 13px;
+  color: var(--du-color-secondary-dark);
+  font-weight: 400;
+  margin: 2px 0 0;
+}
+.du-card__expert-uni {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--du-color-secondary-dark);
+  font-weight: 600;
+}
+.du-card__expert-detail p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--du-color-text-dark);
+  margin: 0;
+}
+.du-card__expert-footer {
+    display: flex;
+    justify-content: end;
+}
+.du-card__expert-tags {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+.du-card__expert-tags span {
+    background: #e4e4e4;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 400;
+}
+/* ------------ Card Diplomat ------------ */
+
+
+.du-card__diplomat {
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: var(--du-shadow-card);
+  text-align: left;
+  transition: var(--du-transition);
+  display: flex;
+  flex-direction: column;
+  margin-inline: 1rem;
+}
+.du-card__diplomatX:hover {
+  transform: translateY(-10px);
+}
+.du-card__diplomat-image-container {
+  position: relative;
+  height: 150px;
+}
+.du-card__diplomat-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.du-card__diplomat-badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: var(--du-color-secondary-dark);
+  color: white;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.du-card__diplomat-content {
+  padding: 15px;
+  flex-grow: 1;
+}
+.du-card__diplomat-title {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--du-color-text-dark);
+  margin-bottom: 15px;
+  line-height: 1.3;
+}
+.du-card__diplomat-description {
+  font-size: 14px;
+  margin-bottom: 20px;
+  line-height: 1.5;
+  color: #666;
+}
+.du-card__diplomat-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  font-size: 11px;
+  color: var(--du-color-primary);
+  font-weight: 700;
+}
+.du-card__diplomat-info-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.du-card__diplomat-info-item svg {
+  width: 16px;
+  height: 16px;
+}
+.du-card__diplomat-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--du-color-primary);
+  border-radius: 25px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--du-color-text-dark);
+  font-weight: 700;
+  transition: var(--du-transition);
+}
+.du-card__diplomat-btn:hover {
+  background: var(--du-color-primary);
+}
+.du-oferta__footer-btn {
+  background-color: var(--du-color-secondary-dark);
+  color: white;
+  padding: 15px 40px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  transition: var(--du-transition);
+}
+.du-oferta__footer-btn:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+}
+
+
+/* ------------ Card Info ------------ */
+
+.du-card__info {
+  background-color: #60E0FF1A;
+  border: 1px solid #60E0FF80;
+  border-radius: 20px;
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 15px auto;
+  margin-inline: 1rem;
+}
+.du-card__info-wrapper {
+  position: relative;
+  flex: 1;
+}
+.du-card__info-title {
+  font-size: 48px;
+  line-height: 1.1;
+  color: var(--du-color-secondary-dark);
+  font-weight: 800;
+  margin: 0;
+}
+.du-card__info-title span {
+  color: var(--du-color-primary);
+  display: block;
+}
+.du-card__info-text {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--du-color-text-dark);
+  font-weight: 500;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+.du-card__info-quote {
+  font-size: 100px;
+  color: var(--du-color-secondary);
+  font-family: 'Georgia', serif;
+  position: absolute;
+  line-height: 1;
+  user-select: none;
+}
+.du-card__info-quote--start {
+  top: -20px;
+  left: -45px;
+}
+.du-card__info-quote--end {
+  bottom: -60px;
+  right: -30px;
+}
+
+.du-card__info[data-variation="dark"] {
+  background-color: #279CFF1A;
+  border: 1px solid #279CFF80; 
+}
+
+/* --- Responsive Móvil  Card Info--- */
+@media (max-width: 992px) {
+  .du-card__info {
+    flex-direction: column;
+    padding: 40px 30px;
+    text-align: center;
+    gap: 30px;
+  }
+  .du-card__info-title {
+    font-size: 36px;
+  }
+  .du-card__info-title span { 
+    display: inline; 
+}
+  .du-card__info-text {
+    font-size: 16px;
+  }
+  .du-card__info-quote--start {
+    left: -20px;
+    top: -20px;
+    font-size: 60px;
+  }
+  .du-card__info-quote--end {
+    right: -10px;
+    bottom: -40px;
+    font-size: 60px;
+  }
+}
+
+
+/* ------------ Card Testimonial ------------ */
+
+.du-card__testimonial {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding: 20px;
+  margin-inline: 1rem;
+}
+.du-card__testimonial-image-box {
+  flex-shrink: 0;
+}
+.du-card__testimonial-img {
+  width: 175px;
+  height: 175px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+.du-card__testimonial-content {
+  position: relative;
+}
+.du-card__testimonial-quote {
+  color: var(--du-color-primary);
+  font-size: 75px;
+  font-family: Georgia, serif;
+  line-height: 0;
+  display: inline-block;
+  position: absolute;
+}
+.du-card__testimonial-quote--open {
+  top: 30px;
+  left: -30px;
+}
+.du-card__testimonial-quote--close {
+  bottom: 50px;
+  right: -15px;
+}
+.du-card__testimonial-text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--du-color-text-dark);
+  margin-bottom: 20px;
+}
+.du-card__testimonial-name {
+  color: var(--du-color-text-dark);
+  font-weight: 700;
+  margin: 0;
+}
+.du-card__testimonial-role {
+  font-size: 13px;
+  color: var(--du-color-text-light);
+  margin: 5px 0 0;
+}
+
+/* Responsive Móvil   Card Testimonial*/
+@media (max-width: 992px) {
+
+  .du-card__testimonial {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+  .du-card__testimonial-quote--open {
+    left: -10px;
+  }
+  .du-card__testimonial-quote--close {
+    right: -10px;
+    bottom: 40px;
+  }
+  .du-card__testimonial-text {
+    padding-inline: 15px;
+  }
+  .du-card__testimonial-img {
+    width: 200px;
+    height: 200px;
+  }
+
+}

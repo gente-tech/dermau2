@@ -1,0 +1,81 @@
+.du-agreements {
+  background: var(--du-color-gray-02);
+}
+
+.du-agreements__container {
+  padding-block: 60px;
+  max-width: var(--du-max-width);
+  margin: 0 auto;
+}
+
+.du-agreements__header {
+  margin-bottom: 40px;
+  text-align: left;
+}
+.du-agreements__title {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--du-color-text-dark);
+}
+
+.du-agreements__title span {
+  color: var(--du-color-primary);
+}
+
+.du-agreements__subtitle {
+  font-size: 15px;
+  color: var(--du-color-text-dark);
+  margin-top: 10px;
+  max-width: 800px;
+}
+
+.du-agreements__header.center {
+  text-align: center;
+}
+.du-agreements__header.center .du-agreements__subtitle {
+   max-width: 100%;
+}
+
+/* Contenedor Swiper */
+.du-agreements .swiper-container {
+  padding-bottom: 50px;
+  position: relative;
+}
+
+.du-agreements .swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 120px;
+  cursor: pointer;
+}
+
+.du-agreements .swiper-slide img {
+  max-width: 180px;
+  max-height: 80px;
+  object-fit: contain;
+}
+
+
+
+/* Ocultar flechas y dots en escritorio si hay 4 elementos */
+@media (min-width: 992px) {
+  .du-agreements .swiper-button-next,
+  .du-agreements .swiper-button-prev,
+  .du-agreements .swiper-pagination {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .du-agreements__header {
+    text-align: center;
+  }
+  .du-agreements .swiper-slide img {
+    max-width: 130px;
+  }
+  .du-agreements .swiper-button-next,
+  .du-agreements .swiper-button-prev {
+    display: flex;
+  }
+}

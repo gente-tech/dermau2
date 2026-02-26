@@ -1,0 +1,15 @@
+name: Derma Theme
+type: theme
+description: 'DermaU custom theme '
+core_version_requirement: ^10 || ^11
+package: Custom
+base theme: false
+
+libraries:
+  - derma_theme/global
+  - derma_theme/swiper
+
+regions:
+  header: Header
+  content: Content
+  footer: Footer

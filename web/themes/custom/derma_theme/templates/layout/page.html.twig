@@ -1,0 +1,10 @@
+{{ attach_library('derma_theme/global') }}
+{{ attach_library('derma_theme/swiper') }}
+
+{% include '@derma_theme/includes/header.html.twig' %}
+
+<main class="du-main">
+  {{ page.content }}
+</main>
+
+{% include '@derma_theme/includes/footer.html.twig' %}

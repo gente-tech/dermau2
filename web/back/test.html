@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+     
+      :root {
+  --du-bg-filter: #e1f1ff; /* Azul muy claro de fondo */
+  --du-white: #ffffff;
+  --du-text: #1a2344;
+  --du-cyan: #66DBFF;
+  --du-border: #f0f0f0;
+}
+
+.du-filter-bar {
+  background-color: var(--du-bg-filter);
+  padding: 20px 0;
+  width: 100%;
+}
+
+.du-filter-bar__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 15px;
+  padding: 0 5%;
+}
+
+/* Buscador */
+.du-input-group {
+  position: relative;
+  background: var(--du-white);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  min-width: 400px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+}
+
+.du-input-group input {
+  border: none;
+  outline: none;
+  padding-left: 10px;
+  width: 100%;
+  font-size: 14px;
+}
+
+/* Selects Personalizados */
+.du-custom-select {
+  position: relative;
+  cursor: pointer;
+}
+
+.du-custom-select__trigger {
+  background: var(--du-white);
+  border-radius: 10px;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 220px;
+  height: 44px;
+  color: var(--du-text);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.du-custom-select__trigger i {
+  color: var(--du-cyan);
+}
+
+/* Dropdown (image_bc559b.png) */
+.du-custom-select__dropdown {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  width: 100%;
+  background: var(--du-white);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  display: none; /* Se activa con JS */
+  z-index: 100;
+  overflow: hidden;
+}
+
+.du-custom-select.is-open .du-custom-select__dropdown {
+  display: block;
+}
+
+.du-custom-select__options {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.du-custom-select__options li {
+  padding: 12px 20px;
+  font-size: 14px;
+  color: var(--du-text);
+  border-bottom: 1px solid var(--du-border);
+  transition: 0.2s;
+}
+
+.du-custom-select__options li:last-child { border-bottom: none; }
+
+.du-custom-select__options li:hover {
+  background: #f8fbff;
+}
+
+/* Highlight estilo Diplomado */
+.du-custom-select__options li.highlight {
+  color: var(--du-cyan);
+  font-weight: 700;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .du-filter-bar__container {
+    flex-direction: column;
+  }
+  .du-input-group {
+    min-width: auto;
+  }
+}
+
+    </style>
+  </head>
+  <body>
+   
+
+    <div class="du-filter-bar">
+  <div class="du-filter-bar__container">
+    
+    <div class="du-filter-bar__item du-filter-bar__item--search">
+      <div class="du-input-group">
+        <span class="du-input-icon">
+          <i class="icon-search"></i> </span>
+        <input type="text" name="search" placeholder="Buscar docente..." class="form-text">
+      </div>
+    </div>
+
+    <div class="du-filter-bar__item du-filter-bar__item--select">
+      <div class="du-custom-select" id="select-universidad">
+        <div class="du-custom-select__trigger">
+          <i class="icon-filter"></i>
+          <span>Todas las universidades</span>
+        </div>
+        <div class="du-custom-select__dropdown">
+            <ul class="du-custom-select__options">
+                <li>Andes</li>
+                <li>Rosario</li>
+                <li>Nacional</li>
+            </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="du-filter-bar__item du-filter-bar__item--select">
+      <div class="du-custom-select" id="select-programas">
+        <div class="du-custom-select__trigger">
+          <i class="icon-book"></i>
+          <span>Todos los programas</span>
+        </div>
+        <div class="du-custom-select__dropdown">
+            <ul class="du-custom-select__options">
+                <li class="is-active">Cursos</li>
+                <li class="highlight">Diplomado</li>
+                <li>Programas especiales</li>
+                <li>Webinars</li>
+            </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+    <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const customSelects = document.querySelectorAll('.du-custom-select');
+    const searchInput = document.querySelector('.du-filter-bar__item--search input');
+
+    /**
+     * Lógica de los Menús Desplegables
+     */
+    customSelects.forEach(select => {
+        const trigger = select.querySelector('.du-custom-select__trigger');
+        const options = select.querySelectorAll('.du-custom-select__options li');
+        const triggerText = trigger.querySelector('span');
+
+        // 1. Abrir/Cerrar menú
+        trigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            
+            // Cerrar otros menús antes de abrir el actual
+            customSelects.forEach(s => {
+                if (s !== select) s.classList.remove('is-open');
+            });
+            
+            select.classList.toggle('is-open');
+        });
+
+        // 2. Selección de opción
+        options.forEach(option => {
+            option.addEventListener('click', () => {
+                const value = option.innerText;
+                
+                // Actualizar el texto del botón
+                triggerText.innerText = value;
+                
+                // Quitar clase activa de otros y poner a este
+                options.forEach(opt => opt.classList.remove('is-active'));
+                option.classList.add('is-active');
+
+                // Cerrar menú
+                select.classList.remove('is-open');
+
+                // Aquí puedes disparar tu función de filtrado
+                console.log(`Filtrando por: ${value}`);
+                ejecutarFiltro(); 
+            });
+        });
+    });
+
+    /**
+     * Lógica del Buscador
+     */
+    if (searchInput) {
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const query = searchInput.value;
+                console.log(`Buscando: ${query}`);
+                ejecutarFiltro();
+            }
+        });
+    }
+
+    /**
+     * Cerrar menús al hacer clic fuera del componente
+     */
+    document.addEventListener('click', (e) => {
+        customSelects.forEach(select => {
+            if (!select.contains(e.target)) {
+                select.classList.remove('is-open');
+            }
+        });
+    });
+
+    /**
+     * Función placeholder para la acción de filtrado
+     */
+    function ejecutarFiltro() {
+        // Aquí iría la lógica para recargar la lista de docentes
+        // Ya sea mediante un fetch() o filtrando elementos en el DOM
+    }
+});
+    </script>
+  </body>
+</html>

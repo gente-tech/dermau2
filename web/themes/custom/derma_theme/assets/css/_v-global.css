@@ -1,0 +1,37 @@
+/* VARIABLES */
+:root {
+  --du-color-primary: #66dbff;
+  --du-color-primary-02: #00c3ff;
+  --du-color-secondary: #279CFF;
+  --du-color-gray: #f4f7f6;
+  --du-color-gray-02: #F7F7F7;
+  --du-color-secondary-dark: #1C224A;
+  --du-color-text-dark: #464646;
+  --du-color-text-light: #777777;  
+  --du-color-text-black: #1C224A;
+  
+  --du-font-main: "Lato", sans-serif;
+  --do-font-size-base: 14px;
+  --du-transition: all 0.3s ease;
+  --du-z-overlay: 998;
+  --du-z-nav: 999;
+  --du-z-header: 1000;
+  --du-max-width: 1440px;
+  --du-max-width-left: calc(100% - 350px);
+  --du-shadow-menu: 0 8px 15px rgba(0, 0, 0, 0.1);
+  --du-shadow-card: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--du-font-main);
+  font-size: var(--do-font-size-base);
+  color: var(--du-color-text-black);
+  overflow-x: hidden;
+}

@@ -1,0 +1,93 @@
+
+/* Estilos para elementos específicos */
+
+/* Estilos para el chat flotante */
+.du-float-chat {
+    background: var(--du-color-text-black);
+    width: 50px;
+    position: absolute;
+    top: 20px;
+    right: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-block: 2px;
+    border-radius: 4px;
+}
+
+/* Estilos para caja de costo programa */
+
+.du-cost-box {
+    background: #ecf6ff;
+    color: var(--du-color-primary);
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+.du-cost-box__content {
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+    background: white;
+    padding: 10px;
+    border-radius: 4px;
+}
+.du-cost-box__title {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+.du-cost-box__subtitle {
+    color: var(--du-color-text-dark);
+}
+.du-cost-box__price {
+    color: #00C777;
+}
+
+/* Estilos para select pais */
+
+.select-country {
+  position: relative;
+  width: 30px;
+  font-family: Arial, sans-serif;
+}
+.select-country .selected {
+  background: transparent;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.select-country .options {
+  position: absolute;
+  top: 90%;
+  left: 0;
+  right: 0;
+  border: 1px solid #c1ddf6;
+  background: #ecf6ff;
+  display: none;
+  z-index: 10;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.select-country .option {
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.select-country .option:hover {
+  background: #FCFCFC;
+}
+.select-country .option img, .select-country .selected img {
+  width: 20px;
+  height: 20px;
+  object-fit: cover;
+  border-radius: 50%;
+}

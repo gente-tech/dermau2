@@ -1,0 +1,87 @@
+/* --- SECCIÓN BARRA AZUL --- */
+.du-bar-menu {
+  background-color: var(--du-color-secondary-dark);
+  width: 100%;
+  min-height: 60px;
+  display: flex;
+  justify-content: center;
+}
+
+.du-bar-menu__list {
+  display: flex;
+  list-style: none;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.du-bar-menu__item {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+}
+
+.du-bar-menu__link {
+  text-decoration: none;
+  color: var(--du-color-primary);
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 20px;
+  transition: var(--du-transition);
+}
+
+/* Divider "|" centrada */
+.du-bar-menu__divider {
+  width: 1px;
+  height: 30px;
+  background-color: white;
+  display: block;
+}
+
+.du-bar-menu__icon {
+  display: flex;
+  align-items: center;
+  width: 22px;
+}
+
+.du-bar-menu__text {
+     font-size: 16px;
+     font-weight: 700;
+  }
+
+/* --- RESPONSIVE MÓVIL --- */
+@media (max-width: 992px) {
+  .du-bar-menu__list {
+    padding: 10px 0;
+  }
+
+  .du-bar-menu__divider {
+    height: 50px;
+  }
+
+  .du-bar-menu__link {
+    flex-direction: column;
+    text-align: center;
+    font-size: 10px;
+    padding: 10px 5px;
+    gap: 5px;
+  }
+
+  .du-bar-menu__icon {
+    width: 20px;
+    justify-content: center;
+  }
+
+  .du-bar-menu__text {
+    line-height: 1.2;
+    max-width: 80px;
+     font-size: 14px;
+     font-weight: 400;
+  }
+
+}

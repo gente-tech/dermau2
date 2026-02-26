@@ -1,0 +1,17 @@
+global:
+  version: 1.x
+  css:
+    theme:
+      assets/css/main.css: {}
+  js:
+    assets/js/script.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+
+swiper:
+  js:
+    https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js:
+      type: external
+  dependencies:
+    - core/drupal
