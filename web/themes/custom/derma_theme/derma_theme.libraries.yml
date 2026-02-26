@@ -8,6 +8,7 @@ global:
   dependencies:
     - core/drupal
     - core/once
+    - derma_theme/swiper   
 
 swiper:
   js:
