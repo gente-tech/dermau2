@@ -5,6 +5,7 @@
 
 .du-generic-swiper__container {
   max-width: var(--du-max-width);
+  margin: 0 auto;
   background-color: white;
   background-repeat: repeat-x;
   background-position: 0 100px;
