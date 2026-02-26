@@ -908,3 +908,8 @@ $databases['default']['default'] = [
   'driver' => 'mysql',
   'prefix' => '',
 ];
+
+$config['system.logging']['error_level'] = 'verbose';
+ini_set('display_errors', TRUE);
+ini_set('display_startup_errors', TRUE);
+error_reporting(E_ALL);
