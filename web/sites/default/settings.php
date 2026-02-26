@@ -900,4 +900,11 @@ if (getenv('IS_DDEV_PROJECT') == 'true' && file_exists(__DIR__ . '/settings.ddev
 
 
 $config['system.logging']['error_level'] = 'verbose';
-
+$databases['default']['default'] = [
+  'database' => 'dermau',
+  'username' => 'dermau',
+  'password' => 'PasswordFuerte123!',
+  'host' => 'localhost',
+  'driver' => 'mysql',
+  'prefix' => '',
+];
