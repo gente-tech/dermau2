@@ -52,7 +52,8 @@
 
 .select-country {
   position: relative;
-  width: 30px;
+  width: 35px;
+  padding-left: 5px;
   font-family: Arial, sans-serif;
 }
 .select-country .selected {
@@ -66,7 +67,7 @@
 .select-country .options {
   position: absolute;
   top: 90%;
-  left: 0;
+  left: 5px;
   right: 0;
   border: 1px solid #c1ddf6;
   background: #ecf6ff;

@@ -51,7 +51,7 @@
 .du-hero-swiper__content {
   max-width: 650px;
   min-height: 400px;
-    padding-top: 2rem;
+    padding-top: 3rem;
 }
 
 .du-hero-swiper__title {
@@ -98,6 +98,7 @@
   text-align: left !important;
   padding-left: 5% !important;
   bottom: 40px !important;
+  justify-content: flex-start;
 }
 
 .du-hero-swiper .swiper-pagination-bullet {
@@ -131,6 +132,6 @@
   }
   .du-hero-swiper .swiper-pagination {
     text-align: center !important;
-    padding-left: 0 !important;
+    bottom: 60px !important;
   }
 }

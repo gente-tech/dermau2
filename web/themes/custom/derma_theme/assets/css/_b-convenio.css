@@ -45,19 +45,19 @@
 
 
 
-.du-agreements .swiper-slide-active {
+.du-agreements[data-active="true"] .swiper-slide-active {
     border-bottom: 5px solid #60e0ff;
 }
 
-.du-agreements .swiper-slide-active::after {
+.du-agreements[data-active="true"] .swiper-slide-active::after {
   content: "";
   position: absolute;
-  bottom: -20px; /* justo debajo del borde */
+  bottom: -20px;
   left: 50%;
   transform: translateX(-50%);
   width: 0;
   height: 0;
   border-left: 12px solid transparent;
   border-right: 12px solid transparent;
-  border-top: 12px solid #60e0ff; /* color igual al borde */
+  border-top: 12px solid #60e0ff;
 }

@@ -64,6 +64,7 @@
   justify-content: center;
   align-items: center;
   gap: 15px;
+  margin-top: 20px;
 }
 
 /* PERSONALIZACION GLOBAL */
@@ -80,7 +81,6 @@
 .swiper-button-prev { left:-8px; }
 /* Pagination */
 .swiper-pagination {
-  position: relative !important;
   margin-top: 40px;
   display: flex;
   justify-content: center;
@@ -102,6 +102,9 @@
 
 
 /* PAGINACIÓN PERSONALIZADA swiper-expert */
+.du-swiper-program .swiper-wrapper {
+  padding-bottom: 50px;
+}
 
 .du-swiper-expert .swiper-pagination {
   position: relative !important;

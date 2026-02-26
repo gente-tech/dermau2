@@ -8,7 +8,7 @@
       <section class="du-bar-menu">
         <ul class="du-bar-menu__list">
           <li class="du-bar-menu__item">
-            <a href="#" class="du-bar-menu__link">
+            <a href="#oferta-academica" class="du-bar-menu__link">
               <span class="du-bar-menu__icon">
                 <svg
                   width="20"
@@ -29,7 +29,7 @@
 
           <div class="du-bar-menu__divider"></div>
           <li class="du-bar-menu__item">
-            <a href="#" class="du-bar-menu__link">
+            <a href="#convenios-universitarios" class="du-bar-menu__link">
               <span class="du-bar-menu__icon">
                 <svg
                   width="25"
@@ -60,7 +60,7 @@
 
           <div class="du-bar-menu__divider"></div>
           <li class="du-bar-menu__item">
-            <a href="#" class="du-bar-menu__link">
+            <a href="#preguntas-frecuentes" class="du-bar-menu__link">
               <span class="du-bar-menu__icon">
                 <svg
                   width="23"
@@ -245,12 +245,10 @@
 
                 <div class="du-form-register__form-group">
                   <div class="du-form-phone-group">
-                    <select id="du-reg-country" name="du-reg-country" required>
-                      <option value="+57" selected>Co</option>
-                      <option value="+52">Mx</option>
-                      <option value="+54">Ar</option>
-                      <option value="+56">Ch</option>
-                    </select>
+                    <div class="select-country" id="select-country">
+                      <div class="selected" data-value=""></div>
+                      <div class="options"></div>
+                    </div>
                     <input
                       type="tel"
                       id="du-reg-phone"
@@ -425,7 +423,7 @@
         </div>
       </section>
 
-      <section class="du-oferta">
+      <section class="du-oferta"  id="oferta-academica">
         <div class="du-oferta__container">
           <div class="du-oferta__header">
             <h2 class="du-oferta__title">
@@ -558,7 +556,7 @@
         </div>
       </section>
 
-      <section class="du-agreements">
+      <section class="du-agreements"  id="convenios-universitarios">
         <div class="du-agreements__container">
           <div class="du-agreements__header">
             <h2 class="du-agreements__title">
@@ -700,7 +698,7 @@
         </div>
       </section>
 
-      <section class="du-faq">
+      <section class="du-faq"  id="preguntas-frecuentes">
         <div class="du-faq__container">
           <div class="du-faq__header">
             <h2 class="du-faq__title">Preguntas <span>frecuentes</span></h2>

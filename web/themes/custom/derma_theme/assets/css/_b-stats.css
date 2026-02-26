@@ -111,6 +111,11 @@
     width: 70px;
     height: 70px;
   }
+
+  .du-stats__container{
+        padding-block: 40px;
+        padding-inline: 20px;
+  }
 }
 
 @media (max-width: 992px) {

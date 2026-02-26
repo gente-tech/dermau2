@@ -56,6 +56,11 @@
 .du-btn-secondary span {
   color: var(--du-color-primary);
 }
+
+.du-testimonials__pagination {
+  bottom: -10px !important;
+}
+
 /* Responsive Móvil */
 @media (max-width: 992px) {
   .du-testimonials {
@@ -73,6 +78,9 @@
   .du-testimonials__prev {
     top: calc(50% - 140px);
   }
+
+  .du-testimonials__next{ right: 0 !important; }
+  .du-testimonials__prev { left: 0 !important; }
 }
 
 
