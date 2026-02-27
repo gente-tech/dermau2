@@ -11,6 +11,12 @@
 .du-footer-info__text {
     flex: 1;
     padding-inline: 4rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.du-footer-info__text > div {
+    max-width: 720px;
 }
 
 .du-footer-info__title {
@@ -59,6 +65,8 @@
     box-shadow: 0 10px 20px rgba(102, 219, 255, 0.3);
     transition: all 0.3s ease;
     white-space: nowrap;
+    min-width: 300px;
+    text-align: center;
 }
 
 .du-footer-info__link:hover {
@@ -103,5 +111,8 @@
     .du-footer-info__link {
         padding: 15px 30px;
         font-size: 14px;
+        bottom: 100px;
     }
+
+    .du-footer-info__text{ padding-inline: 20px;  }
 }

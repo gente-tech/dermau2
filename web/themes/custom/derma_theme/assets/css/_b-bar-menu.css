@@ -13,7 +13,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 1200px;
+  max-width: var(--du-max-width);
 }
 
 .du-bar-menu__item {

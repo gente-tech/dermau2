@@ -1,7 +1,7 @@
 /* --- SWIPER HERO STYLES --- */
 .du-hero-swiper {
   width: 100%;
-  min-height: 400px;
+  min-height: var(--du-max-width);
   position: relative;
 }
 
@@ -95,10 +95,11 @@
 
 /* Paginación Swiper Personalizada */
 .du-hero-swiper .swiper-pagination {
-  text-align: left !important;
-  padding-left: 5% !important;
-  bottom: 40px !important;
+  bottom: 30px !important;
   justify-content: flex-start;
+  max-width: var(--du-max-width);
+    margin: 0 auto;
+    position: relative;
 }
 
 .du-hero-swiper .swiper-pagination-bullet {

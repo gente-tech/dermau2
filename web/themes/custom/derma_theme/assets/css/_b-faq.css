@@ -79,7 +79,7 @@
   width: 100%;
   background: var(--du-color-secondary-dark);
   color: #fff;
-  padding: 18px 25px;
+  padding: 18px;
   border: none;
   border-radius: 8px;
   display: flex;
@@ -91,6 +91,14 @@
 }
 
 /* Icono Arrow en el trigger móvil */
+
+.du-faq__group-wrapper .svg-icon{
+  transition: 0.3s;
+}
+.du-faq__group-wrapper.is-open .svg-icon {
+  transform: rotate(-180deg);
+}
+
 .du-faq__arrow-icon {
   width: 10px;
   height: 10px;

@@ -66,6 +66,8 @@
 }
 
 .du-footer__nav-item-link {
+    text-align: left;
+    flex: 1 30%;
     color: #fff;
     text-decoration: none;
     font-size: 15px;
@@ -114,6 +116,9 @@
 
 /* --- RESPONSIVE --- */
 @media (max-width: 992px) {
+    
+    .du-footer { padding-block: 40px; }
+
     .du-footer__container {
         flex-direction: column;
         align-items: center;

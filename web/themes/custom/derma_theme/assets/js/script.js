@@ -243,6 +243,8 @@ document.addEventListener("DOMContentLoaded", () => {
 /*  Selector de País */
 function initCountrySelect(selectId, inputId, countryArr, baseUrl) {
   const selectContainer = document.getElementById(selectId);
+  if(!selectContainer) return;
+  
   const selected = selectContainer.querySelector('.selected');
   const optionsContainer = selectContainer.querySelector('.options');
   const telfInput = document.getElementById(inputId);

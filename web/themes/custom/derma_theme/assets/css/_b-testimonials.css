@@ -22,7 +22,7 @@
 
 .du-testimonials__slider-wrapper {
   position: relative;
-  max-width: 1200px;
+  max-width: var(--du-max-width);
   margin: 0 auto;
   padding: 0 50px;
 }
@@ -31,7 +31,7 @@
 /* Botón Final */
 .du-testimonials__actions {
   text-align: center;
-  margin-top: 35px;
+  margin-top: 50px;
 }
 
 .du-btn-secondary {
