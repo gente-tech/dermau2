@@ -1,0 +1,40 @@
+<section class="du-stats">
+  <div class="du-stats__container">
+
+    <div class="du-stats__header">
+      <h2 class="du-stats__title">
+        <span>{{ title_1 }}</span> {{ title_2 }}
+      </h2>
+
+      <p class="du-stats__subtitle">
+        {{ description }}
+      </p>
+    </div>
+
+    <div class="du-stats__grid">
+      {% for item in items %}
+        <div class="du-stats__card {% if loop.index is even %}du-stats__card--alt{% endif %}">
+
+          <div class="du-stats__icon-wrapper {% if loop.index is even %}du-stats__icon-wrapper--dark{% else %}du-stats__icon-wrapper--light{% endif %}">
+            
+            {% if item.logo %}
+              <img src="{{ item.logo }}" alt="" />
+            {% endif %}
+
+          </div>
+
+          <div class="du-stats__card-info">
+            <div class="du-stats__number">
+              {{ item.number }}
+            </div>
+            <div class="du-stats__label">
+              {{ item.text }}
+            </div>
+          </div>
+
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
