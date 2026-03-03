@@ -3,5 +3,4 @@ programas-filter:
     js/programas-filter.js: {}
   dependencies:
     - core/drupal
-    - core/jquery
     - core/once
