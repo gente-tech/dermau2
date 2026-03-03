@@ -14,9 +14,6 @@ use Drupal\file\Entity\File;
  */
 class ConveniosBlock extends BlockBase {
 
-  /**
-   * {@inheritdoc}
-   */
   public function defaultConfiguration() {
     return [
       'titulo_parte_1' => 'Convenios',
@@ -26,9 +23,6 @@ class ConveniosBlock extends BlockBase {
     ];
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function blockForm($form, FormStateInterface $form_state) {
 
     $form['titulo_parte_1'] = [
@@ -56,28 +50,22 @@ class ConveniosBlock extends BlockBase {
       '#title' => $this->t('Logos'),
       '#upload_location' => 'public://convenios/',
       '#multiple' => TRUE,
-      '#default_value' => $this->configuration['logos'] ?? [],
+      '#default_value' => $this->configuration['logos'],
       '#upload_validators' => [
         'file_validate_extensions' => ['png jpg jpeg svg webp'],
       ],
-      '#description' => $this->t('Puedes subir múltiples logos. Guarda el bloque después de subirlos.'),
     ];
 
     return $form;
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function blockSubmit($form, FormStateInterface $form_state) {
 
     $this->configuration['titulo_parte_1'] = $form_state->getValue('titulo_parte_1');
     $this->configuration['titulo_parte_2'] = $form_state->getValue('titulo_parte_2');
     $this->configuration['descripcion'] = $form_state->getValue('descripcion');
 
-    $fids = $form_state->getValue('logos') ?: [];
-
-    $this->configuration['logos'] = $fids;
+    $fids = array_filter($form_state->getValue('logos'));
 
     // Hacer permanentes los archivos
     foreach ($fids as $fid) {
@@ -86,18 +74,20 @@ class ConveniosBlock extends BlockBase {
         $file->save();
       }
     }
+
+    // Guardar solo enteros
+    $this->configuration['logos'] = array_map('intval', $fids);
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function build() {
 
     $items = [];
 
-    foreach ($this->configuration['logos'] ?? [] as $fid) {
+    if (!empty($this->configuration['logos'])) {
 
-      if ($file = File::load($fid)) {
+      $files = File::loadMultiple($this->configuration['logos']);
+
+      foreach ($files as $file) {
         $items[] = file_create_url($file->getFileUri());
       }
     }
@@ -108,11 +98,6 @@ class ConveniosBlock extends BlockBase {
       '#titulo_parte_2' => $this->configuration['titulo_parte_2'],
       '#descripcion' => $this->configuration['descripcion'],
       '#items' => $items,
-      '#attached' => [
-        'library' => [
-          'dermau_core/convenios-swiper',
-        ],
-      ],
       '#cache' => [
         'max-age' => 0,
       ],
