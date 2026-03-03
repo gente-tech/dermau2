@@ -28,9 +28,10 @@ function dermau_core_theme($existing, $type, $theme, $path) {
     ],
     'block_convenios' => [
       'variables' => [
-        'titulo' => NULL,
+        'titulo_parte_1' => NULL,
+        'titulo_parte_2' => NULL,
         'descripcion' => NULL,
-        'logos' => [],
+        'items' => [],
       ],
       'template' => 'block-convenios',
     ],
