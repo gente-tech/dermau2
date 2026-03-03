@@ -6,7 +6,7 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\node\Entity\Node;
 
 /**
- * Provides a Slider Block.
+ * Provides a Dermau Slider Block.
  *
  * @Block(
  *   id = "dermau_slider_block",
@@ -27,13 +27,26 @@ class SliderBlock extends BlockBase {
       ->accessCheck(TRUE);
 
     $nids = $query->execute();
-
     $sliders = [];
 
     if (!empty($nids)) {
       $nodes = Node::loadMultiple($nids);
 
       foreach ($nodes as $node) {
+
+        // Imagen (Image field directo)
+        $image_url = '';
+        $image_alt = '';
+
+        if (!$node->get('field_imagen')->isEmpty()) {
+          $file = $node->get('field_imagen')->entity;
+          if ($file) {
+            $image_url = \Drupal::service('file_url_generator')
+              ->generateAbsoluteString($file->getFileUri());
+
+            $image_alt = $node->get('field_imagen')->alt ?? '';
+          }
+        }
 
         $sliders[] = [
           'titulo_azul' => $node->get('field_titulo_azul')->value ?? '',
@@ -43,6 +56,10 @@ class SliderBlock extends BlockBase {
           'url_cta' => !$node->get('field_url_call_to_action')->isEmpty()
             ? $node->get('field_url_call_to_action')->first()->getUrl()->toString()
             : '',
+          'image' => [
+            'url' => $image_url,
+            'alt' => $image_alt,
+          ],
         ];
       }
     }
