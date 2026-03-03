@@ -4,3 +4,4 @@ programas-filter:
   dependencies:
     - core/drupal
     - core/jquery
+    - core/once
