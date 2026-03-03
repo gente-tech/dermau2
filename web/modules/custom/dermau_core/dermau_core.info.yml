@@ -1,0 +1,9 @@
+name: Dermau Core
+type: module
+description: Core functionality for Dermau site.
+package: Custom
+core_version_requirement: ^11
+dependencies:
+  - node
+  - block
+  - system
