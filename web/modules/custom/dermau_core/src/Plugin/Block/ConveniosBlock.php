@@ -4,6 +4,7 @@ namespace Drupal\dermau_core\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\file\Entity\File;
 
 /**
  * Provides a 'Convenios Universitarios' block.
@@ -17,18 +18,26 @@ class ConveniosBlock extends BlockBase {
 
   public function defaultConfiguration() {
     return [
-      'titulo' => 'Convenios Universitarios',
-      'descripcion' => 'Nuestros convenios fortalecen el aprendizaje y aseguran que cada programa cumpla con estándares educativos.',
-      'logos' => [],
+      'titulo_parte_1' => 'Convenios',
+      'titulo_parte_2' => 'Universitarios',
+      'descripcion' => '',
+      'items' => [],
     ];
   }
 
   public function blockForm($form, FormStateInterface $form_state) {
 
-    $form['titulo'] = [
+    $form['titulo_parte_1'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Título'),
-      '#default_value' => $this->configuration['titulo'],
+      '#title' => $this->t('Título parte resaltada'),
+      '#default_value' => $this->configuration['titulo_parte_1'],
+      '#required' => TRUE,
+    ];
+
+    $form['titulo_parte_2'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Título parte normal'),
+      '#default_value' => $this->configuration['titulo_parte_2'],
       '#required' => TRUE,
     ];
 
@@ -38,56 +47,98 @@ class ConveniosBlock extends BlockBase {
       '#default_value' => $this->configuration['descripcion'],
     ];
 
-    $form['logos'] = [
-      '#type' => 'managed_file',
+    $form['items'] = [
+      '#type' => 'details',
       '#title' => $this->t('Logos de convenios'),
-      '#upload_location' => 'public://convenios/',
-      '#multiple' => TRUE,
-      '#upload_validators' => [
-        'file_validate_extensions' => ['png jpg jpeg svg webp'],
-      ],
-      '#default_value' => $this->configuration['logos'],
+      '#open' => TRUE,
+      '#tree' => TRUE,
     ];
+
+    $items = $this->configuration['items'] ?? [];
+
+    for ($i = 0; $i < 10; $i++) {
+
+      $form['items'][$i]['logo'] = [
+        '#type' => 'managed_file',
+        '#title' => $this->t('Logo'),
+        '#upload_location' => 'public://convenios/',
+        '#default_value' => $items[$i]['logo'] ?? NULL,
+        '#upload_validators' => [
+          'file_validate_extensions' => ['png jpg jpeg svg webp'],
+        ],
+      ];
+
+      $form['items'][$i]['url'] = [
+        '#type' => 'url',
+        '#title' => $this->t('URL'),
+        '#default_value' => $items[$i]['url'] ?? '',
+      ];
+
+      $form['items'][$i]['alt'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Texto alternativo'),
+        '#default_value' => $items[$i]['alt'] ?? '',
+      ];
+    }
 
     return $form;
   }
 
   public function blockSubmit($form, FormStateInterface $form_state) {
 
-    $this->configuration['titulo'] = $form_state->getValue('titulo');
+    $this->configuration['titulo_parte_1'] = $form_state->getValue('titulo_parte_1');
+    $this->configuration['titulo_parte_2'] = $form_state->getValue('titulo_parte_2');
     $this->configuration['descripcion'] = $form_state->getValue('descripcion');
-    $this->configuration['logos'] = $form_state->getValue('logos');
 
-    // Marcar archivos como permanentes
-    if (!empty($this->configuration['logos'])) {
-      foreach ($this->configuration['logos'] as $fid) {
-        $file = \Drupal\file\Entity\File::load($fid);
+    $items = array_filter($form_state->getValue('items'), function ($item) {
+      return !empty($item['logo']);
+    });
+
+    foreach ($items as &$item) {
+      if (!empty($item['logo'][0])) {
+        $file = File::load($item['logo'][0]);
         if ($file) {
           $file->setPermanent();
           $file->save();
+          $item['logo_url'] = file_create_url($file->getFileUri());
         }
       }
     }
+
+    $this->configuration['items'] = $items;
   }
 
   public function build() {
 
-    $logos = [];
+    $items = [];
 
-    if (!empty($this->configuration['logos'])) {
-      foreach ($this->configuration['logos'] as $fid) {
-        $file = \Drupal\file\Entity\File::load($fid);
+    foreach ($this->configuration['items'] as $item) {
+
+      if (!empty($item['logo'][0])) {
+
+        $file = File::load($item['logo'][0]);
+
         if ($file) {
-          $logos[] = file_create_url($file->getFileUri());
+          $items[] = [
+            'logo' => file_create_url($file->getFileUri()),
+            'url' => $item['url'],
+            'alt' => $item['alt'],
+          ];
         }
       }
     }
 
     return [
       '#theme' => 'block_convenios',
-      '#titulo' => $this->configuration['titulo'],
+      '#titulo_parte_1' => $this->configuration['titulo_parte_1'],
+      '#titulo_parte_2' => $this->configuration['titulo_parte_2'],
       '#descripcion' => $this->configuration['descripcion'],
-      '#logos' => $logos,
+      '#items' => $items,
+      '#attached' => [
+        'library' => [
+          'dermau_core/convenios-swiper',
+        ],
+      ],
     ];
   }
 
