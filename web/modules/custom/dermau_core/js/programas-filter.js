@@ -1,55 +1,59 @@
-(function ($, Drupal) {
+(function (Drupal, once) {
 
   Drupal.behaviors.programasFilter = {
     attach: function (context) {
 
-      $('.filter-btn', context).once('programasFilter').on('click', function () {
+      once('programasFilter', context.querySelectorAll('.filter-btn')).forEach((element) => {
 
-        $('.filter-btn').removeClass('filter-btn--active');
-        $(this).addClass('filter-btn--active');
+        element.addEventListener('click', function () {
 
-        let tipo = $(this).data('tipo');
+          document.querySelectorAll('.filter-btn')
+            .forEach(btn => btn.classList.remove('filter-btn--active'));
 
-        $.ajax({
-          url: '/ajax/programas',
-          data: { tipo: tipo },
-          beforeSend: function() {
-            $('.du-oferta__grid').html('<div class="loading">Cargando...</div>');
-          },
-          success: function (response) {
+          this.classList.add('filter-btn--active');
 
-            let html = '';
+          let tipo = this.dataset.tipo;
 
-            response.forEach(function (programa) {
+          const grid = document.querySelector('.du-oferta__grid');
+          grid.innerHTML = '<div class="loading">Cargando...</div>';
 
-              html += `
-                <article class="du-card__diplomat">
-                  <div class="du-card__diplomat-image-container">
-                    <span class="du-card__diplomat-badge">${programa.tipo}</span>
-                    <img src="${programa.imagen}" alt="${programa.title}" class="du-card__diplomat-image"/>
-                  </div>
-                  <div class="du-card__diplomat-content">
-                    <h3 class="du-card__diplomat-title">${programa.title}</h3>
-                    <p class="du-card__diplomat-description">${programa.descripcion}</p>
-                    <div class="du-card__diplomat-info">
-                      <div class="du-card__diplomat-info-item">
-                        ${programa.duracion}
-                      </div>
-                      <div class="du-card__diplomat-info-item">
-                        ${programa.modulos} módulos
-                      </div>
+          fetch(`/ajax/programas?tipo=${tipo}`)
+            .then(response => response.json())
+            .then(data => {
+
+              let html = '';
+
+              data.forEach(programa => {
+
+                html += `
+                  <article class="du-card__diplomat">
+                    <div class="du-card__diplomat-image-container">
+                      <span class="du-card__diplomat-badge">${programa.tipo}</span>
+                      <img src="${programa.imagen}" alt="${programa.title}" class="du-card__diplomat-image"/>
                     </div>
-                    <a href="${programa.url}" class="du-card__diplomat-btn">
-                      Ver detalle
-                    </a>
-                  </div>
-                </article>
-              `;
+                    <div class="du-card__diplomat-content">
+                      <h3 class="du-card__diplomat-title">${programa.title}</h3>
+                      <p class="du-card__diplomat-description">${programa.descripcion}</p>
+                      <div class="du-card__diplomat-info">
+                        <div class="du-card__diplomat-info-item">
+                          ${programa.duracion}
+                        </div>
+                        <div class="du-card__diplomat-info-item">
+                          ${programa.modulos} módulos
+                        </div>
+                      </div>
+                      <a href="${programa.url}" class="du-card__diplomat-btn">
+                        Ver detalle
+                      </a>
+                    </div>
+                  </article>
+                `;
+              });
+
+              grid.innerHTML = html;
+
             });
 
-            $('.du-oferta__grid').html(html);
-
-          }
         });
 
       });
@@ -57,4 +61,4 @@
     }
   };
 
-})(jQuery, Drupal);
+})(Drupal, once);
