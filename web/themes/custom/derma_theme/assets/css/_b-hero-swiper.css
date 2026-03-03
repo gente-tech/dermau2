@@ -1,7 +1,7 @@
 /* --- SWIPER HERO STYLES --- */
 .du-hero-swiper {
   width: 100%;
-  min-height: var(--du-max-width);
+  
   position: relative;
 }
 
