@@ -1,0 +1,6 @@
+dermau_core.programas_ajax:
+  path: '/ajax/programas'
+  defaults:
+    _controller: '\Drupal\dermau_core\Controller\ProgramasAjaxController::loadProgramas'
+  requirements:
+    _permission: 'access content'
