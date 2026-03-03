@@ -1,0 +1,28 @@
+<div class="slider">
+
+  {% for slide in sliders %}
+    <div class="slide">
+
+      <h2>
+        <span class="azul">{{ slide.titulo_azul }}</span>
+        <span class="blanco">{{ slide.titulo_blanco }}</span>
+      </h2>
+
+      {% if slide.items_texto %}
+        <ul>
+          {% for item in slide.items_texto %}
+            <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      {% if slide.url_cta %}
+        <a href="{{ slide.url_cta }}" class="btn-cta">
+          {{ slide.texto_cta }}
+        </a>
+      {% endif %}
+
+    </div>
+  {% endfor %}
+
+</div>
