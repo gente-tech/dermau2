@@ -1,6 +1,15 @@
 <?php
 
 /**
- * @file
- * Core module for Dermau custom functionality.
+ * Implements hook_theme().
  */
+function dermau_core_theme($existing, $type, $theme, $path) {
+  return [
+    'dermau_slider_block' => [
+      'variables' => [
+        'sliders' => [],
+      ],
+      'template' => 'dermau-slider-block',
+    ],
+  ];
+}
