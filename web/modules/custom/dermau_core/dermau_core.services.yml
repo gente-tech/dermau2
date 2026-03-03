@@ -1,0 +1,3 @@
+services:
+  dermau_core.helper:
+    class: Drupal\dermau_core\Service\DermauHelper
