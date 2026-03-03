@@ -3,6 +3,12 @@
   {% for slide in sliders %}
     <div class="slide">
 
+      {% if slide.image.url %}
+        <div class="slide__image">
+          <img src="{{ slide.image.url }}" alt="{{ slide.image.alt|e }}" loading="lazy">
+        </div>
+      {% endif %}
+
       <h2>
         <span class="azul">{{ slide.titulo_azul }}</span>
         <span class="blanco">{{ slide.titulo_blanco }}</span>
