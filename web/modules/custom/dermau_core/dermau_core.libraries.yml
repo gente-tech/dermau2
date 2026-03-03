@@ -1,0 +1,6 @@
+programas-filter:
+  js:
+    js/programas-filter.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
