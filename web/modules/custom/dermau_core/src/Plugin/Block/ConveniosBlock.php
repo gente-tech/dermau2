@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\Entity\File;
 
 /**
- * Provides a 'Convenios Universitarios' block.
- *
  * @Block(
  *   id = "dermau_convenios_block",
  *   admin_label = @Translation("DermaU - Convenios Universitarios")
@@ -29,14 +27,14 @@ class ConveniosBlock extends BlockBase {
 
     $form['titulo_parte_1'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Título parte resaltada'),
+      '#title' => $this->t('Título resaltado'),
       '#default_value' => $this->configuration['titulo_parte_1'],
       '#required' => TRUE,
     ];
 
     $form['titulo_parte_2'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Título parte normal'),
+      '#title' => $this->t('Título normal'),
       '#default_value' => $this->configuration['titulo_parte_2'],
       '#required' => TRUE,
     ];
@@ -47,41 +45,66 @@ class ConveniosBlock extends BlockBase {
       '#default_value' => $this->configuration['descripcion'],
     ];
 
-    $form['items'] = [
-      '#type' => 'details',
-      '#title' => $this->t('Logos de convenios'),
-      '#open' => TRUE,
+    $items = $form_state->get('items_count');
+    if ($items === NULL) {
+      $items = count($this->configuration['items']) ?: 1;
+      $form_state->set('items_count', $items);
+    }
+
+    $form['items_wrapper'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Logos'),
+      '#prefix' => '<div id="items-wrapper">',
+      '#suffix' => '</div>',
       '#tree' => TRUE,
     ];
 
-    $items = $this->configuration['items'] ?? [];
+    for ($i = 0; $i < $items; $i++) {
 
-    for ($i = 0; $i < 10; $i++) {
-
-      $form['items'][$i]['logo'] = [
+      $form['items_wrapper'][$i]['logo'] = [
         '#type' => 'managed_file',
         '#title' => $this->t('Logo'),
         '#upload_location' => 'public://convenios/',
-        '#default_value' => $items[$i]['logo'] ?? NULL,
+        '#default_value' => $this->configuration['items'][$i]['logo'] ?? NULL,
         '#upload_validators' => [
           'file_validate_extensions' => ['png jpg jpeg svg webp'],
         ],
       ];
 
-      $form['items'][$i]['url'] = [
+      $form['items_wrapper'][$i]['url'] = [
         '#type' => 'url',
         '#title' => $this->t('URL'),
-        '#default_value' => $items[$i]['url'] ?? '',
+        '#default_value' => $this->configuration['items'][$i]['url'] ?? '',
       ];
 
-      $form['items'][$i]['alt'] = [
+      $form['items_wrapper'][$i]['alt'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Texto alternativo'),
-        '#default_value' => $items[$i]['alt'] ?? '',
+        '#default_value' => $this->configuration['items'][$i]['alt'] ?? '',
       ];
     }
 
+    $form['add_item'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Agregar otro logo'),
+      '#submit' => ['::addOne'],
+      '#ajax' => [
+        'callback' => '::addMoreCallback',
+        'wrapper' => 'items-wrapper',
+      ],
+    ];
+
     return $form;
+  }
+
+  public function addOne(array &$form, FormStateInterface $form_state) {
+    $count = $form_state->get('items_count');
+    $form_state->set('items_count', $count + 1);
+    $form_state->setRebuild();
+  }
+
+  public function addMoreCallback(array &$form, FormStateInterface $form_state) {
+    return $form['items_wrapper'];
   }
 
   public function blockSubmit($form, FormStateInterface $form_state) {
@@ -90,29 +113,36 @@ class ConveniosBlock extends BlockBase {
     $this->configuration['titulo_parte_2'] = $form_state->getValue('titulo_parte_2');
     $this->configuration['descripcion'] = $form_state->getValue('descripcion');
 
-    $items = array_filter($form_state->getValue('items'), function ($item) {
-      return !empty($item['logo']);
-    });
+    $items = $form_state->getValue('items_wrapper');
+    $clean_items = [];
 
-    foreach ($items as &$item) {
+    foreach ($items as $item) {
+
       if (!empty($item['logo'][0])) {
+
         $file = File::load($item['logo'][0]);
+
         if ($file) {
           $file->setPermanent();
           $file->save();
-          $item['logo_url'] = file_create_url($file->getFileUri());
+
+          $clean_items[] = [
+            'logo' => [$item['logo'][0]],
+            'url' => $item['url'],
+            'alt' => $item['alt'],
+          ];
         }
       }
     }
 
-    $this->configuration['items'] = $items;
+    $this->configuration['items'] = $clean_items;
   }
 
   public function build() {
 
     $items = [];
 
-    foreach ($this->configuration['items'] as $item) {
+    foreach ($this->configuration['items'] ?? [] as $item) {
 
       if (!empty($item['logo'][0])) {
 
