@@ -45,19 +45,56 @@ class ConveniosBlock extends BlockBase {
       '#default_value' => $this->configuration['descripcion'],
     ];
 
-    $form['logos'] = [
-      '#type' => 'managed_file',
+    // Número de logos
+    $logos_count = $form_state->get('logos_count');
+    if ($logos_count === NULL) {
+      $logos_count = count($this->configuration['logos']);
+      $logos_count = $logos_count > 0 ? $logos_count : 1;
+      $form_state->set('logos_count', $logos_count);
+    }
+
+    $form['logos_wrapper'] = [
+      '#type' => 'fieldset',
       '#title' => $this->t('Logos'),
-      '#upload_location' => 'public://convenios/',
-      '#multiple' => TRUE,
-      '#default_value' => $this->configuration['logos'],
-      '#upload_validators' => [
-        'file_validate_extensions' => ['png jpg jpeg svg webp'],
+      '#prefix' => '<div id="logos-wrapper">',
+      '#suffix' => '</div>',
+    ];
+
+    for ($i = 0; $i < $logos_count; $i++) {
+
+      $form['logos_wrapper']['logo_' . $i] = [
+        '#type' => 'managed_file',
+        '#title' => $this->t('Logo @n', ['@n' => $i + 1]),
+        '#upload_location' => 'public://convenios/',
+        '#default_value' => $this->configuration['logos'][$i] ?? [],
+        '#upload_validators' => [
+          'file_validate_extensions' => ['png jpg jpeg svg webp'],
+        ],
+      ];
+    }
+
+    $form['add_logo'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Agregar otro logo'),
+      '#submit' => ['::addLogo'],
+      '#ajax' => [
+        'callback' => '::addLogoCallback',
+        'wrapper' => 'logos-wrapper',
       ],
-      '#description' => $this->t('Puedes subir múltiples logos.'),
+      '#limit_validation_errors' => [],
     ];
 
     return $form;
+  }
+
+  public function addLogo(array &$form, FormStateInterface $form_state) {
+    $count = $form_state->get('logos_count');
+    $form_state->set('logos_count', $count + 1);
+    $form_state->setRebuild(TRUE);
+  }
+
+  public function addLogoCallback(array &$form, FormStateInterface $form_state) {
+    return $form['logos_wrapper'];
   }
 
   public function blockSubmit($form, FormStateInterface $form_state) {
@@ -66,30 +103,41 @@ class ConveniosBlock extends BlockBase {
     $this->configuration['titulo_parte_2'] = $form_state->getValue('titulo_parte_2');
     $this->configuration['descripcion'] = $form_state->getValue('descripcion');
 
-    $fids = $form_state->getValue('logos') ?: [];
+    $logos = [];
+    $logos_count = $form_state->get('logos_count');
 
-    $this->configuration['logos'] = $fids;
+    for ($i = 0; $i < $logos_count; $i++) {
 
-    // Hacer permanentes los archivos
-    foreach ($fids as $fid) {
-      $file = File::load($fid);
-      if ($file) {
-        $file->setPermanent();
-        $file->save();
+      $value = $form_state->getValue(['logos_wrapper', 'logo_' . $i]);
+
+      if (!empty($value[0])) {
+
+        $file = File::load($value[0]);
+
+        if ($file) {
+          $file->setPermanent();
+          $file->save();
+          $logos[] = [$value[0]];
+        }
       }
     }
+
+    $this->configuration['logos'] = $logos;
   }
 
   public function build() {
 
     $items = [];
 
-    foreach ($this->configuration['logos'] ?? [] as $fid) {
+    foreach ($this->configuration['logos'] ?? [] as $logo) {
 
-      $file = File::load($fid);
+      if (!empty($logo[0])) {
 
-      if ($file) {
-        $items[] = file_create_url($file->getFileUri());
+        $file = File::load($logo[0]);
+
+        if ($file) {
+          $items[] = file_create_url($file->getFileUri());
+        }
       }
     }
 
@@ -103,9 +151,6 @@ class ConveniosBlock extends BlockBase {
         'library' => [
           'dermau_core/convenios-swiper',
         ],
-      ],
-      '#cache' => [
-        'max-age' => 0,
       ],
     ];
   }
