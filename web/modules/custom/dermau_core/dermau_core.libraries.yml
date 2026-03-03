@@ -4,3 +4,9 @@ programas-filter:
   dependencies:
     - core/drupal
     - core/once
+
+convenios-swiper:
+  js:
+    js/convenios-swiper.js: {}
+  dependencies:
+    - core/drupal
