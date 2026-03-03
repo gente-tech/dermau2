@@ -16,11 +16,9 @@
     <div class="swiper swiper-container">
       <div class="swiper-wrapper">
 
-        {% for item in items %}
+        {% for logo in items %}
           <div class="swiper-slide du-agreements__slide">
-            <a href="{{ item.url }}" target="_blank" rel="noopener">
-              <img src="{{ item.logo }}" alt="{{ item.alt }}" loading="lazy">
-            </a>
+            <img src="{{ logo }}" alt="Convenio" loading="lazy">
           </div>
         {% endfor %}
 
@@ -29,7 +27,6 @@
       <div class="swiper-button-prev"></div>
       <div class="swiper-button-next"></div>
       <div class="swiper-pagination"></div>
-
     </div>
 
   </div>
