@@ -20,5 +20,11 @@ function dermau_core_theme($existing, $type, $theme, $path) {
       ],
       'template' => 'dermau-stats-block',
     ],
+    'dermau_programas_block' => [
+      'variables' => [
+        'terms' => [],
+      ],
+      'template' => 'dermau-programas-block',
+    ],
   ];
 }
