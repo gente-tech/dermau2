@@ -11,5 +11,14 @@ function dermau_core_theme($existing, $type, $theme, $path) {
       ],
       'template' => 'dermau-slider-block',
     ],
+    'dermau_stats_block' => [
+      'variables' => [
+        'title_1' => '',
+        'title_2' => '',
+        'description' => '',
+        'items' => [],
+      ],
+      'template' => 'dermau-stats-block',
+    ],
   ];
 }
