@@ -70,6 +70,7 @@ class ConveniosBlock extends BlockBase {
 
     $this->configuration['logos'] = $fids;
 
+    // Hacer permanentes los archivos
     foreach ($fids as $fid) {
       $file = File::load($fid);
       if ($file) {
@@ -88,11 +89,7 @@ class ConveniosBlock extends BlockBase {
       $file = File::load($fid);
 
       if ($file) {
-        $items[] = [
-          'logo' => file_create_url($file->getFileUri()),
-          'url' => '',
-          'alt' => '',
-        ];
+        $items[] = file_create_url($file->getFileUri());
       }
     }
 
