@@ -19,7 +19,7 @@ class ConveniosBlock extends BlockBase {
       'titulo_parte_1' => 'Convenios',
       'titulo_parte_2' => 'Universitarios',
       'descripcion' => '',
-      'items' => [],
+      'logos' => [],
     ];
   }
 
@@ -45,15 +45,15 @@ class ConveniosBlock extends BlockBase {
       '#default_value' => $this->configuration['descripcion'],
     ];
 
-    $form['items'] = [
+    $form['logos'] = [
       '#type' => 'managed_file',
       '#title' => $this->t('Logos'),
       '#upload_location' => 'public://convenios/',
       '#multiple' => TRUE,
+      '#default_value' => $this->configuration['logos'],
       '#upload_validators' => [
         'file_validate_extensions' => ['png jpg jpeg svg webp'],
       ],
-      '#default_value' => array_column($this->configuration['items'], 'fid'),
       '#description' => $this->t('Puedes subir múltiples logos.'),
     ];
 
@@ -66,37 +66,26 @@ class ConveniosBlock extends BlockBase {
     $this->configuration['titulo_parte_2'] = $form_state->getValue('titulo_parte_2');
     $this->configuration['descripcion'] = $form_state->getValue('descripcion');
 
-    $fids = $form_state->getValue('items');
-    $clean_items = [];
+    $fids = $form_state->getValue('logos') ?: [];
 
-    if (!empty($fids)) {
-      foreach ($fids as $fid) {
+    $this->configuration['logos'] = $fids;
 
-        $file = File::load($fid);
-
-        if ($file) {
-          $file->setPermanent();
-          $file->save();
-
-          $clean_items[] = [
-            'fid' => $fid,
-            'url' => '',
-            'alt' => '',
-          ];
-        }
+    foreach ($fids as $fid) {
+      $file = File::load($fid);
+      if ($file) {
+        $file->setPermanent();
+        $file->save();
       }
     }
-
-    $this->configuration['items'] = $clean_items;
   }
 
   public function build() {
 
     $items = [];
 
-    foreach ($this->configuration['items'] ?? [] as $item) {
+    foreach ($this->configuration['logos'] ?? [] as $fid) {
 
-      $file = File::load($item['fid']);
+      $file = File::load($fid);
 
       if ($file) {
         $items[] = [
@@ -117,6 +106,9 @@ class ConveniosBlock extends BlockBase {
         'library' => [
           'dermau_core/convenios-swiper',
         ],
+      ],
+      '#cache' => [
+        'max-age' => 0,
       ],
     ];
   }
