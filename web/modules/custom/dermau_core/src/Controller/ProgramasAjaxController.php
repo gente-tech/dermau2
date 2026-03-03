@@ -4,13 +4,20 @@ namespace Drupal\dermau_core\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Drupal\node\Entity\Node;
 
+/**
+ * Controller for AJAX Programas listing.
+ */
 class ProgramasAjaxController extends ControllerBase {
 
-  public function loadProgramas() {
+  /**
+   * Load programas via AJAX.
+   */
+  public function loadProgramas(Request $request) {
 
-    $tipo = \Drupal::request()->query->get('tipo');
+    $tipo = $request->query->get('tipo');
 
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'programa')
@@ -19,7 +26,8 @@ class ProgramasAjaxController extends ControllerBase {
       ->range(0, 20)
       ->accessCheck(TRUE);
 
-    if ($tipo && $tipo != 'all') {
+    // Filtro por tipo de programa (taxonomy)
+    if (!empty($tipo) && $tipo !== 'all') {
       $query->condition('field_tipo_de_programa.target_id', $tipo);
     }
 
@@ -30,25 +38,45 @@ class ProgramasAjaxController extends ControllerBase {
 
     foreach ($nodes as $node) {
 
-      $image = '';
+      // Imagen
+      $imagen = '';
       if (!$node->get('field_imagen_programa')->isEmpty()) {
         $file = $node->get('field_imagen_programa')->entity;
-        $image = \Drupal::service('file_url_generator')
-          ->generateAbsoluteString($file->getFileUri());
+        if ($file) {
+          $imagen = \Drupal::service('file_url_generator')
+            ->generateAbsoluteString($file->getFileUri());
+        }
       }
 
-      $tipo_term = '';
+      // Tipo programa (taxonomy label)
+      $tipo_label = '';
       if (!$node->get('field_tipo_de_programa')->isEmpty()) {
-        $tipo_term = $node->get('field_tipo_de_programa')->entity->label();
+        $term = $node->get('field_tipo_de_programa')->entity;
+        if ($term) {
+          $tipo_label = $term->label();
+        }
+      }
+
+      // Duración
+      $duracion = $node->get('field_duracion_programa')->value ?? '';
+
+      // Descripción corta
+      $descripcion = $node->get('field_descripcion_corta')->value ?? '';
+
+      // Conteo automático de módulos (Paragraphs)
+      $modulos_count = 0;
+      if ($node->hasField('field_modulos') && !$node->get('field_modulos')->isEmpty()) {
+        $modulos_count = count($node->get('field_modulos')->getValue());
       }
 
       $data[] = [
         'title' => $node->getTitle(),
         'url' => $node->toUrl()->toString(),
-        'descripcion' => $node->get('field_descripcion_corta')->value ?? '',
-        'duracion' => $node->get('field_duracion_programa')->value ?? '',
-        'tipo' => $tipo_term,
-        'imagen' => $image,
+        'descripcion' => $descripcion,
+        'duracion' => $duracion,
+        'tipo' => $tipo_label,
+        'imagen' => $imagen,
+        'modulos' => $modulos_count,
       ];
     }
 
