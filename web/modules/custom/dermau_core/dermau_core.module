@@ -26,5 +26,13 @@ function dermau_core_theme($existing, $type, $theme, $path) {
       ],
       'template' => 'dermau-programas-block',
     ],
+    'block_convenios' => [
+      'variables' => [
+        'titulo' => NULL,
+        'descripcion' => NULL,
+        'logos' => [],
+      ],
+      'template' => 'block-convenios',
+    ],
   ];
 }
