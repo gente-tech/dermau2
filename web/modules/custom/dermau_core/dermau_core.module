@@ -1,5 +1,4 @@
 <?php
-use Drupal\node\Entity\Node;
 
 /**
  * Implements hook_theme().
@@ -59,28 +58,37 @@ function dermau_core_theme($existing, $type, $theme, $path) {
   ];
 }
 
+use Drupal\node\Entity\Node;
 
 function dermau_core_preprocess_node(&$variables) {
 
+  if (!isset($variables['node'])) {
+    return;
+  }
+
   $node = $variables['node'];
 
-  if ($node->bundle() === 'programa') {
-
-    if ($node->hasField('field_tipo_de_programa') && !$node->get('field_tipo_de_programa')->isEmpty()) {
-
-      $tipo = $node->get('field_tipo_de_programa')->value;
-
-      $query = \Drupal::entityQuery('node')
-        ->condition('type', 'programa')
-        ->condition('status', 1)
-        ->condition('field_tipo_de_programa', $tipo)
-        ->condition('nid', $node->id(), '<>')
-        ->range(0, 10)
-        ->accessCheck(TRUE);
-
-      $nids = $query->execute();
-
-      $variables['otros_programas'] = Node::loadMultiple($nids);
-    }
+  if ($node->bundle() !== 'programa') {
+    return;
   }
+
+  if (!$node->hasField('field_tipo_de_programa') || $node->get('field_tipo_de_programa')->isEmpty()) {
+    return;
+  }
+
+  $tipo = $node->get('field_tipo_de_programa')->value;
+
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', 'programa')
+    ->condition('status', 1)
+    ->condition('field_tipo_de_programa', $tipo)
+    ->condition('nid', $node->id(), '<>')
+    ->range(0, 10)
+    ->accessCheck(TRUE);
+
+  $nids = $query->execute();
+
+  $variables['otros_programas'] = Node::loadMultiple($nids);
+
 }
+
