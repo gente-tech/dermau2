@@ -10,3 +10,9 @@ convenios-swiper:
     js/convenios-swiper.js: {}
   dependencies:
     - core/drupal
+
+testimonios-swiper:
+  js:
+    js/testimonios-swiper.js: {}
+  dependencies:
+    - core/drupal
