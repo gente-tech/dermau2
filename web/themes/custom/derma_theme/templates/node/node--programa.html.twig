@@ -470,42 +470,41 @@
             <div class="swiper-wrapper" id="card__expert">
 
 {% for docente in node.field_docentes %}
-
 {% set d = docente.entity %}
 
 <div class="swiper-slide">
 
-<div class="du-card-expert">
+  <div class="du-expert-card">
 
-<h3 class="du-card-expert__name">
-{{ d.label }}
-</h3>
+    <div class="du-expert-card__image">
+      {% if d.field_foto_docente.entity %}
+        <img
+          src="{{ file_url(d.field_foto_docente.entity.fileuri) }}"
+          alt="{{ d.label }}">
+      {% endif %}
+    </div>
 
-{% if d.field_especialidad.value %}
-<p class="du-card-expert__specialty">
-{{ d.field_especialidad.value }}
-</p>
-{% endif %}
+    <div class="du-expert-card__content">
 
-{% if d.field_perfil_profesional.value %}
-<p class="du-card-expert__description">
-{{ d.field_perfil_profesional.value }}
-</p>
-{% endif %}
+      <h3 class="du-expert-card__name">
+        {{ d.label }}
+      </h3>
 
-{% if d.field_ciudad.value %}
-<p class="du-card-expert__city">
-{{ d.field_ciudad.value }}
-</p>
-{% endif %}
+      {% if d.field_especialidad.value %}
+      <p class="du-expert-card__specialty">
+        {{ d.field_especialidad.value }}
+      </p>
+      {% endif %}
 
-{% if d.field_pagina_web.value %}
-<a href="{{ d.field_pagina_web.value }}" target="_blank">
-Ver perfil
-</a>
-{% endif %}
+      {% if d.field_ciudad.value %}
+      <p class="du-expert-card__city">
+        {{ d.field_ciudad.value }}
+      </p>
+      {% endif %}
 
-</div>
+    </div>
+
+  </div>
 
 </div>
 
