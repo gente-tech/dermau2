@@ -65,7 +65,7 @@ function dermau_core_preprocess_node(&$variables) {
 
   if ($node->bundle() === 'programa') {
 
-    $tipo = $node->get('field_tipo_programa')->value ?? NULL;
+    $tipo = $node->get('field_tipo_de_programa')->value ?? NULL;
 
     if ($tipo) {
 
