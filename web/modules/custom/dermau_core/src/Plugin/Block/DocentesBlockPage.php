@@ -34,41 +34,32 @@ class DocentesBlockPage extends BlockBase {
 
         $imagen = '';
 
-        if (!$node->get('field_imagen_docente')->isEmpty()) {
-          $file = $node->get('field_imagen_docente')->entity;
+        if (!$node->get('field_foto_docente')->isEmpty()) {
+
+          $file = $node->get('field_foto_docente')->entity;
 
           $imagen = \Drupal::service('file_url_generator')
             ->generateAbsoluteString($file->getFileUri());
         }
 
-        // Rol
-        $rol = '';
-        if (!$node->get('field_rol')->isEmpty()) {
-          $rol = $node->get('field_rol')->value;
-        }
-
-        // Universidad
-        $universidad = '';
-        if (!$node->get('field_universidad')->isEmpty()) {
-          $universidad = $node->get('field_universidad')->entity->label();
-        }
-
         // Programas
         $programas = [];
 
-        if (!$node->get('field_programas')->isEmpty()) {
-          foreach ($node->get('field_programas')->referencedEntities() as $programa) {
+        if (!$node->get('field_programas_vinculados')->isEmpty()) {
+
+          foreach ($node->get('field_programas_vinculados')->referencedEntities() as $programa) {
             $programas[] = $programa->label();
           }
+
         }
 
         $docentes[] = [
           'id' => $node->id(),
           'nombre' => $node->getTitle(),
-          'rol' => $rol,
-          'universidad' => $universidad,
+          'rol' => $node->get('field_especialidad')->value ?? '',
+          'universidad' => $node->get('field_ciudad')->value ?? '',
+          'descripcion' => $node->get('field_perfil_profesional')->value ?? '',
           'programas' => $programas,
-          'descripcion' => $node->get('field_descripcion')->value ?? '',
           'imagen' => $imagen,
           'url' => $node->toUrl()->toString(),
         ];
@@ -81,7 +72,7 @@ class DocentesBlockPage extends BlockBase {
       '#theme' => 'docentes_block_page',
       '#docentes' => $docentes,
       '#cache' => [
-        'max-age' => 0,
+        'tags' => ['node_list:docente'],
       ],
     ];
 
