@@ -135,3 +135,17 @@
   }
 
 }
+
+
+
+
+.du-form-register .error{
+    border: 1px solid #FF3D74;
+    background: #FFF5F8;
+}
+
+
+.du-form-register .success{
+    border: 1px solid #00C777;
+    background: #EAFFF7;
+}

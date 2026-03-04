@@ -3,7 +3,13 @@
 }
 
 .du-accordion-block__container {
+    max-width: var(--du-max-width);
+    margin: 0 auto;
+}
+
+.du-accordion-block[data-variant="left"] .du-accordion-block__container {
     max-width: var(--du-max-width-left);
+    margin:0;
 }
 
 .du-accordion-block__items {
@@ -71,6 +77,7 @@
 
 /* Ajuste móvil */
 @media (max-width: 992px) {
+    .du-accordion-block { padding: 25px; }
     .du-accordion-block__header { padding: 15px 20px; }
     .du-accordion-block__body { padding: 0 20px 20px 20px; }
     .du-accordion-block__container { max-width: 100%; }

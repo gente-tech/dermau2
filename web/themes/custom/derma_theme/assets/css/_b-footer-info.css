@@ -13,6 +13,7 @@
     padding-inline: 4rem;
     display: flex;
     justify-content: flex-end;
+    flex-direction: column;
 }
 
 .du-footer-info__text > div {

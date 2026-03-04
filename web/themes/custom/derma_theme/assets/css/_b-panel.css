@@ -3,7 +3,13 @@
 }
 
 .du-panel-block__container {
+    max-width: var(--du-max-width);
+    margin: 0 auto;
+}
+
+.du-panel-block[data-variant="left"] .du-panel-block__container {
     max-width: var(--du-max-width-left);
+    margin:0;
 }
 
 .du-panel-block__wrapper {}
@@ -128,6 +134,7 @@
 
 /* Responsive */
 @media (max-width: 992px) {
+    .du-panel-block { padding: 25px; }
     .du-panel-block__inner { padding: 10px 20px 25px 20px; }
     .du-panel-block__number { width: 35px; height: 35px; font-size: 16px; }
     .du-panel-block__container { max-width: 100%; }
