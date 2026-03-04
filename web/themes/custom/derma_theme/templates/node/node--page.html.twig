@@ -34,6 +34,7 @@
   </div>
 
 </section>
+{{ node.body.value|raw }}
 {% if path('<current>') == '/programas' %}
   {{ drupal_block('programas_block_page') }}
 {% endif %}
