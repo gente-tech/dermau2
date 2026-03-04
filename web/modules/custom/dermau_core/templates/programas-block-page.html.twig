@@ -1,0 +1,54 @@
+<section class="du-programs">
+
+<div class="du-programs__grid">
+
+{% for programa in programas %}
+
+<div class="du-card__diplomat">
+
+<div class="du-card__diplomat-image-container">
+
+{% if programa.field_tipo_de_programa.value %}
+<span class="du-card__diplomat-badge">
+{{ programa.field_tipo_de_programa.value }}
+</span>
+{% endif %}
+
+{% if programa.field_imagen_programa.entity %}
+<img
+src="{{ file_url(programa.field_imagen_programa.entity.fileuri) }}"
+alt="{{ programa.label }}"
+class="du-card__diplomat-image"
+/>
+{% endif %}
+
+</div>
+
+<div class="du-card__diplomat-content">
+
+<h3 class="du-card__diplomat-title">
+{{ programa.label }}
+</h3>
+
+{% if programa.body.value %}
+<p class="du-card__diplomat-text">
+{{ programa.body.value|striptags|slice(0,120) }}...
+</p>
+{% endif %}
+
+<a
+href="{{ path('entity.node.canonical', {'node': programa.id}) }}"
+class="du-card__diplomat-link"
+>
+Ver detalle
+</a>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</section>
