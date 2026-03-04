@@ -1,0 +1,48 @@
+<section class="du-faq" id="preguntas-frecuentes">
+  <div class="du-faq__container">
+
+    <div class="du-faq__header">
+      <h2 class="du-faq__title">
+        {{ titulo_parte_1 }} <span>{{ titulo_parte_2 }}</span>
+      </h2>
+      <p class="du-faq__detail">
+        {{ descripcion }}
+      </p>
+    </div>
+
+    <div class="du-faq__tabs-desktop">
+      {% for categoria in categorias %}
+        <button class="du-faq__tab-btn {{ loop.first ? 'active' : '' }}" data-tab="{{ categoria.id }}">
+          {{ categoria.nombre }}
+        </button>
+      {% endfor %}
+    </div>
+
+    <div class="du-faq__main-content">
+      {% for categoria in categorias %}
+        <div class="du-faq__group-wrapper {{ loop.first ? 'active' : '' }}" id="{{ categoria.id }}">
+
+          <button class="du-faq__mobile-trigger">
+            {{ categoria.nombre }}
+          </button>
+
+          <div class="du-faq__accordion-container">
+            {% for item in categoria.preguntas %}
+              <div class="du-accordion-item">
+                <button class="du-accordion-header">
+                  {{ item.pregunta }}
+                  <span class="du-icon-trigger__plus"></span>
+                </button>
+                <div class="du-accordion-body">
+                  <p>{{ item.respuesta }}</p>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
