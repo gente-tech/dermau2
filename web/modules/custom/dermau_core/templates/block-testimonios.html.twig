@@ -1,0 +1,66 @@
+<section class="du-testimonials">
+  <div class="du-testimonials__container">
+
+    <h2 class="du-testimonials__title">
+      {{ titulo_parte_1 }}
+      <span class="du-testimonials__title--highlight">
+        {{ titulo_parte_2 }}
+      </span>
+    </h2>
+
+    <div class="du-testimonials__slider-wrapper">
+      <div class="swiper du-testimonials__swiper">
+        <div class="swiper-wrapper">
+
+          {% for item in items %}
+            <div class="swiper-slide">
+              <article class="du-card__testimonial">
+
+                <div class="du-card__testimonial-image-box">
+                  <img
+                    src="{{ item.foto }}"
+                    alt="{{ item.nombre }}"
+                    class="du-card__testimonial-img"
+                  />
+                </div>
+
+                <div class="du-card__testimonial-content">
+                  <span class="du-card__testimonial-quote du-card__testimonial-quote--open">“</span>
+
+                  <p class="du-card__testimonial-text">
+                    {{ item.testimonio }}
+                  </p>
+
+                  <span class="du-card__testimonial-quote du-card__testimonial-quote--close">”</span>
+
+                  <div class="du-card__testimonial-author">
+                    <h4 class="du-card__testimonial-name">
+                      {{ item.nombre }}
+                    </h4>
+                    <p class="du-card__testimonial-role">
+                      {{ item.cargo }}
+                    </p>
+                  </div>
+
+                </div>
+              </article>
+            </div>
+          {% endfor %}
+
+        </div>
+      </div>
+
+      <div class="swiper-button-prev du-testimonials__prev"></div>
+      <div class="swiper-button-next du-testimonials__next"></div>
+      <div class="swiper-pagination du-testimonials__pagination"></div>
+    </div>
+
+    <div class="du-testimonials__actions">
+      <a href="{{ url_boton }}" class="du-btn-secondary">
+        {{ texto_boton }}
+        <span>{{ texto_boton_highlight }}</span>
+      </a>
+    </div>
+
+  </div>
+</section>
