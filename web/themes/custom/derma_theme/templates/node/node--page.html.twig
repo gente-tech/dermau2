@@ -34,4 +34,6 @@
   </div>
 
 </section>
-{{ drupal_block('programas_block_page') }}
+{% if url('<current>').toString == '/programas' %}
+  {{ drupal_block('programas_block_page') }}
+{% endif %}
