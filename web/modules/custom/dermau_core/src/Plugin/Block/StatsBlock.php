@@ -5,6 +5,8 @@ namespace Drupal\dermau_core\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\Entity\File;
+use Drupal\Core\Path\CurrentPathStack;
+use Drupal\Core\Path\AliasManagerInterface;
 
 /**
  * Provides a Dermau Stats Block.
@@ -99,35 +101,45 @@ class StatsBlock extends BlockBase {
 
   public function build() {
 
-    $items = [];
+  // Detectar la ruta actual.
+  $current_path = \Drupal::service('path.current')->getPath();
+  $alias = \Drupal::service('path_alias.manager')->getAliasByPath($current_path);
 
-    foreach ($this->configuration['items'] as $item) {
+  // Si estamos en /nosotros y el bloque se intenta renderizar automáticamente,
+  // no devolver nada (lo imprimiremos manualmente desde Twig).
+  if ($alias == '/nosotros') {
+    return [];
+  }
 
-      $logo_url = '';
+  $items = [];
 
-      if (!empty($item['logo'][0])) {
-        $file = File::load($item['logo'][0]);
-        if ($file) {
-          $logo_url = \Drupal::service('file_url_generator')
-            ->generateAbsoluteString($file->getFileUri());
-        }
+  foreach ($this->configuration['items'] as $item) {
+
+    $logo_url = '';
+
+    if (!empty($item['logo'][0])) {
+      $file = File::load($item['logo'][0]);
+      if ($file) {
+        $logo_url = \Drupal::service('file_url_generator')
+          ->generateAbsoluteString($file->getFileUri());
       }
-
-      $items[] = [
-        'logo' => $logo_url,
-        'number' => $item['number'] ?? '',
-        'text' => $item['text'] ?? '',
-      ];
     }
 
-    return [
-      '#theme' => 'dermau_stats_block',
-      '#title_1' => $this->configuration['title_1'],
-      '#title_2' => $this->configuration['title_2'],
-      '#description' => $this->configuration['description'],
-      '#items' => $items,
-      '#cache' => ['max-age' => 0],
+    $items[] = [
+      'logo' => $logo_url,
+      'number' => $item['number'] ?? '',
+      'text' => $item['text'] ?? '',
     ];
   }
+
+  return [
+    '#theme' => 'dermau_stats_block',
+    '#title_1' => $this->configuration['title_1'],
+    '#title_2' => $this->configuration['title_2'],
+    '#description' => $this->configuration['description'],
+    '#items' => $items,
+    '#cache' => ['max-age' => 0],
+  ];
+}
 
 }
