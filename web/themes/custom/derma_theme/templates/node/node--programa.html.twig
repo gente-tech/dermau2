@@ -468,8 +468,48 @@
 
           <div class="swiper">
             <div class="swiper-wrapper" id="card__expert">
-            
-            </div>
+
+{% for docente in docentes_programa %}
+
+<div class="swiper-slide">
+
+<div class="du-card-expert">
+
+<div class="du-card-expert__content">
+
+<h3 class="du-card-expert__name">
+{{ docente.label }}
+</h3>
+
+<p class="du-card-expert__specialty">
+{{ docente.field_especialidad.value }}
+</p>
+
+<p class="du-card-expert__description">
+{{ docente.field_perfil_profesional.value }}
+</p>
+
+{% if docente.field_ciudad.value %}
+<p class="du-card-expert__city">
+{{ docente.field_ciudad.value }}
+</p>
+{% endif %}
+
+{% if docente.field_pagina_web.value %}
+<a href="{{ docente.field_pagina_web.value }}" target="_blank">
+Ver perfil
+</a>
+{% endif %}
+
+</div>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
 
             <div class="swiper-button-prev"></div>
             <div class="swiper-button-next"></div>
