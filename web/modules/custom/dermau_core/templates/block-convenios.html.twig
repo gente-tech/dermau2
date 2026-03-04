@@ -1,24 +1,14 @@
 <section class="du-agreements" id="convenios-universitarios">
   <div class="du-agreements__container">
 
-    <div class="du-agreements__header">
-      <h2 class="du-agreements__title">
-        <span>{{ titulo_parte_1 }}</span> {{ titulo_parte_2 }}
-      </h2>
-
-      {% if descripcion %}
-        <p class="du-agreements__subtitle">
-          {{ descripcion }}
-        </p>
-      {% endif %}
-    </div>
-
     <div class="swiper swiper-container">
       <div class="swiper-wrapper">
 
-        {% for logo in items %}
+        {% for item in items %}
           <div class="swiper-slide du-agreements__slide">
-            <img src="{{ logo }}" alt="Convenio" loading="lazy">
+            <a href="{{ item.url }}" target="_blank" rel="noopener">
+              <img src="{{ item.logo }}" alt="{{ item.title }}">
+            </a>
           </div>
         {% endfor %}
 
@@ -27,6 +17,7 @@
       <div class="swiper-button-prev"></div>
       <div class="swiper-button-next"></div>
       <div class="swiper-pagination"></div>
+
     </div>
 
   </div>
