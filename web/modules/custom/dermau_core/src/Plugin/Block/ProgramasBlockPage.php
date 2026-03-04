@@ -27,12 +27,11 @@ class ProgramasBlockPage extends BlockBase {
     $programas = Node::loadMultiple($nids);
 
     return [
-      '#theme' => 'programas_block_page',
-      '#programas' => $programas,
-      '#cache' => [
-        'max-age' => 0,
-      ],
-    ];
+  '#theme' => 'programas_block_page',
+  '#programas' => $programas,
+  '#universidades' => $universidades,
+  '#tipos_programa' => $tipos_programa,
+];
   }
 
 }
