@@ -1,4 +1,5 @@
 <?php
+use Drupal\node\Entity\Node;
 
 /**
  * Implements hook_theme().
@@ -56,4 +57,28 @@ function dermau_core_theme($existing, $type, $theme, $path) {
       'template' => 'block-faq',
     ],
   ];
+}
+
+function dermau_core_preprocess_node(&$variables) {
+
+  $node = $variables['node'];
+
+  if ($node->bundle() === 'programa') {
+
+    $tipo = $node->get('field_tipo_programa')->value ?? NULL;
+
+    if ($tipo) {
+
+      $query = \Drupal::entityQuery('node')
+        ->condition('type', 'programa')
+        ->condition('status', 1)
+        ->condition('field_tipo_programa', $tipo)
+        ->condition('nid', $node->id(), '<>')
+        ->range(0, 10);
+
+      $nids = $query->execute();
+
+      $variables['otros_programas'] = Node::loadMultiple($nids);
+    }
+  }
 }
