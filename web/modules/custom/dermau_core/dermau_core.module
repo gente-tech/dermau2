@@ -62,7 +62,7 @@ use Drupal\node\Entity\Node;
 
 function dermau_core_preprocess_node(&$variables) {
 
-  if (!isset($variables['node'])) {
+  if (empty($variables['node'])) {
     return;
   }
 
@@ -81,14 +81,19 @@ function dermau_core_preprocess_node(&$variables) {
   $query = \Drupal::entityQuery('node')
     ->condition('type', 'programa')
     ->condition('status', 1)
-    ->condition('field_tipo_de_programa', $tipo)
+    ->condition('field_tipo_de_programa.value', $tipo)
     ->condition('nid', $node->id(), '<>')
-    ->range(0, 10)
+    ->range(0, 6)
     ->accessCheck(TRUE);
 
   $nids = $query->execute();
 
-  $variables['otros_programas'] = Node::loadMultiple($nids);
+  if (!empty($nids)) {
+    $variables['otros_programas'] = Node::loadMultiple($nids);
+  }
+  else {
+    $variables['otros_programas'] = [];
+  }
 
 }
 
