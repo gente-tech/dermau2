@@ -1,17 +1,55 @@
-{#
-Template para tipo de contenido Programa
-#}
+<section class="du-bar-menu">
+  <ul class="du-bar-menu__list">
+
+    <li class="du-bar-menu__item">
+      <a href="#plan-estudios" class="du-bar-menu__link">
+        <span class="du-bar-menu__icon">
+          <!-- SVG ORIGINAL -->
+        </span>
+        <span class="du-bar-menu__text">Plan de estudio</span>
+      </a>
+    </li>
+
+    <div class="du-bar-menu__divider"></div>
+
+    <li class="du-bar-menu__item">
+      <a href="#docentes" class="du-bar-menu__link">
+        <span class="du-bar-menu__icon">
+          <!-- SVG ORIGINAL -->
+        </span>
+        <span class="du-bar-menu__text">Docentes</span>
+      </a>
+    </li>
+
+    <div class="du-bar-menu__divider"></div>
+
+    <li class="du-bar-menu__item">
+      <a href="/programas" class="du-bar-menu__link">
+        <span class="du-bar-menu__icon">
+          <!-- SVG ORIGINAL -->
+        </span>
+        <span class="du-bar-menu__text">+ Programas</span>
+      </a>
+    </li>
+
+  </ul>
+</section>
+
+
 
 <section class="du-hero">
+
   <div class="du-hero__container">
 
-    <div class="du-hero__bg"
+    <div
+      class="du-hero__bg"
       style="background-image:url('{{ file_url(node.field_imagen_programa.entity.fileuri) }}')">
     </div>
 
     <div class="du-hero__overlay"></div>
 
     <div class="du-hero__wrapper">
+
       <div class="du-hero__content">
 
         <h1 class="du-hero__title">
@@ -23,75 +61,35 @@ Template para tipo de contenido Programa
         </div>
 
         <div class="du-hero__actions">
+
           <span class="du-program-duration">
-            Duración: {{ node.field_duracion_programa.value }}
+            {{ node.field_duracion_programa.value }}
           </span>
+
         </div>
 
       </div>
+
     </div>
 
   </div>
 
-  <div class="du-form-register">
-    <div class="du-form-register__container">
-      <h2 class="du-form-register__subtitle">Solicita más información</h2>
 
-      <form class="du-form-register__form">
+  <div class="du-cost-box">
 
-        <div class="du-form-register__form-group-container">
+    <h2 class="du-cost-box__title">Inversión</h2>
 
-          <div class="du-form-register__form-group">
+    <div class="du-cost-box__content">
+      <p class="du-cost-box__subtitle">Precio Regular</p>
 
-            <input type="text"
-              placeholder="Nombre"
-              class="du-form-input" />
-
-            <input type="text"
-              placeholder="Apellido"
-              class="du-form-input" />
-
-          </div>
-
-          <div class="du-form-register__form-group">
-
-            <input type="tel"
-              placeholder="Teléfono"
-              class="du-form-input" />
-
-            <input type="email"
-              placeholder="Email"
-              class="du-form-input" />
-
-          </div>
-
-        </div>
-
-        <button class="du-btn du-btn--primary">
-          Contáctame
-        </button>
-
-      </form>
-    </div>
-
-    <div class="du-cost-box">
-
-      <h2 class="du-cost-box__title">
-        Inversión
-      </h2>
-
-      <div class="du-cost-box__content">
-        <p class="du-cost-box__subtitle">
-          Precio Regular
-        </p>
-
-        <p class="du-cost-box__price">
-          {{ node.field_inversion_precio_regular.value }}
-        </p>
-      </div>
+      <p class="du-cost-box__price">
+        {{ node.field_inversion_precio_regular.value }}
+      </p>
 
     </div>
+
   </div>
+
 </section>
 
 
@@ -106,6 +104,7 @@ Template para tipo de contenido Programa
 
         <iframe
           src="https://www.youtube.com/embed/{{ node.field_id_video_youtube.value }}"
+          frameborder="0"
           allowfullscreen>
         </iframe>
 
@@ -119,9 +118,9 @@ Template para tipo de contenido Programa
         <span>Descripción</span> General
       </h2>
 
-      <div class="du-media-block__description">
-        {{ content.field_descripcion_general }}
-      </div>
+      <p class="du-media-block__description">
+        {{ node.field_descripcion_general.value }}
+      </p>
 
     </div>
 
@@ -141,37 +140,72 @@ Template para tipo de contenido Programa
       <div class="du-accordion-block__item">
 
         <button class="du-accordion-block__header">
-          <h3>Objetivos de aprendizaje</h3>
+
+          <div class="du-accordion-block__title-group">
+            <!-- SVG ORIGINAL -->
+            <h3>Objetivos de aprendizaje</h3>
+          </div>
+
+          <span class="du-icon-trigger__plus"></span>
+
         </button>
 
         <div class="du-accordion-block__body">
-          {{ content.field_objetivos_de_aprendizaje }}
+
+          <p>
+            {{ node.field_objetivos_de_aprendizaje.value }}
+          </p>
+
         </div>
 
       </div>
 
 
+
       <div class="du-accordion-block__item">
 
         <button class="du-accordion-block__header">
-          <h3>Público objetivo</h3>
+
+          <div class="du-accordion-block__title-group">
+            <!-- SVG ORIGINAL -->
+            <h3>Público objetivo</h3>
+          </div>
+
+          <span class="du-icon-trigger__plus"></span>
+
         </button>
 
         <div class="du-accordion-block__body">
-          {{ content.field_publico_objetivo }}
+
+          <p>
+            {{ node.field_publico_objetivo.value }}
+          </p>
+
         </div>
 
       </div>
 
 
+
       <div class="du-accordion-block__item">
 
         <button class="du-accordion-block__header">
-          <h3>Requisitos</h3>
+
+          <div class="du-accordion-block__title-group">
+            <!-- SVG ORIGINAL -->
+            <h3>Requisitos</h3>
+          </div>
+
+          <span class="du-icon-trigger__plus"></span>
+
         </button>
 
         <div class="du-accordion-block__body">
-          {{ content.field_requisitos }}
+
+          <p>
+            {{ node.field_requisitos.value }}
+          </p>
+
         </div>
 
       </div>
@@ -185,15 +219,13 @@ Template para tipo de contenido Programa
 
 
 
-<section class="du-panel-block">
+<section id="plan-estudios" class="du-panel-block">
 
   <div class="du-panel-block__container">
 
     <div class="du-panel-block__header">
 
-      <h2>
-        <span>Plan</span> de estudios
-      </h2>
+      <h2><span>Plan</span> de estudios</h2>
 
       {% if node.field_plan_de_estudios.entity %}
       <a
@@ -224,7 +256,7 @@ Template para tipo de contenido Programa
     </h2>
 
     <p class="du-footer-info__description">
-      Únete a más profesionales que han transformado su práctica clínica con DermaU.
+      Únete a los profesionales que han transformado su práctica clínica con DermaU.
     </p>
 
   </div>
