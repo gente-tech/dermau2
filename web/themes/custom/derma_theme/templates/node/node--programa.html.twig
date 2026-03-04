@@ -563,8 +563,10 @@
 <div class="du-card__diplomat-image-container">
 
   <span class="du-card__diplomat-badge">
-    {{ programa.field_tipo_de_programa|render|striptags|capitalize }}
-  </span>
+{% if programa.field_tipo_de_programa.entity %}
+  {{ programa.field_tipo_de_programa.entity.label|capitalize }}
+{% endif %}
+</span>
 
   {% if programa.field_imagen_programa.entity %}
     <img
