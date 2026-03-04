@@ -4,7 +4,6 @@ namespace Drupal\dermau_core\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\node\Entity\Node;
-use Drupal\Core\Url;
 
 /**
  * @Block(
@@ -30,18 +29,20 @@ class ConveniosBlock extends BlockBase {
 
       $nodes = Node::loadMultiple($nids);
 
+      $file_url_generator = \Drupal::service('file_url_generator');
+
       foreach ($nodes as $node) {
 
-        if (!$node->hasField('field_logo') || $node->get('field_logo')->isEmpty()) {
+        if ($node->get('field_logo')->isEmpty()) {
           continue;
         }
 
         $image = $node->get('field_logo')->entity;
-        $image_url = file_create_url($image->getFileUri());
+        $image_url = $file_url_generator->generateAbsoluteString($image->getFileUri());
 
         $link_url = '';
 
-        if ($node->hasField('field_link') && !$node->get('field_link')->isEmpty()) {
+        if (!$node->get('field_link')->isEmpty()) {
           $link_url = $node->get('field_link')->uri;
         }
 
@@ -56,11 +57,6 @@ class ConveniosBlock extends BlockBase {
     return [
       '#theme' => 'block_convenios',
       '#items' => $items,
-      '#attached' => [
-        'library' => [
-          'dermau_core/convenios-swiper',
-        ],
-      ],
       '#cache' => [
         'tags' => ['node_list'],
       ],
