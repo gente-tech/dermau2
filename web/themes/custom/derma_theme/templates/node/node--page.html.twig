@@ -38,5 +38,5 @@
   {{ drupal_block('programas_block_page') }}
 {% endif %}
 {% if path('<current>') == '/nosotros' %}
-  {{ drupal_block('derma_theme_dermautestimonios') }}
+  {{ drupal_entity('block', 'derma_theme_dermautestimonios') }}
 {% endif %}
