@@ -59,22 +59,24 @@ function dermau_core_theme($existing, $type, $theme, $path) {
   ];
 }
 
+
 function dermau_core_preprocess_node(&$variables) {
 
   $node = $variables['node'];
 
   if ($node->bundle() === 'programa') {
 
-    $tipo = $node->get('field_tipo_de_programa')->value ?? NULL;
+    if ($node->hasField('field_tipo_de_programa') && !$node->get('field_tipo_de_programa')->isEmpty()) {
 
-    if ($tipo) {
+      $tipo = $node->get('field_tipo_de_programa')->value;
 
       $query = \Drupal::entityQuery('node')
         ->condition('type', 'programa')
         ->condition('status', 1)
         ->condition('field_tipo_de_programa', $tipo)
         ->condition('nid', $node->id(), '<>')
-        ->range(0, 10);
+        ->range(0, 10)
+        ->accessCheck(TRUE);
 
       $nids = $query->execute();
 
