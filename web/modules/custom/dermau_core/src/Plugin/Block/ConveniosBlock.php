@@ -46,14 +46,12 @@ class ConveniosBlock extends BlockBase {
     ];
 
     $form['logos'] = [
-      '#type' => 'managed_file',
+      '#type' => 'image',
       '#title' => $this->t('Logos'),
-      '#upload_location' => 'public://convenios/',
       '#multiple' => TRUE,
-      '#default_value' => $this->configuration['logos'],
-      '#upload_validators' => [
-        'file_validate_extensions' => ['png jpg jpeg svg webp'],
-      ],
+      '#upload_location' => 'public://convenios/',
+      '#default_value' => $this->configuration['logos'] ?? [],
+      '#description' => $this->t('Puedes subir múltiples logos.'),
     ];
 
     return $form;
@@ -67,7 +65,6 @@ class ConveniosBlock extends BlockBase {
 
     $fids = array_filter($form_state->getValue('logos'));
 
-    // Hacer permanentes los archivos
     foreach ($fids as $fid) {
       if ($file = File::load($fid)) {
         $file->setPermanent();
@@ -75,8 +72,7 @@ class ConveniosBlock extends BlockBase {
       }
     }
 
-    // Guardar solo enteros
-    $this->configuration['logos'] = array_map('intval', $fids);
+    $this->configuration['logos'] = array_values($fids);
   }
 
   public function build() {
