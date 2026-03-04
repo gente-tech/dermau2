@@ -563,7 +563,9 @@
 <div class="du-card__diplomat-image-container">
 
 <span class="du-card__diplomat-badge">
-{{ programa.field_tipo_de_programa.value|capitalize }}
+{% if programa.field_tipo_de_programa is not empty %}
+  {{ programa.field_tipo_de_programa[0].value|capitalize }}
+{% endif %}
 </span>
 
 {% if programa.field_imagen_programa.entity %}
