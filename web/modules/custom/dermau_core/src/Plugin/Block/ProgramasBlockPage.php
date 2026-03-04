@@ -20,6 +20,7 @@ class ProgramasBlockPage extends BlockBase {
     $programas = [];
 
     $nids = \Drupal::entityQuery('node')
+      ->accessCheck(TRUE)
       ->condition('type', 'programa')
       ->condition('status', 1)
       ->sort('created', 'DESC')
