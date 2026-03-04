@@ -1,1 +1,36 @@
-Hola soy el tpl de pagina basica
+<section class="du-hero">
+
+  <div class="du-hero__container">
+
+    <div
+      class="du-hero__bg"
+      {% if node.field_fondo_banner.entity %}
+      style="background-image:url('{{ file_url(node.field_fondo_banner.entity.fileuri) }}')"
+      {% endif %}
+    ></div>
+
+    <div class="du-hero__overlay"></div>
+
+    <div class="du-hero__wrapper">
+
+      <div class="du-hero__content">
+
+        <h1 class="du-hero__title">
+
+          <span>{{ node.field_titulo_uno.value }}</span>
+
+          {{ node.field_titulo_dos.value }}
+
+        </h1>
+
+        <div class="du-hero__text">
+          {{ node.body.value|raw }}
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
