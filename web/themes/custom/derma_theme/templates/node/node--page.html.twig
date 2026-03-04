@@ -34,6 +34,6 @@
   </div>
 
 </section>
-{% if url('<current>').toString == '/programas' %}
+{% if path('<current>') == '/programas' %}
   {{ drupal_block('programas_block_page') }}
 {% endif %}
