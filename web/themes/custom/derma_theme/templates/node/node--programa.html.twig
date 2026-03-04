@@ -382,55 +382,78 @@
           </div>
 
           <div class="du-panel-block__wrapper">
-            <div class="du-panel-block__item is-open">
-              <button class="du-panel-block__trigger">
-                <div class="du-panel-block__info">
-                  <span class="du-panel-block__number">1</span>
-                  <div class="du-panel-block__title-group">
-                    <h3>{{ node.label }}</h3>
-                    <span class="du-panel-block__duration">{{ node.field_duracion_programa.value }}</span>
-                  </div>
-                </div>
-                <div class="du-icon-trigger__plus"></div>
-              </button>
 
-              <div class="du-panel-block__body">
-                <div class="du-panel-block__inner">
-                  <div class="du-panel-block__section">
-                    <h4>Temas:</h4>
-                    <ul class="du-panel-block__list">
-                      <li>{{ node.body.summary }}</li>
-                      <li>{{ node.body.value }}</li>
-                      <li>{{ node.field_descripcion_corta.value }}</li>
-                      <li>{{ node.field_descripcion_general.value }}</li>
-                    </ul>
-                  </div>
-                  <div class="du-panel-block__result">
-                    <h4>Resultado esperado:</h4>
-                    <p>
-                      {{ node.field_objetivos_de_aprendizaje.value }}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+{% for modulo in node.field_modulos %}
 
-            <div class="du-panel-block__item">
-              <button class="du-panel-block__trigger">
-                <div class="du-panel-block__info">
-                  <span class="du-panel-block__number">2</span>
-                  <div class="du-panel-block__title-group">
-                    <h3>{{ node.label }}</h3>
-                    <span class="du-panel-block__duration">{{ node.field_duracion_programa.value }}</span>
-                  </div>
-                </div>
-                <div class="du-icon-trigger__plus"></div>
-              </button>
-              <div class="du-panel-block__body">
-                <div class="du-panel-block__inner"></div>
-              </div>
-            </div>
-          </div>
+{% set p = modulo.entity %}
+
+<div class="du-panel-block__item {{ loop.first ? 'is-open' }}">
+
+<button class="du-panel-block__trigger">
+
+<div class="du-panel-block__info">
+
+<span class="du-panel-block__number">
+{{ loop.index }}
+</span>
+
+<div class="du-panel-block__title-group">
+
+<h3>
+{{ p.field_titulo_modulo.value }}
+</h3>
+
+<span class="du-panel-block__duration">
+{{ p.field_duracion.value }}
+</span>
+
+</div>
+
+</div>
+
+<div class="du-icon-trigger__plus"></div>
+
+</button>
+
+
+<div class="du-panel-block__body">
+
+<div class="du-panel-block__inner">
+
+<div class="du-panel-block__section">
+
+<h4>Temas:</h4>
+
+<ul class="du-panel-block__list">
+
+{% for tema in p.field_temas %}
+<li>{{ tema.value }}</li>
+{% endfor %}
+
+</ul>
+
+</div>
+
+
+<div class="du-panel-block__result">
+
+<h4>Resultado esperado:</h4>
+
+<p>
+{{ p.field_resultado_esperado.value }}
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
         </div>
       </section>
 
