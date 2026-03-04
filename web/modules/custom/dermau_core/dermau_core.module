@@ -81,7 +81,6 @@ function dermau_core_preprocess_node(&$variables) {
   $query = \Drupal::entityQuery('node')
     ->condition('type', 'programa')
     ->condition('status', 1)
-    ->condition('field_tipo_de_programa', $tipo)
     ->condition('nid', $node->id(), '<>')
     ->range(0, 6)
     ->accessCheck(TRUE);
