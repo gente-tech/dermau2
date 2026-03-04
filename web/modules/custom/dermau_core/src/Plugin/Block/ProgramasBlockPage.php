@@ -6,32 +6,75 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\node\Entity\Node;
 
 /**
- * Provides a 'Programas Page Block'.
+ * Provides a 'Programas Block Page'.
  *
  * @Block(
  *   id = "programas_block_page",
- *   admin_label = @Translation("Programas Page Block")
+ *   admin_label = @Translation("Programas Block Page")
  * )
  */
 class ProgramasBlockPage extends BlockBase {
 
   public function build() {
 
-    $query = \Drupal::entityQuery('node')
-      ->condition('status', 1)
+    $programas = [];
+
+    $nids = \Drupal::entityQuery('node')
       ->condition('type', 'programa')
-      ->accessCheck(TRUE);
+      ->condition('status', 1)
+      ->sort('created', 'DESC')
+      ->execute();
 
-    $nids = $query->execute();
+    if ($nids) {
 
-    $programas = Node::loadMultiple($nids);
+      $nodes = Node::loadMultiple($nids);
+
+      foreach ($nodes as $node) {
+
+        $imagen = '';
+
+        if (!$node->get('field_imagen_programa')->isEmpty()) {
+
+          $file = $node->get('field_imagen_programa')->entity;
+
+          $imagen = \Drupal::service('file_url_generator')
+            ->generateAbsoluteString($file->getFileUri());
+
+        }
+
+        $programas[] = [
+          'id' => $node->id(),
+
+          'titulo' => $node->getTitle(),
+
+          'descripcion' => $node->get('field_descripcion_programa')->value ?? '',
+
+          'tipo' => $node->get('field_tipo_de_programa')->value ?? '',
+
+          'imagen' => $imagen,
+
+          'duracion' => $node->get('field_duracion')->value ?? '',
+
+          'modulos' => $node->get('field_modulos')->value ?? '',
+
+          'cupos' => $node->get('field_cupos')->value ?? '',
+
+          'url' => $node->toUrl()->toString(),
+
+        ];
+
+      }
+
+    }
 
     return [
-  '#theme' => 'programas_block_page',
-  '#programas' => $programas,
-  '#universidades' => $universidades,
-  '#tipos_programa' => $tipos_programa,
-];
+      '#theme' => 'programas_block_page',
+      '#programas' => $programas,
+      '#cache' => [
+        'max-age' => 0,
+      ],
+    ];
+
   }
 
 }
