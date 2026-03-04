@@ -70,68 +70,75 @@
     <div class="swiper">
       <div class="swiper-wrapper" id="card__diplomat">
 
-        {% for programa in programas %}
+       {% for programa in programas %}
 
-        <div class="swiper-slide">
+<div class="swiper-slide">
 
-          <article class="du-card__diplomat">
+  <article class="du-card__diplomat">
 
-            <div class="du-card__diplomat-image-container">
+    <div class="du-card__diplomat-image-container">
 
-              <span class="du-card__diplomat-badge">
-                {{ programa.tipo }}
-              </span>
+      <span class="du-card__diplomat-badge">
+        {{ programa.tipo }}
+      </span>
 
-              <img
-                src="{{ programa.imagen }}"
-                alt="{{ programa.titulo }}"
-                class="du-card__diplomat-image"
-              >
+      <img src="{{ programa.imagen }}" alt="{{ programa.titulo }}">
 
-            </div>
+    </div>
 
+    <div class="du-card__diplomat-content">
 
-            <div class="du-card__diplomat-content">
+      <h3 class="du-card__diplomat-title">
+        {{ programa.titulo }}
+      </h3>
 
-              <h3 class="du-card__diplomat-title">
-                {{ programa.titulo }}
-              </h3>
+      <p class="du-card__diplomat-description">
+        {{ programa.descripcion }}
+      </p>
 
-              <p class="du-card__diplomat-description">
-                {{ programa.descripcion }}
-              </p>
+      <div class="du-card__diplomat-meta">
 
+        <div class="du-card__diplomat-meta-item">
 
-              <div class="du-card__diplomat-info">
+          <span class="du-icon__clock"></span>
 
-                <div class="du-card__diplomat-info-item">
-                  {{ programa.duracion }}
-                </div>
-
-                <div class="du-card__diplomat-info-item">
-                  {{ programa.modulos }}
-                </div>
-
-                <div class="du-card__diplomat-info-item">
-                  {{ programa.cupos }}
-                </div>
-
-              </div>
-
-
-              <div class="du-card__diplomat-footer">
-                <a href="{{ programa.url }}" class="du-link-more">
-                  Ver detalle
-                </a>
-              </div>
-
-            </div>
-
-          </article>
+          <span>{{ programa.duracion }}</span>
 
         </div>
 
-        {% endfor %}
+        <div class="du-card__diplomat-meta-item">
+
+          <span class="du-icon__book"></span>
+
+          <span>{{ programa.modulos }} módulos</span>
+
+        </div>
+
+        <div class="du-card__diplomat-meta-item">
+
+          <span class="du-icon__users"></span>
+
+          <span>Cupos limitados</span>
+
+        </div>
+
+      </div>
+
+      <div class="du-card__diplomat-footer">
+
+        <a href="{{ programa.url }}" class="du-btn du-btn__outline">
+          Ver detalle
+        </a>
+
+      </div>
+
+    </div>
+
+  </article>
+
+</div>
+
+{% endfor %} 
 
       </div>
 
