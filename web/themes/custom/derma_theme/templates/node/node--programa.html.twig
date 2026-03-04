@@ -553,8 +553,73 @@
 
           <div class="swiper">
             <div class="swiper-wrapper" id="card__diplomat">
-             
-            </div>
+
+{% for programa in otros_programas %}
+
+<div class="swiper-slide">
+
+<article class="du-card__diplomat">
+
+  <div class="du-card__diplomat-image-container">
+
+    <span class="du-card__diplomat-badge">
+      {{ programa.field_tipo_programa.value|capitalize }}
+    </span>
+
+    {% if programa.field_imagen_programa.entity %}
+      <img
+        src="{{ file_url(programa.field_imagen_programa.entity.fileuri) }}"
+        alt="{{ programa.label }}"
+        class="du-card__diplomat-image">
+    {% endif %}
+
+  </div>
+
+  <div class="du-card__diplomat-content">
+
+    <h3 class="du-card__diplomat-title">
+      {{ programa.label }}
+    </h3>
+
+    <p class="du-card__diplomat-description">
+      {{ programa.field_descripcion_corta.value }}
+    </p>
+
+    <div class="du-card__diplomat-info">
+
+      <div class="du-card__diplomat-info-item">
+        <svg width="15" height="15"><!-- icono tiempo --></svg>
+        {{ programa.field_duracion.value }}
+      </div>
+
+      <div class="du-card__diplomat-info-item">
+        <svg width="20" height="16"><!-- icono modulos --></svg>
+        {{ programa.field_numero_modulos.value }} módulos
+      </div>
+
+      <div class="du-card__diplomat-info-item">
+        <svg width="16" height="14"><!-- icono cupos --></svg>
+        <span class="du-card__diplomat-info-text">
+          Cupos limitados
+        </span>
+      </div>
+
+    </div>
+
+    <a href="{{ path('entity.node.canonical', {'node': programa.id}) }}"
+       class="du-card__diplomat-btn">
+       Ver detalle
+    </a>
+
+  </div>
+
+</article>
+
+</div>
+
+{% endfor %}
+
+</div>
 
             <div class="swiper-pagination"></div>
           </div>
