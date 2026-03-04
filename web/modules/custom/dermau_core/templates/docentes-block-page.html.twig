@@ -1,0 +1,112 @@
+<section class="du-seach">
+  <div class="du-seach__container">
+    <div class="du-seach__content">
+      <div class="du-seach__input">
+        <input type="text" placeholder="Buscar docente...">
+      </div>
+      <div class="du-seach__filters">
+        {# filtros quedan estáticos como en el diseño #}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="du-generic-swiper du-swiper-program">
+  <div class="du-generic-swiper__container du-swiper-program__container">
+
+    <div class="du-generic-swiper__header">
+      <h3>Mostrando <span>{{ docentes|length }} Docentes</span></h3>
+    </div>
+
+    <div class="swiper swiper-horizontal swiper-grid">
+
+      <div class="swiper-wrapper" id="card__expert">
+
+        {% for docente in docentes %}
+
+        <div class="swiper-slide">
+
+          <article class="du-card__expert">
+
+            <div class="du-card__expert-main">
+
+              <img
+                src="{{ docente.imagen }}"
+                alt="{{ docente.nombre }}"
+                class="du-card__expert-img"
+              >
+
+              <div class="du-card__expert-intro">
+                <h3 class="du-card__expert-title">
+                  {{ docente.nombre }}
+                </h3>
+
+                <p class="du-card__expert-role">
+                  {{ docente.rol }}
+                </p>
+              </div>
+
+            </div>
+
+            <div class="du-card__expert-uni">
+
+              <svg width="21" height="21" viewBox="0 0 21 21" fill="none">
+                <path d="M2.0432 7.26354V14.6632M1.28453 6.70077C0.746301 6.44295 0.746301 5.74737 1.28453 5.48955C1.99023 5.1515 3.0445 4.67169 4.53573 4.0505C6.60765 3.18746 8.02295 2.67571 8.78278 2.41634C9.21066 2.26975 9.67516 2.26975 10.103 2.41634C10.8625 2.67571 12.2786 3.18746 14.3501 4.0505C15.8417 4.67169 16.8956 5.1515 17.6017 5.48955C18.1391 5.74737 18.1391 6.44295 17.6017 6.70077C16.8956 7.03882 15.8413 7.51863 14.3501 8.13982C12.2782 9.00286 10.8629 9.51461 10.103 9.77399C9.67516 9.92057 9.21066 9.92057 8.78278 9.77399C8.02333 9.51461 6.60726 9.00286 4.53573 8.13982C3.04411 7.51824 1.99023 7.03882 1.28453 6.70077Z"
+                stroke="#007BE3"></path>
+              </svg>
+
+              <span>
+                {{ docente.universidad }}
+              </span>
+
+            </div>
+
+            <div class="du-card__expert-uni">
+
+              <svg width="15" height="13" viewBox="0 0 15 13" fill="none">
+                <path d="M7.5 1.99463C7.5 1.99463 4 -1.00537 0.5 1.49463V12.4946C4 9.99463 7.5 12.4946 7.5 12.4946M7.5 1.99463C7.5 1.99463 11 -1.00537 14.5 1.49463V12.4946C11 9.99463 7.5 12.4946 7.5 12.4946M7.5 1.99463V12.4946"
+                stroke="#007BE3"></path>
+              </svg>
+
+              <span>Programas:</span>
+
+            </div>
+
+            <div class="du-card__expert-tags">
+
+              {% for programa in docente.programas %}
+                <span>{{ programa }}</span>
+              {% endfor %}
+
+            </div>
+
+            <div class="du-card__expert-detail">
+              <p>
+                {{ docente.descripcion }}
+              </p>
+            </div>
+
+            <div class="du-card__expert-footer">
+
+              <a href="{{ docente.url }}" class="du-link-more">
+                Ver detalle
+              </a>
+
+            </div>
+
+          </article>
+
+        </div>
+
+        {% endfor %}
+
+      </div>
+
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-pagination"></div>
+
+    </div>
+
+  </div>
+</section>
