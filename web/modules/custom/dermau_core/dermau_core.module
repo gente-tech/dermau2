@@ -72,12 +72,6 @@ function dermau_core_preprocess_node(&$variables) {
     return;
   }
 
-  if (!$node->hasField('field_tipo_de_programa') || $node->get('field_tipo_de_programa')->isEmpty()) {
-    return;
-  }
-
-  $tipo = $node->get('field_tipo_de_programa')->value;
-
   $query = \Drupal::entityQuery('node')
     ->condition('type', 'programa')
     ->condition('status', 1)
