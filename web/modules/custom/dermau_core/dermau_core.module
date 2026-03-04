@@ -35,5 +35,16 @@ function dermau_core_theme($existing, $type, $theme, $path) {
       ],
       'template' => 'block-convenios',
     ],
+    'block_testimonios' => [
+      'variables' => [
+        'titulo_parte_1' => NULL,
+        'titulo_parte_2' => NULL,
+        'texto_boton' => NULL,
+        'texto_boton_highlight' => NULL,
+        'url_boton' => NULL,
+        'items' => [],
+      ],
+      'template' => 'block-testimonios',
+    ],
   ];
 }
