@@ -81,19 +81,16 @@ function dermau_core_preprocess_node(&$variables) {
   $query = \Drupal::entityQuery('node')
     ->condition('type', 'programa')
     ->condition('status', 1)
-    ->condition('field_tipo_de_programa.value', $tipo)
+    ->condition('field_tipo_de_programa', $tipo)
     ->condition('nid', $node->id(), '<>')
     ->range(0, 6)
     ->accessCheck(TRUE);
 
   $nids = $query->execute();
 
-  if (!empty($nids)) {
-    $variables['otros_programas'] = Node::loadMultiple($nids);
-  }
-  else {
-    $variables['otros_programas'] = [];
-  }
+  $variables['otros_programas'] = !empty($nids)
+    ? Node::loadMultiple($nids)
+    : [];
 
 }
 
