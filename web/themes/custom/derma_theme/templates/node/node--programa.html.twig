@@ -562,18 +562,16 @@
 
 <div class="du-card__diplomat-image-container">
 
-<span class="du-card__diplomat-badge">
-{% if programa.field_tipo_de_programa is not empty %}
-  {{ programa.field_tipo_de_programa[0].value|capitalize }}
-{% endif %}
-</span>
+  <span class="du-card__diplomat-badge">
+    {{ programa.field_tipo_de_programa|render|striptags|capitalize }}
+  </span>
 
-{% if programa.field_imagen_programa.entity %}
-<img
-src="{{ file_url(programa.field_imagen_programa.entity.fileuri) }}"
-alt="{{ programa.label }}"
-class="du-card__diplomat-image">
-{% endif %}
+  {% if programa.field_imagen_programa.entity %}
+    <img
+      src="{{ file_url(programa.field_imagen_programa.entity.fileuri) }}"
+      alt="{{ programa.label }}"
+      class="du-card__diplomat-image">
+  {% endif %}
 
 </div>
 
