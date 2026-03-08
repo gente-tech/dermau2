@@ -6,6 +6,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
+use Drupal\Core\Url;
 
 class ContactoRegistroForm extends FormBase {
 
@@ -18,9 +19,22 @@ class ContactoRegistroForm extends FormBase {
     $form['#attributes']['class'][] = 'du-form-register__form';
 
     /*
-    ------------------------
+    -------------------------------------------------
+    Detectar si estamos dentro de un nodo programa
+    -------------------------------------------------
+    */
+
+    $node = \Drupal::routeMatch()->getParameter('node');
+    $current_program = NULL;
+
+    if ($node && $node->bundle() === 'programa') {
+      $current_program = $node->id();
+    }
+
+    /*
+    -------------------------------------------------
     Cargar programas
-    ------------------------
+    -------------------------------------------------
     */
 
     $query = \Drupal::entityQuery('node')
@@ -34,14 +48,14 @@ class ContactoRegistroForm extends FormBase {
 
     $programas = [];
 
-    foreach ($nodes as $node) {
-      $programas[$node->id()] = $node->getTitle();
+    foreach ($nodes as $programa) {
+      $programas[$programa->id()] = $programa->getTitle();
     }
 
     /*
-    ------------------------
-    GROUP CONTAINER
-    ------------------------
+    -------------------------------------------------
+    CONTENEDOR PRINCIPAL
+    -------------------------------------------------
     */
 
     $form['group_container'] = [
@@ -52,9 +66,9 @@ class ContactoRegistroForm extends FormBase {
     ];
 
     /*
-    ------------------------
-    GROUP 1
-    ------------------------
+    -------------------------------------------------
+    GRUPO 1
+    -------------------------------------------------
     */
 
     $form['group_container']['group1'] = [
@@ -67,6 +81,7 @@ class ContactoRegistroForm extends FormBase {
     $form['group_container']['group1']['programa'] = [
       '#type' => 'select',
       '#options' => $programas,
+      '#default_value' => $current_program,
       '#empty_option' => $this->t('Seleccione tu programa'),
       '#attributes' => [
         'class' => ['du-form-select'],
@@ -99,9 +114,9 @@ class ContactoRegistroForm extends FormBase {
     ];
 
     /*
-    ------------------------
-    GROUP 2
-    ------------------------
+    -------------------------------------------------
+    GRUPO 2
+    -------------------------------------------------
     */
 
     $form['group_container']['group2'] = [
@@ -148,7 +163,7 @@ class ContactoRegistroForm extends FormBase {
     ];
 
     /*
-    CITY
+    CIUDAD
     */
 
     $form['group_container']['group2']['ciudad'] = [
@@ -198,7 +213,7 @@ class ContactoRegistroForm extends FormBase {
     ];
 
     /*
-    CHECKBOX
+    CONSENTIMIENTO
     */
 
     $form['autorizacion'] = [
@@ -231,6 +246,14 @@ class ContactoRegistroForm extends FormBase {
 
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
+    $programa_id = $form_state->getValue('programa');
+
+    /*
+    ---------------------------------
+    Crear usuario bloqueado
+    ---------------------------------
+    */
+
     $nombre = $form_state->getValue('nombre');
     $apellido = $form_state->getValue('apellido');
 
@@ -243,10 +266,39 @@ class ContactoRegistroForm extends FormBase {
     ]);
 
     $user->addRole('registro');
-
     $user->save();
 
-    $this->messenger()->addMessage('Solicitud enviada correctamente.');
+    /*
+    ---------------------------------
+    Obtener PDF del programa
+    ---------------------------------
+    */
+
+    $node = Node::load($programa_id);
+    $pdf_url = '';
+
+    if ($node && $node->hasField('field_pdf_registro')) {
+
+      $file = $node->get('field_pdf_registro')->entity;
+
+      if ($file) {
+        $pdf_url = file_create_url($file->getFileUri());
+      }
+
+    }
+
+    /*
+    ---------------------------------
+    Redirigir a descarga
+    ---------------------------------
+    */
+
+    if ($pdf_url) {
+      $form_state->setRedirectUrl(
+        Url::fromUri($pdf_url)
+      );
+    }
+
   }
 
 }
