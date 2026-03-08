@@ -34,7 +34,7 @@ class DescargaController extends ControllerBase {
 
             setTimeout(function(){
               window.location.href="/gracias-por-registrarse";
-            }, 2000);
+            }, 500);
 
           </script>
           </body>
