@@ -150,15 +150,15 @@ class ContactoRegistroForm extends FormBase {
     */
 
     $form['group_container']['group2']['phone_group']['telefono'] = [
-      '#type' => 'tel',
-      '#attributes' => [
-        'placeholder' => 'Teléfono',
-        'id' => 'du-reg-phone',
-        'class' => ['du-form-input']
-      ],
-      '#required' => TRUE,
-      '#title_display' => 'invisible'
-    ];
+  '#type' => 'tel',
+  '#attributes' => [
+    'placeholder' => 'Teléfono',
+    'id' => 'du-reg-phone',
+    'class' => ['du-form-input']
+  ],
+  '#required' => TRUE,
+  '#title_display' => 'invisible'
+];
 
     /*
     CIUDAD
