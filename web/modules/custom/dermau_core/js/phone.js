@@ -12,8 +12,6 @@
 
           preferredCountries: ["co","mx","ar","cl"],
 
-          separateDialCode: true,
-
           nationalMode: false,
 
           autoPlaceholder: "polite",
