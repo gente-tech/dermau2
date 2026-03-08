@@ -327,9 +327,10 @@ class ContactoRegistroForm extends FormBase {
 
   if ($pdf_url) {
 
-    $form_state->setRedirectUrl(
-      Url::fromUri($pdf_url)
-    );
+    $form_state->setRedirect(
+  'dermau_core.descargar',
+  ['node' => $programa_id]
+);
 
   }
 
