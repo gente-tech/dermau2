@@ -5,8 +5,8 @@ dermau_core.programas_ajax:
   requirements:
     _permission: 'access content'
 
-dermau_core.descargar_pdf:
-  path: '/descargar-programa/{node}'
+dermau_core.descargar:
+  path: '/descargar-pdf/{node}'
   defaults:
     _controller: '\Drupal\dermau_core\Controller\DescargaController::descargar'
   requirements:
