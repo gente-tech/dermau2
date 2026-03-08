@@ -62,12 +62,11 @@
     gap: 12px;
     min-width: 150px;
     flex-wrap: wrap;
-    justify-content: space-around;
 }
 
 .du-footer__nav-item-link {
     text-align: left;
-    flex: 1 30%;
+    width: 30%;
     color: #fff;
     text-decoration: none;
     font-size: 15px;
@@ -148,6 +147,10 @@
         flex-wrap: wrap;
         justify-content: center;
         gap: 20px;
+    }
+
+    .du-footer__nav-item-link {
+        flex: 1  30%;
     }
 
     .du-footer__social {

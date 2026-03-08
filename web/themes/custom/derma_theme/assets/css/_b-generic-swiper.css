@@ -1,5 +1,6 @@
 .du-generic-swiper {
-  padding: 50px;
+  padding-inline: 50px;
+  padding-block: 5px;
   background-color: white;
 }
 
@@ -69,6 +70,11 @@
 }
 
 /* PERSONALIZACION GLOBAL */
+
+.du-generic-swiper .swiper-wrapper {
+  padding-bottom: 10px;
+}
+
 /* Flechas */
 .swiper-button-next, .swiper-button-prev {
   color: var(--du-color-text-dark);

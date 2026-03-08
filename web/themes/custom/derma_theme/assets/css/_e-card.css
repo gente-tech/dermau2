@@ -31,6 +31,9 @@
   margin: 0;
   font-weight: 700;
 }
+.du-card__expert-detail {
+    min-height: 150px;
+}
 .du-card__expert-role {
   font-size: 13px;
   color: var(--du-color-secondary-dark);
@@ -120,6 +123,7 @@
   margin-bottom: 20px;
   line-height: 1.5;
   color: #666;
+  min-height: 120px;
 }
 .du-card__diplomat-info {
   display: flex;

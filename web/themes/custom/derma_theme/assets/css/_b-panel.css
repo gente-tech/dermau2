@@ -1,5 +1,6 @@
 .du-panel-block {
-    padding: 50px;
+    padding-inline: 50px;
+    padding-block: 25px;
 }
 
 .du-panel-block__container {
