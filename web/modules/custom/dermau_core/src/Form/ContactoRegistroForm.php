@@ -244,77 +244,95 @@ class ContactoRegistroForm extends FormBase {
 
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
-    $programa_id = $form_state->getValue('programa');
+  $programa_id = $form_state->getValue('programa');
 
-    /*
-    ---------------------------------
-    Crear usuario bloqueado
-    ---------------------------------
-    */
+  /*
+  ---------------------------------
+  Datos del formulario
+  ---------------------------------
+  */
 
-    $nombre = $form_state->getValue('nombre');
-    $apellido = $form_state->getValue('apellido');
+  $nombre = $form_state->getValue('nombre');
+  $apellido = $form_state->getValue('apellido');
+  $correo_real = $form_state->getValue('email');
 
-    $email = strtolower($nombre.'.'.$apellido).'@registro.local';
+  /*
+  ---------------------------------
+  Generar username único
+  ---------------------------------
+  */
 
-    $user = User::create([
-      'name' => $email,
-      'mail' => $email,
-      'status' => 0,
-    ]);
+  $timestamp = date('YmdHis');
 
-    $user->addRole('registro');
+  $username = strtolower($nombre . '.' . $apellido . '.' . $timestamp);
 
-    /*
-    ---------------------------------
-    Guardar datos del formulario
-    ---------------------------------
-    */
-    
-    $user->set('field_programa', $form_state->getValue('programa'));
-    $user->set('field_telefono', $form_state->getValue('telefono'));
-    $user->set('field_ciudad', $form_state->getValue('ciudad'));
-    $user->set('field_profesion', $form_state->getValue('profesion'));
-    $user->set('field_mensaje', $form_state->getValue('mensaje'));
-    $user->save();
+  $email_sistema = $username . '@registro.local';
 
-    /*
-    ---------------------------------
-    Obtener PDF del programa
-    ---------------------------------
-    */
+  /*
+  ---------------------------------
+  Crear usuario Drupal
+  ---------------------------------
+  */
 
-    $node = Node::load($programa_id);
-    $pdf_url = '';
+  $user = User::create([
+    'name' => $username,
+    'mail' => $email_sistema,
+    'status' => 0,
+  ]);
 
-    if ($node && $node->hasField('field_pdf_registro')) {
+  $user->addRole('registro');
 
-  $file = $node->get('field_pdf_registro')->entity;
+  /*
+  ---------------------------------
+  Guardar campos personalizados
+  ---------------------------------
+  */
 
-  if ($file) {
+  $user->set('field_correo_real', $correo_real);
+  $user->set('field_programa', $form_state->getValue('programa'));
+  $user->set('field_telefono', $form_state->getValue('telefono'));
+  $user->set('field_ciudad', $form_state->getValue('ciudad'));
+  $user->set('field_profesion', $form_state->getValue('profesion'));
+  $user->set('field_mensaje', $form_state->getValue('mensaje'));
 
-    $pdf_url = \Drupal::service('file_url_generator')
-      ->generateAbsoluteString($file->getFileUri());
+  $user->save();
 
-  }
+  /*
+  ---------------------------------
+  Obtener PDF del programa
+  ---------------------------------
+  */
 
-}
+  $node = Node::load($programa_id);
+  $pdf_url = '';
 
-    /*
-    ---------------------------------
-    Redirigir a descarga
-    ---------------------------------
-    */
+  if ($node && $node->hasField('field_pdf_registro')) {
 
-    if ($pdf_url) {
+    $file = $node->get('field_pdf_registro')->entity;
 
-      $form_state->setRedirect(
-        'dermau_core.descargar_pdf',
-        ['node' => $programa_id]
-      );
+    if ($file) {
+
+      $pdf_url = \Drupal::service('file_url_generator')
+        ->generateAbsoluteString($file->getFileUri());
 
     }
 
   }
+
+  /*
+  ---------------------------------
+  Redirección descarga
+  ---------------------------------
+  */
+
+  if ($pdf_url) {
+
+    $form_state->setRedirectUrl(
+      Url::fromUri($pdf_url)
+    );
+
+  }
+
+}
 
 }
