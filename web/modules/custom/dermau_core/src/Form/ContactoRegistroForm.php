@@ -121,6 +121,17 @@ class ContactoRegistroForm extends FormBase {
       '#required' => TRUE
     ];
 
+    $form['group_container']['group1']['email'] = [
+      '#type' => 'email',
+      '#attributes' => [
+        'class' => ['du-form-input'],
+        'placeholder' => 'Email',
+        'id' => 'du-reg-email'
+      ],
+      '#title_display' => 'invisible',
+      '#required' => TRUE
+    ];
+
     /*
     -------------------------------------------------
     GRUPO 2
