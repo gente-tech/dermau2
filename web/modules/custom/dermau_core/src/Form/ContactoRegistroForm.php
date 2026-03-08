@@ -264,6 +264,18 @@ class ContactoRegistroForm extends FormBase {
     ]);
 
     $user->addRole('registro');
+
+    /*
+    ---------------------------------
+    Guardar datos del formulario
+    ---------------------------------
+    */
+    
+    $user->set('field_programa', $form_state->getValue('programa'));
+    $user->set('field_telefono', $form_state->getValue('telefono'));
+    $user->set('field_ciudad', $form_state->getValue('ciudad'));
+    $user->set('field_profesion', $form_state->getValue('profesion'));
+    $user->set('field_mensaje', $form_state->getValue('mensaje'));
     $user->save();
 
     /*
