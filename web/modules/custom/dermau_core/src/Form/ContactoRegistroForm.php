@@ -19,7 +19,7 @@ class ContactoRegistroForm extends FormBase {
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'programa')
       ->condition('status', 1)
-      ->accessCheck(TRUE);
+      ->accessCheck(TRUE)
       ->sort('title');
 
     $nids = $query->execute();
