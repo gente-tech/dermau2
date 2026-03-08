@@ -4,3 +4,10 @@ dermau_core.programas_ajax:
     _controller: '\Drupal\dermau_core\Controller\ProgramasAjaxController::loadProgramas'
   requirements:
     _permission: 'access content'
+
+dermau_core.descargar_pdf:
+  path: '/descargar-programa/{node}'
+  defaults:
+    _controller: '\Drupal\dermau_core\Controller\DescargaController::descargar'
+  requirements:
+    _permission: 'access content'
