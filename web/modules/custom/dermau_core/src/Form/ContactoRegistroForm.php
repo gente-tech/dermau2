@@ -15,12 +15,19 @@ class ContactoRegistroForm extends FormBase {
 
   public function buildForm(array $form, FormStateInterface $form_state) {
 
-    // Cargar programas (tipo de contenido "programa")
+    $form['#attributes']['class'][] = 'du-form-register__form';
+
+    /*
+    ------------------------
+    Cargar programas
+    ------------------------
+    */
+
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'programa')
       ->condition('status', 1)
-      ->accessCheck(TRUE)
-      ->sort('title');
+      ->sort('title')
+      ->accessCheck(FALSE);
 
     $nids = $query->execute();
     $nodes = Node::loadMultiple($nids);
@@ -31,71 +38,192 @@ class ContactoRegistroForm extends FormBase {
       $programas[$node->id()] = $node->getTitle();
     }
 
-    $form['programa'] = [
+    /*
+    ------------------------
+    GROUP CONTAINER
+    ------------------------
+    */
+
+    $form['group_container'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => ['du-form-register__form-group-container']
+      ]
+    ];
+
+    /*
+    ------------------------
+    GROUP 1
+    ------------------------
+    */
+
+    $form['group_container']['group1'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => ['du-form-register__form-group']
+      ]
+    ];
+
+    $form['group_container']['group1']['programa'] = [
       '#type' => 'select',
-      '#title' => $this->t('Programa'),
       '#options' => $programas,
-      '#required' => TRUE,
-      '#empty_option' => $this->t('- Seleccione un programa -'),
+      '#empty_option' => $this->t('Seleccione tu programa'),
+      '#attributes' => [
+        'class' => ['du-form-select'],
+        'id' => 'du-reg-program'
+      ],
+      '#title_display' => 'invisible',
+      '#required' => TRUE
     ];
 
-    $form['nombre'] = [
+    $form['group_container']['group1']['nombre'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Nombre'),
-      '#required' => TRUE,
+      '#attributes' => [
+        'class' => ['du-form-input'],
+        'placeholder' => 'Nombre',
+        'id' => 'du-reg-name'
+      ],
+      '#title_display' => 'invisible',
+      '#required' => TRUE
     ];
 
-    $form['apellido'] = [
+    $form['group_container']['group1']['apellido'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Apellido'),
-      '#required' => TRUE,
+      '#attributes' => [
+        'class' => ['du-form-input'],
+        'placeholder' => 'Apellido',
+        'id' => 'du-reg-lastname'
+      ],
+      '#title_display' => 'invisible',
+      '#required' => TRUE
     ];
 
-    $form['telefono'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Teléfono'),
-      '#required' => TRUE,
+    /*
+    ------------------------
+    GROUP 2
+    ------------------------
+    */
+
+    $form['group_container']['group2'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => ['du-form-register__form-group']
+      ]
     ];
 
-    $form['ciudad'] = [
+    /*
+    PHONE GROUP
+    */
+
+    $form['group_container']['group2']['phone_group'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => ['du-form-phone-group']
+      ]
+    ];
+
+    $form['group_container']['group2']['phone_group']['country'] = [
       '#type' => 'select',
-      '#title' => $this->t('Ciudad'),
       '#options' => [
-        'bogota' => 'Bogotá',
-        'medellin' => 'Medellín',
-        'cali' => 'Cali',
+        '+57' => 'Co',
+        '+52' => 'Mx',
+        '+54' => 'Ar',
+        '+56' => 'Ch'
+      ],
+      '#default_value' => '+57',
+      '#attributes' => [
+        'id' => 'du-reg-country'
+      ],
+      '#title_display' => 'invisible'
+    ];
+
+    $form['group_container']['group2']['phone_group']['telefono'] = [
+      '#type' => 'tel',
+      '#attributes' => [
+        'placeholder' => 'Teléfono',
+        'id' => 'du-reg-phone'
       ],
       '#required' => TRUE,
+      '#title_display' => 'invisible'
     ];
 
-    $form['profesion'] = [
+    /*
+    CITY
+    */
+
+    $form['group_container']['group2']['ciudad'] = [
       '#type' => 'select',
-      '#title' => $this->t('Profesión'),
       '#options' => [
-        'dermatologo' => 'Dermatólogo',
-        'medico' => 'Médico',
-        'estetica' => 'Medicina estética',
+        '1' => 'Ciudad 1'
+      ],
+      '#empty_option' => $this->t('Seleccione tu ciudad'),
+      '#attributes' => [
+        'class' => ['du-form-select'],
+        'id' => 'du-reg-city'
       ],
       '#required' => TRUE,
+      '#title_display' => 'invisible'
     ];
+
+    /*
+    PROFESION
+    */
+
+    $form['group_container']['group2']['profesion'] = [
+      '#type' => 'select',
+      '#options' => [
+        '1' => 'Profesión 1'
+      ],
+      '#empty_option' => $this->t('Seleccione tu profesión'),
+      '#attributes' => [
+        'class' => ['du-form-select'],
+        'id' => 'du-reg-profesion'
+      ],
+      '#required' => TRUE,
+      '#title_display' => 'invisible'
+    ];
+
+    /*
+    MENSAJE
+    */
 
     $form['mensaje'] = [
       '#type' => 'textarea',
-      '#title' => $this->t('Mensaje (opcional)'),
+      '#attributes' => [
+        'class' => ['du-form-textarea'],
+        'placeholder' => 'Mensaje (opcional)',
+        'id' => 'du-reg-message'
+      ],
+      '#title_display' => 'invisible'
     ];
+
+    /*
+    CHECKBOX
+    */
 
     $form['autorizacion'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Autorizo a eClass a enviarme información vía email'),
-      '#required' => TRUE,
+      '#attributes' => [
+        'class' => ['du-form-checkbox'],
+        'id' => 'du-reg-consent'
+      ],
+      '#wrapper_attributes' => [
+        'class' => ['du-form-label-checkbox']
+      ],
+      '#required' => TRUE
     ];
+
+    /*
+    SUBMIT
+    */
 
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Contáctame'),
       '#attributes' => [
-        'class' => ['dermau-submit'],
-      ],
+        'class' => ['du-btn','du-btn--primary']
+      ]
     ];
 
     return $form;
@@ -105,10 +233,8 @@ class ContactoRegistroForm extends FormBase {
 
     $nombre = $form_state->getValue('nombre');
     $apellido = $form_state->getValue('apellido');
-    $telefono = $form_state->getValue('telefono');
 
-    // Generar email temporal si no existe en el formulario
-    $email = strtolower($nombre . '.' . $apellido) . '@registro.local';
+    $email = strtolower($nombre.'.'.$apellido).'@registro.local';
 
     $user = User::create([
       'name' => $email,
@@ -116,12 +242,11 @@ class ContactoRegistroForm extends FormBase {
       'status' => 0,
     ]);
 
-    // Rol registro
     $user->addRole('registro');
 
     $user->save();
 
-    $this->messenger()->addMessage($this->t('Tu solicitud fue enviada correctamente.'));
+    $this->messenger()->addMessage('Solicitud enviada correctamente.');
   }
 
 }
