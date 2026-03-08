@@ -277,13 +277,16 @@ class ContactoRegistroForm extends FormBase {
 
     if ($node && $node->hasField('field_pdf_registro')) {
 
-      $file = $node->get('field_pdf_registro')->entity;
+  $file = $node->get('field_pdf_registro')->entity;
 
-      if ($file) {
-        $pdf_url = file_create_url($file->getFileUri());
-      }
+  if ($file) {
 
-    }
+    $pdf_url = \Drupal::service('file_url_generator')
+      ->generateAbsoluteString($file->getFileUri());
+
+  }
+
+}
 
     /*
     ---------------------------------
