@@ -22,23 +22,30 @@ class DescargaController extends ControllerBase {
           ->generateAbsoluteString($file->getFileUri());
 
         return new Response('
+          <html>
+          <body>
           <script>
+
             const link = document.createElement("a");
             link.href = "'.$url.'";
             link.download = "";
             document.body.appendChild(link);
             link.click();
+
             setTimeout(function(){
               window.location.href="/gracias-por-registrarse";
-            }, 1500);
+            }, 2000);
+
           </script>
+          </body>
+          </html>
         ');
 
       }
 
     }
 
-    return new Response('Error al descargar.');
+    return new Response('Error descargando archivo.');
 
   }
 
