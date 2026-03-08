@@ -4,6 +4,7 @@ namespace Drupal\dermau_core\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\node\Entity\Node;
+use Drupal\Component\Utility\Unicode;
 
 /**
  * Provides a 'Docentes Block Page'.
@@ -53,12 +54,19 @@ class DocentesBlockPage extends BlockBase {
 
         }
 
+        $descripcion = $node->get('field_perfil_profesional')->value ?? '';
+
         $docentes[] = [
           'id' => $node->id(),
           'nombre' => $node->getTitle(),
           'rol' => $node->get('field_especialidad')->value ?? '',
           'universidad' => $node->get('field_ciudad')->value ?? '',
-          'descripcion' => $node->get('field_perfil_profesional')->value ?? '',
+          'descripcion' => Unicode::truncate(
+            strip_tags($descripcion),
+            350,
+            TRUE,
+            TRUE
+          ),
           'programas' => $programas,
           'imagen' => $imagen,
           'url' => $node->toUrl()->toString(),
