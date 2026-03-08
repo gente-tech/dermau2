@@ -24,6 +24,7 @@ faq:
     - core/drupal
 
 intl_tel_input:
+
   css:
     theme:
       https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.11/build/css/intlTelInput.css: { type: external }
