@@ -4,7 +4,7 @@ namespace Drupal\dermau_core\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\node\Entity\Node;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class DescargaController extends ControllerBase {
 
@@ -21,16 +21,24 @@ class DescargaController extends ControllerBase {
         $url = \Drupal::service('file_url_generator')
           ->generateAbsoluteString($file->getFileUri());
 
-        header("Content-Type: application/pdf");
-        header("Content-Disposition: attachment; filename=\"programa.pdf\"");
-
-        readfile($url);
+        return new Response('
+          <script>
+            const link = document.createElement("a");
+            link.href = "'.$url.'";
+            link.download = "";
+            document.body.appendChild(link);
+            link.click();
+            setTimeout(function(){
+              window.location.href="/gracias-por-registrarse";
+            }, 1500);
+          </script>
+        ');
 
       }
 
     }
 
-    return new RedirectResponse('/gracias-por-registrarse');
+    return new Response('Error al descargar.');
 
   }
 
