@@ -30,7 +30,7 @@ intl_tel_input:
 
   js:
     https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.11/build/js/intlTelInput.min.js: { type: external }
-    https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.11/build/js/utils.js: { type: external }
+    js/phone.js: {}
 
   dependencies:
     - core/drupal
