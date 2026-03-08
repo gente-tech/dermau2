@@ -22,3 +22,16 @@ faq:
     js/faq.js: {}
   dependencies:
     - core/drupal
+
+intl_tel_input:
+  css:
+    theme:
+      https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.11/build/css/intlTelInput.css: { type: external }
+
+  js:
+    https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.11/build/js/intlTelInput.min.js: { type: external }
+    https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.11/build/js/utils.js: { type: external }
+
+  dependencies:
+    - core/drupal
+    - core/once
