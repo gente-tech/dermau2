@@ -63,7 +63,7 @@ class DocentesBlockPage extends BlockBase {
           'universidad' => $node->get('field_ciudad')->value ?? '',
           'descripcion' => Unicode::truncate(
             strip_tags($descripcion),
-            350,
+            285,
             TRUE,
             TRUE
           ),
