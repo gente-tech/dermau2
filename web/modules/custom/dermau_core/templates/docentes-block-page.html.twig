@@ -2,7 +2,7 @@
   <div class="du-seach__container">
     <div class="du-seach__content">
       <div class="du-seach__input">
-        <input type="text" placeholder="Buscar docente...">
+        <input type="text" id="buscar-docente" placeholder="Buscar docente...">
       </div>
       <div class="du-seach__filters">
         {# filtros quedan estáticos como en el diseño #}
@@ -24,7 +24,7 @@
 
         {% for docente in docentes %}
 
-        <div class="swiper-slide">
+        <div class="swiper-slide" data-nombre="{{ docente.nombre|lower }}">
 
           <article class="du-card__expert">
 
@@ -110,3 +110,30 @@
 
   </div>
 </section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const input = document.getElementById("buscar-docente");
+  const cards = document.querySelectorAll("#card__expert .swiper-slide");
+
+  input.addEventListener("keyup", function () {
+
+    const filtro = this.value.toLowerCase();
+
+    cards.forEach(function(card) {
+
+      const nombre = card.getAttribute("data-nombre");
+
+      if (nombre.includes(filtro)) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+
+    });
+
+  });
+
+});
+</script>
