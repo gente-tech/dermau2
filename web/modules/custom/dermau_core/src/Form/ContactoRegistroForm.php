@@ -4,6 +4,7 @@ namespace Drupal\dermau_core\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
 
 class ContactoRegistroForm extends FormBase {
@@ -14,14 +15,27 @@ class ContactoRegistroForm extends FormBase {
 
   public function buildForm(array $form, FormStateInterface $form_state) {
 
+    // Cargar programas (tipo de contenido "programa")
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'programa')
+      ->condition('status', 1)
+      ->sort('title');
+
+    $nids = $query->execute();
+    $nodes = Node::loadMultiple($nids);
+
+    $programas = [];
+
+    foreach ($nodes as $node) {
+      $programas[$node->id()] = $node->getTitle();
+    }
+
     $form['programa'] = [
       '#type' => 'select',
       '#title' => $this->t('Programa'),
-      '#options' => [
-        '1' => 'Programa 1 - Derma U',
-        '2' => 'Programa 2',
-      ],
+      '#options' => $programas,
       '#required' => TRUE,
+      '#empty_option' => $this->t('- Seleccione un programa -'),
     ];
 
     $form['nombre'] = [
@@ -39,6 +53,7 @@ class ContactoRegistroForm extends FormBase {
     $form['telefono'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Teléfono'),
+      '#required' => TRUE,
     ];
 
     $form['ciudad'] = [
@@ -47,7 +62,9 @@ class ContactoRegistroForm extends FormBase {
       '#options' => [
         'bogota' => 'Bogotá',
         'medellin' => 'Medellín',
+        'cali' => 'Cali',
       ],
+      '#required' => TRUE,
     ];
 
     $form['profesion'] = [
@@ -55,13 +72,15 @@ class ContactoRegistroForm extends FormBase {
       '#title' => $this->t('Profesión'),
       '#options' => [
         'dermatologo' => 'Dermatólogo',
+        'medico' => 'Médico',
         'estetica' => 'Medicina estética',
       ],
+      '#required' => TRUE,
     ];
 
     $form['mensaje'] = [
       '#type' => 'textarea',
-      '#title' => $this->t('Mensaje'),
+      '#title' => $this->t('Mensaje (opcional)'),
     ];
 
     $form['autorizacion'] = [
@@ -73,6 +92,9 @@ class ContactoRegistroForm extends FormBase {
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Contáctame'),
+      '#attributes' => [
+        'class' => ['dermau-submit'],
+      ],
     ];
 
     return $form;
@@ -80,7 +102,12 @@ class ContactoRegistroForm extends FormBase {
 
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
-    $email = strtolower($form_state->getValue('nombre')) . '@temp.local';
+    $nombre = $form_state->getValue('nombre');
+    $apellido = $form_state->getValue('apellido');
+    $telefono = $form_state->getValue('telefono');
+
+    // Generar email temporal si no existe en el formulario
+    $email = strtolower($nombre . '.' . $apellido) . '@registro.local';
 
     $user = User::create([
       'name' => $email,
@@ -88,10 +115,12 @@ class ContactoRegistroForm extends FormBase {
       'status' => 0,
     ]);
 
+    // Rol registro
     $user->addRole('registro');
+
     $user->save();
 
-    $this->messenger()->addMessage('Solicitud enviada correctamente.');
+    $this->messenger()->addMessage($this->t('Tu solicitud fue enviada correctamente.'));
   }
 
 }
