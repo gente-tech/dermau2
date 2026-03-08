@@ -16,6 +16,14 @@ class ContactoRegistroForm extends FormBase {
 
   public function buildForm(array $form, FormStateInterface $form_state) {
 
+    /*
+    -----------------------------------------
+    Cargar librería del teléfono
+    -----------------------------------------
+    */
+
+    $form['#attached']['library'][] = 'dermau_core/intl_tel_input';
+
     $form['#attributes']['class'][] = 'du-form-register__form';
 
     /*
@@ -137,26 +145,16 @@ class ContactoRegistroForm extends FormBase {
       ]
     ];
 
-    $form['group_container']['group2']['phone_group']['country'] = [
-      '#type' => 'select',
-      '#options' => [
-        '+57' => 'Co',
-        '+52' => 'Mx',
-        '+54' => 'Ar',
-        '+56' => 'Ch'
-      ],
-      '#default_value' => '+57',
-      '#attributes' => [
-        'id' => 'du-reg-country'
-      ],
-      '#title_display' => 'invisible'
-    ];
+    /*
+    Campo teléfono (intl-tel-input)
+    */
 
     $form['group_container']['group2']['phone_group']['telefono'] = [
       '#type' => 'tel',
       '#attributes' => [
         'placeholder' => 'Teléfono',
-        'id' => 'du-reg-phone'
+        'id' => 'du-reg-phone',
+        'class' => ['du-form-input']
       ],
       '#required' => TRUE,
       '#title_display' => 'invisible'
@@ -294,9 +292,11 @@ class ContactoRegistroForm extends FormBase {
     */
 
     if ($pdf_url) {
+
       $form_state->setRedirectUrl(
         Url::fromUri($pdf_url)
       );
+
     }
 
   }
