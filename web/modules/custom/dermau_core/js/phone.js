@@ -6,7 +6,7 @@
 
       once('dermau-phone', context.querySelectorAll('#du-reg-phone')).forEach(function (input) {
 
-        window.intlTelInput(input, {
+        const iti = window.intlTelInput(input, {
 
           initialCountry: "co",
 
