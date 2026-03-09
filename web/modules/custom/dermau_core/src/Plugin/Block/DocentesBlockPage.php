@@ -70,6 +70,7 @@ class DocentesBlockPage extends BlockBase {
           'programas' => $programas,
           'imagen' => $imagen,
           'url' => $node->toUrl()->toString(),
+          
         ];
 
       }
