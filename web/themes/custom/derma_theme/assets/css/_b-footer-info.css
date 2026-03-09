@@ -118,3 +118,6 @@
 
     .du-footer-info__text{ padding-inline: 20px;  }
 }
+.feed-icon {
+  display: none;
+}
