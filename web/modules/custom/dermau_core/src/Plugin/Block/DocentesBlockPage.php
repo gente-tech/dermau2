@@ -58,19 +58,32 @@ class DocentesBlockPage extends BlockBase {
 
         $docentes[] = [
           'id' => $node->id(),
+        
           'nombre' => $node->getTitle(),
+        
           'rol' => $node->get('field_especialidad')->value ?? '',
-          'universidad' => $node->get('field_ciudad')->value ?? '',
+        
+          'ciudad' => $node->get('field_ciudad')->value ?? '',
+        
+          'email' => $node->get('field_correo_electronico')->value ?? '',
+        
+          'web' => $node->get('field_pagina_web')->value ?? '',
+        
           'descripcion' => Unicode::truncate(
             strip_tags($descripcion),
             285,
             TRUE,
             TRUE
           ),
+        
+          // PERFIL COMPLETO para el modal
+          'perfil' => $descripcion,
+        
           'programas' => $programas,
+        
           'imagen' => $imagen,
+        
           'url' => $node->toUrl()->toString(),
-          
         ];
 
       }
