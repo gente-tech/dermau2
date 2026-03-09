@@ -88,13 +88,83 @@
 
             <div class="du-card__expert-footer">
 
-              <a href="{{ docente.url }}" class="du-link-more">
-                Ver detalle
+              <a href="#" 
+                 class="du-link-more du-open-modal"
+                 data-target="modal-docente-{{ loop.index }}">
+                 Ver detalle
               </a>
 
             </div>
 
           </article>
+          <div id="modal-docente-{{ loop.index }}" class="du-modal">
+            <div class="du-modal__overlay"></div>
+          
+            <div class="du-modal__container">
+              <button class="du-modal__close">&times;</button>
+          
+              <div class="du-modal__content">
+          
+                <aside class="du-modal__aside">
+          
+                  <img
+                    src="{{ docente.imagen }}"
+                    alt="{{ docente.nombre }}"
+                    class="du-modal__img"
+                  />
+          
+                  <div class="du-modal__personal-info">
+          
+                    <h3 class="du-modal__name">
+                      {{ docente.nombre }}
+                    </h3>
+          
+                    <p class="du-modal__role">
+                      {{ docente.rol }}
+                    </p>
+          
+                  </div>
+          
+                </aside>
+          
+                <main class="du-modal__main">
+          
+                  <section class="du-modal__section">
+          
+                    <h4 class="du-modal__section-title">
+                      Perfil profesional
+                    </h4>
+          
+                    <div class="du-modal__bio">
+                      {{ docente.descripcion }}
+                    </div>
+          
+                  </section>
+          
+                  <section class="du-modal__section">
+          
+                    <h4 class="du-modal__section-title">
+                      Programas vinculados
+                    </h4>
+          
+                    <div class="du-modal__programs">
+          
+                      {% for programa in docente.programas %}
+                        <div class="du-program-tag">
+                          <span class="program-name">{{ programa }}</span>
+                        </div>
+                      {% endfor %}
+          
+                    </div>
+          
+                  </section>
+          
+                </main>
+          
+              </div>
+          
+            </div>
+          </div>
 
         </div>
 
@@ -133,6 +203,50 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
+  });
+
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const openBtns = document.querySelectorAll(".du-open-modal");
+  const closeBtns = document.querySelectorAll(".du-modal__close");
+  const overlays = document.querySelectorAll(".du-modal__overlay");
+
+  openBtns.forEach((btn) => {
+
+    btn.addEventListener("click", (e) => {
+
+      e.preventDefault();
+
+      const modalId = btn.getAttribute("data-target");
+      const modal = document.getElementById(modalId);
+
+      if(modal){
+        modal.style.display = "flex";
+        document.body.style.overflow = "hidden";
+      }
+
+    });
+
+  });
+
+  function closeModal(element){
+
+    const modal = element.closest(".du-modal");
+
+    modal.style.display = "none";
+    document.body.style.overflow = "auto";
+
+  }
+
+  closeBtns.forEach(btn => {
+    btn.addEventListener("click", () => closeModal(btn));
+  });
+
+  overlays.forEach(overlay => {
+    overlay.addEventListener("click", () => closeModal(overlay));
   });
 
 });
