@@ -202,6 +202,9 @@
   </div>
 </section>
 
+
+<div id="container-modal"></div>
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -229,46 +232,33 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 <script>
-document.addEventListener("DOMContentLoaded", () => {
 
-  const openBtns = document.querySelectorAll(".du-open-modal");
-  const closeBtns = document.querySelectorAll(".du-modal__close");
-  const overlays = document.querySelectorAll(".du-modal__overlay");
+document.addEventListener('click', function(e) {
+  const link = e.target.closest('.du-open-modal');
+  if (!link) return;
 
-  openBtns.forEach((btn) => {
+  e.preventDefault();
+  const targetId = link.getAttribute('data-target');
+  const modalContent = document.getElementById(targetId);
 
-    btn.addEventListener("click", (e) => {
-
-      e.preventDefault();
-
-      const modalId = btn.getAttribute("data-target");
-      const modal = document.getElementById(modalId);
-
-      if(modal){
-        modal.style.display = "flex";
-        document.body.style.overflow = "hidden";
-      }
-
-    });
-
-  });
-
-  function closeModal(element){
-
-    const modal = element.closest(".du-modal");
-
-    modal.style.display = "none";
-    document.body.style.overflow = "auto";
-
+  if (modalContent) {
+    const contenedor = document.getElementById('container-modal');
+    contenedor.innerHTML = modalContent.outerHTML;;
+    modalContent.style.display = "flex";
+    document.body.style.overflow = "hidden";
   }
-
-  closeBtns.forEach(btn => {
-    btn.addEventListener("click", () => closeModal(btn));
-  });
-
-  overlays.forEach(overlay => {
-    overlay.addEventListener("click", () => closeModal(overlay));
-  });
-
 });
+
+// Cerrar modal
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('du-modal__close') ||   e.target.classList.contains('du-modal__overlay')) {
+    const contenedor = document.getElementById('container-modal');
+    //const modalContent = e.target.closest(".du-modal");
+    //modalContent.style.display = "none";
+    document.body.style.overflow = "auto";
+    contenedor.innerHTML = '';
+  }
+});
+
+
 </script>

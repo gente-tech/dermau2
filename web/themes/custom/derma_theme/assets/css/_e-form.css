@@ -1,10 +1,18 @@
 .du-form-register {
   max-width: 300px;
+  min-width: 300px;
+  position: absolute;
+  top: 20px;
+  right: 60px;
+  z-index: 1;
+  min-height: 300px;
+}
+
+.du-form-register[data-float="true"] {
   position: fixed;
   top: 90px;
   right: 60px;
   z-index: 3;
-  min-height: 300px;
 }
 
 .du-form-register__container{
@@ -26,6 +34,13 @@
 .du-form-register__form {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  transition: max-height 0.5s linear;
+  max-height: 900px;
+}
+
+.du-form-register .max-h-0 {
+  max-height: 0;
 }
 
 .du-form-input,

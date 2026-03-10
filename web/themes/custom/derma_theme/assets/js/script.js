@@ -1,6 +1,5 @@
 const header = document.querySelector(".du-header");
 const menuToggle = document.getElementById("duMenuToggle");
-const menuClose = document.getElementById("duMenuClose");
 const navList = document.getElementById("duNavList");
 const navOverlay = document.getElementById("duNavOverlay");
 
@@ -18,8 +17,22 @@ const closeMenu = () => {
   document.body.style.overflow = "auto";
 };
 
-if (menuToggle) menuToggle.addEventListener("click", openMenu);
-if (menuClose) menuClose.addEventListener("click", closeMenu);
+if (menuToggle) {
+  menuToggle.addEventListener("click", openMenu);
+  if(window.innerWidth < 992) {
+    //  agregar al cargar la pagina id="duNavList" el siguiente div para cerrar el menú al hacer click en el icono de cerrar o en el overlay
+    navList.insertAdjacentHTML('beforeend', `
+     <div class="du-header__nav-close" id="duMenuClose">
+        <svg  width="23"  height="23"   viewBox="0 0 23 23"   fill="none"  xmlns="http://www.w3.org/2000/svg" >
+          <path d="M11.5 1.4375C5.89375 1.4375 1.4375 5.89375 1.4375 11.5C1.4375 17.1062 5.89375 21.5625 11.5 21.5625C17.1062 21.5625 21.5625 17.1062 21.5625 11.5C21.5625 5.89375 17.1062 1.4375 11.5 1.4375ZM11.5 20.125C6.75625 20.125 2.875 16.2437 2.875 11.5C2.875 6.75625 6.75625 2.875 11.5 2.875C16.2437 2.875 20.125 6.75625 20.125 11.5C20.125 16.2437 16.2437 20.125 11.5 20.125Z" fill="#1C224A"  />
+          <path d="M15.3812 16.5312L11.5 12.65L7.61875 16.5312L6.46875 15.3812L10.35 11.5L6.46875 7.61875L7.61875 6.46875L11.5 10.35L15.3812 6.46875L16.5312 7.61875L12.65 11.5L16.5312 15.3812L15.3812 16.5312Z" fill="#1C224A"  />
+        </svg>
+     </div>`);
+    const menuClose = document.getElementById("duMenuClose");
+    if (menuClose) menuClose.addEventListener("click", closeMenu);
+  }
+}
+
 if (navOverlay) navOverlay.addEventListener("click", closeMenu);
 
 
@@ -288,3 +301,15 @@ const countryArr = [
 ];
 
 initCountrySelect('select-country', 'du-reg-phone', countryArr, 'https://flagcdn.com/w40/');
+
+
+/* btn action form float */
+document.addEventListener("DOMContentLoaded", () => {
+  const btnChat = document.querySelector(".du-float-chat");
+  if (!btnChat) return;
+  btnChat.addEventListener("click", (e) => {
+    e.preventDefault();
+    const form = document.querySelector(".du-form-register__form");
+    if (form)  form.classList.toggle("max-h-0");
+  });
+});

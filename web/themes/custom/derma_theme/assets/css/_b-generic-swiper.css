@@ -14,7 +14,9 @@
 
 .du-generic-swiper__container.left {
   max-width: var(--du-max-width-left);
+  margin:0;
 }
+
 
 /* HEADER */
 .du-generic-swiper__header {
