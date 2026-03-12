@@ -43,6 +43,18 @@
   }
 }
 
+@keyframes modalSlideDown {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
 .du-modal__close {
   position: absolute;
   top: 20px;
@@ -194,6 +206,92 @@
 .du-modal__message-title{}
 .du-modal__message-description{}
 
+
+/* --- ESTILOS PARA MODAL DE BÚSQUEDA --- */
+.du-modal-search{
+	background: #F5F7FA;
+    width: 100%;
+	padding: 10px;
+    position: absolute;
+    top: 44px;
+    left: 0;
+    max-width: 420px;
+    border-radius: 4px;
+    min-height: 100%;
+    z-index: 3;
+	box-shadow: 0px 4px 4px 0px #00000040;
+	display:none;
+}
+.du-modal-search.open{
+	display:block;
+  animation: modalSlideDown 0.3s ease-out;
+}
+.du-modal-search__header {
+    display: flex;
+    justify-content: space-between;
+	align-items: center;
+    gap: 10px;
+}
+.du-modal-search__wrap {
+    flex: 1;
+    position: relative;
+}
+.du-modal-search__wrap  .btn-icon { 
+	position: absolute; 
+	width:16px;
+	height:16px;
+	top: 10px;
+}
+.du-modal-search__wrap .icon-l{ left:6px; }
+.du-modal-search__wrap .icon-r{ right:6px; }
+#du-modal-search__input {
+    width: 100%;
+    border: none;
+    height: 36px;
+    border-radius: 4px;
+	padding-left: 30px;
+}
+#du-modal-search__input:focus {
+   border: 1px solid #0077cc;
+   outline: none;
+}
+.du-modal-search__cancel {
+    color: #007BE3;
+    text-align: center;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+.du-modal-search__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #CBCBCB;
+}
+.du-modal-search__info { padding-block: 10px; }
+.du-modal-search__info h3 {
+    color: #007BE3;
+    font-size: 16px;
+    padding-bottom: 10px;
+}
+.du-modal-search__info ul {
+    list-style: none;
+    padding-left: 10px;
+    color: #464646;
+    font-size: 13px;
+    font-weight: 600;
+}
+.du-modal-search__info ul li{
+	display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+    padding-block: 2px;
+}
+
+
+
 /* --- RESPONSIVE (Versión Móvil) --- */
 @media (max-width: 768px) {
   .du-modal__content {
@@ -219,5 +317,11 @@
     right: 5px;
     width: 20px;
     height: 20px;
+  }
+
+  .du-modal-search{
+	  position: fixed;
+    top: 54px;
+	  left:0;
   }
 }
