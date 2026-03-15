@@ -67,6 +67,10 @@ function dermau_core_theme($existing, $type, $theme, $path) {
       ],
       'template' => 'block-faq',
     ],
+    'block_bar_menu' => [
+      'variables' => [],
+      'template' => 'block-bar-menu',
+    ],
   ];
 }
 
