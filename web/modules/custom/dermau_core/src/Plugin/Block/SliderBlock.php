@@ -12,22 +12,11 @@ use Drupal\node\Entity\Node;
  *
  * @Block(
  *   id = "dermau_slider_block",
- *   admin_label = @Translation("Dermau Slider Block"),
+ *   admin_label = @Translation("Dermau Slider Block")
  * )
  */
 class SliderBlock extends BlockBase
 {
-
-  /**
-   * {@inheritdoc}
-   */
-  public function defaultConfiguration()
-  {
-    return [
-      'float_chat_image' => NULL,
-      'float_chat_image_alt' => '',
-    ];
-  }
 
   /**
    * {@inheritdoc}
@@ -42,16 +31,15 @@ class SliderBlock extends BlockBase
         ? [$this->configuration['float_chat_image']]
         : [],
       '#upload_validators' => [
-        'file_validate_extensions' => ['png jpg jpeg webp svg'],
+        'file_validate_extensions' => ['svg png jpg jpeg webp'],
       ],
-      '#description' => $this->t('Sube la imagen que reemplazará el ícono SVG del botón flotante.'),
+      '#description' => $this->t('Sube la imagen del botón flotante.'),
     ];
 
     $form['float_chat_image_alt'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Texto alternativo de la imagen flotante'),
+      '#title' => $this->t('Texto alternativo'),
       '#default_value' => $this->configuration['float_chat_image_alt'] ?? '',
-      '#description' => $this->t('Texto ALT para accesibilidad.'),
     ];
 
     return $form;
@@ -64,19 +52,24 @@ class SliderBlock extends BlockBase
   {
     $float_chat_image = $form_state->getValue('float_chat_image');
 
-    $fid = NULL;
     if (!empty($float_chat_image[0])) {
       $fid = (int) $float_chat_image[0];
-
       $file = File::load($fid);
+
       if ($file) {
         $file->setPermanent();
         $file->save();
+
+        $this->configuration['float_chat_image'] = $fid;
       }
+    } else {
+      unset($this->configuration['float_chat_image']);
     }
 
-    $this->configuration['float_chat_image'] = $fid;
-    $this->configuration['float_chat_image_alt'] = $form_state->getValue('float_chat_image_alt');
+    $alt = $form_state->getValue('float_chat_image_alt');
+    if ($alt !== NULL) {
+      $this->configuration['float_chat_image_alt'] = $alt;
+    }
   }
 
   /**
