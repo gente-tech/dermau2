@@ -77,6 +77,19 @@ function dermau_core_theme($existing, $type, $theme, $path) {
       ],
       'template' => 'block-bar-menu',
     ],
+    'dermau_info_block' => [
+      'variables' => [
+        'titulo_normal' => '',
+        'titulo_resaltado' => '',
+        'descripcion' => '',
+        'label_btn' => '',
+        'imagen' => [
+          'url' => '',
+          'alt' => '',
+        ],
+      ],
+      'template' => 'dermau-info-block',
+    ],
   ];
 }
 
