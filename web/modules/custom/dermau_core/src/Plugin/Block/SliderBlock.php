@@ -33,6 +33,9 @@ class SliderBlock extends BlockBase
       '#title' => $this->t('Imagen botón flotante'),
       '#upload_location' => 'public://slider-block/',
       '#default_value' => $this->configuration['float_chat_image'] ?? NULL,
+      '#upload_validators' => [
+        'file_validate_extensions' => ['svg png jpg jpeg webp'],
+      ],
     ];
 
     $form['float_chat_image_alt'] = [
