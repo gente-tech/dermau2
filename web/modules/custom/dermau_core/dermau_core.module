@@ -8,6 +8,10 @@ function dermau_core_theme($existing, $type, $theme, $path) {
     'dermau_slider_block' => [
       'variables' => [
         'sliders' => [],
+        'float_chat_image' => [
+          'url' => '',
+          'alt' => '',
+        ],
       ],
       'template' => 'dermau-slider-block',
     ],
