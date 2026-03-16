@@ -20,9 +20,9 @@
 				</div>
 				<div class="du-hero__detail" data-variation="big">
 					<div class="du-hero__detail-icon">
-						<img 
-              src="url('{{ node.field_imagen_de_la_universidad.entity ? file_url(node.field_imagen_de_la_universidad.entity.fileuri) : '' }}')"
-              alt="{{ node.field_imagen_de_la_universidad.entity.alt }}"/>
+						{% if node.field_imagen_de_la_universidad.entity %}
+							<img src="{{ file_url(node.field_imagen_de_la_universidad.entity.fileuri) }}" alt="{{ node.field_imagen_de_la_universidad.alt }}">
+						{% endif %}
 					</div>
 					<div class="du-hero__detail-options">
 						<div class="du-hero__detail-option">
@@ -50,7 +50,8 @@
 									<path d="M7.7144 8.86065C9.9125 8.86065 11.6944 7.04502 11.6944 4.80532C11.6944 2.56563 9.9125 0.75 7.7144 0.75C5.51629 0.75 3.73438 2.56563 3.73438 4.80532C3.73438 7.04502 5.51629 8.86065 7.7144 8.86065Z" stroke="#0066BD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 								</svg>
 							</span>
-							<span class="du-hero__detail-option-text">{{ node.field_cupos.value }} Cupos</span>
+							<span class="du-hero__detail-option-text">{{ node.field_cupos.value }}
+								Cupos</span>
 						</div>
 						<div class="du-hero__detail-option">
 							<span class="du-hero__detail-option-icon">
@@ -111,14 +112,14 @@
 		<div class="du-media-block__video-side">
 			<div class="du-video-player">
 				<iframe src="https://www.youtube.com/embed/{{ node.field_id_video_youtube.value }}" title="YouTube video player" frameborder="0" allow="
-																																			                  accelerometer;
-																																			                  autoplay;
-																																			                  clipboard-write;
-																																			                  encrypted-media;
-																																			                  gyroscope;
-																																			                  picture-in-picture;
-																																			                  web-share;
-																																			                " referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+																																								                  accelerometer;
+																																								                  autoplay;
+																																								                  clipboard-write;
+																																								                  encrypted-media;
+																																								                  gyroscope;
+																																								                  picture-in-picture;
+																																								                  web-share;
+																																								                " referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 			</div>
 		</div>
 
