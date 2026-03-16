@@ -59,10 +59,6 @@ class InfoBlock extends BlockBase
 			'#title' => $this->t('Imagen'),
 			'#upload_location' => 'public://info-block/',
 			'#default_value' => $this->configuration['imagen'] ?? [],
-			'#upload_validators' => [
-				'file_validate_extensions' => ['png jpg jpeg webp svg'],
-			],
-			'#required' => FALSE,
 			'#multiple' => FALSE,
 		];
 
