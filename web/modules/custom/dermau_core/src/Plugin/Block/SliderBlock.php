@@ -50,10 +50,23 @@ class SliderBlock extends BlockBase
   public function blockSubmit($form, FormStateInterface $form_state)
   {
     $float_chat_image = $form_state->getValue('float_chat_image');
+    \Drupal::logger('dermaU')->info(
+      'float_chat_image[0]: @der, float_chat_image: @red',
+      [
+        '@der' => $float_chat_image[0],
+        '@red' => $float_chat_image,
+      ]
+    );
 
     if (!empty($float_chat_image[0])) {
       $file = File::load($float_chat_image[0]);
       if ($file) {
+        \Drupal::logger('dermaU-file')->info(
+          'file: @der',
+          [
+            '@der' => $file,
+          ]
+        );
         $file->setPermanent();
         $file->save();
       }
