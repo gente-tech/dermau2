@@ -137,6 +137,14 @@
   display: none;
 }
 
+
+@media (min-width: 1000px) {
+  .du-header__container > div {
+      width: 100%;
+      margin-left: 15px;
+  }
+}
+
 /* MOBILE STYLES */
 @media (max-width: 992px) {
  
