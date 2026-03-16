@@ -113,11 +113,12 @@
 .du-hero__detail{ 
   display: flex;
   align-items: center; 
+  padding-block: 20px;
 }
-.du-hero__detail-icon{}
+.du-hero__detail-icon{     padding-right: 20px; }
 .du-hero__detail-icon img{
-  width: 134px;
-  height: auto;
+  width: auto;
+  height: 68px;
 }
 .du-hero__detail-options{
   display: flex;
@@ -168,12 +169,12 @@
 
   .du-hero__detail-icon {
     position: absolute;
-    bottom: -30px;
-    right: calc(50% - 170px);
+    bottom: 0;
+    right: calc(50% - 190px);
   }
 
   .du-hero__detail-icon img {
-    width: 70px;
+    width: 68px;
     height: auto;
   }
 
