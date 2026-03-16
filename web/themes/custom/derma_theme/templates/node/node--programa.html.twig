@@ -8,10 +8,11 @@
 		<div class="du-hero__wrapper">
 			<div class="du-hero__content">
 				<div class="du-hero__tags">
-					<span class="tag tag-1">Inscripciones Abiertas</span>
-					<span class="tag tag-2">100% Online</span>
-					<span class="tag tag-3">Área temática</span>
-					<span class="tag tag-1">Inicia: 10 Feb</span>
+					{% for item in node.field_tags_programa %}
+						<span class="tag tag-{{ loop.index }}">
+							{{ item.value }}
+						</span>
+					{% endfor %}
 				</div>
 				<h1 class="du-hero__title">
 					{{ node.label }}
@@ -115,14 +116,14 @@
 		<div class="du-media-block__video-side">
 			<div class="du-video-player">
 				<iframe src="https://www.youtube.com/embed/{{ node.field_id_video_youtube.value }}" title="YouTube video player" frameborder="0" allow="
-																																																												                  accelerometer;
-																																																												                  autoplay;
-																																																												                  clipboard-write;
-																																																												                  encrypted-media;
-																																																												                  gyroscope;
-																																																												                  picture-in-picture;
-																																																												                  web-share;
-																																																												                " referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+																																																																						                  accelerometer;
+																																																																						                  autoplay;
+																																																																						                  clipboard-write;
+																																																																						                  encrypted-media;
+																																																																						                  gyroscope;
+																																																																						                  picture-in-picture;
+																																																																						                  web-share;
+																																																																						                " referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 			</div>
 		</div>
 
