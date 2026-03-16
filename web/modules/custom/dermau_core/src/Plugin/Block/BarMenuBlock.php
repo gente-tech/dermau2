@@ -18,12 +18,12 @@ class BarMenuBlock extends BlockBase
 {
 
 	/**
-	 * Temporary key in form state.
+	 * Temporary form state key.
 	 */
 	private const STATE_KEY = 'dermau_bar_menu_items_state';
 
 	/**
-	 * Allowed icon machine names.
+	 * Allowed icons.
 	 */
 	private const ALLOWED_ICONS = [
 		'book',
@@ -62,7 +62,7 @@ class BarMenuBlock extends BlockBase
 	 */
 	public function blockForm($form, FormStateInterface $form_state)
 	{
-		$items = $this->getStateItems($form_state);
+		$items = $this->getWorkingItems($form_state);
 
 		$form['items'] = [
 			'#type' => 'container',
@@ -119,9 +119,7 @@ class BarMenuBlock extends BlockBase
 					'wrapper' => 'dermau-bar-menu-items-wrapper',
 				],
 				'#limit_validation_errors' => [],
-				'#attributes' => [
-					'data-item-delta' => (string) $delta,
-				],
+				'#bar_menu_delta' => $delta,
 			];
 		}
 
@@ -144,11 +142,11 @@ class BarMenuBlock extends BlockBase
 	}
 
 	/**
-	 * Add item AJAX submit.
+	 * Add item handler.
 	 */
 	public function addItemSubmit(array &$form, FormStateInterface $form_state)
 	{
-		$items = $this->getSubmittedItemsOrState($form_state);
+		$items = $this->getSubmittedItemsForAjax($form_state);
 
 		$items[] = [
 			'text' => '',
@@ -156,35 +154,30 @@ class BarMenuBlock extends BlockBase
 			'icon' => 'book',
 		];
 
-		$this->setStateItems($form_state, $items);
+		$this->setWorkingItems($form_state, $items);
 		$form_state->setRebuild(TRUE);
 	}
 
 	/**
-	 * Remove item AJAX submit.
+	 * Remove item handler.
 	 */
 	public function removeItemSubmit(array &$form, FormStateInterface $form_state)
 	{
-		$items = $this->getSubmittedItemsOrState($form_state);
+		$items = $this->getSubmittedItemsForAjax($form_state);
 
 		$trigger = $form_state->getTriggeringElement();
-		$delta = NULL;
+		$delta = $trigger['#bar_menu_delta'] ?? NULL;
 
-		if (isset($trigger['#attributes']['data-item-delta'])) {
-			$delta = (int) $trigger['#attributes']['data-item-delta'];
-		}
-
-		if ($delta !== NULL && array_key_exists($delta, $items)) {
+		if ($delta !== NULL && isset($items[$delta])) {
 			unset($items[$delta]);
-			$items = array_values($items);
 		}
 
-		$this->setStateItems($form_state, $items);
+		$this->setWorkingItems($form_state, array_values($items));
 		$form_state->setRebuild(TRUE);
 	}
 
 	/**
-	 * AJAX wrapper refresh.
+	 * Ajax callback.
 	 */
 	public function ajaxRefresh(array &$form, FormStateInterface $form_state)
 	{
@@ -196,14 +189,15 @@ class BarMenuBlock extends BlockBase
 	 */
 	public function blockSubmit($form, FormStateInterface $form_state)
 	{
-		$items = $this->extractSubmittedItems($form_state);
+		$items = $form_state->getValue('items');
 
-		if (empty($items)) {
-			$items = $this->getStateItems($form_state);
+		if (!is_array($items)) {
+			$items = $form_state->getValue(['settings', 'items']);
 		}
 
-		$clean_items = [];
+		$items = $this->normalizeItems(is_array($items) ? $items : []);
 
+		$clean_items = [];
 		foreach ($items as $item) {
 			if ($item['text'] === '' || $item['url'] === '') {
 				continue;
@@ -213,7 +207,7 @@ class BarMenuBlock extends BlockBase
 		}
 
 		$this->configuration['items'] = array_values($clean_items);
-		$this->setStateItems($form_state, $clean_items);
+		$this->setWorkingItems($form_state, $clean_items);
 	}
 
 	/**
@@ -231,9 +225,9 @@ class BarMenuBlock extends BlockBase
 	}
 
 	/**
-	 * Gets current working items from form state or configuration.
+	 * Returns working items from form state or block configuration.
 	 */
-	private function getStateItems(FormStateInterface $form_state): array
+	private function getWorkingItems(FormStateInterface $form_state): array
 	{
 		$items = $form_state->get(self::STATE_KEY);
 
@@ -246,59 +240,32 @@ class BarMenuBlock extends BlockBase
 	}
 
 	/**
-	 * Stores normalized working items into form state.
+	 * Stores working items in form state.
 	 */
-	private function setStateItems(FormStateInterface $form_state, array $items): void
+	private function setWorkingItems(FormStateInterface $form_state, array $items): void
 	{
 		$form_state->set(self::STATE_KEY, $this->normalizeItems($items));
 	}
 
 	/**
-	 * Returns submitted items if present, otherwise current state items.
+	 * Reads current submitted items for AJAX operations.
+	 *
+	 * This uses raw input because add/remove buttons bypass normal validation flow.
 	 */
-	private function getSubmittedItemsOrState(FormStateInterface $form_state): array
-	{
-		$submitted = $this->extractSubmittedItems($form_state);
-
-		if (!empty($submitted)) {
-			return $submitted;
-		}
-
-		return $this->getStateItems($form_state);
-	}
-
-	/**
-	 * Extracts items from raw user input.
-	 */
-	private function extractSubmittedItems(FormStateInterface $form_state): array
+	private function getSubmittedItemsForAjax(FormStateInterface $form_state): array
 	{
 		$input = $form_state->getUserInput();
 
 		$items = NestedArray::getValue($input, ['settings', 'items']);
-
 		if (!is_array($items)) {
 			$items = NestedArray::getValue($input, ['items']);
 		}
 
 		if (!is_array($items)) {
-			return [];
+			return $this->getWorkingItems($form_state);
 		}
 
-		$normalized = [];
-
-		foreach ($items as $delta => $item) {
-			if (!is_array($item)) {
-				continue;
-			}
-
-			$normalized[$delta] = [
-				'text' => isset($item['text']) ? trim((string) $item['text']) : '',
-				'url' => isset($item['url']) ? trim((string) $item['url']) : '',
-				'icon' => isset($item['icon']) ? (string) $item['icon'] : 'book',
-			];
-		}
-
-		return $this->normalizeItems($normalized);
+		return $this->normalizeItems($items);
 	}
 
 	/**
