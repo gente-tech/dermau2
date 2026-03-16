@@ -1,3 +1,6 @@
+{% set imagen_universidad = file_url(node.field_imagen_de_la_universidad.entity.field_media_image.entity.uri.value) %}
+{% set alt_imagen_universidad = file_url(node.field_imagen_de_la_universidad.entity.field_media_image.entity.alt) %}
+
 <section class="du-hero" data-variation="medium">
 	<div class="du-hero__container">
 		<div class="du-hero__bg" style="background-image: url('{{ node.field_imagen_programa.entity ? file_url(node.field_imagen_programa.entity.fileuri) : '' }}');"></div>
@@ -20,8 +23,8 @@
 				</div>
 				<div class="du-hero__detail" data-variation="big">
 					<div class="du-hero__detail-icon">
-						{% if node.field_imagen_de_la_universidad.0.entity %}
-							<img src="{{ file_url(node.field_imagen_de_la_universidad.0.entity.uri.value) }}" alt="{{ node.field_imagen_de_la_universidad.0.alt|default('') }}">
+						{% if imagen_universidad %}
+							<img src="{{ imagen_universidad }}" alt="{{ alt_imagen_universidad }}">
 						{% endif %}
 					</div>
 					<div class="du-hero__detail-options">
@@ -112,14 +115,14 @@
 		<div class="du-media-block__video-side">
 			<div class="du-video-player">
 				<iframe src="https://www.youtube.com/embed/{{ node.field_id_video_youtube.value }}" title="YouTube video player" frameborder="0" allow="
-																																													                  accelerometer;
-																																													                  autoplay;
-																																													                  clipboard-write;
-																																													                  encrypted-media;
-																																													                  gyroscope;
-																																													                  picture-in-picture;
-																																													                  web-share;
-																																													                " referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+																																																							                  accelerometer;
+																																																							                  autoplay;
+																																																							                  clipboard-write;
+																																																							                  encrypted-media;
+																																																							                  gyroscope;
+																																																							                  picture-in-picture;
+																																																							                  web-share;
+																																																							                " referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 			</div>
 		</div>
 
