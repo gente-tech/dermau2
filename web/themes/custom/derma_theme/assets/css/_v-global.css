@@ -17,6 +17,7 @@
   --du-z-nav: 999;
   --du-z-header: 1000;
   --du-max-width: 1440px;
+  --du-max-width-2x: 1520px;
   --du-max-width-left: calc(100% - 350px);
   --du-shadow-menu: 0 8px 15px rgba(0, 0, 0, 0.1);
   --du-shadow-card: 0 4px 15px rgba(0,0,0,0.08);

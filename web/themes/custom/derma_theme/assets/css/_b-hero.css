@@ -19,6 +19,10 @@
 
 .du-hero[data-variation="medium"] .du-hero__wrapper {   max-width: 960px;  }
 .du-hero[data-variation="full"] .du-hero__wrapper {   max-width: 100%;  }
+.du-hero[data-variation="2x-center"] .du-hero__wrapper {   
+  max-width: var(--du-max-width-2x);
+  margin: 0 auto;  
+}
 
 .du-hero__bg {
   position: absolute;
