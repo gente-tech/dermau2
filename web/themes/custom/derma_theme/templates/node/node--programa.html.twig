@@ -45,7 +45,10 @@
 									<path d="M14.5625 21.4475C15.7711 20.7661 17.1902 20.5594 18.5429 20.8678" stroke="#0066BD" stroke-linecap="round" stroke-linejoin="round"/>
 								</svg>
 							</span>
-							<span class="du-hero__detail-option-text">4 Modulos</span>
+							{% if node.field_modulos|length > 0 %}
+								<span class="du-hero__detail-option-text">{{ node.field_modulos|length }}
+									Modulos</span>
+							{% endif %}
 						</div>
 						<div class="du-hero__detail-option">
 							<span class="du-hero__detail-option-icon">
@@ -116,14 +119,14 @@
 		<div class="du-media-block__video-side">
 			<div class="du-video-player">
 				<iframe src="https://www.youtube.com/embed/{{ node.field_id_video_youtube.value }}" title="YouTube video player" frameborder="0" allow="
-																																																																						                  accelerometer;
-																																																																						                  autoplay;
-																																																																						                  clipboard-write;
-																																																																						                  encrypted-media;
-																																																																						                  gyroscope;
-																																																																						                  picture-in-picture;
-																																																																						                  web-share;
-																																																																						                " referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+																																																																											                  accelerometer;
+																																																																											                  autoplay;
+																																																																											                  clipboard-write;
+																																																																											                  encrypted-media;
+																																																																											                  gyroscope;
+																																																																											                  picture-in-picture;
+																																																																											                  web-share;
+																																																																											                " referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 			</div>
 		</div>
 
