@@ -18,20 +18,14 @@ use Drupal\node\Entity\Node;
 class SliderBlock extends BlockBase
 {
 
-  /**
-   * {@inheritdoc}
-   */
   public function defaultConfiguration()
   {
     return [
-      'float_chat_image' => NULL,
+      'float_chat_image' => [],
       'float_chat_image_alt' => '',
     ];
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function blockForm($form, FormStateInterface $form_state)
   {
     $form['float_chat_image'] = [
@@ -39,10 +33,6 @@ class SliderBlock extends BlockBase
       '#title' => $this->t('Imagen botón flotante'),
       '#upload_location' => 'public://slider-block/',
       '#default_value' => $this->configuration['float_chat_image'] ?? NULL,
-      '#upload_validators' => [
-        'file_validate_extensions' => ['svg png jpg jpeg webp'],
-      ],
-      '#description' => $this->t('Sube la imagen del botón flotante.'),
     ];
 
     $form['float_chat_image_alt'] = [
@@ -54,9 +44,6 @@ class SliderBlock extends BlockBase
     return $form;
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function blockSubmit($form, FormStateInterface $form_state)
   {
     $float_chat_image = $form_state->getValue('float_chat_image');
@@ -86,7 +73,6 @@ class SliderBlock extends BlockBase
 
     $nids = $query->execute();
     $sliders = [];
-    $file_url_generator = \Drupal::service('file_url_generator');
 
     if (!empty($nids)) {
       $nodes = Node::loadMultiple($nids);
@@ -98,7 +84,9 @@ class SliderBlock extends BlockBase
         if (!$node->get('field_imagen')->isEmpty()) {
           $file = $node->get('field_imagen')->entity;
           if ($file) {
-            $image_url = $file_url_generator->generateAbsoluteString($file->getFileUri());
+            $image_url = \Drupal::service('file_url_generator')
+              ->generateAbsoluteString($file->getFileUri());
+
             $image_alt = $node->get('field_imagen')->alt ?? '';
           }
         }
@@ -125,7 +113,8 @@ class SliderBlock extends BlockBase
     if (!empty($this->configuration['float_chat_image'][0])) {
       $file = File::load($this->configuration['float_chat_image'][0]);
       if ($file) {
-        $float_chat_image_url = $file_url_generator->generateAbsoluteString($file->getFileUri());
+        $float_chat_image_url = \Drupal::service('file_url_generator')
+          ->generateAbsoluteString($file->getFileUri());
       }
     }
 
