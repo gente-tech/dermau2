@@ -1,11 +1,8 @@
-{% set imagen_universidad = file_url(node.field_imagen_de_la_universidad.entity.field_media_image.entity.uri.value) %}
-{% set alt_imagen_universidad = file_url(node.field_imagen_de_la_universidad.entity.field_media_image.entity.alt) %}
+{% set imagen_universidad = file_url(node.field_imagen_de_la_universidad.entity.uri.value) %}
+{% set alt_imagen_universidad = file_url(node.field_imagen_de_la_universidad.entity.alt) %}
 
 <pre>
-  {{ dump(node.field_imagen_de_la_universidad) }}
-</pre>
-<pre>
-  {{ dump(node.field_imagen_de_la_universidad.entity.uri.value) }}
+  {{ dump(file_url(node.field_imagen_de_la_universidad.entity.uri.value)) }}
 </pre>
 <section class="du-hero" data-variation="medium">
 	<div class="du-hero__container">
