@@ -1,21 +1,24 @@
-<div class="dermau-info-block">
-  {% if imagen.url %}
-    <div class="dermau-info-block__image">
-      <img src="{{ imagen.url }}" alt="{{ imagen.alt }}">
-    </div>
-  {% endif %}
-
-  <div class="dermau-info-block__content">
-    {% if titulo_normal %}
-      <div class="dermau-info-block__title-normal">{{ titulo_normal }}</div>
-    {% endif %}
-
-    {% if titulo_resaltado %}
-      <div class="dermau-info-block__title-highlight">{{ titulo_resaltado }}</div>
-    {% endif %}
-
-    {% if descripcion %}
-      <div class="dermau-info-block__description">{{ descripcion }}</div>
-    {% endif %}
-  </div>
-</div>
+<section class="du-footer-info" data-variation="">
+	<div class="du-footer-info__text">
+		<h2 class="du-footer-info__title">
+			{% if titulo_normal %}
+				{{ titulo_normal }}
+			{% endif %}
+			<span>
+				{% if titulo_resaltado %}
+					{{ titulo_resaltado }}
+				{% endif %}
+			</span>
+			?
+		</h2>
+		<p class="du-footer-info__description">
+			{% if descripcion %}
+				{{ descripcion }}
+			{% endif %}
+		</p>
+	</div>
+	<div class="du-footer-info__image">
+		<img src="{{ imagen.url }}" alt="{{ imagen.alt }}" width="400" height="267">
+		<a class="du-footer-info__link" href="#">{{ label_btn }}</a>
+	</div>
+</section>

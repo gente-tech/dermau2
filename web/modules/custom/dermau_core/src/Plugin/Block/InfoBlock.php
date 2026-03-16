@@ -28,6 +28,7 @@ class InfoBlock extends BlockBase
 			'descripcion' => '',
 			'imagen' => [],
 			'imagen_alt' => '',
+			'label_btn' => '',
 		];
 	}
 
@@ -67,6 +68,12 @@ class InfoBlock extends BlockBase
 			'#title' => $this->t('Alt de la imagen'),
 			'#default_value' => $this->configuration['imagen_alt'] ?? '',
 		];
+		
+		$form['label_btn'] = [
+			'#type' => 'textfield',
+			'#title' => $this->t('Label del botón'),
+			'#default_value' => $this->configuration['label_btn'] ?? '',
+		];
 
 		return $form;
 	}
@@ -99,6 +106,7 @@ class InfoBlock extends BlockBase
 		$this->configuration['descripcion'] = $form_state->getValue('descripcion');
 		$this->configuration['imagen'] = $imagen ?: [];
 		$this->configuration['imagen_alt'] = $form_state->getValue('imagen_alt');
+		$this->configuration['label_btn'] = $form_state->getValue('label_btn');
 	}
 
 	/**
@@ -123,6 +131,7 @@ class InfoBlock extends BlockBase
 			'#titulo_normal' => $this->configuration['titulo_normal'] ?? '',
 			'#titulo_resaltado' => $this->configuration['titulo_resaltado'] ?? '',
 			'#descripcion' => $this->configuration['descripcion'] ?? '',
+			'#label_btn' => $this->configuration['label_btn'] ?? '',
 			'#imagen' => [
 				'url' => $image_url,
 				'alt' => $image_alt,
