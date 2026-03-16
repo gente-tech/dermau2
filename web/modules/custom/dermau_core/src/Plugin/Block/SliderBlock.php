@@ -3,6 +3,8 @@
 namespace Drupal\dermau_core\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\file\Entity\File;
 use Drupal\node\Entity\Node;
 
 /**
@@ -13,13 +15,75 @@ use Drupal\node\Entity\Node;
  *   admin_label = @Translation("Dermau Slider Block"),
  * )
  */
-class SliderBlock extends BlockBase {
+class SliderBlock extends BlockBase
+{
 
   /**
    * {@inheritdoc}
    */
-  public function build() {
+  public function defaultConfiguration()
+  {
+    return [
+      'float_chat_image' => NULL,
+      'float_chat_image_alt' => '',
+    ];
+  }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function blockForm($form, FormStateInterface $form_state)
+  {
+    $form['float_chat_image'] = [
+      '#type' => 'managed_file',
+      '#title' => $this->t('Imagen botón flotante'),
+      '#upload_location' => 'public://slider-block/',
+      '#default_value' => !empty($this->configuration['float_chat_image'])
+        ? [$this->configuration['float_chat_image']]
+        : [],
+      '#upload_validators' => [
+        'file_validate_extensions' => ['png jpg jpeg webp svg'],
+      ],
+      '#description' => $this->t('Sube la imagen que reemplazará el ícono SVG del botón flotante.'),
+    ];
+
+    $form['float_chat_image_alt'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Texto alternativo de la imagen flotante'),
+      '#default_value' => $this->configuration['float_chat_image_alt'] ?? '',
+      '#description' => $this->t('Texto ALT para accesibilidad.'),
+    ];
+
+    return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function blockSubmit($form, FormStateInterface $form_state)
+  {
+    $float_chat_image = $form_state->getValue('float_chat_image');
+
+    $fid = NULL;
+    if (!empty($float_chat_image[0])) {
+      $fid = (int) $float_chat_image[0];
+
+      $file = File::load($fid);
+      if ($file) {
+        $file->setPermanent();
+        $file->save();
+      }
+    }
+
+    $this->configuration['float_chat_image'] = $fid;
+    $this->configuration['float_chat_image_alt'] = $form_state->getValue('float_chat_image_alt');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function build()
+  {
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'slider')
       ->condition('status', 1)
@@ -31,19 +95,16 @@ class SliderBlock extends BlockBase {
 
     if (!empty($nids)) {
       $nodes = Node::loadMultiple($nids);
+      $file_url_generator = \Drupal::service('file_url_generator');
 
       foreach ($nodes as $node) {
-
-        // Imagen (Image field directo)
         $image_url = '';
         $image_alt = '';
 
         if (!$node->get('field_imagen')->isEmpty()) {
           $file = $node->get('field_imagen')->entity;
           if ($file) {
-            $image_url = \Drupal::service('file_url_generator')
-              ->generateAbsoluteString($file->getFileUri());
-
+            $image_url = $file_url_generator->generateAbsoluteString($file->getFileUri());
             $image_alt = $node->get('field_imagen')->alt ?? '';
           }
         }
@@ -64,13 +125,28 @@ class SliderBlock extends BlockBase {
       }
     }
 
+    $float_chat_image_url = '';
+    $float_chat_image_alt = $this->configuration['float_chat_image_alt'] ?? '';
+
+    if (!empty($this->configuration['float_chat_image'])) {
+      $file = File::load($this->configuration['float_chat_image']);
+      if ($file) {
+        $float_chat_image_url = \Drupal::service('file_url_generator')
+          ->generateAbsoluteString($file->getFileUri());
+      }
+    }
+
     return [
       '#theme' => 'dermau_slider_block',
       '#sliders' => $sliders,
+      '#float_chat_image' => [
+        'url' => $float_chat_image_url,
+        'alt' => $float_chat_image_alt,
+      ],
       '#cache' => [
         'tags' => ['node_list:slider'],
+        'max-age' => 0,
       ],
     ];
   }
-
 }
