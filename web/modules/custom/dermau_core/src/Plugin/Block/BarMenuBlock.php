@@ -189,25 +189,37 @@ class BarMenuBlock extends BlockBase
 	 */
 	public function blockSubmit($form, FormStateInterface $form_state)
 	{
+
 		$items = $form_state->getValue('items');
 
 		if (!is_array($items)) {
-			$items = $form_state->getValue(['settings', 'items']);
+			$items = [];
 		}
 
-		$items = $this->normalizeItems(is_array($items) ? $items : []);
-
 		$clean_items = [];
+
 		foreach ($items as $item) {
-			if ($item['text'] === '' || $item['url'] === '') {
+
+			if (!is_array($item)) {
 				continue;
 			}
 
-			$clean_items[] = $item;
+			$text = isset($item['text']) ? trim($item['text']) : '';
+			$url = isset($item['url']) ? trim($item['url']) : '';
+			$icon = isset($item['icon']) ? $item['icon'] : 'book';
+
+			if ($text === '' || $url === '') {
+				continue;
+			}
+
+			$clean_items[] = [
+				'text' => $text,
+				'url' => $url,
+				'icon' => $icon,
+			];
 		}
 
-		$this->configuration['items'] = array_values($clean_items);
-		$this->setWorkingItems($form_state, $clean_items);
+		$this->configuration['items'] = $clean_items;
 	}
 
 	/**
