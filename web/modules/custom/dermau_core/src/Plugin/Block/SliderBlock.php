@@ -23,18 +23,26 @@ class SliderBlock extends BlockBase
    */
   public function blockForm($form, FormStateInterface $form_state)
   {
+    $form = parent::blockForm($form, $form_state);
+
+    $current_file = NULL;
+    if (!empty($this->configuration['float_chat_image_fid'])) {
+      $current_file = File::load($this->configuration['float_chat_image_fid']);
+    }
+
     $form['float_chat_image'] = [
-      '#type' => 'managed_file',
+      '#type' => 'file',
       '#title' => $this->t('Imagen botón flotante'),
-      '#upload_location' => 'public://slider-block/',
-      '#default_value' => isset($this->configuration['float_chat_image']) && !empty($this->configuration['float_chat_image'])
-        ? [$this->configuration['float_chat_image']]
-        : [],
-      '#upload_validators' => [
-        'file_validate_extensions' => ['svg png jpg jpeg webp'],
-      ],
-      '#description' => $this->t('Sube la imagen del botón flotante.'),
+      '#description' => $this->t('Sube un archivo svg, png, jpg, jpeg o webp.'),
     ];
+
+    if ($current_file) {
+      $form['float_chat_image_current'] = [
+        '#type' => 'item',
+        '#title' => $this->t('Archivo actual'),
+        '#markup' => $current_file->getFilename(),
+      ];
+    }
 
     $form['float_chat_image_alt'] = [
       '#type' => 'textfield',
@@ -50,23 +58,26 @@ class SliderBlock extends BlockBase
    */
   public function blockSubmit($form, FormStateInterface $form_state)
   {
-    $values = $form_state->getValues();
+    parent::blockSubmit($form, $form_state);
 
-    if (!empty($values['float_chat_image']) && is_array($values['float_chat_image'])) {
-      $fid = reset($values['float_chat_image']);
+    $validators = [
+      'file_validate_extensions' => ['svg png jpg jpeg webp'],
+    ];
 
-      if (!empty($fid)) {
-        $file = File::load($fid);
+    $files = file_save_upload('float_chat_image', $validators, 'public://slider-block/', 0);
 
-        if ($file) {
-          $file->setPermanent();
-          $file->save();
-          $this->configuration['float_chat_image'] = $fid;
-        }
+    if ($files && is_array($files)) {
+      $file = reset($files);
+
+      if ($file instanceof File) {
+        $file->setPermanent();
+        $file->save();
+
+        $this->configuration['float_chat_image_fid'] = $file->id();
       }
     }
 
-    $this->configuration['float_chat_image_alt'] = $values['float_chat_image_alt'] ?? '';
+    $this->configuration['float_chat_image_alt'] = $form_state->getValue('float_chat_image_alt');
   }
 
   /**
@@ -118,8 +129,8 @@ class SliderBlock extends BlockBase
     $float_chat_image_url = '';
     $float_chat_image_alt = $this->configuration['float_chat_image_alt'] ?? '';
 
-    if (!empty($this->configuration['float_chat_image'])) {
-      $file = File::load($this->configuration['float_chat_image']);
+    if (!empty($this->configuration['float_chat_image_fid'])) {
+      $file = File::load($this->configuration['float_chat_image_fid']);
       if ($file) {
         $float_chat_image_url = $file_url_generator->generateAbsoluteString($file->getFileUri());
       }
