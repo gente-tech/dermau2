@@ -12,7 +12,7 @@ use Drupal\node\Entity\Node;
  *
  * @Block(
  *   id = "dermau_slider_block",
- *   admin_label = @Translation("Dermau Slider Block")
+ *   admin_label = @Translation("Dermau Slider Block"),
  * )
  */
 class SliderBlock extends BlockBase
@@ -21,28 +21,29 @@ class SliderBlock extends BlockBase
   /**
    * {@inheritdoc}
    */
+  public function defaultConfiguration()
+  {
+    return [
+      'float_chat_image' => NULL,
+      'float_chat_image_alt' => '',
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function blockForm($form, FormStateInterface $form_state)
   {
-    $form = parent::blockForm($form, $form_state);
-
-    $current_file = NULL;
-    if (!empty($this->configuration['float_chat_image_fid'])) {
-      $current_file = File::load($this->configuration['float_chat_image_fid']);
-    }
-
     $form['float_chat_image'] = [
-      '#type' => 'file',
+      '#type' => 'managed_file',
       '#title' => $this->t('Imagen botón flotante'),
-      '#description' => $this->t('Sube un archivo svg, png, jpg, jpeg o webp.'),
+      '#upload_location' => 'public://slider-block/',
+      '#default_value' => $this->configuration['float_chat_image'] ?? NULL,
+      '#upload_validators' => [
+        'file_validate_extensions' => ['svg png jpg jpeg webp'],
+      ],
+      '#description' => $this->t('Sube la imagen del botón flotante.'),
     ];
-
-    if ($current_file) {
-      $form['float_chat_image_current'] = [
-        '#type' => 'item',
-        '#title' => $this->t('Archivo actual'),
-        '#markup' => $current_file->getFilename(),
-      ];
-    }
 
     $form['float_chat_image_alt'] = [
       '#type' => 'textfield',
@@ -58,25 +59,17 @@ class SliderBlock extends BlockBase
    */
   public function blockSubmit($form, FormStateInterface $form_state)
   {
-    parent::blockSubmit($form, $form_state);
+    $float_chat_image = $form_state->getValue('float_chat_image');
 
-    $validators = [
-      'file_validate_extensions' => ['svg png jpg jpeg webp'],
-    ];
-
-    $files = file_save_upload('float_chat_image', $validators, 'public://slider-block/', 0);
-
-    if ($files && is_array($files)) {
-      $file = reset($files);
-
-      if ($file instanceof File) {
+    if (!empty($float_chat_image[0])) {
+      $file = File::load($float_chat_image[0]);
+      if ($file) {
         $file->setPermanent();
         $file->save();
-
-        $this->configuration['float_chat_image_fid'] = $file->id();
       }
     }
 
+    $this->configuration['float_chat_image'] = $float_chat_image;
     $this->configuration['float_chat_image_alt'] = $form_state->getValue('float_chat_image_alt');
   }
 
@@ -129,8 +122,8 @@ class SliderBlock extends BlockBase
     $float_chat_image_url = '';
     $float_chat_image_alt = $this->configuration['float_chat_image_alt'] ?? '';
 
-    if (!empty($this->configuration['float_chat_image_fid'])) {
-      $file = File::load($this->configuration['float_chat_image_fid']);
+    if (!empty($this->configuration['float_chat_image'][0])) {
+      $file = File::load($this->configuration['float_chat_image'][0]);
       if ($file) {
         $float_chat_image_url = $file_url_generator->generateAbsoluteString($file->getFileUri());
       }
