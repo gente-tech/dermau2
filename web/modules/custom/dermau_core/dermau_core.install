@@ -1,0 +1,117 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall hooks for the Dermau Core module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function dermau_core_schema()
+{
+	$schema['dermau_programa_interesado'] = [
+		'description' => 'Almacena los registros de interesados por programa.',
+		'fields' => [
+			'id' => [
+				'description' => 'ID interno.',
+				'type' => 'serial',
+				'unsigned' => TRUE,
+				'not null' => TRUE,
+			],
+			'programa_nid' => [
+				'description' => 'Node ID del programa.',
+				'type' => 'int',
+				'unsigned' => TRUE,
+				'not null' => TRUE,
+			],
+			'programa_title' => [
+				'description' => 'Título del programa al momento del registro.',
+				'type' => 'varchar',
+				'length' => 255,
+				'not null' => TRUE,
+				'default' => '',
+			],
+			'nombre' => [
+				'description' => 'Nombre del interesado.',
+				'type' => 'varchar',
+				'length' => 150,
+				'not null' => TRUE,
+				'default' => '',
+			],
+			'apellido' => [
+				'description' => 'Apellido del interesado.',
+				'type' => 'varchar',
+				'length' => 150,
+				'not null' => TRUE,
+				'default' => '',
+			],
+			'indicativo' => [
+				'description' => 'Indicativo telefónico.',
+				'type' => 'varchar',
+				'length' => 10,
+				'not null' => TRUE,
+				'default' => '',
+			],
+			'telefono' => [
+				'description' => 'Número de teléfono.',
+				'type' => 'varchar',
+				'length' => 30,
+				'not null' => TRUE,
+				'default' => '',
+			],
+			'ciudad' => [
+				'description' => 'Ciudad seleccionada.',
+				'type' => 'varchar',
+				'length' => 150,
+				'not null' => TRUE,
+				'default' => '',
+			],
+			'profesion' => [
+				'description' => 'Profesión seleccionada.',
+				'type' => 'varchar',
+				'length' => 150,
+				'not null' => TRUE,
+				'default' => '',
+			],
+			'mensaje' => [
+				'description' => 'Mensaje libre del interesado.',
+				'type' => 'text',
+				'size' => 'big',
+				'not null' => FALSE,
+			],
+			'autorizacion' => [
+				'description' => 'Autorización de contacto.',
+				'type' => 'int',
+				'size' => 'tiny',
+				'not null' => TRUE,
+				'default' => 0,
+			],
+			'ip' => [
+				'description' => 'IP del cliente.',
+				'type' => 'varchar',
+				'length' => 45,
+				'not null' => FALSE,
+			],
+			'user_agent' => [
+				'description' => 'User agent del navegador.',
+				'type' => 'varchar',
+				'length' => 512,
+				'not null' => FALSE,
+			],
+			'created' => [
+				'description' => 'Fecha de creación en timestamp.',
+				'type' => 'int',
+				'unsigned' => TRUE,
+				'not null' => TRUE,
+			],
+		],
+		'primary key' => ['id'],
+		'indexes' => [
+			'programa_nid' => ['programa_nid'],
+			'created' => ['created'],
+		],
+	];
+
+	return $schema;
+}
