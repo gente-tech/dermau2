@@ -11,197 +11,232 @@ use Drupal\Core\Form\FormStateInterface;
  *   admin_label = @Translation("DermaU - Barra menú anclas")
  * )
  */
-class BarMenuBlock extends BlockBase {
+class BarMenuBlock extends BlockBase
+{
 
-  public function defaultConfiguration() {
-    return [
-      'items' => [
-        [
-          'text' => 'Oferta Académica',
-          'url' => '#oferta-academica',
-          'icon' => 'book',
-        ],
-        [
-          'text' => 'Convenios universitarios',
-          'url' => '#convenios-universitarios',
-          'icon' => 'cap',
-        ],
-        [
-          'text' => 'Preguntas frecuentes',
-          'url' => '#preguntas-frecuentes',
-          'icon' => 'question',
-        ],
-      ],
-    ];
-  }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function defaultConfiguration()
+	{
+		return [
+			'items' => [
+				[
+					'text' => 'Oferta Académica',
+					'url' => '#oferta-academica',
+					'icon' => 'book',
+				],
+				[
+					'text' => 'Convenios universitarios',
+					'url' => '#convenios-universitarios',
+					'icon' => 'cap',
+				],
+				[
+					'text' => 'Preguntas frecuentes',
+					'url' => '#preguntas-frecuentes',
+					'icon' => 'question',
+				],
+			],
+		];
+	}
 
-  public function blockForm($form, FormStateInterface $form_state) {
-    $items = $form_state->get('items');
+	/**
+	 * Obtiene los items enviados en el form.
+	 */
+	protected static function getSubmittedItems(FormStateInterface $form_state)
+	{
+		$items = $form_state->getValue(['settings', 'items']);
 
-    if ($items === NULL) {
-      $items = $this->configuration['items'] ?? [];
-      $form_state->set('items', $items);
-    }
+		if ($items === NULL) {
+			$items = $form_state->getValue('items');
+		}
 
-    $form['items_wrapper'] = [
-      '#type' => 'container',
-      '#attributes' => [
-        'id' => 'bar-menu-items-wrapper',
-      ],
-      '#tree' => TRUE,
-    ];
+		return is_array($items) ? $items : [];
+	}
 
-    foreach ($items as $delta => $item) {
-      $form['items_wrapper']['items'][$delta] = [
-        '#type' => 'details',
-        '#title' => $this->t('Ítem @num', ['@num' => $delta + 1]),
-        '#open' => TRUE,
-      ];
+	/**
+	 * {@inheritdoc}
+	 */
+	public function blockForm($form, FormStateInterface $form_state)
+	{
+		$items = $form_state->get('bar_menu_items');
 
-      $form['items_wrapper']['items'][$delta]['text'] = [
-        '#type' => 'textfield',
-        '#title' => $this->t('Texto'),
-        '#default_value' => $item['text'] ?? '',
-        '#required' => TRUE,
-      ];
+		if ($items === NULL) {
+			$items = $this->configuration['items'] ?? [];
+			$form_state->set('bar_menu_items', $items);
+		}
 
-      $form['items_wrapper']['items'][$delta]['url'] = [
-        '#type' => 'textfield',
-        '#title' => $this->t('Enlace o ancla'),
-        '#default_value' => $item['url'] ?? '',
-        '#required' => TRUE,
-        '#description' => $this->t('Ejemplo: #oferta-academica o /pagina-interna'),
-      ];
+		$form['items'] = [
+			'#type' => 'container',
+			'#tree' => TRUE,
+			'#prefix' => '<div id="bar-menu-items-wrapper">',
+			'#suffix' => '</div>',
+		];
 
-      $form['items_wrapper']['items'][$delta]['icon'] = [
-        '#type' => 'select',
-        '#title' => $this->t('Ícono'),
-        '#default_value' => $item['icon'] ?? 'book',
-        '#options' => [
-          'book' => $this->t('Libro'),
-          'cap' => $this->t('Birrete'),
-          'question' => $this->t('Pregunta'),
-        ],
-        '#required' => TRUE,
-      ];
+		foreach ($items as $delta => $item) {
+			$form['items'][$delta] = [
+				'#type' => 'details',
+				'#title' => $this->t('Ítem @num', ['@num' => $delta + 1]),
+				'#open' => TRUE,
+			];
 
-      $form['items_wrapper']['items'][$delta]['remove'] = [
-        '#type' => 'submit',
-        '#value' => $this->t('Eliminar ítem'),
-        '#name' => 'remove_item_' . $delta,
-        '#submit' => [[static::class, 'removeItemSubmit']],
-        '#ajax' => [
-          'callback' => [static::class, 'ajaxRefresh'],
-          'wrapper' => 'bar-menu-items-wrapper',
-        ],
-        '#limit_validation_errors' => [],
-        '#item_delta' => $delta,
-      ];
-    }
+			$form['items'][$delta]['text'] = [
+				'#type' => 'textfield',
+				'#title' => $this->t('Texto'),
+				'#default_value' => $item['text'] ?? '',
+				'#required' => TRUE,
+			];
 
-    $form['items_wrapper']['actions'] = [
-      '#type' => 'actions',
-    ];
+			$form['items'][$delta]['url'] = [
+				'#type' => 'textfield',
+				'#title' => $this->t('Enlace o ancla'),
+				'#default_value' => $item['url'] ?? '',
+				'#required' => TRUE,
+				'#description' => $this->t('Ejemplo: #oferta-academica o /pagina-interna'),
+			];
 
-    $form['items_wrapper']['actions']['add_item'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Agregar ítem'),
-      '#submit' => [[static::class, 'addItemSubmit']],
-      '#ajax' => [
-        'callback' => [static::class, 'ajaxRefresh'],
-        'wrapper' => 'bar-menu-items-wrapper',
-      ],
-      '#limit_validation_errors' => [],
-    ];
+			$form['items'][$delta]['icon'] = [
+				'#type' => 'select',
+				'#title' => $this->t('Ícono'),
+				'#default_value' => $item['icon'] ?? 'book',
+				'#options' => [
+					'book' => $this->t('Libro'),
+					'cap' => $this->t('Birrete'),
+					'question' => $this->t('Pregunta'),
+				],
+				'#required' => TRUE,
+			];
 
-    return $form;
-  }
+			$form['items'][$delta]['remove'] = [
+				'#type' => 'submit',
+				'#value' => $this->t('Eliminar ítem'),
+				'#name' => 'remove_item_' . $delta,
+				'#submit' => [[static::class, 'removeItemSubmit']],
+				'#ajax' => [
+					'callback' => [static::class, 'ajaxRefresh'],
+					'wrapper' => 'bar-menu-items-wrapper',
+				],
+				'#limit_validation_errors' => [],
+				'#item_delta' => $delta,
+			];
+		}
 
-  public static function addItemSubmit(array &$form, FormStateInterface $form_state) {
-    $items = $form_state->get('items') ?? [];
+		$form['add_item'] = [
+			'#type' => 'submit',
+			'#value' => $this->t('Agregar ítem'),
+			'#submit' => [[static::class, 'addItemSubmit']],
+			'#ajax' => [
+				'callback' => [static::class, 'ajaxRefresh'],
+				'wrapper' => 'bar-menu-items-wrapper',
+			],
+			'#limit_validation_errors' => [],
+		];
 
-    $submitted_items = $form_state->getValue(['items_wrapper', 'items']);
-    if (is_array($submitted_items)) {
-      foreach ($submitted_items as $delta => $submitted_item) {
-        if (isset($items[$delta])) {
-          $items[$delta]['text'] = $submitted_item['text'] ?? '';
-          $items[$delta]['url'] = $submitted_item['url'] ?? '';
-          $items[$delta]['icon'] = $submitted_item['icon'] ?? 'book';
-        }
-      }
-    }
+		return $form;
+	}
 
-    $items[] = [
-      'text' => '',
-      'url' => '',
-      'icon' => 'book',
-    ];
+	/**
+	 * Agrega un item.
+	 */
+	public static function addItemSubmit(array &$form, FormStateInterface $form_state)
+	{
+		$items = $form_state->get('bar_menu_items') ?? [];
 
-    $form_state->set('items', $items);
-    $form_state->setRebuild(TRUE);
-  }
+		$submitted_items = static::getSubmittedItems($form_state);
+		if (!empty($submitted_items)) {
+			$items = $submitted_items;
+		}
 
-  public static function removeItemSubmit(array &$form, FormStateInterface $form_state) {
-    $trigger = $form_state->getTriggeringElement();
-    $delta = $trigger['#item_delta'];
+		$items[] = [
+			'text' => '',
+			'url' => '',
+			'icon' => 'book',
+		];
 
-    $items = $form_state->get('items') ?? [];
+		$form_state->set('bar_menu_items', array_values($items));
+		$form_state->setRebuild(TRUE);
+	}
 
-    $submitted_items = $form_state->getValue(['items_wrapper', 'items']);
-    if (is_array($submitted_items)) {
-      foreach ($submitted_items as $index => $submitted_item) {
-        if (isset($items[$index])) {
-          $items[$index]['text'] = $submitted_item['text'] ?? '';
-          $items[$index]['url'] = $submitted_item['url'] ?? '';
-          $items[$index]['icon'] = $submitted_item['icon'] ?? 'book';
-        }
-      }
-    }
+	/**
+	 * Elimina un item.
+	 */
+	public static function removeItemSubmit(array &$form, FormStateInterface $form_state)
+	{
+		$trigger = $form_state->getTriggeringElement();
+		$delta = $trigger['#item_delta'];
 
-    if (isset($items[$delta])) {
-      unset($items[$delta]);
-    }
+		$items = static::getSubmittedItems($form_state);
 
-    $items = array_values($items);
+		if (empty($items)) {
+			$items = $form_state->get('bar_menu_items') ?? [];
+		}
 
-    $form_state->set('items', $items);
-    $form_state->setRebuild(TRUE);
-  }
+		if (isset($items[$delta])) {
+			unset($items[$delta]);
+		}
 
-  public static function ajaxRefresh(array &$form, FormStateInterface $form_state) {
-    return $form['settings']['items_wrapper'] ?? $form['items_wrapper'];
-  }
+		$items = array_values($items);
 
-  public function blockSubmit($form, FormStateInterface $form_state) {
-    $items = $form_state->getValue(['items_wrapper', 'items']) ?? [];
-    $clean_items = [];
+		$form_state->set('bar_menu_items', $items);
+		$form_state->setRebuild(TRUE);
+	}
 
-    foreach ($items as $item) {
-      $text = trim($item['text'] ?? '');
-      $url = trim($item['url'] ?? '');
-      $icon = trim($item['icon'] ?? 'book');
+	/**
+	 * Callback AJAX.
+	 */
+	public static function ajaxRefresh(array &$form, FormStateInterface $form_state)
+	{
+		if (isset($form['settings']['items'])) {
+			return $form['settings']['items'];
+		}
 
-      if ($text !== '' && $url !== '') {
-        $clean_items[] = [
-          'text' => $text,
-          'url' => $url,
-          'icon' => $icon,
-        ];
-      }
-    }
+		return $form['items'];
+	}
 
-    $this->configuration['items'] = $clean_items;
-    $form_state->set('items', $clean_items);
-  }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function blockSubmit($form, FormStateInterface $form_state)
+	{
+		$items = $form_state->getValue('items');
 
-  public function build() {
-    return [
-      '#theme' => 'block_bar_menu',
-      '#items' => $this->configuration['items'] ?? [],
-      '#cache' => [
-        'max-age' => 0,
-      ],
-    ];
-  }
+		if ($items === NULL) {
+			$items = $form_state->getValue(['settings', 'items']);
+		}
 
+		$items = is_array($items) ? $items : [];
+
+		$clean_items = [];
+
+		foreach ($items as $item) {
+			$text = trim($item['text'] ?? '');
+			$url = trim($item['url'] ?? '');
+			$icon = trim($item['icon'] ?? 'book');
+
+			if ($text !== '' && $url !== '') {
+				$clean_items[] = [
+					'text' => $text,
+					'url' => $url,
+					'icon' => $icon,
+				];
+			}
+		}
+
+		$this->configuration['items'] = $clean_items;
+		$form_state->set('bar_menu_items', $clean_items);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function build()
+	{
+		return [
+			'#theme' => 'block_bar_menu',
+			'#items' => $this->configuration['items'] ?? [],
+			'#cache' => [
+				'max-age' => 0,
+			],
+		];
+	}
 }
