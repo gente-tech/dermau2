@@ -443,17 +443,3 @@
 	</div>
 </section>
 
-<section class="du-footer-info" data-variation="">
-	<div class="du-footer-info__text">
-		<h2 class="du-footer-info__title">
-			{{ node.label }}
-		</h2>
-		<p class="du-footer-info__description">
-			{{ node.field_descripcion_corta.value }}
-		</p>
-	</div>
-	<div class="du-footer-info__image">
-		<img src="{{ node.field_imagen_programa.entity ? file_url(node.field_imagen_programa.entity.fileuri) : '' }}" alt="{{ node.label }}"/>
-		<a href="#" class="du-footer-info__link">Solicitar Información</a>
-	</div>
-</section>
