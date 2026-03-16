@@ -37,23 +37,7 @@ class BarMenuBlock extends BlockBase
 	public function defaultConfiguration()
 	{
 		return [
-			'items' => [
-				[
-					'text' => 'Oferta Académica',
-					'url' => '#oferta-academica',
-					'icon' => 'book',
-				],
-				[
-					'text' => 'Convenios universitarios',
-					'url' => '#convenios-universitarios',
-					'icon' => 'cap',
-				],
-				[
-					'text' => 'Preguntas frecuentes',
-					'url' => '#preguntas-frecuentes',
-					'icon' => 'question',
-				],
-			],
+			'items' => [],
 		];
 	}
 
@@ -189,37 +173,31 @@ class BarMenuBlock extends BlockBase
 	 */
 	public function blockSubmit($form, FormStateInterface $form_state)
 	{
-
 		$items = $form_state->getValue('items');
+
+		if (!is_array($items)) {
+			$items = $form_state->getValue(['settings', 'items']);
+		}
 
 		if (!is_array($items)) {
 			$items = [];
 		}
 
+		$items = $this->normalizeItems($items);
+
 		$clean_items = [];
-
 		foreach ($items as $item) {
-
-			if (!is_array($item)) {
+			if ($item['text'] === '' || $item['url'] === '') {
 				continue;
 			}
 
-			$text = isset($item['text']) ? trim($item['text']) : '';
-			$url = isset($item['url']) ? trim($item['url']) : '';
-			$icon = isset($item['icon']) ? $item['icon'] : 'book';
-
-			if ($text === '' || $url === '') {
-				continue;
-			}
-
-			$clean_items[] = [
-				'text' => $text,
-				'url' => $url,
-				'icon' => $icon,
-			];
+			$clean_items[] = $item;
 		}
 
-		$this->configuration['items'] = $clean_items;
+		$this->configuration['items'] = array_values($clean_items);
+		$this->setWorkingItems($form_state, $clean_items);
+
+		parent::blockSubmit($form, $form_state);
 	}
 
 	/**
@@ -261,8 +239,6 @@ class BarMenuBlock extends BlockBase
 
 	/**
 	 * Reads current submitted items for AJAX operations.
-	 *
-	 * This uses raw input because add/remove buttons bypass normal validation flow.
 	 */
 	private function getSubmittedItemsForAjax(FormStateInterface $form_state): array
 	{
