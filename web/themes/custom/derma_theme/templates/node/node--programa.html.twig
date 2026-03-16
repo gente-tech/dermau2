@@ -20,8 +20,8 @@
 				</div>
 				<div class="du-hero__detail" data-variation="big">
 					<div class="du-hero__detail-icon">
-						{% if node.field_imagen_de_la_universidad.entity %}
-							<img src="{{ file_url(node.field_imagen_de_la_universidad.entity.fileuri) }}" alt="{{ node.field_imagen_de_la_universidad.alt }}">
+						{% if node.field_imagen_de_la_universidad.0.entity %}
+							<img src="{{ file_url(node.field_imagen_de_la_universidad.0.entity.uri.value) }}" alt="{{ node.field_imagen_de_la_universidad.0.alt|default('') }}">
 						{% endif %}
 					</div>
 					<div class="du-hero__detail-options">
@@ -112,14 +112,14 @@
 		<div class="du-media-block__video-side">
 			<div class="du-video-player">
 				<iframe src="https://www.youtube.com/embed/{{ node.field_id_video_youtube.value }}" title="YouTube video player" frameborder="0" allow="
-																																								                  accelerometer;
-																																								                  autoplay;
-																																								                  clipboard-write;
-																																								                  encrypted-media;
-																																								                  gyroscope;
-																																								                  picture-in-picture;
-																																								                  web-share;
-																																								                " referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+																																													                  accelerometer;
+																																													                  autoplay;
+																																													                  clipboard-write;
+																																													                  encrypted-media;
+																																													                  gyroscope;
+																																													                  picture-in-picture;
+																																													                  web-share;
+																																													                " referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 			</div>
 		</div>
 
