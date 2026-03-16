@@ -46,7 +46,7 @@
 }
 
 .du-hero__title {
-  font-size: 48px;
+  font-size: 46px;
   font-weight: 900;
   line-height: 1.1;
   margin-bottom: 25px;
@@ -58,7 +58,7 @@
 
 .du-hero__text {
   list-style: none;
-  margin-bottom: 35px;
+  margin-bottom: 15px;
   max-height: 150px;
   font-size: 16px;
   line-height: 1.5;
@@ -69,6 +69,7 @@
 .du-hero__actions {
   display: flex;
   gap: 20px;
+  padding-bottom: 30px;
 }
 
 
@@ -151,7 +152,7 @@
     padding: 20px;
   }
   .du-hero__content {
-    min-height: 480px;
+    min-height: 280px;
   }
   .du-hero__title {
     font-size: 32px;

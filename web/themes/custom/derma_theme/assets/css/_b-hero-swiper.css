@@ -50,15 +50,15 @@
 
 .du-hero-swiper__content {
   max-width: 650px;
-  min-height: 400px;
-    padding-top: 3rem;
+  min-height: 450px;
+  padding-top: 3rem;
 }
 
 .du-hero-swiper__title {
-  font-size: 48px;
+  font-size: 46px;
   font-weight: 900;
   line-height: 1.1;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
 }
 
 .du-hero-swiper__title--highlight {
@@ -67,8 +67,8 @@
 
 .du-hero-swiper__list, .du-hero-swiper__text {
   list-style: none;
-  margin-bottom: 35px;
-  max-height: 150px;
+  margin-bottom: 15px;
+  max-height: 165px;
   overflow: hidden;
 }
 
@@ -77,7 +77,7 @@
   align-items: center;
   gap: 12px;
   font-size: 18px;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
 }
 
 .du-hero-swiper__item::before {

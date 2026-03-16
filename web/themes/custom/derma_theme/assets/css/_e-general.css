@@ -16,13 +16,6 @@
     border-radius: 4px;
 }
 
-.du-float-chat[data-float="true"] {
-    position: fixed;
-    top: 90px;
-    right: 0;
-    z-index: 3;
-}
-
 /* Estilos para caja de costo programa */
 
 .du-cost-box {
@@ -98,4 +91,16 @@
   height: 20px;
   object-fit: cover;
   border-radius: 50%;
+}
+
+
+
+
+@media (min-width: 769px) {
+  .du-float-chat[data-float="true"] {
+    position: fixed;
+    top: 140px;
+    right: 0;
+    z-index: 3;
+  }
 }

@@ -8,12 +8,7 @@
   min-height: 300px;
 }
 
-.du-form-register[data-float="true"] {
-  position: fixed;
-  top: 90px;
-  right: 60px;
-  z-index: 3;
-}
+
 
 .du-form-register__container{
   width: 100%;
@@ -123,6 +118,18 @@
     max-width: 200px;
   }
 }
+
+@media (min-width: 769px) {
+
+  .du-form-register[data-float="true"] {
+    position: fixed;
+    top: 90px;
+    right: 60px;
+    z-index: 3;
+  }
+
+}
+
 
 @media (max-width: 768px) {
 
