@@ -47,12 +47,6 @@ class ProgramaInteresadoForm extends FormBase
 			$current_program_title = $node->getTitle();
 		}
 
-		if (!$current_program) {
-			return [
-				'#markup' => $this->t('Este formulario solo puede usarse dentro de la interna de un programa.'),
-			];
-		}
-
 		$form['programa'] = [
 			'#type' => 'hidden',
 			'#value' => $current_program,
