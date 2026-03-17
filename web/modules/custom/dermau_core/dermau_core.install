@@ -115,3 +115,16 @@ function dermau_core_schema()
 
 	return $schema;
 }
+
+/**
+ * Crea la tabla dermau_programa_interesado si no existe.
+ */
+function dermau_core_update_9001() {
+  $database = \Drupal::database();
+  $schema = $database->schema();
+
+  if (!$schema->tableExists('dermau_programa_interesado')) {
+    $spec = dermau_core_schema();
+    $schema->createTable('dermau_programa_interesado', $spec['dermau_programa_interesado']);
+  }
+}
