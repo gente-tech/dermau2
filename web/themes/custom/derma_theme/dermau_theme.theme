@@ -21,3 +21,29 @@ function dermau_theme_preprocess_node(&$variables) {
     }
   }
 }
+
+function dermau_theme_preprocess_views_view_unformatted(array &$variables) {
+  $view = $variables['view'];
+
+  if ($view->id() === 'convenios' && $view->current_display === 'page_1') {
+    $variables['texto_convenios_titulo_1'] = '';
+    $variables['texto_convenios_titulo_2'] = '';
+    $variables['texto_convenios_titulo_3'] = '';
+
+    if (!empty($view->header)) {
+      $headers = array_values($view->header);
+
+      if (isset($headers[0])) {
+        $variables['texto_convenios_titulo_1'] = $headers[0]->render($view);
+      }
+
+      if (isset($headers[1])) {
+        $variables['texto_convenios_titulo_2'] = $headers[1]->render($view);
+      }
+
+      if (isset($headers[2])) {
+        $variables['texto_convenios_titulo_3'] = $headers[2]->render($view);
+      }
+    }
+  }
+}
