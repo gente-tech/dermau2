@@ -1,0 +1,11 @@
+.du-form-phone-group {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.du-form-phone-prefix {
+	white-space: nowrap;
+	font-size: 16px;
+	line-height: 1;
+}

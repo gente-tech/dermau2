@@ -5,14 +5,12 @@ namespace Drupal\dermau_core\Form;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\node\Entity\Node;
+use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Url;
 
 class ProgramaInteresadoForm extends FormBase
 {
-
 	protected $database;
 
 	public function __construct(Connection $database)
@@ -34,27 +32,12 @@ class ProgramaInteresadoForm extends FormBase
 
 	public function buildForm(array $form, FormStateInterface $form_state)
 	{
-		/*
-		-----------------------------------------
-		Cargar librería del teléfono
-		-----------------------------------------
-		*/
 		$form['#attached']['library'][] = 'dermau_core/intl_tel_input';
 		$form['#attached']['library'][] = 'dermau_core/registro_exitoso_modal';
 
-		/*
-		-------------------------------------------------
-		Clases del FORM real
-		-------------------------------------------------
-		*/
 		$form['#attributes']['class'][] = 'du-form-register__form';
 		$form['#attributes']['novalidate'] = 'novalidate';
 
-		/*
-		-------------------------------------------------
-		Detectar si estamos dentro de un nodo programa
-		-------------------------------------------------
-		*/
 		$node = \Drupal::routeMatch()->getParameter('node');
 		$current_program = NULL;
 		$current_program_title = '';
@@ -70,11 +53,6 @@ class ProgramaInteresadoForm extends FormBase
 			];
 		}
 
-		/*
-		-------------------------------------------------
-		Hidden del programa actual
-		-------------------------------------------------
-		*/
 		$form['programa'] = [
 			'#type' => 'hidden',
 			'#value' => $current_program,
@@ -85,11 +63,6 @@ class ProgramaInteresadoForm extends FormBase
 			'#value' => $current_program_title,
 		];
 
-		/*
-		-------------------------------------------------
-		Contenedor principal de grupos
-		-------------------------------------------------
-		*/
 		$form['group_container'] = [
 			'#type' => 'container',
 			'#attributes' => [
@@ -97,11 +70,6 @@ class ProgramaInteresadoForm extends FormBase
 			],
 		];
 
-		/*
-		-------------------------------------------------
-		GRUPO 1
-		-------------------------------------------------
-		*/
 		$form['group_container']['group1'] = [
 			'#type' => 'container',
 			'#attributes' => [
@@ -135,11 +103,6 @@ class ProgramaInteresadoForm extends FormBase
 			],
 		];
 
-		/*
-		-------------------------------------------------
-		GRUPO 2
-		-------------------------------------------------
-		*/
 		$form['group_container']['group2'] = [
 			'#type' => 'container',
 			'#attributes' => [
@@ -147,13 +110,6 @@ class ProgramaInteresadoForm extends FormBase
 			],
 		];
 
-		/*
-		-------------------------------------------------
-		PHONE GROUP
-		Se conserva el campo real "indicativo" para no romper submit/validación.
-		Se agregan clases y estructura para que el JS/CSS del front lo pueda estilizar.
-		-------------------------------------------------
-		*/
 		$form['group_container']['group2']['phone_group'] = [
 			'#type' => 'container',
 			'#attributes' => [
@@ -161,39 +117,48 @@ class ProgramaInteresadoForm extends FormBase
 			],
 		];
 
+		$form['group_container']['group2']['phone_group']['country_ui'] = [
+			'#type' => 'container',
+			'#attributes' => [
+				'class' => ['select-country'],
+				'id' => 'select-country',
+			],
+		];
+
 		$form['group_container']['group2']['phone_group']['country_ui']['selected'] = [
 			'#type' => 'html_tag',
 			'#tag' => 'div',
+			'#value' => '',
 			'#attributes' => [
 				'class' => ['selected'],
-				'data-value' => '',
+				'data-value' => 'co',
 			],
-			'#value' => '',
 		];
 
 		$form['group_container']['group2']['phone_group']['country_ui']['options'] = [
 			'#type' => 'html_tag',
 			'#tag' => 'div',
+			'#value' => '',
 			'#attributes' => [
 				'class' => ['options'],
 			],
-			'#value' => '',
 		];
 
 		$form['group_container']['group2']['phone_group']['indicativo'] = [
-			'#type' => 'select',
-			'#title' => $this->t('Indicativo'),
-			'#title_display' => 'invisible',
-			'#options' => $this->getIndicativos(),
-			'#default_value' => '+57',
-			'#required' => TRUE,
+			'#type' => 'hidden',
+			'#value' => '+57',
 			'#attributes' => [
-				'class' => [
-					'du-form-select',
-					'du-form-select--native-indicative',
-					'visually-hidden',
-				],
 				'id' => 'du-reg-indicative',
+			],
+		];
+
+		$form['group_container']['group2']['phone_group']['indicativo_display'] = [
+			'#type' => 'html_tag',
+			'#tag' => 'span',
+			'#value' => '+57',
+			'#attributes' => [
+				'class' => ['du-form-phone-prefix'],
+				'id' => 'du-reg-indicative-display',
 			],
 		];
 
@@ -203,21 +168,15 @@ class ProgramaInteresadoForm extends FormBase
 			'#title_display' => 'invisible',
 			'#required' => TRUE,
 			'#maxlength' => 30,
-			'#default_value' => '',
 			'#attributes' => [
-				'class' => ['du-form-input'],
+				'class' => ['du-form-input', 'du-form-input--phone'],
 				'placeholder' => 'Teléfono',
 				'id' => 'du-reg-phone',
 				'inputmode' => 'numeric',
-				'autocomplete' => 'tel',
+				'autocomplete' => 'tel-national',
 			],
 		];
 
-		/*
-		-------------------------------------------------
-		CIUDAD
-		-------------------------------------------------
-		*/
 		$form['group_container']['group2']['ciudad'] = [
 			'#type' => 'select',
 			'#title' => $this->t('Ciudad'),
@@ -232,11 +191,6 @@ class ProgramaInteresadoForm extends FormBase
 			],
 		];
 
-		/*
-		-------------------------------------------------
-		PROFESIÓN
-		-------------------------------------------------
-		*/
 		$form['group_container']['group2']['profesion'] = [
 			'#type' => 'select',
 			'#title' => $this->t('Profesión'),
@@ -251,11 +205,6 @@ class ProgramaInteresadoForm extends FormBase
 			],
 		];
 
-		/*
-		-------------------------------------------------
-		MENSAJE
-		-------------------------------------------------
-		*/
 		$form['mensaje'] = [
 			'#type' => 'textarea',
 			'#title' => $this->t('Mensaje'),
@@ -268,12 +217,6 @@ class ProgramaInteresadoForm extends FormBase
 			],
 		];
 
-		/*
-		-------------------------------------------------
-		CONSENTIMIENTO
-		Se mantienen clases para que tome estilos actuales.
-		-------------------------------------------------
-		*/
 		$form['autorizacion'] = [
 			'#type' => 'checkbox',
 			'#title' => $this->t('Autorizo a eClass a enviarme información vía email'),
@@ -287,11 +230,6 @@ class ProgramaInteresadoForm extends FormBase
 			],
 		];
 
-		/*
-		-------------------------------------------------
-		SUBMIT
-		-------------------------------------------------
-		*/
 		$form['submit'] = [
 			'#type' => 'submit',
 			'#value' => $this->t('Contáctame'),
@@ -300,12 +238,6 @@ class ProgramaInteresadoForm extends FormBase
 			],
 		];
 
-		/*
-		-------------------------------------------------
-		MODAL REGISTRO EXITOSO
-		No se toca para no romper el flujo actual.
-		-------------------------------------------------
-		*/
 		$form['modal_registro_exitoso'] = [
 			'#theme' => 'dermau_modal_registro_exitoso',
 			'#weight' => 999,
@@ -325,7 +257,8 @@ class ProgramaInteresadoForm extends FormBase
 
 		$programa_id = (int) $form_state->getValue('programa');
 		$programa_title = trim((string) $form_state->getValue('programa_title'));
-		$telefono = preg_replace('/\s+/', '', (string) $form_state->getValue('telefono'));
+		$indicativo = trim((string) $form_state->getValue('indicativo'));
+		$telefono = preg_replace('/\D+/', '', (string) $form_state->getValue('telefono'));
 
 		if ($programa_id !== (int) $node->id()) {
 			$form_state->setErrorByName('programa', $this->t('El programa enviado no coincide con el programa actual.'));
@@ -333,6 +266,10 @@ class ProgramaInteresadoForm extends FormBase
 
 		if ($programa_title === '') {
 			$form_state->setErrorByName('programa_title', $this->t('No se pudo identificar el título del programa.'));
+		}
+
+		if ($indicativo === '') {
+			$form_state->setErrorByName('indicativo', $this->t('No se pudo determinar el indicativo del país.'));
 		}
 
 		if ($telefono === '' || !preg_match('/^[0-9]{7,15}$/', $telefono)) {
@@ -344,14 +281,18 @@ class ProgramaInteresadoForm extends FormBase
 	{
 		$request = \Drupal::request();
 
+		$indicativo = trim((string) $form_state->getValue('indicativo'));
+		$telefono = trim((string) $form_state->getValue('telefono'));
+		$telefono = preg_replace('/\D+/', '', $telefono);
+
 		$this->database->insert('dermau_programa_interesado')
 			->fields([
 				'programa_nid' => (int) $form_state->getValue('programa'),
 				'programa_title' => trim((string) $form_state->getValue('programa_title')),
 				'nombre' => trim((string) $form_state->getValue('nombre')),
 				'apellido' => trim((string) $form_state->getValue('apellido')),
-				'indicativo' => trim((string) $form_state->getValue('indicativo')),
-				'telefono' => trim((string) $form_state->getValue('telefono')),
+				'indicativo' => $indicativo,
+				'telefono' => $telefono,
 				'ciudad' => trim((string) $form_state->getValue('ciudad')),
 				'profesion' => trim((string) $form_state->getValue('profesion')),
 				'mensaje' => trim((string) $form_state->getValue('mensaje')),
@@ -371,20 +312,6 @@ class ProgramaInteresadoForm extends FormBase
 				'query' => $current_query,
 			])
 		);
-	}
-
-	protected function getIndicativos()
-	{
-		return [
-			'+57' => '+57',
-			'+1' => '+1',
-			'+34' => '+34',
-			'+51' => '+51',
-			'+52' => '+52',
-			'+54' => '+54',
-			'+56' => '+56',
-			'+58' => '+58',
-		];
 	}
 
 	protected function getCiudades()
