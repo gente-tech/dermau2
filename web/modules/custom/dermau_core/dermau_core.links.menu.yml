@@ -1,0 +1,6 @@
+dermau_core.programa_interesado_export_form:
+  title: "Exportar registros de programas"
+  description: "Descargar en Excel los registros de interesados en programas."
+  route_name: dermau_core.programa_interesado_export_form
+  parent: system.admin_reports
+  weight: 100

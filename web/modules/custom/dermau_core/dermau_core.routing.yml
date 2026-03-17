@@ -1,13 +1,29 @@
 dermau_core.programas_ajax:
-  path: '/ajax/programas'
+  path: "/ajax/programas"
   defaults:
     _controller: '\Drupal\dermau_core\Controller\ProgramasAjaxController::loadProgramas'
   requirements:
-    _permission: 'access content'
+    _permission: "access content"
 
 dermau_core.descargar:
-  path: '/descargar-pdf/{node}'
+  path: "/descargar-pdf/{node}"
   defaults:
     _controller: '\Drupal\dermau_core\Controller\DescargaController::descargar'
   requirements:
-    _permission: 'access content'
+    _permission: "access content"
+
+dermau_core.programa_interesado_export_form:
+  path: "/admin/reports/programa-interesado/exportar"
+  defaults:
+    _form: '\Drupal\dermau_core\Form\ProgramaInteresadoExportForm'
+    _title: "Exportar registros de programas"
+  requirements:
+    _permission: "exportar registros programa interesado"
+
+dermau_core.programa_interesado_export_download:
+  path: "/admin/reports/programa-interesado/exportar/download"
+  defaults:
+    _controller: '\Drupal\dermau_core\Controller\ProgramaInteresadoExportController::download'
+    _title: "Descargar Excel"
+  requirements:
+    _permission: "exportar registros programa interesado"
