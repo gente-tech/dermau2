@@ -1,52 +1,105 @@
-<h1>Interna de convenios - test</h1>
+{#
+/templates/views/views-view-unformatted--convenios.html.twig
+#}
 
-<div class="convenios-wrapper">
+{% if rows %}
+	<div class="convenios-list">
+		{% for row in rows %}
+			{% set node = row.content['#row']._entity %}
 
-  {# =========================
-     NAV (logos arriba)
-  ========================== #}
+			<article
+				class="convenio-item">
 
-  <div class="convenios-nav">
-    {% for row in rows %}
-      <div class="convenio-tab" data-index="{{ loop.index0 }}">
-        {{ row.content.field_logo }}
-      </div>
-    {% endfor %}
-  </div>
+				{# Logo del convenio #}
+				{% if node.field_logo.entity %}
+					<div class="convenio-item__logo">
+						<img src="{{ file_url(node.field_logo.entity.fileuri) }}" alt="{{ node.label }}">
+					</div>
+				{% endif %}
 
-  {# =========================
-     CONTENIDO
-  ========================== #}
+				<div
+					class="convenio-item__info">
 
-  <div class="convenios-content">
+					{# Título #}
+					<h2 class="convenio-item__title">{{ node.label }}</h2>
 
-    {% for row in rows %}
-      <div class="convenio-item" data-index="{{ loop.index0 }}">
+					{# Año de fundación #}
+					{% if node.field_ano_de_funcacion.value %}
+						<div class="convenio-item__year">
+							{{ node.field_ano_de_funcacion.value }}
+						</div>
+					{% endif %}
 
-        <h2>{{ row.content.title }}</h2>
+					{# Ciudad #}
+					{% if node.field_ciudad_convenio.value %}
+						<div class="convenio-item__city">
+							{{ node.field_ciudad_convenio.value }}
+						</div>
+					{% endif %}
 
-        <div class="meta">
-          <span>{{ row.content.field_ciudad }}</span>
-          <span>{{ row.content.field_fundacion }}</span>
-        </div>
+					{# Descripción corta #}
+					{% if node.field_descripcion_corta_convenio.value %}
+						<div class="convenio-item__description">
+							{{ node.field_descripcion_corta_convenio.value }}
+						</div>
+					{% endif %}
 
-        <div class="descripcion">
-          {{ row.content.field_descripcion }}
-        </div>
+					{# Link #}
+					{% if node.field_link.uri %}
+						<div class="convenio-item__link">
+							<a href="{{ node.field_link.uri }}" target="_blank" rel="noopener noreferrer">
+								{{ node.field_link.title ?: 'Ver más' }}
+							</a>
+						</div>
+					{% endif %}
 
-        {# PROGRAMAS #}
-        <div class="programas">
-          {{ row.content.field_programas }}
-        </div>
+					{# Programas vinculados #}
+					{% if node.field_programas_vinculados_conve is not empty %}
+						<div class="convenio-item__programas">
+							<h3 class="convenio-item__subtitle">Programas vinculados</h3>
 
-        {# DOCENTES #}
-        <div class="docentes">
-          {{ row.content.field_docentes }}
-        </div>
+							<ul class="convenio-item__programas-list">
+								{% for item in node.field_programas_vinculados_conve %}
+									{% if item.entity %}
+										{% set programa = item.entity %}
+										<li class="convenio-item__programa">
+											{{ programa.label }}
+										</li>
+									{% endif %}
+								{% endfor %}
+							</ul>
+						</div>
+					{% endif %}
 
-      </div>
-    {% endfor %}
+					{# Docentes vinculados #}
+					{% if node.field_docentes_vinculados is not empty %}
+						<div class="convenio-item__docentes">
+							<h3 class="convenio-item__subtitle">Docentes vinculados</h3>
 
-  </div>
+							<div class="convenio-item__docentes-list">
+								{% for item in node.field_docentes_vinculados %}
+									{% if item.entity %}
+										{% set docente = item.entity %}
 
-</div>
+										<div class="convenio-item__docente">
+											{% if docente.field_foto_docente.entity %}
+												<div class="convenio-item__docente-photo">
+													<img src="{{ file_url(docente.field_foto_docente.entity.fileuri) }}" alt="{{ docente.label }}">
+												</div>
+											{% endif %}
+
+											<div class="convenio-item__docente-name">
+												{{ docente.label }}
+											</div>
+										</div>
+									{% endif %}
+								{% endfor %}
+							</div>
+						</div>
+					{% endif %}
+
+				</div>
+			</article>
+		{% endfor %}
+	</div>
+{% endif %}
