@@ -33,16 +33,15 @@
 							</div>
 						{% endif %}
 					{% endfor %}
-				</div>
-
-				<div class="swiper-button-prev"></div>
-				<div class="swiper-button-next"></div>
-
+				{% endif %}
 			</div>
+
+			<div class="swiper-button-prev"></div>
+			<div class="swiper-button-next"></div>
+
 		</div>
 	</div>
 </section>
-
 {% if rows %}
 	{% for row in rows %}
 		{% set node = row.content['#row']._entity %}
