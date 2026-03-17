@@ -34,15 +34,21 @@ class ProgramaInteresadoForm extends FormBase
 
 	public function buildForm(array $form, FormStateInterface $form_state)
 	{
-
 		/*
 		-----------------------------------------
 		Cargar librería del teléfono
 		-----------------------------------------
 		*/
 		$form['#attached']['library'][] = 'dermau_core/intl_tel_input';
+		$form['#attached']['library'][] = 'dermau_core/registro_exitoso_modal';
 
+		/*
+		-------------------------------------------------
+		Clases del FORM real
+		-------------------------------------------------
+		*/
 		$form['#attributes']['class'][] = 'du-form-register__form';
+		$form['#attributes']['novalidate'] = 'novalidate';
 
 		/*
 		-------------------------------------------------
@@ -66,7 +72,7 @@ class ProgramaInteresadoForm extends FormBase
 
 		/*
 		-------------------------------------------------
-		CONTENEDORES HIDDEN DEL PROGRAMA ACTUAL
+		Hidden del programa actual
 		-------------------------------------------------
 		*/
 		$form['programa'] = [
@@ -81,7 +87,7 @@ class ProgramaInteresadoForm extends FormBase
 
 		/*
 		-------------------------------------------------
-		CONTENEDOR PRINCIPAL
+		Contenedor principal de grupos
 		-------------------------------------------------
 		*/
 		$form['group_container'] = [
@@ -105,32 +111,29 @@ class ProgramaInteresadoForm extends FormBase
 
 		$form['group_container']['group1']['nombre'] = [
 			'#type' => 'textfield',
+			'#title' => $this->t('Nombre'),
+			'#title_display' => 'invisible',
+			'#required' => TRUE,
+			'#maxlength' => 150,
 			'#attributes' => [
 				'class' => ['du-form-input'],
 				'placeholder' => 'Nombre',
 				'id' => 'du-reg-name',
 			],
-			'#title_display' => 'invisible',
-			'#required' => TRUE,
-			'#maxlength' => 150,
 		];
 
 		$form['group_container']['group1']['apellido'] = [
 			'#type' => 'textfield',
+			'#title' => $this->t('Apellido'),
+			'#title_display' => 'invisible',
+			'#required' => TRUE,
+			'#maxlength' => 150,
 			'#attributes' => [
 				'class' => ['du-form-input'],
 				'placeholder' => 'Apellido',
 				'id' => 'du-reg-lastname',
 			],
-			'#title_display' => 'invisible',
-			'#required' => TRUE,
-			'#maxlength' => 150,
 		];
-
-		/*
-		Si luego quieres email, aquí va en este grupo.
-		Por ahora no lo agrego porque dijiste guiarse por la imagen.
-		*/
 
 		/*
 		-------------------------------------------------
@@ -145,7 +148,11 @@ class ProgramaInteresadoForm extends FormBase
 		];
 
 		/*
+		-------------------------------------------------
 		PHONE GROUP
+		Se conserva el campo real "indicativo" para no romper submit/validación.
+		Se agregan clases y estructura para que el JS/CSS del front lo pueda estilizar.
+		-------------------------------------------------
 		*/
 		$form['group_container']['group2']['phone_group'] = [
 			'#type' => 'container',
@@ -154,85 +161,132 @@ class ProgramaInteresadoForm extends FormBase
 			],
 		];
 
-		/*
-		INDICATIVO
-		*/
+		$form['group_container']['group2']['phone_group']['country_ui'] = [
+			'#type' => 'container',
+			'#attributes' => [
+				'class' => ['select-country'],
+				'id' => 'select-country',
+			],
+		];
+
+		$form['group_container']['group2']['phone_group']['country_ui']['selected'] = [
+			'#type' => 'html_tag',
+			'#tag' => 'div',
+			'#attributes' => [
+				'class' => ['selected'],
+				'data-value' => '',
+			],
+			'#value' => '',
+		];
+
+		$form['group_container']['group2']['phone_group']['country_ui']['options'] = [
+			'#type' => 'html_tag',
+			'#tag' => 'div',
+			'#attributes' => [
+				'class' => ['options'],
+			],
+			'#value' => '',
+		];
+
 		$form['group_container']['group2']['phone_group']['indicativo'] = [
 			'#type' => 'select',
+			'#title' => $this->t('Indicativo'),
+			'#title_display' => 'invisible',
 			'#options' => $this->getIndicativos(),
 			'#default_value' => '+57',
-			'#attributes' => [
-				'class' => ['du-form-select'],
-				'id' => 'du-reg-indicative',
-			],
 			'#required' => TRUE,
-			'#title_display' => 'invisible',
+			'#attributes' => [
+				'class' => [
+					'du-form-select',
+					'du-form-select--indicative',
+					'js-country-native-select',
+				],
+				'id' => 'du-reg-indicative',
+				'data-role' => 'country-native-select',
+			],
 		];
 
-		/*
-		TELÉFONO
-		*/
 		$form['group_container']['group2']['phone_group']['telefono'] = [
 			'#type' => 'tel',
+			'#title' => $this->t('Teléfono'),
+			'#title_display' => 'invisible',
+			'#required' => TRUE,
+			'#maxlength' => 30,
+			'#default_value' => '',
 			'#attributes' => [
+				'class' => ['du-form-input'],
 				'placeholder' => 'Teléfono',
 				'id' => 'du-reg-phone',
-				'class' => ['du-form-input'],
+				'inputmode' => 'numeric',
+				'autocomplete' => 'tel',
 			],
-			'#required' => TRUE,
-			'#title_display' => 'invisible',
-			'#maxlength' => 30,
 		];
 
 		/*
+		-------------------------------------------------
 		CIUDAD
+		-------------------------------------------------
 		*/
 		$form['group_container']['group2']['ciudad'] = [
 			'#type' => 'select',
+			'#title' => $this->t('Ciudad'),
+			'#title_display' => 'invisible',
 			'#options' => $this->getCiudades(),
 			'#empty_option' => $this->t('Seleccione tu ciudad'),
+			'#empty_value' => '',
+			'#required' => TRUE,
 			'#attributes' => [
 				'class' => ['du-form-select'],
 				'id' => 'du-reg-city',
 			],
-			'#required' => TRUE,
-			'#title_display' => 'invisible',
 		];
 
 		/*
-		PROFESION
+		-------------------------------------------------
+		PROFESIÓN
+		-------------------------------------------------
 		*/
 		$form['group_container']['group2']['profesion'] = [
 			'#type' => 'select',
+			'#title' => $this->t('Profesión'),
+			'#title_display' => 'invisible',
 			'#options' => $this->getProfesiones(),
 			'#empty_option' => $this->t('Seleccione tu profesión'),
+			'#empty_value' => '',
+			'#required' => TRUE,
 			'#attributes' => [
 				'class' => ['du-form-select'],
 				'id' => 'du-reg-profesion',
 			],
-			'#required' => TRUE,
-			'#title_display' => 'invisible',
 		];
 
 		/*
+		-------------------------------------------------
 		MENSAJE
+		-------------------------------------------------
 		*/
 		$form['mensaje'] = [
 			'#type' => 'textarea',
+			'#title' => $this->t('Mensaje'),
+			'#title_display' => 'invisible',
 			'#attributes' => [
 				'class' => ['du-form-textarea'],
 				'placeholder' => 'Mensaje (opcional)',
 				'id' => 'du-reg-message',
+				'rows' => 5,
 			],
-			'#title_display' => 'invisible',
 		];
 
 		/*
+		-------------------------------------------------
 		CONSENTIMIENTO
+		Se mantienen clases para que tome estilos actuales.
+		-------------------------------------------------
 		*/
 		$form['autorizacion'] = [
 			'#type' => 'checkbox',
 			'#title' => $this->t('Autorizo a eClass a enviarme información vía email'),
+			'#required' => TRUE,
 			'#attributes' => [
 				'class' => ['du-form-checkbox'],
 				'id' => 'du-reg-consent',
@@ -240,11 +294,12 @@ class ProgramaInteresadoForm extends FormBase
 			'#wrapper_attributes' => [
 				'class' => ['du-form-label-checkbox'],
 			],
-			'#required' => TRUE,
 		];
 
 		/*
+		-------------------------------------------------
 		SUBMIT
+		-------------------------------------------------
 		*/
 		$form['submit'] = [
 			'#type' => 'submit',
@@ -254,12 +309,16 @@ class ProgramaInteresadoForm extends FormBase
 			],
 		];
 
+		/*
+		-------------------------------------------------
+		MODAL REGISTRO EXITOSO
+		No se toca para no romper el flujo actual.
+		-------------------------------------------------
+		*/
 		$form['modal_registro_exitoso'] = [
 			'#theme' => 'dermau_modal_registro_exitoso',
 			'#weight' => 999,
 		];
-
-		$form['#attached']['library'][] = 'dermau_core/registro_exitoso_modal';
 
 		return $form;
 	}

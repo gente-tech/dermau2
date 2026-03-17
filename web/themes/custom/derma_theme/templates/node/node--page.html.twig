@@ -1,50 +1,14 @@
-<section class="du-hero" data-variation="2x-center">
-
-  <div class="du-hero__container">
-
-    <div
-      class="du-hero__bg"
-      {% if node.field_fondo_banner.entity %}
-      style="background-image:url('{{ file_url(node.field_fondo_banner.entity.fileuri) }}')"
-      {% endif %}
-    ></div>
-
-    <div class="du-hero__overlay"></div>
-
-    <div class="du-hero__wrapper">
-
-      <div class="du-hero__content">
-
-        <h1 class="du-hero__title">
-
-          <span>{{ node.field_titulo_uno.value }}</span>
-
-          {{ node.field_titulo_dos.value }}
-
-        </h1>
-
-        <div class="du-hero__text">
-          {{ node.field_descripcion_resumen.value|raw }}
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
 {{ node.body.value|raw }}
 {% if path('<current>') == '/programas' %}
-  {{ drupal_block('programas_block_page') }}
+	{{ drupal_block('programas_block_page') }}
 {% endif %}
 {% if path('<current>') == '/nosotros' %}
-  {{ drupal_block('dermau_testimonios_block') }}
-  {{ drupal_block('dermau_stats_block') }}
-  {{ drupal_block('dermau_programas_block') }}
+	{{ drupal_block('dermau_testimonios_block') }}
+	{{ drupal_block('dermau_stats_block') }}
+	{{ drupal_block('dermau_programas_block') }}
 {% endif %}
 {% if path('<current>') == '/docentes' %}
 
-{{ drupal_block('docentes_block_page') }}
-  {{ drupal_block('dermau_programas_block') }}
+	{{ drupal_block('docentes_block_page') }}
+	{{ drupal_block('dermau_programas_block') }}
 {% endif %}
