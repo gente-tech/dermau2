@@ -3,7 +3,8 @@
 /**
  * Implements hook_theme().
  */
-function dermau_core_theme($existing, $type, $theme, $path) {
+function dermau_core_theme($existing, $type, $theme, $path)
+{
   return [
     'dermau_slider_block' => [
       'variables' => [
@@ -90,12 +91,18 @@ function dermau_core_theme($existing, $type, $theme, $path) {
       ],
       'template' => 'dermau-info-block',
     ],
+    'dermau_modal_registro_exitoso' => [
+      'variables' => [],
+      'template' => 'modal-registro-exitoso',
+      'path' => $path . '/templates',
+    ],
   ];
 }
 
 use Drupal\node\Entity\Node;
 
-function dermau_core_preprocess_node(&$variables) {
+function dermau_core_preprocess_node(&$variables)
+{
 
   if (empty($variables['node'])) {
     return;
@@ -119,6 +126,4 @@ function dermau_core_preprocess_node(&$variables) {
   $variables['otros_programas'] = !empty($nids)
     ? Node::loadMultiple($nids)
     : [];
-
 }
-

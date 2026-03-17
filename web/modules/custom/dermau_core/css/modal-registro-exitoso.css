@@ -1,0 +1,53 @@
+.du-modal {
+	position: fixed;
+	inset: 0;
+	z-index: 9999;
+	display: none;
+}
+
+.du-modal.is-open {
+	display: block;
+}
+
+.du-modal__overlay {
+	position: absolute;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.55);
+}
+
+.du-modal__dialog {
+	position: relative;
+	max-width: 520px;
+	margin: 8vh auto 0;
+	background: #fff;
+	border-radius: 20px;
+	padding: 32px;
+	z-index: 2;
+}
+
+.du-modal__close {
+	position: absolute;
+	top: 16px;
+	right: 16px;
+	border: 0;
+	background: transparent;
+	font-size: 28px;
+	cursor: pointer;
+}
+
+.du-modal__title {
+	margin: 0 0 12px;
+}
+
+.du-modal__text {
+	margin: 0 0 24px;
+}
+
+.du-modal__actions {
+	display: flex;
+	justify-content: center;
+}
+
+body.du-modal-open {
+	overflow: hidden;
+}

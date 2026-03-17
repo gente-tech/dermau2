@@ -8,6 +8,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Url;
 
 class ProgramaInteresadoForm extends FormBase
 {
@@ -35,19 +36,19 @@ class ProgramaInteresadoForm extends FormBase
 	{
 
 		/*
-    -----------------------------------------
-    Cargar librería del teléfono
-    -----------------------------------------
-    */
+		-----------------------------------------
+		Cargar librería del teléfono
+		-----------------------------------------
+		*/
 		$form['#attached']['library'][] = 'dermau_core/intl_tel_input';
 
 		$form['#attributes']['class'][] = 'du-form-register__form';
 
 		/*
-    -------------------------------------------------
-    Detectar si estamos dentro de un nodo programa
-    -------------------------------------------------
-    */
+		-------------------------------------------------
+		Detectar si estamos dentro de un nodo programa
+		-------------------------------------------------
+		*/
 		$node = \Drupal::routeMatch()->getParameter('node');
 		$current_program = NULL;
 		$current_program_title = '';
@@ -64,10 +65,10 @@ class ProgramaInteresadoForm extends FormBase
 		}
 
 		/*
-    -------------------------------------------------
-    CONTENEDORES HIDDEN DEL PROGRAMA ACTUAL
-    -------------------------------------------------
-    */
+		-------------------------------------------------
+		CONTENEDORES HIDDEN DEL PROGRAMA ACTUAL
+		-------------------------------------------------
+		*/
 		$form['programa'] = [
 			'#type' => 'hidden',
 			'#value' => $current_program,
@@ -79,10 +80,10 @@ class ProgramaInteresadoForm extends FormBase
 		];
 
 		/*
-    -------------------------------------------------
-    CONTENEDOR PRINCIPAL
-    -------------------------------------------------
-    */
+		-------------------------------------------------
+		CONTENEDOR PRINCIPAL
+		-------------------------------------------------
+		*/
 		$form['group_container'] = [
 			'#type' => 'container',
 			'#attributes' => [
@@ -91,10 +92,10 @@ class ProgramaInteresadoForm extends FormBase
 		];
 
 		/*
-    -------------------------------------------------
-    GRUPO 1
-    -------------------------------------------------
-    */
+		-------------------------------------------------
+		GRUPO 1
+		-------------------------------------------------
+		*/
 		$form['group_container']['group1'] = [
 			'#type' => 'container',
 			'#attributes' => [
@@ -127,15 +128,15 @@ class ProgramaInteresadoForm extends FormBase
 		];
 
 		/*
-    Si luego quieres email, aquí va en este grupo.
-    Por ahora no lo agrego porque dijiste guiarse por la imagen.
-    */
+		Si luego quieres email, aquí va en este grupo.
+		Por ahora no lo agrego porque dijiste guiarse por la imagen.
+		*/
 
 		/*
-    -------------------------------------------------
-    GRUPO 2
-    -------------------------------------------------
-    */
+		-------------------------------------------------
+		GRUPO 2
+		-------------------------------------------------
+		*/
 		$form['group_container']['group2'] = [
 			'#type' => 'container',
 			'#attributes' => [
@@ -144,8 +145,8 @@ class ProgramaInteresadoForm extends FormBase
 		];
 
 		/*
-    PHONE GROUP
-    */
+		PHONE GROUP
+		*/
 		$form['group_container']['group2']['phone_group'] = [
 			'#type' => 'container',
 			'#attributes' => [
@@ -154,8 +155,8 @@ class ProgramaInteresadoForm extends FormBase
 		];
 
 		/*
-    INDICATIVO
-    */
+		INDICATIVO
+		*/
 		$form['group_container']['group2']['phone_group']['indicativo'] = [
 			'#type' => 'select',
 			'#options' => $this->getIndicativos(),
@@ -169,8 +170,8 @@ class ProgramaInteresadoForm extends FormBase
 		];
 
 		/*
-    TELÉFONO
-    */
+		TELÉFONO
+		*/
 		$form['group_container']['group2']['phone_group']['telefono'] = [
 			'#type' => 'tel',
 			'#attributes' => [
@@ -184,8 +185,8 @@ class ProgramaInteresadoForm extends FormBase
 		];
 
 		/*
-    CIUDAD
-    */
+		CIUDAD
+		*/
 		$form['group_container']['group2']['ciudad'] = [
 			'#type' => 'select',
 			'#options' => $this->getCiudades(),
@@ -199,8 +200,8 @@ class ProgramaInteresadoForm extends FormBase
 		];
 
 		/*
-    PROFESION
-    */
+		PROFESION
+		*/
 		$form['group_container']['group2']['profesion'] = [
 			'#type' => 'select',
 			'#options' => $this->getProfesiones(),
@@ -214,8 +215,8 @@ class ProgramaInteresadoForm extends FormBase
 		];
 
 		/*
-    MENSAJE
-    */
+		MENSAJE
+		*/
 		$form['mensaje'] = [
 			'#type' => 'textarea',
 			'#attributes' => [
@@ -227,8 +228,8 @@ class ProgramaInteresadoForm extends FormBase
 		];
 
 		/*
-    CONSENTIMIENTO
-    */
+		CONSENTIMIENTO
+		*/
 		$form['autorizacion'] = [
 			'#type' => 'checkbox',
 			'#title' => $this->t('Autorizo a eClass a enviarme información vía email'),
@@ -243,8 +244,8 @@ class ProgramaInteresadoForm extends FormBase
 		];
 
 		/*
-    SUBMIT
-    */
+		SUBMIT
+		*/
 		$form['submit'] = [
 			'#type' => 'submit',
 			'#value' => $this->t('Contáctame'),
@@ -252,6 +253,13 @@ class ProgramaInteresadoForm extends FormBase
 				'class' => ['du-btn', 'du-btn--primary'],
 			],
 		];
+
+		$form['modal_registro_exitoso'] = [
+			'#theme' => 'dermau_modal_registro_exitoso',
+			'#weight' => 999,
+		];
+
+		$form['#attached']['library'][] = 'dermau_core/registro_exitoso_modal';
 
 		return $form;
 	}
@@ -304,8 +312,15 @@ class ProgramaInteresadoForm extends FormBase
 			])
 			->execute();
 
-		$this->messenger()->addStatus($this->t('Tu información fue registrada correctamente.'));
-		$form_state->setRedirect('<current>');
+		$current_path = \Drupal::service('path.current')->getPath();
+		$current_query = $request->query->all();
+		$current_query['registro_exitoso'] = 1;
+
+		$form_state->setRedirectUrl(
+			Url::fromUserInput($current_path, [
+				'query' => $current_query,
+			])
+		);
 	}
 
 	protected function getIndicativos()

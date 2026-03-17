@@ -36,3 +36,13 @@ intl_tel_input:
   dependencies:
     - core/drupal
     - core/once
+
+registro_exitoso_modal:
+  css:
+    theme:
+      css/modal-registro-exitoso.css: {}
+  js:
+    js/modal-registro-exitoso.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
