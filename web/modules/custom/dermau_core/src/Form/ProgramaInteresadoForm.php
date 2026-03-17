@@ -190,11 +190,10 @@ class ProgramaInteresadoForm extends FormBase
 			'#attributes' => [
 				'class' => [
 					'du-form-select',
-					'du-form-select--indicative',
-					'js-country-native-select',
+					'du-form-select--native-indicative',
+					'visually-hidden',
 				],
 				'id' => 'du-reg-indicative',
-				'data-role' => 'country-native-select',
 			],
 		];
 
