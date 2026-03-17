@@ -5,174 +5,272 @@ namespace Drupal\dermau_core\Form;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 class ProgramaInteresadoForm extends FormBase
 {
 
-	protected Connection $database;
-	protected RouteMatchInterface $routeMatch;
-	protected RequestStack $requestStack;
+	protected $database;
 
-	public function __construct(
-		Connection $database,
-		RouteMatchInterface $route_match,
-		RequestStack $request_stack
-	) {
+	public function __construct(Connection $database)
+	{
 		$this->database = $database;
-		$this->routeMatch = $route_match;
-		$this->requestStack = $request_stack;
 	}
 
 	public static function create(ContainerInterface $container)
 	{
 		return new static(
-			$container->get('database'),
-			$container->get('current_route_match'),
-			$container->get('request_stack')
+			$container->get('database')
 		);
 	}
 
-	public function getFormId(): string
+	public function getFormId()
 	{
 		return 'dermau_programa_interesado_form';
 	}
 
-	public function buildForm(array $form, FormStateInterface $form_state): array
+	public function buildForm(array $form, FormStateInterface $form_state)
 	{
-		$node = $this->routeMatch->getParameter('node');
 
-		if (!$node instanceof NodeInterface || $node->bundle() !== 'programa') {
-			return [
-				'#markup' => $this->t('Este formulario solo puede mostrarse dentro de la interna de un programa.'),
-			];
-		}
+		/*
+    -----------------------------------------
+    Cargar librería del teléfono
+    -----------------------------------------
+    */
+		$form['#attached']['library'][] = 'dermau_core/intl_tel_input';
 
 		$form['#attributes']['class'][] = 'du-form-register__form';
 
-		$form['programa_nid'] = [
+		/*
+    -------------------------------------------------
+    Detectar si estamos dentro de un nodo programa
+    -------------------------------------------------
+    */
+		$node = \Drupal::routeMatch()->getParameter('node');
+		$current_program = NULL;
+		$current_program_title = '';
+
+		if ($node instanceof NodeInterface && $node->bundle() === 'programa') {
+			$current_program = (int) $node->id();
+			$current_program_title = $node->getTitle();
+		}
+
+		if (!$current_program) {
+			return [
+				'#markup' => $this->t('Este formulario solo puede usarse dentro de la interna de un programa.'),
+			];
+		}
+
+		/*
+    -------------------------------------------------
+    CONTENEDORES HIDDEN DEL PROGRAMA ACTUAL
+    -------------------------------------------------
+    */
+		$form['programa'] = [
 			'#type' => 'hidden',
-			'#value' => (int) $node->id(),
+			'#value' => $current_program,
 		];
 
 		$form['programa_title'] = [
 			'#type' => 'hidden',
-			'#value' => (string) $node->label(),
+			'#value' => $current_program_title,
 		];
 
-		$form['nombre'] = [
-			'#type' => 'textfield',
-			'#title' => $this->t('Nombre'),
-			'#title_display' => 'invisible',
-			'#required' => TRUE,
-			'#maxlength' => 150,
-			'#attributes' => [
-				'placeholder' => $this->t('Nombre'),
-			],
-		];
-
-		$form['apellido'] = [
-			'#type' => 'textfield',
-			'#title' => $this->t('Apellido'),
-			'#title_display' => 'invisible',
-			'#required' => TRUE,
-			'#maxlength' => 150,
-			'#attributes' => [
-				'placeholder' => $this->t('Apellido'),
-			],
-		];
-
-		$form['telefono_wrapper'] = [
+		/*
+    -------------------------------------------------
+    CONTENEDOR PRINCIPAL
+    -------------------------------------------------
+    */
+		$form['group_container'] = [
 			'#type' => 'container',
 			'#attributes' => [
-				'class' => ['du-phone-wrapper'],
+				'class' => ['du-form-register__form-group-container'],
 			],
 		];
 
-		$form['telefono_wrapper']['indicativo'] = [
-			'#type' => 'select',
-			'#title' => $this->t('Indicativo'),
+		/*
+    -------------------------------------------------
+    GRUPO 1
+    -------------------------------------------------
+    */
+		$form['group_container']['group1'] = [
+			'#type' => 'container',
+			'#attributes' => [
+				'class' => ['du-form-register__form-group'],
+			],
+		];
+
+		$form['group_container']['group1']['nombre'] = [
+			'#type' => 'textfield',
+			'#attributes' => [
+				'class' => ['du-form-input'],
+				'placeholder' => 'Nombre',
+				'id' => 'du-reg-name',
+			],
 			'#title_display' => 'invisible',
 			'#required' => TRUE,
+			'#maxlength' => 150,
+		];
+
+		$form['group_container']['group1']['apellido'] = [
+			'#type' => 'textfield',
+			'#attributes' => [
+				'class' => ['du-form-input'],
+				'placeholder' => 'Apellido',
+				'id' => 'du-reg-lastname',
+			],
+			'#title_display' => 'invisible',
+			'#required' => TRUE,
+			'#maxlength' => 150,
+		];
+
+		/*
+    Si luego quieres email, aquí va en este grupo.
+    Por ahora no lo agrego porque dijiste guiarse por la imagen.
+    */
+
+		/*
+    -------------------------------------------------
+    GRUPO 2
+    -------------------------------------------------
+    */
+		$form['group_container']['group2'] = [
+			'#type' => 'container',
+			'#attributes' => [
+				'class' => ['du-form-register__form-group'],
+			],
+		];
+
+		/*
+    PHONE GROUP
+    */
+		$form['group_container']['group2']['phone_group'] = [
+			'#type' => 'container',
+			'#attributes' => [
+				'class' => ['du-form-phone-group'],
+			],
+		];
+
+		/*
+    INDICATIVO
+    */
+		$form['group_container']['group2']['phone_group']['indicativo'] = [
+			'#type' => 'select',
 			'#options' => $this->getIndicativos(),
 			'#default_value' => '+57',
-		];
-
-		$form['telefono_wrapper']['telefono'] = [
-			'#type' => 'tel',
-			'#title' => $this->t('Teléfono'),
-			'#title_display' => 'invisible',
-			'#required' => TRUE,
-			'#maxlength' => 30,
 			'#attributes' => [
-				'placeholder' => $this->t('Teléfono'),
+				'class' => ['du-form-select'],
+				'id' => 'du-reg-indicative',
 			],
+			'#required' => TRUE,
+			'#title_display' => 'invisible',
 		];
 
-		$form['ciudad'] = [
-			'#type' => 'select',
-			'#title' => $this->t('Ciudad'),
-			'#title_display' => 'invisible',
+		/*
+    TELÉFONO
+    */
+		$form['group_container']['group2']['phone_group']['telefono'] = [
+			'#type' => 'tel',
+			'#attributes' => [
+				'placeholder' => 'Teléfono',
+				'id' => 'du-reg-phone',
+				'class' => ['du-form-input'],
+			],
 			'#required' => TRUE,
-			'#empty_option' => $this->t('Selecciona tu ciudad'),
+			'#title_display' => 'invisible',
+			'#maxlength' => 30,
+		];
+
+		/*
+    CIUDAD
+    */
+		$form['group_container']['group2']['ciudad'] = [
+			'#type' => 'select',
 			'#options' => $this->getCiudades(),
-		];
-
-		$form['profesion'] = [
-			'#type' => 'select',
-			'#title' => $this->t('Profesión'),
-			'#title_display' => 'invisible',
+			'#empty_option' => $this->t('Seleccione tu ciudad'),
+			'#attributes' => [
+				'class' => ['du-form-select'],
+				'id' => 'du-reg-city',
+			],
 			'#required' => TRUE,
-			'#empty_option' => $this->t('Selecciona tu profesión'),
-			'#options' => $this->getProfesiones(),
+			'#title_display' => 'invisible',
 		];
 
+		/*
+    PROFESION
+    */
+		$form['group_container']['group2']['profesion'] = [
+			'#type' => 'select',
+			'#options' => $this->getProfesiones(),
+			'#empty_option' => $this->t('Seleccione tu profesión'),
+			'#attributes' => [
+				'class' => ['du-form-select'],
+				'id' => 'du-reg-profesion',
+			],
+			'#required' => TRUE,
+			'#title_display' => 'invisible',
+		];
+
+		/*
+    MENSAJE
+    */
 		$form['mensaje'] = [
 			'#type' => 'textarea',
-			'#title' => $this->t('Mensaje'),
-			'#title_display' => 'invisible',
-			'#required' => FALSE,
 			'#attributes' => [
-				'placeholder' => $this->t('Mensaje'),
+				'class' => ['du-form-textarea'],
+				'placeholder' => 'Mensaje (opcional)',
+				'id' => 'du-reg-message',
 			],
+			'#title_display' => 'invisible',
 		];
 
+		/*
+    CONSENTIMIENTO
+    */
 		$form['autorizacion'] = [
 			'#type' => 'checkbox',
 			'#title' => $this->t('Autorizo a eClass a enviarme información vía email'),
+			'#attributes' => [
+				'class' => ['du-form-checkbox'],
+				'id' => 'du-reg-consent',
+			],
+			'#wrapper_attributes' => [
+				'class' => ['du-form-label-checkbox'],
+			],
 			'#required' => TRUE,
 		];
 
-		$form['actions'] = [
-			'#type' => 'actions',
-		];
-
-		$form['actions']['submit'] = [
+		/*
+    SUBMIT
+    */
+		$form['submit'] = [
 			'#type' => 'submit',
 			'#value' => $this->t('Contáctame'),
+			'#attributes' => [
+				'class' => ['du-btn', 'du-btn--primary'],
+			],
 		];
 
 		return $form;
 	}
 
-	public function validateForm(array &$form, FormStateInterface $form_state): void
+	public function validateForm(array &$form, FormStateInterface $form_state)
 	{
-		$current_node = $this->routeMatch->getParameter('node');
+		$node = \Drupal::routeMatch()->getParameter('node');
 
-		if (!$current_node instanceof NodeInterface || $current_node->bundle() !== 'programa') {
-			$form_state->setErrorByName('programa_nid', $this->t('No se pudo determinar el programa actual.'));
+		if (!$node instanceof NodeInterface || $node->bundle() !== 'programa') {
+			$form_state->setErrorByName('programa', $this->t('No se pudo identificar el programa actual.'));
 			return;
 		}
 
-		$programa_nid = (int) $form_state->getValue('programa_nid');
+		$programa_id = (int) $form_state->getValue('programa');
 		$programa_title = trim((string) $form_state->getValue('programa_title'));
 		$telefono = preg_replace('/\s+/', '', (string) $form_state->getValue('telefono'));
 
-		if ($programa_nid !== (int) $current_node->id()) {
-			$form_state->setErrorByName('programa_nid', $this->t('El programa enviado no coincide con el programa actual.'));
+		if ($programa_id !== (int) $node->id()) {
+			$form_state->setErrorByName('programa', $this->t('El programa enviado no coincide con el programa actual.'));
 		}
 
 		if ($programa_title === '') {
@@ -184,13 +282,13 @@ class ProgramaInteresadoForm extends FormBase
 		}
 	}
 
-	public function submitForm(array &$form, FormStateInterface $form_state): void
+	public function submitForm(array &$form, FormStateInterface $form_state)
 	{
-		$request = $this->requestStack->getCurrentRequest();
+		$request = \Drupal::request();
 
 		$this->database->insert('dermau_programa_interesado')
 			->fields([
-				'programa_nid' => (int) $form_state->getValue('programa_nid'),
+				'programa_nid' => (int) $form_state->getValue('programa'),
 				'programa_title' => trim((string) $form_state->getValue('programa_title')),
 				'nombre' => trim((string) $form_state->getValue('nombre')),
 				'apellido' => trim((string) $form_state->getValue('apellido')),
@@ -210,7 +308,7 @@ class ProgramaInteresadoForm extends FormBase
 		$form_state->setRedirect('<current>');
 	}
 
-	protected function getIndicativos(): array
+	protected function getIndicativos()
 	{
 		return [
 			'+57' => '+57',
@@ -224,7 +322,7 @@ class ProgramaInteresadoForm extends FormBase
 		];
 	}
 
-	protected function getCiudades(): array
+	protected function getCiudades()
 	{
 		return [
 			'Bogotá' => 'Bogotá',
@@ -241,7 +339,7 @@ class ProgramaInteresadoForm extends FormBase
 		];
 	}
 
-	protected function getProfesiones(): array
+	protected function getProfesiones()
 	{
 		return [
 			'Dermatólogo(a)' => 'Dermatólogo(a)',
