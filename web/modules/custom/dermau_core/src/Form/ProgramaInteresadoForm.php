@@ -161,14 +161,6 @@ class ProgramaInteresadoForm extends FormBase
 			],
 		];
 
-		$form['group_container']['group2']['phone_group']['country_ui'] = [
-			'#type' => 'container',
-			'#attributes' => [
-				'class' => ['select-country'],
-				'id' => 'select-country',
-			],
-		];
-
 		$form['group_container']['group2']['phone_group']['country_ui']['selected'] = [
 			'#type' => 'html_tag',
 			'#tag' => 'div',
