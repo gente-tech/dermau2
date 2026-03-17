@@ -1,45 +1,48 @@
 (function (Drupal, once) {
-	Drupal.behaviors.registroExitosoModal = {
-		attach(context) {
-			once('registroExitosoModal', 'body', context).forEach(() => {
-				const modal = document.getElementById('duRegistroExitosoModal');
-				if (!modal) {
-					return;
-				}
+  Drupal.behaviors.dermauRegistroExitosoModal = {
+    attach(context) {
+      once('dermauRegistroExitosoModal', 'body', context).forEach(() => {
+        const modal = document.getElementById('modal-ok');
+        if (!modal) {
+          return;
+        }
 
-				const params = new URLSearchParams(window.location.search);
-				const isSuccess = params.get('registro_exitoso') === '1';
+        const closeBtn = modal.querySelector('.du-modal__close');
+        const overlay = modal.querySelector('.du-modal__overlay');
 
-				const openModal = () => {
-					modal.classList.add('is-open');
-					modal.setAttribute('aria-hidden', 'false');
-					document.body.classList.add('du-modal-open');
-				};
+        const openModal = () => {
+          modal.style.display = 'flex';
+          document.body.style.overflow = 'hidden';
+        };
 
-				const closeModal = () => {
-					modal.classList.remove('is-open');
-					modal.setAttribute('aria-hidden', 'true');
-					document.body.classList.remove('du-modal-open');
+        const closeModal = () => {
+          modal.style.display = 'none';
+          document.body.style.overflow = 'auto';
 
-					const url = new URL(window.location.href);
-					url.searchParams.delete('registro_exitoso');
-					window.history.replaceState({}, document.title, url.toString());
-				};
+          const url = new URL(window.location.href);
+          url.searchParams.delete('registro_exitoso');
+          window.history.replaceState({}, document.title, url.toString());
+        };
 
-				modal.querySelectorAll('[data-modal-close]').forEach((element) => {
-					element.addEventListener('click', closeModal);
-				});
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('registro_exitoso') === '1') {
+          openModal();
+        }
 
-				document.addEventListener('keydown', (event) => {
-					if (event.key === 'Escape' && modal.classList.contains('is-open')) {
-						closeModal();
-					}
-				});
+        if (closeBtn) {
+          closeBtn.addEventListener('click', closeModal);
+        }
 
-				if (isSuccess) {
-					openModal();
-				}
-			});
-		}
-	};
+        if (overlay) {
+          overlay.addEventListener('click', closeModal);
+        }
+
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape' && modal.style.display === 'flex') {
+            closeModal();
+          }
+        });
+      });
+    }
+  };
 })(Drupal, once);
