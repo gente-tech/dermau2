@@ -7,13 +7,13 @@
         }
 
         const indicativeHidden = document.getElementById('du-reg-indicative');
-        const indicativeDisplay = document.getElementById('du-reg-indicative-display');
 
         const iti = window.intlTelInput(input, {
           initialCountry: 'co',
           nationalMode: true,
-          separateDialCode: false,
+          separateDialCode: true,
           autoPlaceholder: 'off',
+          formatOnDisplay: false,
           utilsScript: 'https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.11/build/js/utils.js'
         });
 
@@ -23,10 +23,6 @@
 
           if (indicativeHidden) {
             indicativeHidden.value = dialCode;
-          }
-
-          if (indicativeDisplay) {
-            indicativeDisplay.textContent = dialCode;
           }
         }
 
@@ -45,6 +41,12 @@
           setTimeout(function () {
             field.value = field.value.replace(/\D+/g, '');
           }, 0);
+        });
+
+        input.addEventListener('keydown', function (event) {
+          if (event.key === '+' || event.key === '-' || event.key === 'e' || event.key === 'E') {
+            event.preventDefault();
+          }
         });
       });
     }

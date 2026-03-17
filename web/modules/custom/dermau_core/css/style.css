@@ -1,11 +1,59 @@
 .du-form-phone-group {
-	display: flex;
-	align-items: center;
-	gap: 8px;
+  width: 100%;
 }
 
-.du-form-phone-prefix {
-	white-space: nowrap;
-	font-size: 16px;
-	line-height: 1;
+.du-form-phone-group .iti {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background: #eef6ff;
+  border-radius: 999px;
+  padding: 0 16px;
+  min-height: 56px;
+}
+
+.du-form-phone-group .iti__flag-container {
+  position: static;
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+}
+
+.du-form-phone-group .iti__selected-country {
+  position: static;
+  height: auto;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.du-form-phone-group .iti__selected-dial-code {
+  margin-left: 0;
+  font-size: 16px;
+  line-height: 1;
+  color: #3d4b5c;
+  white-space: nowrap;
+}
+
+.du-form-phone-group .iti input.du-form-input--phone,
+.du-form-phone-group .iti input#du-reg-phone {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  width: 100%;
+  padding-left: 12px;
+  height: 56px;
+}
+
+.du-form-phone-group .iti input.du-form-input--phone:focus,
+.du-form-phone-group .iti input#du-reg-phone:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.du-form-phone-group .iti__country-list {
+  z-index: 9999;
 }

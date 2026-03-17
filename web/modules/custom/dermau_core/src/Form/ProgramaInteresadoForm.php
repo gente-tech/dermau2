@@ -63,6 +63,14 @@ class ProgramaInteresadoForm extends FormBase
 			'#value' => $current_program_title,
 		];
 
+		$form['indicativo'] = [
+			'#type' => 'hidden',
+			'#value' => '+57',
+			'#attributes' => [
+				'id' => 'du-reg-indicative',
+			],
+		];
+
 		$form['group_container'] = [
 			'#type' => 'container',
 			'#attributes' => [
@@ -110,59 +118,7 @@ class ProgramaInteresadoForm extends FormBase
 			],
 		];
 
-		$form['group_container']['group2']['phone_group'] = [
-			'#type' => 'container',
-			'#attributes' => [
-				'class' => ['du-form-phone-group'],
-			],
-		];
-
-		$form['group_container']['group2']['phone_group']['country_ui'] = [
-			'#type' => 'container',
-			'#attributes' => [
-				'class' => ['select-country'],
-				'id' => 'select-country',
-			],
-		];
-
-		$form['group_container']['group2']['phone_group']['country_ui']['selected'] = [
-			'#type' => 'html_tag',
-			'#tag' => 'div',
-			'#value' => '',
-			'#attributes' => [
-				'class' => ['selected'],
-				'data-value' => 'co',
-			],
-		];
-
-		$form['group_container']['group2']['phone_group']['country_ui']['options'] = [
-			'#type' => 'html_tag',
-			'#tag' => 'div',
-			'#value' => '',
-			'#attributes' => [
-				'class' => ['options'],
-			],
-		];
-
-		$form['group_container']['group2']['phone_group']['indicativo'] = [
-			'#type' => 'hidden',
-			'#value' => '+57',
-			'#attributes' => [
-				'id' => 'du-reg-indicative',
-			],
-		];
-
-		$form['group_container']['group2']['phone_group']['indicativo_display'] = [
-			'#type' => 'html_tag',
-			'#tag' => 'span',
-			'#value' => '+57',
-			'#attributes' => [
-				'class' => ['du-form-phone-prefix'],
-				'id' => 'du-reg-indicative-display',
-			],
-		];
-
-		$form['group_container']['group2']['phone_group']['telefono'] = [
+		$form['group_container']['group2']['telefono'] = [
 			'#type' => 'tel',
 			'#title' => $this->t('Teléfono'),
 			'#title_display' => 'invisible',
@@ -175,6 +131,8 @@ class ProgramaInteresadoForm extends FormBase
 				'inputmode' => 'numeric',
 				'autocomplete' => 'tel-national',
 			],
+			'#prefix' => '<div class="du-form-phone-group">',
+			'#suffix' => '</div>',
 		];
 
 		$form['group_container']['group2']['ciudad'] = [
@@ -282,8 +240,7 @@ class ProgramaInteresadoForm extends FormBase
 		$request = \Drupal::request();
 
 		$indicativo = trim((string) $form_state->getValue('indicativo'));
-		$telefono = trim((string) $form_state->getValue('telefono'));
-		$telefono = preg_replace('/\D+/', '', $telefono);
+		$telefono = preg_replace('/\D+/', '', trim((string) $form_state->getValue('telefono')));
 
 		$this->database->insert('dermau_programa_interesado')
 			->fields([

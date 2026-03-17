@@ -28,6 +28,7 @@ intl_tel_input:
   css:
     theme:
       https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.11/build/css/intlTelInput.css: { type: external }
+      css/style.css: {}
 
   js:
     https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.11/build/js/intlTelInput.min.js: { type: external }
