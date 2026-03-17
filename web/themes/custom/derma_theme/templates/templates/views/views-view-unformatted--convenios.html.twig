@@ -1,0 +1,52 @@
+<h1>Interna de convenios - test</h1>
+
+<div class="convenios-wrapper">
+
+  {# =========================
+     NAV (logos arriba)
+  ========================== #}
+
+  <div class="convenios-nav">
+    {% for row in rows %}
+      <div class="convenio-tab" data-index="{{ loop.index0 }}">
+        {{ row.content.field_logo }}
+      </div>
+    {% endfor %}
+  </div>
+
+  {# =========================
+     CONTENIDO
+  ========================== #}
+
+  <div class="convenios-content">
+
+    {% for row in rows %}
+      <div class="convenio-item" data-index="{{ loop.index0 }}">
+
+        <h2>{{ row.content.title }}</h2>
+
+        <div class="meta">
+          <span>{{ row.content.field_ciudad }}</span>
+          <span>{{ row.content.field_fundacion }}</span>
+        </div>
+
+        <div class="descripcion">
+          {{ row.content.field_descripcion }}
+        </div>
+
+        {# PROGRAMAS #}
+        <div class="programas">
+          {{ row.content.field_programas }}
+        </div>
+
+        {# DOCENTES #}
+        <div class="docentes">
+          {{ row.content.field_docentes }}
+        </div>
+
+      </div>
+    {% endfor %}
+
+  </div>
+
+</div>
