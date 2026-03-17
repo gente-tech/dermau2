@@ -54,15 +54,24 @@
 
 					{# Programas vinculados #}
 					{% if node.field_programas_vinculados_conve is not empty %}
-						<div class="convenio-item__programas">
-							<h3 class="convenio-item__subtitle">Programas vinculados</h3>
+						<div class="convenio-programas">
+							<h3>Programas vinculados</h3>
 
-							<ul class="convenio-item__programas-list">
+							<ul class="convenio-programas__list">
 								{% for item in node.field_programas_vinculados_conve %}
 									{% if item.entity %}
 										{% set programa = item.entity %}
-										<li class="convenio-item__programa">
-											{{ programa.label }}
+
+										<li class="convenio-programas__item">
+											<div class="convenio-programas__nombre">
+												{{ programa.label }}
+											</div>
+
+											{% if programa.field_tipo_de_programa.entity %}
+												<div class="convenio-programas__tipo">
+													{{ programa.field_tipo_de_programa.entity.label }}
+												</div>
+											{% endif %}
 										</li>
 									{% endif %}
 								{% endfor %}
@@ -72,24 +81,20 @@
 
 					{# Docentes vinculados #}
 					{% if node.field_docentes_vinculados is not empty %}
-						<div class="convenio-item__docentes">
-							<h3 class="convenio-item__subtitle">Docentes vinculados</h3>
+						<div class="convenio-docentes">
+							<h3>Docentes vinculados</h3>
 
-							<div class="convenio-item__docentes-list">
+							<div class="docentes-list">
 								{% for item in node.field_docentes_vinculados %}
 									{% if item.entity %}
 										{% set docente = item.entity %}
 
-										<div class="convenio-item__docente">
+										<div class="docente-item">
 											{% if docente.field_foto_docente.entity %}
-												<div class="convenio-item__docente-photo">
-													<img src="{{ file_url(docente.field_foto_docente.entity.fileuri) }}" alt="{{ docente.label }}">
-												</div>
+												<img src="{{ file_url(docente.field_foto_docente.entity.fileuri) }}" alt="{{ docente.label }}">
 											{% endif %}
 
-											<div class="convenio-item__docente-name">
-												{{ docente.label }}
-											</div>
+											<p>{{ docente.label }}</p>
 										</div>
 									{% endif %}
 								{% endfor %}
