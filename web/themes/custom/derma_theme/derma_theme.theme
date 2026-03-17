@@ -1,10 +1,10 @@
 <?php
-function derma_theme_preprocess_node(&$variables) {
 
+function derma_theme_preprocess_node(&$variables)
+{
   $node = $variables['node'];
 
   if ($node->bundle() === 'programa') {
-
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'docente')
       ->condition('field_programas_vinculados', $node->id())
@@ -22,10 +22,11 @@ function derma_theme_preprocess_node(&$variables) {
   }
 }
 
-function derma_theme_preprocess_views_view_unformatted(array &$variables) {
+function derma_theme_preprocess_views_view_unformatted(array &$variables)
+{
   $view = $variables['view'];
 
-  if ($view->id() === 'convenios' && $view->current_display === 'page_1') {
+  if ($view->id() === 'convenios') {
     $variables['texto_convenios_titulo_1'] = '';
     $variables['texto_convenios_titulo_2'] = '';
     $variables['texto_convenios_titulo_3'] = '';
