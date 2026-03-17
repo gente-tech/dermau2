@@ -1,5 +1,5 @@
 <?php
-function dermau_theme_preprocess_node(&$variables) {
+function derma_theme_preprocess_node(&$variables) {
 
   $node = $variables['node'];
 
@@ -22,7 +22,7 @@ function dermau_theme_preprocess_node(&$variables) {
   }
 }
 
-function dermau_theme_preprocess_views_view_unformatted(array &$variables) {
+function derma_theme_preprocess_views_view_unformatted(array &$variables) {
   $view = $variables['view'];
 
   if ($view->id() === 'convenios' && $view->current_display === 'page_1') {
