@@ -1,4 +1,4 @@
-<?php 
+<?php
 function dermau_theme_preprocess_node(&$variables) {
 
   $node = $variables['node'];
@@ -30,19 +30,21 @@ function dermau_theme_preprocess_views_view_unformatted(array &$variables) {
     $variables['texto_convenios_titulo_2'] = '';
     $variables['texto_convenios_titulo_3'] = '';
 
-    if (!empty($view->header)) {
-      $headers = array_values($view->header);
+    $header = $view->display_handler->getOption('header');
 
-      if (isset($headers[0])) {
-        $variables['texto_convenios_titulo_1'] = $headers[0]->render($view);
+    if (!empty($header) && is_array($header)) {
+      $items = array_values($header);
+
+      if (!empty($items[0]['content']['value'])) {
+        $variables['texto_convenios_titulo_1'] = $items[0]['content']['value'];
       }
 
-      if (isset($headers[1])) {
-        $variables['texto_convenios_titulo_2'] = $headers[1]->render($view);
+      if (!empty($items[1]['content']['value'])) {
+        $variables['texto_convenios_titulo_2'] = $items[1]['content']['value'];
       }
 
-      if (isset($headers[2])) {
-        $variables['texto_convenios_titulo_3'] = $headers[2]->render($view);
+      if (!empty($items[2]['content']['value'])) {
+        $variables['texto_convenios_titulo_3'] = $items[2]['content']['value'];
       }
     }
   }
