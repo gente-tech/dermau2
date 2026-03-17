@@ -1,54 +1,32 @@
 (function (Drupal, once) {
-  Drupal.behaviors.dermauPhoneInput = {
-    attach(context) {
-      once('dermauPhoneInput', '#du-reg-phone', context).forEach(function (input) {
-        if (typeof window.intlTelInput !== 'function') {
-          return;
-        }
+  Drupal.behaviors.phoneInput = {
+    attach: function (context) {
 
-        const indicativeHidden = document.getElementById('du-reg-indicative');
+      once('phoneInput', '#du-reg-phone', context).forEach(function (input) {
 
         const iti = window.intlTelInput(input, {
-          initialCountry: 'co',
-          nationalMode: true,
+          initialCountry: "co",
           separateDialCode: true,
-          autoPlaceholder: 'off',
-          formatOnDisplay: false,
-          utilsScript: 'https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.11/build/js/utils.js'
+          utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.11/build/js/utils.js"
         });
 
-        function syncIndicative() {
+        const hiddenInput = document.getElementById('du-reg-indicative');
+
+        // ✅ Set inicial
+        const setIndicative = () => {
           const countryData = iti.getSelectedCountryData();
-          const dialCode = countryData && countryData.dialCode ? `+${countryData.dialCode}` : '+57';
+          hiddenInput.value = '+' + countryData.dialCode;
+        };
 
-          if (indicativeHidden) {
-            indicativeHidden.value = dialCode;
-          }
-        }
+        setIndicative();
 
-        syncIndicative();
-
+        // ✅ Cuando cambia la bandera
         input.addEventListener('countrychange', function () {
-          syncIndicative();
+          setIndicative();
         });
 
-        input.addEventListener('input', function () {
-          this.value = this.value.replace(/\D+/g, '');
-        });
-
-        input.addEventListener('paste', function () {
-          const field = this;
-          setTimeout(function () {
-            field.value = field.value.replace(/\D+/g, '');
-          }, 0);
-        });
-
-        input.addEventListener('keydown', function (event) {
-          if (event.key === '+' || event.key === '-' || event.key === 'e' || event.key === 'E') {
-            event.preventDefault();
-          }
-        });
       });
+
     }
   };
 })(Drupal, once);

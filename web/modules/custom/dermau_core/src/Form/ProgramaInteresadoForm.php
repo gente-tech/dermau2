@@ -65,7 +65,7 @@ class ProgramaInteresadoForm extends FormBase
 
 		$form['indicativo'] = [
 			'#type' => 'hidden',
-			'#value' => '+57',
+			'#default_value' => '+57',
 			'#attributes' => [
 				'id' => 'du-reg-indicative',
 			],
