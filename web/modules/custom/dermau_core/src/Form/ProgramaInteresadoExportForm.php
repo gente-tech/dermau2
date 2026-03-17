@@ -40,7 +40,7 @@ class ProgramaInteresadoExportForm extends FormBase
 
 		$form['intro'] = [
 			'#type' => 'markup',
-			'#markup' => '<p>Desde aquí puedes descargar en Excel los registros almacenados en la tabla <strong>dermau_programa_interesado</strong>.</p>',
+			'#markup' => '<p>Desde aquí puedes descargar en Excel los registros de los interesados en los programas</p>',
 		];
 
 		$form['total'] = [
