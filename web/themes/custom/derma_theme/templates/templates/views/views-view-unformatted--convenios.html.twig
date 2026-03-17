@@ -1,7 +1,6 @@
 {#
 /templates/views/views-view-unformatted--convenios.html.twig
 #}
-<h1>Haspe-prueba</h1>
 {% if rows %}
 	<div class="convenios-list">
 		{% for row in rows %}
@@ -21,7 +20,7 @@
 					class="convenio-item__info">
 
 					{# Título #}
-					<h2 class="convenio-item__title">KKK-{{ node.label }}</h2>
+					<h2 class="convenio-item__title">{{ node.label }}</h2>
 
 					{# Año de fundación #}
 					{% if node.field_ano_de_funcacion.value %}
