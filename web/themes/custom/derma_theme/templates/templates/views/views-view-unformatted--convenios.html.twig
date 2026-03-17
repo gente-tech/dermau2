@@ -42,6 +42,8 @@
 		</div>
 	</div>
 </section>
+
+
 {% if rows %}
 	{% for row in rows %}
 		{% set node = row.content['#row']._entity %}
@@ -76,12 +78,15 @@
 					<h3 class="du-convenio-block__subtitle">Programas vinculados</h3>
 					<div class="du-convenio-block__tags">
 						{% for item in node.field_programas_vinculados_conve %}
-							<div class="du-convenio-block__tag">
-								{% if programa.field_tipo_de_programa.entity %}
-									<span class="tag tag--diplomado">{{ programa.field_tipo_de_programa.entity.label }}</span>
-								{% endif %}
-								<span>{{ programa.label }}</span>
-							</div>
+							{% if item.entity %}
+								{% set programa = item.entity %}
+								<div class="du-convenio-block__tag">
+									{% if programa.field_tipo_de_programa.entity %}
+										<span class="tag tag--diplomado">{{ programa.field_tipo_de_programa.entity.label }}</span>
+									{% endif %}
+									<span>{{ programa.label }}</span>
+								</div>
+							{% endif %}
 						{% endfor %}
 					</div>
 				{% endif %}
@@ -90,7 +95,12 @@
 					<h3 class="du-convenio-block__subtitle">Docentes vinculados</h3>
 					<div class="du-swiper-expert">
 						<div class="swiper" id="sw-convenio-experto">
-							<div class="swiper-wrapper" id="card__expert"></div>
+							{% for item in node.field_docentes_vinculados %}
+								{% if item.entity %}
+									{% set docente = item.entity %}
+									<div class="swiper-wrapper" id="card__expert"></div>
+								{% endif %}
+							{% endfor %}
 
 							<div class="swiper-button-next"></div>
 							<div class="swiper-button-prev"></div>
