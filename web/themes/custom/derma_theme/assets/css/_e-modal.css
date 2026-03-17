@@ -290,7 +290,18 @@
     padding-block: 2px;
 }
 
+.du-modal__actions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 15px;
+    padding-block: 10px;
+}
 
+.span-link {
+    color: #60E0FF;
+}
 
 /* --- RESPONSIVE (Versión Móvil) --- */
 @media (max-width: 768px) {

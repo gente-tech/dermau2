@@ -18,9 +18,10 @@
   margin-bottom: 20px;
 }
 .du-oferta__title {
-  font-size: 32px;
-  font-weight: 900;
-  color: var(--du-color-text-dark);
+    font-size: 22px;
+    font-weight: 900;
+    color: #51BCD6;
+    text-align: center;
 }
 .du-oferta__title span {
   color: var(--du-color-primary);
