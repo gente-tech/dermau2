@@ -23,6 +23,7 @@ class InfoBlock extends BlockBase
 	public function defaultConfiguration()
 	{
 		return [
+			'bg_color' => '',
 			'titulo_normal' => '',
 			'titulo_resaltado' => '',
 			'descripcion' => '',
@@ -37,6 +38,12 @@ class InfoBlock extends BlockBase
 	 */
 	public function blockForm($form, FormStateInterface $form_state)
 	{
+		$form['bg_color'] = [
+			'#type' => 'textfield',
+			'#title' => $this->t('Color de fondo'),
+			'#default_value' => $this->configuration['bg_color'] ?? '',
+		];
+
 		$form['titulo_normal'] = [
 			'#type' => 'textfield',
 			'#title' => $this->t('Título normal'),
@@ -101,6 +108,7 @@ class InfoBlock extends BlockBase
 			}
 		}
 
+		$this->configuration['bg_color'] = $form_state->getValue('bg_color');
 		$this->configuration['titulo_normal'] = $form_state->getValue('titulo_normal');
 		$this->configuration['titulo_resaltado'] = $form_state->getValue('titulo_resaltado');
 		$this->configuration['descripcion'] = $form_state->getValue('descripcion');
@@ -128,6 +136,7 @@ class InfoBlock extends BlockBase
 
 		return [
 			'#theme' => 'dermau_info_block',
+			'#bg_color' => $this->configuration['bg_color'] ?? '',
 			'#titulo_normal' => $this->configuration['titulo_normal'] ?? '',
 			'#titulo_resaltado' => $this->configuration['titulo_resaltado'] ?? '',
 			'#descripcion' => $this->configuration['descripcion'] ?? '',

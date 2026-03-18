@@ -80,6 +80,7 @@ function dermau_core_theme($existing, $type, $theme, $path)
     ],
     'dermau_info_block' => [
       'variables' => [
+        'bg_color' => '',
         'titulo_normal' => '',
         'titulo_resaltado' => '',
         'descripcion' => '',
