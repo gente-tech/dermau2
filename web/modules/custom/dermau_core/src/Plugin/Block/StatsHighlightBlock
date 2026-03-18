@@ -9,14 +9,14 @@ use Drupal\Core\Path\CurrentPathStack;
 use Drupal\Core\Path\AliasManagerInterface;
 
 /**
- * Provides a Dermau Stats Block Two.
+ * Provides a Dermau Stats Highlight Block.
  *
  * @Block(
- *   id = "dermau_stats_block_two",
- *   admin_label = @Translation("Dermau Stats Block Two"),
+ *   id = "dermau_stats_highlight_block",
+ *   admin_label = @Translation("Dermau Stats Highlight Block"),
  * )
  */
-class StatsBlockTwo extends BlockBase
+class StatsHighlightBlock extends BlockBase
 {
 
 	public function defaultConfiguration()
