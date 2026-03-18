@@ -16,3 +16,10 @@ swiper:
       type: external
   dependencies:
     - core/drupal
+
+convenios:
+  js:
+    assets/js/convenios.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
