@@ -475,12 +475,38 @@
                         <div class="du-modal__contact-item du-colum">
 
                           <div class="du-modal__contact-redes">
-                            <a href="{{ d.field_pagina_web.value }}" target="_blank"></a>
+
+                            {% if d.field_linkedin.value %}
+                            <a href="{{ d.field_linkedin.value }}" target="_blank">
+                              <svg width="23" height="23" viewBox="0 0 23 23" fill="none">
+                                <path d="M20.4444 0C21.1222 0 21.7722 0.269244 22.2514 0.748502C22.7307 1.22776 22.9999 1.87777 22.9999 2.55555V20.4444C22.9999 21.1222 22.7307 21.7722 22.2514 22.2514C21.7722 22.7307 21.1222 22.9999 20.4444 22.9999H2.55555C1.87777 22.9999 1.22776 22.7307 0.748502 22.2514C0.269244 21.7722 0 21.1222 0 20.4444V2.55555C0 1.87777 0.269244 1.22776 0.748502 0.748502C1.22776 0.269244 1.87777 0 2.55555 0H20.4444Z" fill="#51BCD6"/>
+                              </svg>
+                            </a>
+                            {% endif %}
+
+                            {% if d.field_facebook.value %}
+                            <a href="{{ d.field_facebook.value }}" target="_blank">
+                              <svg width="23" height="23" viewBox="0 0 23 23" fill="none">
+                                <path d="M21.7349 0H1.265C0.929498 0 0.607742 0.133276 0.370509 0.370509C0.133276 0.607742 0 0.929498 0 1.265V21.7349C0 22.0704 0.133276 22.3922 0.370509 22.6294C0.607742 22.8667 0.929498 22.9999 1.265 22.9999H12.282V14.0875H9.29197V10.6375H12.282V8.04997C12.22 7.4425 12.2917 6.82882 12.4921 6.252C12.6924 5.67517 13.0165 5.14916 13.4417 4.71086C13.8668 4.27256 14.3827 3.93257 14.9532 3.71476C15.5237 3.49695 16.1349 3.40658 16.7439 3.44999Z" fill="#51BCD6"/>
+                              </svg>
+                            </a>
+                            {% endif %}
+
+                            {% if d.field_instagram.value %}
+                            <a href="{{ d.field_instagram.value }}" target="_blank">
+                              <svg width="23" height="23" viewBox="0 0 23 23" fill="none">
+                                <path d="M12.6828 0C13.9766 0.00344999 14.6332 0.01035 15.2002 0.0264499..." fill="#51BCD6"/>
+                              </svg>
+                            </a>
+                            {% endif %}
+
                           </div>
 
+                          {% if d.field_pagina_web.value %}
                           <a href="{{ d.field_pagina_web.value }}" target="_blank" class="du-link-external">
                             {{ d.field_pagina_web.value }}
                           </a>
+                          {% endif %}
 
                         </div>
                         {% endif %}
