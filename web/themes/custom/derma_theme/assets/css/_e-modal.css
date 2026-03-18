@@ -153,21 +153,21 @@
   padding: 4px 12px;
   border-radius: 20px;
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 500;
   color: white;
   background: #1C224A;
   color:white;
 }
-.tag--diplomado {
+.tag--diplomado, .tag[data-tag="1"] {
   color: #93FFD4;
 }
-.tag--curso {
+.tag--curso, .tag[data-tag="2"] {
   color: #FF73E3;
 }
-.tag--especial {
+.tag--especial, .tag[data-tag="3"] {
   color: #ffeb3b;
 }
-.tag--webinar {
+.tag--webinar, .tag[data-tag="4"] {
   color: #FFBB93;
 }
 
