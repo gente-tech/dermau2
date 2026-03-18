@@ -307,9 +307,37 @@ initCountrySelect('select-country', 'du-reg-phone', countryArr, 'https://flagcdn
 document.addEventListener("DOMContentLoaded", () => {
   const btnChat = document.querySelector(".du-float-chat");
   if (!btnChat) return;
+
+  let lastScrollState = null; // null, "hidden", "shown"
+
+  function formShow(isUser = false) {
+    const form = document.querySelector(".du-form-register__form");
+    if (form && isUser) form.classList.toggle("max-h-0");
+    else if (form && !isUser) {
+      if (lastScrollState === "hidden") form.classList.add("max-h-0");
+      else form.classList.remove("max-h-0");
+    }
+  }
+
+  // Acción al hacer click (usuario)
   btnChat.addEventListener("click", (e) => {
     e.preventDefault();
-    const form = document.querySelector(".du-form-register__form");
-    if (form)  form.classList.toggle("max-h-0");
+    formShow(true);
+  });
+
+  // Mostrar/ocultar según scroll (automático)
+  window.addEventListener("scroll", () => {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+    if (scrollTop >= 150 && lastScrollState !== "hidden") {
+      btnChat.classList.add("enfasis");
+      lastScrollState = "hidden";
+      formShow(false);
+    } else if (scrollTop < 150 && lastScrollState !== "shown") {
+      // mostrar solo una vez
+      btnChat.classList.remove("enfasis");
+      lastScrollState = "shown";
+      formShow(false);
+    }
   });
 });

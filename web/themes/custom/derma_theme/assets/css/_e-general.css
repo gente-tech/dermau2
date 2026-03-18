@@ -15,6 +15,9 @@
     padding-block: 2px;
     border-radius: 4px;
 }
+.du-float-chat.enfasis svg {
+    filter:brightness(0) invert(1);
+}
 
 /* Estilos para caja de costo programa */
 

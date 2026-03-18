@@ -3,6 +3,11 @@
   background: #edf7ff;
       margin-top: -110px;
 }
+
+.du-convenio-block.active{
+  display: block;
+}
+
 .du-convenio-block__container{
    padding-block: 60px;
   max-width: var(--du-max-width);

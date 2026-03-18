@@ -15,7 +15,7 @@
         // ✅ Set inicial
         const setIndicative = () => {
           const countryData = iti.getSelectedCountryData();
-          hiddenInput.value = '+' + countryData.dialCode;
+          if(countryData  && hiddenInput)   hiddenInput.value = '+' + countryData.dialCode;
         };
 
         setIndicative();
