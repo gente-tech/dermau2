@@ -1,0 +1,118 @@
+{#
+/templates/views/views-view-unformatted--convenios.html.twig
+#}
+
+<div class="swiper swiper-container" id="sw-convenio-agreements">
+	<div class="swiper-wrapper">
+		{% if rows %}
+			{% for row in rows %}
+				{% set node = row.content['#row']._entity %}
+				{% if node.field_logo.entity %}
+					<div class="swiper-slide du-agreements__slide" data-action="block-un">
+						<img src="{{ file_url(node.field_logo.entity.fileuri) }}" alt="{{ node.label }}">
+					</div>
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+	</div>
+
+	<div class="swiper-button-prev"></div>
+	<div class="swiper-button-next"></div>
+</div>
+
+{% if rows %}
+	{% for row in rows %}
+		{% set node = row.content['#row']._entity %}
+
+		<section class="du-convenio-block" id="block-un">
+			<div class="du-convenio-block__container">
+				<div class="du-convenio-block__header">
+					<h2 class="du-convenio-block__title">
+						{{ node.label }}
+					</h2>
+
+					<div class="du-convenio-block__info">
+						{% if node.field_ciudad_convenio.value %}
+							<span>📍{{ node.field_ciudad_convenio.value }}</span>
+						{% endif %}
+
+						{% if node.field_ano_de_funcacion.value %}
+							<span>🏛{{ node.field_ano_de_funcacion.value }}</span>
+						{% endif %}
+
+						<span>📚
+							{{ node.field_programas_vinculados_conve|length }}
+							programas</span>
+					</div>
+
+					{% if node.field_descripcion_corta_convenio.value %}
+						<p class="du-convenio-block__description">
+							{{ node.field_descripcion_corta_convenio.value }}
+						</p>
+					{% endif %}
+				</div>
+
+				{% if node.field_programas_vinculados_conve is not empty %}
+					<h3 class="du-convenio-block__subtitle">Programas vinculados</h3>
+
+					<div class="du-convenio-block__tags">
+						{% for item in node.field_programas_vinculados_conve %}
+							{% if item.entity %}
+								{% set programa = item.entity %}
+
+								<div class="du-convenio-block__tag">
+									{% if programa.field_tipo_de_programa.entity %}
+										<span class="tag tag--diplomado">
+											{{ programa.field_tipo_de_programa.entity.label }}
+										</span>
+									{% endif %}
+									<span>{{ programa.label }}</span>
+								</div>
+							{% endif %}
+						{% endfor %}
+					</div>
+				{% endif %}
+
+				{% if node.field_docentes_vinculados is not empty %}
+					<h3 class="du-convenio-block__subtitle">Docentes vinculados</h3>
+
+					<div class="du-swiper-expert">
+						<div class="swiper" id="sw-convenio-experto-{{ loop.index }}">
+							<div class="swiper-wrapper">
+								{% for item in node.field_docentes_vinculados %}
+									{% if item.entity %}
+										{% set docente = item.entity %}
+
+										<div class="swiper-slide">
+											<article class="du-card-expert">
+												{% if docente.field_foto_docente.entity %}
+													<div class="du-card-expert__image">
+														<img src="{{ file_url(docente.field_foto_docente.entity.fileuri) }}" alt="{{ docente.label }}">
+													</div>
+												{% endif %}
+
+												<div class="du-card-expert__content">
+													<h4 class="du-card-expert__name">{{ docente.label }}</h4>
+
+													{% if docente.field_cargo_docente.value %}
+														<p class="du-card-expert__role">
+															{{ docente.field_cargo_docente.value }}
+														</p>
+													{% endif %}
+												</div>
+											</article>
+										</div>
+									{% endif %}
+								{% endfor %}
+							</div>
+
+							<div class="swiper-button-next"></div>
+							<div class="swiper-button-prev"></div>
+							<div class="swiper-pagination"></div>
+						</div>
+					</div>
+				{% endif %}
+			</div>
+		</section>
+	{% endfor %}
+{% endif %}

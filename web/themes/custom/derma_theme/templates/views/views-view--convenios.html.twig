@@ -1,0 +1,27 @@
+{#
+/templates/views/views-view--convenios.html.twig
+#}
+
+<section class="du-agreements" data-active="true">
+	<div class="du-agreements__container">
+		<div class="du-agreements__header center">
+			<h2 class="du-agreements__title">
+				<span>
+					{% if texto_convenios_titulo_1 %}
+						{{ texto_convenios_titulo_1|raw }}
+					{% endif %}
+				</span>
+				{% if texto_convenios_titulo_2 %}
+					{{ texto_convenios_titulo_2|raw }}
+				{% endif %}
+			</h2>
+			<p class="du-agreements__subtitle">
+				{% if texto_convenios_titulo_3 %}
+					{{ texto_convenios_titulo_3|raw }}
+				{% endif %}
+			</p>
+		</div>
+
+		{{ rows }}
+	</div>
+</section>
