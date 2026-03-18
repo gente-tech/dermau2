@@ -48,7 +48,12 @@
   </section>
 
   <div class="du-hero__container">
-    <div class="du-hero__bg" style="background-image: url('{{ node.field_imagen_programa.entity ? file_url(node.field_imagen_programa.entity.uri.value) : '' }}');"></div>
+    {% set bg = '' %}
+    {% if node.field_imagen_programa.entity and node.field_imagen_programa.entity.uri.value %}
+      {% set bg = file_url(node.field_imagen_programa.entity.uri.value) %}
+    {% endif %}
+
+    <div class="du-hero__bg" style="background-image: url('{{ bg }}');"></div>
     <div class="du-hero__overlay"></div>
     <div class="du-hero__wrapper">
       <div class="du-hero__content">
@@ -263,7 +268,12 @@
       <h2>
         <span>Plan</span>
         de estudios</h2>
-      <a href="{{ node.field_plan_de_estudios.entity ? file_url(node.field_plan_de_estudios.entity.uri.value) : '#' }}" class="du-link-download">Descargar Plan
+      {% set plan_url = '#' %}
+{% if node.field_plan_de_estudios.entity and node.field_plan_de_estudios.entity.uri.value %}
+  {% set plan_url = file_url(node.field_plan_de_estudios.entity.uri.value) %}
+{% endif %}
+
+<a href="{{ plan_url }}" class="du-link-download">Descargar Plan
         <span class="du-icon__next"></span>
       </a>
     </div>
@@ -368,7 +378,9 @@
               <div class="du-card__expert-main">
 
                 {% if d.field_foto_docente.entity %}
-                  <img src="{{ file_url(d.field_foto_docente.entity.uri.value) }}" alt="{{ d.label }}" class="du-card__expert-img">
+                  {% if d.field_foto_docente.entity and d.field_foto_docente.entity.uri.value %}
+  <img src="{{ file_url(d.field_foto_docente.entity.uri.value) }}" alt="{{ d.label }}" class="du-card__expert-img">
+{% endif %}
                 {% endif %}
 
                 <div class="du-card__expert-intro">
