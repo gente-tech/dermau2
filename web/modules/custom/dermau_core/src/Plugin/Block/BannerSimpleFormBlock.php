@@ -25,7 +25,7 @@ class BannerSimpleFormBlock extends BlockBase
     return [
       'titulo' => '',
       'descripcion' => '',
-      'label' => '',
+      'label_btn' => '',
       'link' => '',
       'imagen' => [],
       'imagen_alt' => '',
@@ -49,17 +49,17 @@ class BannerSimpleFormBlock extends BlockBase
       '#default_value' => $this->configuration['descripcion'] ?? '',
     ];
 
-    $form['label'] = [
+    $form['label_btn'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Label del botón'),
-      '#default_value' => $this->configuration['label'] ?? '',
+      '#default_value' => $this->configuration['label_btn'] ?? '',
     ];
 
     $form['link'] = [
-      '#type' => 'url',
+      '#type' => 'textfield',
       '#title' => $this->t('Link del botón'),
       '#default_value' => $this->configuration['link'] ?? '',
-      '#description' => $this->t('Ejemplo: https://midominio.com/formulario'),
+      '#description' => $this->t('Url de redirección.'),
     ];
 
     $form['imagen'] = [
@@ -101,7 +101,7 @@ class BannerSimpleFormBlock extends BlockBase
 
     $this->configuration['titulo'] = $form_state->getValue('titulo');
     $this->configuration['descripcion'] = $form_state->getValue('descripcion');
-    $this->configuration['label'] = $form_state->getValue('label');
+    $this->configuration['label_btn'] = $form_state->getValue('label_btn');
     $this->configuration['link'] = $form_state->getValue('link');
     $this->configuration['imagen'] = $imagen ?: [];
     $this->configuration['imagen_alt'] = $form_state->getValue('imagen_alt');
@@ -128,7 +128,7 @@ class BannerSimpleFormBlock extends BlockBase
       '#theme' => 'dermau_banner_simple_form_block',
       '#titulo' => $this->configuration['titulo'] ?? '',
       '#descripcion' => $this->configuration['descripcion'] ?? '',
-      '#label' => $this->configuration['label'] ?? '',
+      '#label_btn' => $this->configuration['label_btn'] ?? '',
       '#link' => $this->configuration['link'] ?? '',
       '#imagen' => [
         'url' => $image_url,
