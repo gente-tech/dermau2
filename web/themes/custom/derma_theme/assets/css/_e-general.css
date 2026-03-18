@@ -107,3 +107,19 @@
     z-index: 3;
   }
 }
+
+
+section#docentes, section#programas, section#plan-estudio{
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  section#docentes, section#programas, section#plan-estudio{
+    padding: 50px 25px;
+    padding-top: 10px;
+  }
+  section#docentes .du-link-download, section#programas .du-link-download, section#plan-estudio .du-link-download {
+      position: absolute;
+      bottom: 25px;
+  }
+}

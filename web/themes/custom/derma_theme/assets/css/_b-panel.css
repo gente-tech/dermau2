@@ -71,6 +71,12 @@
     flex-shrink: 0;
 }
 
+.du-panel-block__number.large{
+    width: 120px;
+    height: 40px;
+    border-radius: 8px;
+}
+
 .du-panel-block__title-group h3 {
     margin: 0;
     font-size: 18px;
@@ -144,4 +150,5 @@
     .du-panel-block__number { width: 35px; height: 35px; font-size: 16px; }
     .du-panel-block__container { max-width: 100%; }
     .du-panel-block__header { flex-direction: column; gap: 10px; }
+    .du-panel-block__number.large{ width: 100px; height: 40px; }
 }

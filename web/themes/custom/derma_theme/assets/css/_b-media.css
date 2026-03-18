@@ -10,6 +10,10 @@
     gap: 40px;
 }
 
+.du-media-block__container.block{
+    display: block;
+}
+
 /* --- CONTENEDOR DE VIDEO --- */
 .du-media-block__video-side {
     position: relative;
