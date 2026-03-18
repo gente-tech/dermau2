@@ -293,6 +293,7 @@ initCountrySelect('select-country', 'du-reg-phone', countryArr, 'https://flagcdn
 /* btn action form float */
 document.addEventListener("DOMContentLoaded", () => {
   const btnChat = document.querySelector(".du-float-chat");
+  const btnTitle = document.querySelector(".du-form-register__subtitle");
   const isMobile = window.innerWidth < 992;
   const toScroll = 150;
   if (!btnChat || isMobile) return;
@@ -312,6 +313,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // Acción al hacer click (usuario)
   btnChat.addEventListener("click", (e) => {
     e.preventDefault();
+    formShow(true);
+  });
+
+   btnTitle.addEventListener("click", () => {
     formShow(true);
   });
 

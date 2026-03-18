@@ -33,6 +33,13 @@
   gap: 12px;
   padding: 15px 20px;
   transition: var(--du-transition);
+  width: 98%;
+  justify-content: center;
+}
+.du-bar-menu__link:hover {
+    color: var(--du-color-primary);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: inset 0 -2px 0 var(--du-color-primary);
 }
 
 /* Divider "|" centrada */
