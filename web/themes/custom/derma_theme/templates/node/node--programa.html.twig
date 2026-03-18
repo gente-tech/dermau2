@@ -395,18 +395,93 @@
 
 							<div class="du-card__expert-detail">
 								<p>
-									{{ d.field_perfil_profesional.value }}
+									{{ d.field_perfil_profesional.value|striptags|length > 250 
+  ? d.field_perfil_profesional.value|striptags|slice(0, 250) ~ '...' 
+  : d.field_perfil_profesional.value|striptags 
+}}
 								</p>
 							</div>
 
 							<div class="du-card__expert-footer">
-								<a href="/node/{{ d.id }}" class="du-link-more">
+								<a href="#" class="du-link-more du-open-modal" data-target="modal-docente-{{ loop.index }}">
 									Ver detalle
 								</a>
 							</div>
 
 						</article>
+            <div id="modal-docente-{{ loop.index }}" class="du-modal">
+  <div class="du-modal__overlay"></div>
 
+  <div class="du-modal__container">
+    <button class="du-modal__close">&times;</button>
+
+    <div class="du-modal__content">
+
+      <aside class="du-modal__aside">
+
+        {% if d.field_foto_docente.entity %}
+          <img
+            src="{{ file_url(d.field_foto_docente.entity.fileuri) }}"
+            alt="{{ d.label }}"
+            class="du-modal__img"
+          />
+        {% endif %}
+
+        <div class="du-modal__personal-info">
+
+          <h3 class="du-modal__name">
+            {{ d.label }}
+          </h3>
+
+          <p class="du-modal__role">
+            {{ d.field_especialidad.value }}
+          </p>
+
+          <div class="du-modal__contact">
+
+            <div class="du-modal__contact-item">
+              <span>{{ d.field_ciudad.value }}</span>
+            </div>
+
+            {% if d.field_correo_electronico.value %}
+            <div class="du-modal__contact-item">
+              <a href="mailto:{{ d.field_correo_electronico.value }}">
+                {{ d.field_correo_electronico.value }}
+              </a>
+            </div>
+            {% endif %}
+
+            {% if d.field_pagina_web.value %}
+            <div class="du-modal__contact-item">
+              <a href="{{ d.field_pagina_web.value }}" target="_blank">
+                {{ d.field_pagina_web.value }}
+              </a>
+            </div>
+            {% endif %}
+
+          </div>
+
+        </div>
+
+      </aside>
+
+      <main class="du-modal__main">
+
+        <section class="du-modal__section">
+          <h4 class="du-modal__section-title">
+            Perfil profesional
+          </h4>
+
+          <div class="du-modal__bio">
+            {{ d.field_perfil_profesional.value }}
+          </div>
+        </section>
+
+      </main>
+
+    </div>
+  </div>
+</div>
 					</div>
 
 				{% endfor %}
@@ -484,3 +559,47 @@
 		</div>
 	</div>
 </section>
+<script>
+document.addEventListener('click', function(e) {
+
+  const link = e.target.closest('.du-open-modal');
+  if (!link) return;
+
+  e.preventDefault();
+
+  const targetId = link.getAttribute('data-target');
+  const modalContent = document.getElementById(targetId);
+
+  if (modalContent) {
+
+    const contenedor = document.getElementById('container-modal');
+
+    contenedor.innerHTML = modalContent.outerHTML;
+
+    const modal = contenedor.querySelector('.du-modal');
+
+    modal.style.display = "flex";
+
+    document.body.style.overflow = "hidden";
+
+  }
+
+});
+
+document.addEventListener('click', function(e) {
+
+  if (
+    e.target.classList.contains('du-modal__close') ||
+    e.target.classList.contains('du-modal__overlay')
+  ) {
+
+    const contenedor = document.getElementById('container-modal');
+
+    document.body.style.overflow = "auto";
+
+    contenedor.innerHTML = '';
+
+  }
+
+});
+</script>
