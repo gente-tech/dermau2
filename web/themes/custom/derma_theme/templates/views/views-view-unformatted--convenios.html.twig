@@ -114,7 +114,12 @@
 												</div>
 
 												<div class="du-card__expert-detail">
-													<p>{{ docente.field_perfil_profesional.value }}</p>
+													{% set texto = docente.field_perfil_profesional.value|striptags|trim %}
+													{% set palabras = texto|split(' ') %}
+													<p>
+														{{ palabras|slice(0, 16)|join(' ') }}
+														{% if palabras|length > 16 %}...{% endif %}
+													</p>
 												</div>
 
 												<div class="du-card__expert-footer">
