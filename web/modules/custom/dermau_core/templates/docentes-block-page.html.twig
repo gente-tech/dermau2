@@ -49,39 +49,51 @@
             </div>
 
             <div class="du-card__expert-uni">
-              <svg width="19" height="16" viewBox="0 0 19 16" fill="none">
-                <path d="..." stroke="#007BE3"/>
+
+              <svg width="19" height="16" viewBox="0 0 19 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.6682 5.45714V12.8569M0.909533 4.89437C0.371301 4.63655 0.371301 3.94098 0.909533 3.68316C1.61523 3.34511 2.6695 2.86529 4.16073 2.24411C6.23265 1.38107 7.64795 0.869318 8.40778 0.609939C8.83566 0.463354 9.30016 0.463354 9.72804 0.609939C10.4875 0.869318 11.9036 1.38107 13.9751 2.24411C15.4667 2.86529 16.5206 3.34511 17.2267 3.68316C17.7641 3.94098 17.7641 4.63655 17.2267 4.89437C16.5206 5.23242 15.4663 5.71223 13.9751 6.33342C11.9032 7.19646 10.4879 7.70821 9.72804 7.96759C9.30016 8.11417 8.83566 8.11417 8.40778 7.96759C7.64833 7.70821 6.23226 7.19646 4.16073 6.33342C2.66911 5.71185 1.61523 5.23242 0.909533 4.89437Z" stroke="#007BE3" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M4.04485 6.28516C4.01747 6.8093 4.00423 7.3341 4.00513 7.85896C4.00513 9.06394 4.06705 9.82066 4.12781 10.2736C4.18116 10.6693 4.40783 11.0058 4.76146 11.1908C5.44534 11.5491 6.83454 12.0784 9.06809 12.0784C11.3016 12.0784 12.6908 11.5495 13.3747 11.1912C13.7283 11.0062 13.955 10.6697 14.0084 10.2744C14.0691 9.82105 14.131 9.06433 14.131 7.85974C14.132 7.33474 14.1187 6.80982 14.0913 6.28555M2.83675 14.0256C2.83675 14.3355 2.71365 14.6327 2.49454 14.8518C2.27543 15.0709 1.97825 15.194 1.66838 15.194C1.3585 15.194 1.06132 15.0709 0.842209 14.8518C0.623096 14.6327 0.5 14.3355 0.5 14.0256C0.5 13.7158 0.623096 13.4186 0.842209 13.1995C1.06132 12.9804 1.3585 12.8573 1.66838 12.8573C1.97825 12.8573 2.27543 12.9804 2.49454 13.1995C2.71365 13.4186 2.83675 13.7158 2.83675 14.0256Z" stroke="#007BE3" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
-              <span>{{ docente.universidad }}</span>
+
+              <span>
+                {{ docente.universidad }}
+              </span>
+
             </div>
 
             <div class="du-card__expert-uni">
+
               <svg width="15" height="13" viewBox="0 0 15 13" fill="none">
-                <path d="..." stroke="#007BE3"></path>
+                <path d="M7.5 1.99463C7.5 1.99463 4 -1.00537 0.5 1.49463V12.4946C4 9.99463 7.5 12.4946 7.5 12.4946M7.5 1.99463C7.5 1.99463 11 -1.00537 14.5 1.49463V12.4946C11 9.99463 7.5 12.4946 7.5 12.4946M7.5 1.99463V12.4946"
+                stroke="#007BE3"></path>
               </svg>
+
               <span>Programas:</span>
+
             </div>
 
             <div class="du-card__expert-tags">
 
               {% for programa in docente.programas %}
-                <span data-tag="{{ programa.tid }}">
-                  {{ programa.tipo }}
-                </span>
+                <span data-tag="{{ programa.tid }}">{{ programa.tipo }}</span>
               {% endfor %}
 
             </div>
 
             <div class="du-card__expert-detail">
-              <p>{{ docente.descripcion }}</p>
+              <p>
+                {{ docente.descripcion }}
+              </p>
             </div>
 
             <div class="du-card__expert-footer">
+
               <a href="#" 
                  class="du-link-more du-open-modal"
                  data-target="modal-docente-{{ loop.index }}">
                  Ver detalle
               </a>
+
             </div>
 
           </article>
@@ -93,30 +105,46 @@
 
               <div class="du-modal__content">
                 <aside class="du-modal__aside">
-                  <img src="{{ docente.imagen }}" alt="{{ docente.nombre }}" class="du-modal__img" />
+                  <img
+                    src="{{ docente.imagen }}"
+                    alt="{{ docente.nombre }}"
+                    class="du-modal__img"
+                  />
                   <div class="du-modal__personal-info">
-                    <h3 class="du-modal__name">{{ docente.nombre }}</h3>
+                    <h3 class="du-modal__name">
+                      {{ docente.nombre }}
+                    </h3>
                     <p class="du-modal__role">{{ docente.especialidad }}</p>
 
                     <div class="du-modal__contact">
+
                       <div class="du-modal__contact-item">
-                        <svg width="14" height="18"><path d="..."/></svg>
+                        <svg width="14" height="18" viewBox="0 0 14 18" fill="none">
+                          <path d="M7 9.4375C8.34619 9.4375 9.4375 8.34619 9.4375 7C9.4375 5.65381 8.34619 4.5625 7 4.5625C5.65381 4.5625 4.5625 5.65381 4.5625 7C4.5625 8.34619 5.65381 9.4375 7 9.4375Z" stroke="#007BE3"/>
+                          <path d="M7 0.5C5.27609 0.5 3.62279 1.18482 2.40381 2.40381C1.18482 3.62279 0.5 5.27609 0.5 7C0.5 8.53725 0.826625 9.54312 1.71875 10.6562L7 16.75L12.2812 10.6562C13.1734 9.54312 13.5 8.53725 13.5 7C13.5 5.27609 12.8152 3.62279 11.5962 2.40381C10.3772 1.18482 8.72391 0.5 7 0.5Z" stroke="#007BE3"/>
+                        </svg>
                         <span>{{ docente.ciudad }}</span>
                       </div>
 
                       <div class="du-modal__contact-item">
-                        <svg width="14" height="11"><path d="..."/></svg>
-                        <a href="mailto:{{ docente.email }}">{{ docente.email }}</a>
+                        <svg width="14" height="11" viewBox="0 0 14 11" fill="none">
+                          <path d="M1.25689 11C0.898593 11 0.599667 10.879 0.360111 10.637C0.120556 10.395 0.000518519 10.0928 0 9.73028V1.26971C0 0.907762 0.120037 0.605785 0.360111 0.363786C0.600185 0.121786 0.898852 0.000523809 1.25611 0H12.7439C13.1017 0 13.4003 0.121262 13.6399 0.363786C13.8794 0.606309 13.9995 0.908286 14 1.26971V9.73107C14 10.0925 13.88 10.3945 13.6399 10.637C13.3998 10.8795 13.1011 11.0005 12.7439 11H1.25689Z" fill="#007BE3"/>
+                        </svg>
+                        <a href="mailto:{{ docente.email }}">
+                          {{ docente.email }}
+                        </a>
                       </div>
 
                       <div class="du-modal__contact-item du-colum">
                         <div class="du-modal__contact-redes">
                           <a href="{{ docente.web }}" target="_blank"></a>
                         </div>
+
                         <a href="{{ docente.web }}" target="_blank" class="du-link-external">
                           {{ docente.web }}
                         </a>
                       </div>
+
                     </div>
                   </div>
                 </aside>
@@ -124,26 +152,32 @@
                 <main class="du-modal__main">
 
                   <section class="du-modal__section">
-                    <h4 class="du-modal__section-title">Perfil profesional</h4>
-                    <div class="du-modal__bio">{{ docente.perfil }}</div>
+                    <h4 class="du-modal__section-title">
+                      Perfil profesional
+                    </h4>
+
+                    <div class="du-modal__bio">
+                      {{ docente.perfil }}
+                    </div>
+
                   </section>
 
                   <section class="du-modal__section">
-                    <h4 class="du-modal__section-title">Programas vinculados</h4>
+
+                    <h4 class="du-modal__section-title">
+                      Programas vinculados
+                    </h4>
 
                     <div class="du-modal__programs">
 
                       {% for programa in docente.programas %}
                         <div class="du-program-tag">
-
-                          <span class="program-type" data-tag="{{ programa.tid }}">
+                          <span class="program-type tag" data-tag="{{ programa.tid }}">
                             {{ programa.tipo }}
                           </span>
-
                           <span class="program-name">
                             {{ programa.nombre }}
                           </span>
-
                         </div>
                       {% endfor %}
 
@@ -163,9 +197,78 @@
 
       </div>
 
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-pagination"></div>
+
     </div>
 
   </div>
 </section>
 
 <div id="container-modal"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const input = document.getElementById("buscar-docente");
+  const cards = document.querySelectorAll("#card__expert .swiper-slide");
+
+  input.addEventListener("keyup", function () {
+
+    const filtro = this.value.toLowerCase();
+
+    cards.forEach(function(card) {
+
+      const nombre = card.getAttribute("data-nombre");
+
+      if (nombre.includes(filtro)) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+
+    });
+
+  });
+
+});
+
+document.addEventListener('click', function(e) {
+  const link = e.target.closest('.du-open-modal');
+  if (!link) return;
+
+  e.preventDefault();
+  const targetId = link.getAttribute('data-target');
+  const modalContent = document.getElementById(targetId);
+
+  if (modalContent) {
+
+    const contenedor = document.getElementById('container-modal');
+
+    contenedor.innerHTML = modalContent.outerHTML;
+
+    const modal = contenedor.querySelector('.du-modal');
+
+    modal.style.display = "flex";
+
+    document.body.style.overflow = "hidden";
+
+  }
+});
+
+document.addEventListener('click', function(e) {
+  if (
+    e.target.classList.contains('du-modal__close') ||
+    e.target.classList.contains('du-modal__overlay')
+  ) {
+
+    const contenedor = document.getElementById('container-modal');
+
+    document.body.style.overflow = "auto";
+
+    contenedor.innerHTML = '';
+
+  }
+});
+</script>
