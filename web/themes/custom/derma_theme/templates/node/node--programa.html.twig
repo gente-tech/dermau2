@@ -1,5 +1,5 @@
 {% set imagen_universidad = file_url(node.field_imagen_de_la_universidad.entity.uri.value) %}
-{% set alt_imagen_universidad = file_url(node.field_imagen_de_la_universidad.entity.alt) %}
+{% set alt_imagen_universidad = node.field_imagen_de_la_universidad.alt %}
 
 <section class="du-hero" data-variation="medium"  data-column="true">
 
@@ -45,7 +45,7 @@
   </section>
 
   <div class="du-hero__container">
-    <div class="du-hero__bg" style="background-image: url('{{ node.field_imagen_programa.entity ? file_url(node.field_imagen_programa.entity.fileuri) : '' }}');"></div>
+    <div class="du-hero__bg" style="background-image: url('{{ node.field_imagen_programa.entity ? file_url(node.field_imagen_programa.entity.uri.value) : '' }}');"></div>
     <div class="du-hero__overlay"></div>
     <div class="du-hero__wrapper">
       <div class="du-hero__content">
@@ -258,7 +258,7 @@
       <h2>
         <span>Plan</span>
         de estudios</h2>
-      <a href="{{ node.field_plan_de_estudios.entity ? file_url(node.field_plan_de_estudios.entity.fileuri) : '#' }}" class="du-link-download">Descargar Plan
+      <a href="{{ node.field_plan_de_estudios.entity ? file_url(node.field_plan_de_estudios.entity.uri.value) : '#' }}" class="du-link-download">Descargar Plan
         <span class="du-icon__next"></span>
       </a>
     </div>
@@ -363,7 +363,7 @@
               <div class="du-card__expert-main">
 
                 {% if d.field_foto_docente.entity %}
-                  <img src="{{ file_url(d.field_foto_docente.entity.fileuri) }}" alt="{{ d.label }}" class="du-card__expert-img">
+                  <img src="{{ file_url(d.field_foto_docente.entity.uri.value) }}" alt="{{ d.label }}" class="du-card__expert-img">
                 {% endif %}
 
                 <div class="du-card__expert-intro">
@@ -434,7 +434,7 @@
 
                     {% if d.field_foto_docente.entity %}
                       <img
-                        src="{{ file_url(d.field_foto_docente.entity.fileuri) }}"
+                        src="{{ file_url(d.field_foto_docente.entity.uri.value) }}"
                         alt="{{ d.label }}"
                         class="du-modal__img"
                       />
@@ -618,7 +618,7 @@
                 </span>
 
                 {% if programa.field_imagen_programa.entity %}
-                  <img src="{{ file_url(programa.field_imagen_programa.entity.fileuri) }}" alt="{{ programa.label }}" class="du-card__diplomat-image">
+                  <img src="{{ file_url(programa.field_imagen_programa.entity.uri.value) }}" alt="{{ programa.label }}" class="du-card__diplomat-image">
                 {% endif %}
 
               </div>
