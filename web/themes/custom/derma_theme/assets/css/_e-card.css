@@ -53,6 +53,12 @@
   line-height: 1.6;
   color: var(--du-color-text-dark);
   margin: 0;
+  height: 225px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 10;
+
 }
 .du-card__expert-footer {
     display: flex;
@@ -117,7 +123,11 @@
   margin-bottom: 20px;
   line-height: 1.5;
   color: #666;
-  min-height: 120px;
+  height: 125px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
 }
 .du-card__diplomat-info {
   display: flex;

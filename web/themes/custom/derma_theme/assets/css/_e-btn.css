@@ -26,6 +26,10 @@
   color: white;
 }
 
+span.du-btn__link{
+  color: var(--du-color-primary);
+}
+
 .du-btn--outline {
   background-color: transparent;
   color: white;
