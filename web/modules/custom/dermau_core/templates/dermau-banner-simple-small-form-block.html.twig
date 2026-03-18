@@ -1,0 +1,50 @@
+<section class="du-hero">
+	<div class="du-hero__container">
+		<div class="du-hero__bg" style="background-image: url({{ imagen.url }});"></div>
+		<div class="du-hero__overlay"></div>
+		<div class="du-hero__wrapper">
+			<div class="du-hero__content">
+				<h1 class="du-hero__title">
+					{% if titulo_color %}
+						<span>{{ titulo_color }}</span>
+					{% endif %}
+					{% if titulo_normal %}
+						{{ titulo_normal }}
+					{% endif %}
+				</h1>
+				{% if descripcion %}
+					<div class="du-hero__text">
+						<p class="du-banner-simple-small-form__description">
+							{{ descripcion }}
+						</p>
+					</div>
+				{% endif %}
+				{% if label_btn and url_btn %}
+					<div class="du-hero__actions">
+						<a href="{{ url_btn }}" class="du-btn du-btn--primary">{{ label_btn }}
+							<span class="du-icon__next"></span>
+						</a>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+
+	{% if mostrar_formulario %}
+		<div class="du-float-chat" data-float="true">
+			<a href="#" class="du-float-chat__link">
+				<svg width="29" height="29" viewbox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M6.00039 10.8C6.00039 8.57218 6.88539 6.43561 8.46069 4.8603C10.036 3.285 12.1726 2.4 14.4004 2.4C16.6282 2.4 18.7648 3.285 20.3401 4.8603C21.9154 6.43561 22.8004 8.57218 22.8004 10.8V12.042C24.8356 12.3336 26.4004 14.0844 26.4004 16.2V16.5C26.4004 18.63 24.5632 20.4972 22.402 20.3976C21.514 22.9416 19.2556 24.6564 16.8184 25.0908C16.2544 25.2972 15.5872 25.2 15.0004 25.2C14.523 25.2 14.0652 25.0104 13.7276 24.6728C13.39 24.3352 13.2004 23.8774 13.2004 23.4C13.2004 22.9226 13.39 22.4648 13.7276 22.1272C14.0652 21.7896 14.523 21.6 15.0004 21.6C15.952 21.6 17.0056 21.462 17.6488 22.3308C19.204 21.5904 20.4004 20.0268 20.4004 18V10.8C20.4004 9.2087 19.7682 7.68258 18.643 6.55736C17.5178 5.43214 15.9917 4.8 14.4004 4.8C12.8091 4.8 11.283 5.43214 10.1578 6.55736C9.03253 7.68258 8.40039 9.2087 8.40039 10.8V18.3C8.40039 18.857 8.17914 19.3911 7.78532 19.7849C7.39149 20.1788 6.85735 20.4 6.30039 20.4C5.26605 20.4 4.27407 19.9891 3.54267 19.2577C2.81128 18.5263 2.40039 17.5343 2.40039 16.5V16.2C2.40013 15.1899 2.76394 14.2135 3.42514 13.4498C4.08633 12.6861 5.00061 12.1863 6.00039 12.042V10.8Z" fill="#60E0FF"/>
+				</svg>
+			</a>
+		</div>
+
+		<div class="du-form-register" data-variation="" data-float="true">
+			<div class="du-form-register__container">
+				<h2 class="du-form-register__subtitle">Solicita más información</h2>
+				{{ drupal_block('dermau_registro_form_block') }}
+			</div>
+
+		</div>
+	{% endif %}
+</section>
