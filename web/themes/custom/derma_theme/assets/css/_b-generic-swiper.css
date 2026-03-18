@@ -143,10 +143,6 @@
   background: var(--du-color-secondary-dark) !important;
 }
 
-.du-swiper-program .du-generic-swiper__actions{
-  margin-top: -20px;
-}
-
 .du-swiper-expert .nav-label {
   font-size: 24px;
   font-weight: 500;
