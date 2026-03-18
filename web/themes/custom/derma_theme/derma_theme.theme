@@ -46,18 +46,22 @@ function derma_theme_preprocess_views_view_unformatted(array &$variables)
           'has_header' => isset($options['header']),
           'header_keys' => isset($options['header']) && is_array($options['header']) ? array_keys($options['header']) : [],
           'header_count' => isset($options['header']) && is_array($options['header']) ? count($options['header']) : 0,
+          'header_items' => [],
         ];
 
         if (!empty($options['header']) && is_array($options['header'])) {
           foreach ($options['header'] as $key => $header_item) {
+            $content = $header_item['content'] ?? NULL;
+
             $debug[$display_id]['header_items'][$key] = [
               'id' => $header_item['id'] ?? NULL,
               'table' => $header_item['table'] ?? NULL,
               'field' => $header_item['field'] ?? NULL,
-              'has_content' => !empty($header_item['content']),
-              'content_preview' => !empty($header_item['content'])
-                ? mb_substr(strip_tags($header_item['content']), 0, 120)
-                : '',
+              'content_type' => gettype($content),
+              'content_is_string' => is_string($content),
+              'content_is_array' => is_array($content),
+              'content_preview' => is_string($content) ? mb_substr($content, 0, 120) : '',
+              'content_keys' => is_array($content) ? array_keys($content) : [],
             ];
           }
         }
