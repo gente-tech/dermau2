@@ -32,7 +32,7 @@
   font-weight: 700;
 }
 .du-card__expert-detail {
-    min-height: 150px;
+    min-height: 80px;
 }
 .du-card__expert-role {
   font-size: 13px;
@@ -53,7 +53,7 @@
   line-height: 1.6;
   color: var(--du-color-text-dark);
   margin: 0;
-  height: 225px;
+  height: 90px;
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -82,10 +82,6 @@
   transition: var(--du-transition);
   display: flex;
   flex-direction: column;
-  /*margin-inline: 1rem;*/
-}
-.du-card__diplomatX:hover {
-  transform: translateY(-10px);
 }
 .du-card__diplomat-image-container {
   position: relative;
@@ -197,14 +193,17 @@
   gap: 20px;
   max-width: 1200px;
   margin: 15px auto;
-  /*margin-inline: 1rem;*/
 }
 .du-card__info-wrapper {
   position: relative;
   flex: 1;
 }
+
+.du-card__info-wrapper.left { flex: 1 30%; }
+.du-card__info-wrapper.right { flex: 1 62%;  }
+
 .du-card__info-title {
-  font-size: 48px;
+  font-size: 40px;
   line-height: 1.1;
   color: var(--du-color-secondary-dark);
   font-weight: 800;
@@ -215,7 +214,7 @@
   display: block;
 }
 .du-card__info-text {
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.6;
   color: var(--du-color-text-dark);
   font-weight: 500;
@@ -254,13 +253,13 @@
     gap: 30px;
   }
   .du-card__info-title {
-    font-size: 36px;
+    font-size: 30px;
   }
   .du-card__info-title span { 
     display: inline; 
 }
   .du-card__info-text {
-    font-size: 16px;
+    font-size: 15px;
   }
   .du-card__info-quote--start {
     left: -20px;

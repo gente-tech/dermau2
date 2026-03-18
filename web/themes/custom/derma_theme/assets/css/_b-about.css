@@ -1,7 +1,7 @@
 .du-about-block{}
 .du-about-block__container{
   padding-block:50px;
-  max-width: var(--du-container-max-width);
+  max-width: var(--du-max-width);
   margin: 0 auto;
 }
 .du-about-block__wrapper{
@@ -12,5 +12,7 @@
 @media (max-width: 768px) {
   .du-about-block__wrapper{
     flex-direction: column;
+    gap: 2px;
+    padding-inline: 20px;
   }
 }

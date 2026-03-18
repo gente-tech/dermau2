@@ -65,8 +65,8 @@
 
 .du-media-block__detail{
     display:flex;
-    justify-content: space-between;
-    gap: 20px;
+    justify-content: start;
+    gap: 50px;
 }
 .du-media-block__detail-item {
     display: flex;
@@ -125,5 +125,9 @@
 
     .du-media-block__title {
         font-size: 28px;
+    }
+
+    .du-media-block__detail{
+        gap:25px;
     }
 }
