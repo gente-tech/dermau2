@@ -115,7 +115,7 @@
 
 /* Ajuste móvil */
 @media (max-width: 992px) {
-    .du-accordion-block { padding: 25px; }
+    .du-accordion-block { padding: 25px; padding-top: 0; }
     .du-accordion-block__header { padding: 15px 20px; }
     .du-accordion-block__body { padding: 0 20px 20px 20px; }
     .du-accordion-block__container { max-width: 100%; }

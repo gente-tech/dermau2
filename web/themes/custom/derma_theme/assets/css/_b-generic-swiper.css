@@ -7,7 +7,6 @@
 .du-generic-swiper__container {
   max-width: var(--du-max-width);
   margin: 0 auto;
-  background-color: white;
   background-repeat: repeat-x;
   background-position: 0 100px;
 }
@@ -23,7 +22,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .du-generic-swiper__header h2, .du-generic-swiper__header h3 {
@@ -124,7 +123,7 @@
   gap: 10px;
 }
 
-.du-swiper-expert .swiper-pagination-bullet, .du-swiper-program .swiper-pagination-bullet {
+.du-swiper-expert .swiper-pagination-bullet, .du-swiper-program .swiper-pagination-bullet, .du-swiper-oferta .swiper-pagination-bullet {
   width: 25px !important;
   height: 25px !important;
   background: transparent !important;
@@ -138,7 +137,7 @@
   transition: 0.3s;
 }
 
-.du-swiper-expert .swiper-pagination-bullet-active, .du-swiper-program .swiper-pagination-bullet-active {
+.du-swiper-expert .swiper-pagination-bullet-active, .du-swiper-program .swiper-pagination-bullet-active, .du-swiper-oferta .swiper-pagination-bullet-active {
   color: var(--du-color-primary) !important;
   background: var(--du-color-secondary-dark) !important;
 }
@@ -154,22 +153,27 @@
 
 
 /* PAGINACIÓN PERSONALIZADA swiper-oferta */
+.du-swiper-oferta .swiper-wrapper {
+  padding-bottom: 50px;
+}
 
 .du-swiper-oferta .swiper-pagination {
   text-align: left !important;
   padding-left: 5% !important;
-  bottom: 40px !important;
+  bottom: 0 !important;
 }
-.du-swiper-oferta .swiper-pagination-bullet {
+.du-swiper-ofertaXXX .swiper-pagination-bullet {
   width: 5px !important;
   height: 4px !important;
   border-radius: 2px !important;
-  background: rgba(255, 255, 255, 0.5) !important;
+  background: transparent !important;
+  color: var(--du-color-secondary-dark);
   opacity: 1 !important;
   transition: width 0.3s ease !important;
 }
-.du-swiper-oferta .swiper-pagination-bullet-active {
-  background: #fff !important;
+.du-swiper-ofertaXXX .swiper-pagination-bullet-active {
+  color: var(--du-color-primary) !important;
+  background: var(--du-color-secondary-dark) !important;
   width: 40px !important;
 }
 .du-swiper-oferta .swiper-pagination-lock {
@@ -185,6 +189,7 @@
     text-align: center;
     gap: 15px;
   }
+  .du-generic-swiper__header h2, .du-generic-swiper__header h3 {  font-size:24px;  }
 }
 
 @media (max-width: 992px) {

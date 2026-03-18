@@ -101,6 +101,14 @@ section#docentes, section#programas, section#plan-estudio{
   position: relative;
 }
 
+section#docentes {
+    background-color: white;
+    background-image: url(../img/bg-onda-lg.png);
+    background-repeat: no-repeat;
+    background-position: -400px bottom;
+    background-size: contain;
+}
+
 /*  FORM LOGIN */
 form#user-login-form {
     max-width: 900px;
@@ -149,5 +157,11 @@ form#user-login-form input#edit-submit {
   section#docentes .du-link-download, section#programas .du-link-download, section#plan-estudio .du-link-download {
       position: absolute;
       bottom: 25px;
+  }
+
+  section#docentes {
+    background-image: url(../img/bg-onda-sm.png);
+    background-position: bottom;
+    background-size: cover;
   }
 }
