@@ -306,11 +306,14 @@ initCountrySelect('select-country', 'du-reg-phone', countryArr, 'https://flagcdn
 /* btn action form float */
 document.addEventListener("DOMContentLoaded", () => {
   const btnChat = document.querySelector(".du-float-chat");
-  if (!btnChat) return;
+  const isMobile = window.innerWidth < 992;
+  const toScroll = 150;
+  if (!btnChat || isMobile) return;
 
   let lastScrollState = null; // null, "hidden", "shown"
 
   function formShow(isUser = false) {
+    if (isMobile) return;
     const form = document.querySelector(".du-form-register__form");
     if (form && isUser) form.classList.toggle("max-h-0");
     else if (form && !isUser) {
@@ -327,13 +330,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Mostrar/ocultar según scroll (automático)
   window.addEventListener("scroll", () => {
+    if (isMobile) return;
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
-
-    if (scrollTop >= 150 && lastScrollState !== "hidden") {
+    if (scrollTop >= toScroll && lastScrollState !== "hidden") {
       btnChat.classList.add("enfasis");
       lastScrollState = "hidden";
       formShow(false);
-    } else if (scrollTop < 150 && lastScrollState !== "shown") {
+    } else if (scrollTop < toScroll && lastScrollState !== "shown") {
       // mostrar solo una vez
       btnChat.classList.remove("enfasis");
       lastScrollState = "shown";
