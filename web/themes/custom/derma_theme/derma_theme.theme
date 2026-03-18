@@ -26,26 +26,44 @@ function derma_theme_preprocess_views_view_unformatted(array &$variables)
 {
   $view = $variables['view'];
 
-  if ($view->id() === 'convenios') {
+  \Drupal::logger('derma_theme_debug')->notice('<pre>@data</pre>', [
+    '@data' => print_r([
+      'hook' => 'preprocess_views_view_unformatted',
+      'view_id' => $view->id(),
+      'display_id' => $view->current_display,
+      'title' => $view->getTitle(),
+      'header_option' => $view->display_handler->getOption('header'),
+      'header_handlers' => array_keys($view->display_handler->getHandlers('header') ?? []),
+    ], TRUE),
+  ]);
+
+  if ($view->id() === 'convenios' && $view->current_display === 'page_1') {
     $variables['texto_convenios_titulo_1'] = '';
     $variables['texto_convenios_titulo_2'] = '';
     $variables['texto_convenios_titulo_3'] = '';
 
-    $header = $view->display_handler->getOption('header');
+    $header_handlers = $view->display_handler->getHandlers('header');
 
-    if (!empty($header) && is_array($header)) {
-      $items = array_values($header);
+    \Drupal::logger('derma_theme_debug')->notice('<pre>@data</pre>', [
+      '@data' => print_r([
+        'matched_view' => TRUE,
+        'header_handlers_full' => $header_handlers,
+      ], TRUE),
+    ]);
 
-      if (!empty($items[0]['content']['value'])) {
-        $variables['texto_convenios_titulo_1'] = $items[0]['content']['value'];
+    if (!empty($header_handlers) && is_array($header_handlers)) {
+      $headers = array_values($header_handlers);
+
+      if (!empty($headers[0]->options['content'])) {
+        $variables['texto_convenios_titulo_1'] = $headers[0]->options['content'];
       }
 
-      if (!empty($items[1]['content']['value'])) {
-        $variables['texto_convenios_titulo_2'] = $items[1]['content']['value'];
+      if (!empty($headers[1]->options['content'])) {
+        $variables['texto_convenios_titulo_2'] = $headers[1]->options['content'];
       }
 
-      if (!empty($items[2]['content']['value'])) {
-        $variables['texto_convenios_titulo_3'] = $items[2]['content']['value'];
+      if (!empty($headers[2]->options['content'])) {
+        $variables['texto_convenios_titulo_3'] = $headers[2]->options['content'];
       }
     }
   }
