@@ -1,15 +1,16 @@
 {{ node.body.value|raw }}
-{# {% if path('<current>') == '/programas' %}
+{% if path('<current>') == '/programas' %}
 	{{ drupal_block('programas_block_page') }}
 {% endif %}
 {% if path('<current>') == '/nosotros' %}
 	{{ drupal_block('dermau_testimonios_block') }}
+	<h1>prueba stats - inicio</h1>
 	{{ drupal_block('dermau_stats_block') }}
-	<h1>prueba</h1>
+	<h1>prueba stats - fin</h1>
 	{{ drupal_block('dermau_programas_block') }}
 {% endif %}
 {% if path('<current>') == '/docentes' %}
 
 	{{ drupal_block('docentes_block_page') }}
 	{{ drupal_block('dermau_programas_block') }}
-{% endif %} #}
+{% endif %}
