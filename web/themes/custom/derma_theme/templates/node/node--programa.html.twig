@@ -333,7 +333,20 @@
                 </span>
               {% else %}
                 <span class="du-panel-block__number large">
-                  {{ p.field_hora|render }}
+                  <p>Intento 1</p>
+                  <pre>
+                    {{ dump(p.field_hora) }}
+                  </pre>
+
+                  <p>Intento 2</p>
+                  <pre>
+                    {{ dump(p.field_hora.0) }}
+                  </pre>
+                  
+                  <p>Intento 3</p>
+                  <pre>
+                    {{ dump(p.field_hora.getValue()) }}
+                  </pre>
                 </span>
               {% endif %}
               <div class="du-panel-block__title-group">
