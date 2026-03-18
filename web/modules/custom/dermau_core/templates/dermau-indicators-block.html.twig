@@ -3,32 +3,32 @@
 
     <div class="du-stats__header">
       <h2 class="du-stats__title">
-        <span>{{ title_1 }}</span> {{ title_2 }}
+        <span>{{ heading_main }}</span> {{ heading_highlight }}
       </h2>
 
       <p class="du-stats__subtitle">
-        {{ description }}
+        {{ body_text }}
       </p>
     </div>
 
     <div class="du-stats__grid">
-      {% for item in items %}
+      {% for item in indicators %}
         <div class="du-stats__card {% if loop.index is even %}du-stats__card--alt{% endif %}">
 
           <div class="du-stats__icon-wrapper {% if loop.index is even %}du-stats__icon-wrapper--dark{% else %}du-stats__icon-wrapper--light{% endif %}">
             
-            {% if item.logo %}
-              <img src="{{ item.logo }}" alt="" />
+            {% if item.icon %}
+              <img src="{{ item.icon }}" alt="" />
             {% endif %}
 
           </div>
 
           <div class="du-stats__card-info">
             <div class="du-stats__number">
-              {{ item.number }}
+              {{ item.value }}
             </div>
             <div class="du-stats__label">
-              {{ item.text }}
+              {{ item.label }}
             </div>
           </div>
 

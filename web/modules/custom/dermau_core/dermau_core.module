@@ -16,15 +16,6 @@ function dermau_core_theme($existing, $type, $theme, $path)
       ],
       'template' => 'dermau-slider-block',
     ],
-    'dermau_stats_block' => [
-      'variables' => [
-        'title_1' => '',
-        'title_2' => '',
-        'description' => '',
-        'items' => [],
-      ],
-      'template' => 'dermau-stats-block',
-    ],
     'dermau_programas_block' => [
       'variables' => [
         'terms' => [],
@@ -132,6 +123,15 @@ function dermau_core_theme($existing, $type, $theme, $path)
         ],
       ],
       'template' => 'dermau-banner-simple-small-form-block',
+    ],
+    'dermau_indicators_block' => [
+      'variables' => [
+        'heading_main' => NULL,
+        'heading_highlight' => NULL,
+        'body_text' => NULL,
+        'indicators' => [],
+      ],
+      'template' => 'dermau-indicators-block',
     ],
   ];
 }
