@@ -43,16 +43,23 @@ class DocentesBlockPage extends BlockBase {
             ->generateAbsoluteString($file->getFileUri());
         }
 
-        // Programas con nombre + tid
+        // Programas con nombre + tid del tipo de programa
         $programas = [];
 
         if (!$node->get('field_programas_vinculados')->isEmpty()) {
 
           foreach ($node->get('field_programas_vinculados')->referencedEntities() as $programa) {
 
+            $tid_tipo = null;
+
+            // Obtener el tid del campo field_tipo_de_programa
+            if (!$programa->get('field_tipo_de_programa')->isEmpty()) {
+              $tid_tipo = $programa->get('field_tipo_de_programa')->target_id;
+            }
+
             $programas[] = [
               'nombre' => $programa->label(),
-              'tid' => $programa->id(),
+              'tid' => $tid_tipo,
             ];
 
           }
