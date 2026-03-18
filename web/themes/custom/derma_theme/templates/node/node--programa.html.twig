@@ -1,6 +1,12 @@
 {% set imagen_universidad = file_url(node.field_imagen_de_la_universidad.entity.uri.value) %}
 {% set alt_imagen_universidad = file_url(node.field_imagen_de_la_universidad.entity.alt) %}
 
+{% if node.field_tipo_de_programa.entity.label != 'Webinars' %}
+  <h1>No es Webinars</h1>
+{% else %}
+  <h1>Es Webinars</h1>
+{% endif %}
+
 <section class="du-hero" data-variation="medium"  data-column="true">
 
   <section class="du-bar-menu">
@@ -158,7 +164,7 @@
 </section>
 
 
-<section class="du-media-block" data-variation="center">
+<section class="du-media-block">
   <div class="du-media-block__container">
     <div class="du-media-block__video-side">
       <div class="du-video-player">
@@ -629,11 +635,17 @@
 
 <section class="du-footer-info" data-variation="">
 	<div class="du-footer-info__text">
-    <div>
-		  <h2 class="du-footer-info__title">  Listo para dar el siguiente paso en tu <span> 	Carrera </span> ? </h2>
-		  <p class="du-footer-info__description"> Únete a más de 5,000 profesionales que han transformado su práctica clínica con DermaU. Inscripciones abiertas para el periodo 2026.	</p>
-    </div>
-  </div>
+		<h2 class="du-footer-info__title">
+							Listo para dar el siguiente paso en tu
+						<span>
+									Carrera
+							</span>
+			?
+		</h2>
+		<p class="du-footer-info__description">
+							Únete a más de 5,000 profesionales que han transformado su práctica clínica con DermaU. Inscripciones abiertas para el periodo 2026.
+					</p>
+	</div>
 	<div class="du-footer-info__image">
 		<img src="https://catalogo.dermau.net/sites/default/files/info-block/Rectangle%2099.png" alt="Siguiente paso en t carrera" width="400" height="267">
 		<a class="du-footer-info__link" href="#">Solicitar Información</a>

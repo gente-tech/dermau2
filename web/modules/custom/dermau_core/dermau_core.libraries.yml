@@ -38,9 +38,6 @@ intl_tel_input:
     - core/once
 
 registro_exitoso_modal:
-  css:
-    theme:
-      # css/modal-registro-exitoso.css: {}
   js:
     js/modal-registro-exitoso.js: {}
   dependencies:
