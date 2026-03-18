@@ -147,10 +147,12 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  width: max-content;
+  padding-right: 15px;
 }
 
 .tag {
-  padding: 4px 12px;
+  padding: 6px 12px;
   border-radius: 20px;
   font-size: 11px;
   font-weight: 500;
