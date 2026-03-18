@@ -395,15 +395,17 @@
               <div class="du-card__expert-tags">
 
                 {% for programa in d.field_programas_vinculados %}
-
-                  {% if programa.entity %}
+              
+                  {% set p = drupal_entity('node', programa.target_id) %}
+              
+                  {% if p %}
                     <span>
-                      {{ programa.entity.label }}
+                      {{ p.label }}
                     </span>
                   {% endif %}
-
+              
                 {% endfor %}
-
+              
               </div>
 
               <div class="du-card__expert-footer">
