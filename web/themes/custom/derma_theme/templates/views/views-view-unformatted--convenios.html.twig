@@ -1,30 +1,33 @@
-{#
-/templates/views/views-view-unformatted--convenios.html.twig
-#}
+{% set first_rendered = true %}
+{% set first_rendered_sect = true %}
 
-<div class="swiper swiper-container" id="sw-convenio-agreements">
-	<div class="swiper-wrapper">
-		{% if rows %}
-			{% for row in rows %}
-				{% set node = row.content['#row']._entity %}
-				{% if node.field_logo.entity %}
-					<div class="swiper-slide du-agreements__slide" data-action="block-un">
-						<img src="{{ file_url(node.field_logo.entity.fileuri) }}" alt="{{ node.label }}">
-					</div>
+		<div class="swiper swiper-container" id="sw-convenio-agreements">
+			<div class="swiper-wrapper">
+				{% if rows %}
+					{% for row in rows %}
+						{% set node = row.content['#row']._entity %}
+						{% if node.field_logo.entity %}
+							<div class="swiper-slide{{ first_rendered ? ' du-agreements__slide' : '' }}" data-action="block-{{ node.id() }}">
+								<img src="{{ file_url(node.field_logo.entity.fileuri) }}" alt="{{ node.label }}">
+							</div>
+							{% set first_rendered = false %}
+						{% endif %}
+					{% endfor %}
 				{% endif %}
-			{% endfor %}
-		{% endif %}
+			</div>
+			<div class="swiper-button-prev"></div>
+			<div class="swiper-button-next"></div>
+		</div>
 	</div>
+</section>
 
-	<div class="swiper-button-prev"></div>
-	<div class="swiper-button-next"></div>
-</div>
 
 {% if rows %}
 	{% for row in rows %}
 		{% set node = row.content['#row']._entity %}
+		{% set block_id = 'block-' ~ node.id() %}
 
-		<section class="du-convenio-block" id="block-un">
+		<section class="du-convenio-block {{ first_rendered_sect ? 'active' : '' }}" id="{{ block_id }}">
 			<div class="du-convenio-block__container">
 				<div class="du-convenio-block__header">
 					<h2 class="du-convenio-block__title">
@@ -77,28 +80,26 @@
 					<h3 class="du-convenio-block__subtitle">Docentes vinculados</h3>
 
 					<div class="du-swiper-expert">
-						<div class="swiper" id="sw-convenio-experto-{{ loop.index }}">
+						<div class="swiper">
 							<div class="swiper-wrapper">
 								{% for item in node.field_docentes_vinculados %}
 									{% if item.entity %}
 										{% set docente = item.entity %}
 
 										<div class="swiper-slide">
-											<article class="du-card-expert">
-												{% if docente.field_foto_docente.entity %}
-													<div class="du-card-expert__image">
-														<img src="{{ file_url(docente.field_foto_docente.entity.fileuri) }}" alt="{{ docente.label }}">
-													</div>
-												{% endif %}
-
-												<div class="du-card-expert__content">
-													<h4 class="du-card-expert__name">{{ docente.label }}</h4>
-
-													{% if docente.field_cargo_docente.value %}
-														<p class="du-card-expert__role">
-															{{ docente.field_cargo_docente.value }}
-														</p>
+											<article class="du-card__expert">
+												<div class="du-card__expert-main">
+													{% if docente.field_foto_docente.entity %}
+														<img src="{{ file_url(docente.field_foto_docente.entity.fileuri) }}" alt="{{ docente.label }}" class="du-card__expert-img" />
 													{% endif %}
+													<div class="du-card__expert-intro">
+														<h3 class="du-card__expert-title">
+															{{ docente.label }}
+														</h3>
+														{% if docente.field_cargo_docente.value %}
+															<p class="du-card__expert-role">{{ docente.field_cargo_docente.value }}</p>
+														{% endif %}
+													</div>
 												</div>
 											</article>
 										</div>
