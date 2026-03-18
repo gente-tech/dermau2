@@ -125,14 +125,15 @@
 }
 
 .du-swiper-expert .swiper-pagination-bullet, .du-swiper-program .swiper-pagination-bullet {
-  width: auto !important;
-  height: auto !important;
+  width: 25px !important;
+  height: 25px !important;
   background: transparent !important;
   opacity: 1 !important;
   font-size: 15px;
   font-weight: 500;
   color: var(--du-color-secondary-dark);
-  padding: 5px 10px;
+  padding: 0;
+  padding-top: 2px !important;
   border-radius: 50%;
   transition: 0.3s;
 }

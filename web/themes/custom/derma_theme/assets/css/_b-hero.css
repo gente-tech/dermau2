@@ -152,6 +152,17 @@
   flex:auto;
 }
 
+@media (min-width: 769px) {
+  .du-hero[data-column="true"] {   
+     display: flex;
+     flex-direction: column-reverse;
+  }
+  .du-hero[data-column="true"] .du-bar-menu {
+    max-width: calc(100% - 450px);
+    margin-left: 50px;
+  }
+}
+
 @media (max-width: 768px) {
   .du-hero__wrapper {
     padding: 20px;
@@ -185,6 +196,10 @@
   .du-hero__detail-options{
     max-width: 280px !important;
     max-height: initial !important;
+  }
+
+  .du-hero[data-column="true"] .du-float-chat{
+     top: 180px !important;
   }
 
 }
