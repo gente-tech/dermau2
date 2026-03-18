@@ -97,9 +97,33 @@
 															{{ docente.label }}
 														</h3>
 														{% if docente.field_cargo_docente.value %}
-															<p class="du-card__expert-role">{{ docente.field_cargo_docente.value }}</p>
+															<p class="du-card__expert-role">{{ docente.field_especialidad.value }}</p>
 														{% endif %}
 													</div>
+												</div>
+												<div class="du-card__expert-uni">
+													<svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path
+														d="M2.0432 7.26354V14.6632M1.28453 6.70077C0.746301 6.44295 0.746301 5.74737 1.28453 5.48955C1.99023 5.1515 3.0445 4.67169 4.53573 4.0505C6.60765 3.18746 8.02295 2.67571 8.78278 2.41634C9.21066 2.26975 9.67516 2.26975 10.103 2.41634C10.8625 2.67571 12.2786 3.18746 14.3501 4.0505C15.8417 4.67169 16.8956 5.1515 17.6017 5.48955C18.1391 5.74737 18.1391 6.44295 17.6017 6.70077C16.8956 7.03882 15.8413 7.51863 14.3501 8.13982C12.2782 9.00286 10.8629 9.51461 10.103 9.77399C9.67516 9.92057 9.21066 9.92057 8.78278 9.77399C8.02333 9.51461 6.60726 9.00286 4.53573 8.13982C3.04411 7.51824 1.99023 7.03882 1.28453 6.70077Z"
+														stroke="#007BE3" stroke-linecap="round" stroke-linejoin="round" />
+													<path
+														d="M4.41985 8.09106C4.39247 8.61521 4.37923 9.14 4.38013 9.66487C4.38013 10.8699 4.44205 11.6266 4.50281 12.0795C4.55616 12.4752 4.78283 12.8117 5.13646 12.9967C5.82034 13.355 7.20954 13.8843 9.44309 13.8843C11.6766 13.8843 13.0658 13.3554 13.7497 12.9971C14.1033 12.8121 14.33 12.4756 14.3834 12.0803C14.4441 11.627 14.506 10.8702 14.506 9.66565C14.507 9.14065 14.4937 8.61573 14.4663 8.09145M3.21175 15.8316C3.21175 16.1414 3.08865 16.4386 2.86954 16.6577C2.65043 16.8768 2.35325 16.9999 2.04338 16.9999C1.7335 16.9999 1.43632 16.8768 1.21721 16.6577C0.998096 16.4386 0.875 16.1414 0.875 15.8316C0.875 15.5217 0.998096 15.2245 1.21721 15.0054C1.43632 14.7863 1.7335 14.6632 2.04338 14.6632C2.35325 14.6632 2.65043 14.7863 2.86954 15.0054C3.08865 15.2245 3.21175 15.5217 3.21175 15.8316Z"
+														stroke="#007BE3" stroke-linecap="round" stroke-linejoin="round" />
+													</svg>
+													<span>{{ docente.field_universidad.entity.name.value }}</span>
+												</div>
+
+												<div class="du-card__expert-detail">
+													{% set texto = docente.field_perfil_profesional.value|striptags|trim %}
+													{% set palabras = texto|split(' ') %}
+													<p>
+														{{ palabras|slice(0, 16)|join(' ') }}
+														{% if palabras|length > 16 %}...{% endif %}
+													</p>
+												</div>
+
+												<div class="du-card__expert-footer">
+													<a href="#" class="du-link-more du-open-modal" data-target="modal-docente-1">Ver detalle</a>
 												</div>
 											</article>
 										</div>
