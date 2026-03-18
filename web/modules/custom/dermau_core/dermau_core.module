@@ -125,6 +125,7 @@ function dermau_core_theme($existing, $type, $theme, $path)
         'descripcion' => '',
         'label_btn' => '',
         'url_btn' => '',
+        'mostrar_formulario' => 0,
         'imagen' => [
           'url' => '',
           'alt' => '',

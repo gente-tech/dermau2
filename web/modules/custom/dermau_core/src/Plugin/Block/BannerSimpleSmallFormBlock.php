@@ -30,6 +30,7 @@ class BannerSimpleSmallFormBlock extends BlockBase
       'url_btn' => '',
       'imagen' => [],
       'imagen_alt' => '',
+	  'mostrar_formulario' => 0,
     ];
   }
 
@@ -83,6 +84,13 @@ class BannerSimpleSmallFormBlock extends BlockBase
       '#default_value' => $this->configuration['imagen_alt'] ?? '',
     ];
 
+	$form['mostrar_formulario'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Mostrar formulario'),
+      '#default_value' => $this->configuration['mostrar_formulario'] ?? 0,
+      '#description' => $this->t('Si está marcado, en el Twig se podrá mostrar el formulario.'),
+    ];
+
     return $form;
   }
 
@@ -113,6 +121,7 @@ class BannerSimpleSmallFormBlock extends BlockBase
     $this->configuration['url_btn'] = $form_state->getValue('url_btn');
     $this->configuration['imagen'] = $imagen ?: [];
     $this->configuration['imagen_alt'] = $form_state->getValue('imagen_alt');
+	$this->configuration['mostrar_formulario'] = $form_state->getValue('mostrar_formulario');
   }
 
   /**
@@ -139,6 +148,7 @@ class BannerSimpleSmallFormBlock extends BlockBase
       '#descripcion' => $this->configuration['descripcion'] ?? '',
       '#label_btn' => $this->configuration['label_btn'] ?? '',
       '#url_btn' => $this->configuration['url_btn'] ?? '',
+	  '#mostrar_formulario' => $this->configuration['mostrar_formulario'] ?? 0,
       '#imagen' => [
         'url' => $image_url,
         'alt' => $image_alt,
