@@ -49,27 +49,25 @@
             </div>
 
             <div class="du-card__expert-uni">
-              <svg width="19" height="16" viewBox="0 0 19 16" fill="none">
-                <path d="..." stroke="#007BE3"/>
+              <svg width="19" height="16" viewBox="0 0 19 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.6682 5.45714V12.8569M0.909533 4.89437C0.371301 4.63655 0.371301 3.94098 0.909533 3.68316C1.61523 3.34511 2.6695 2.86529 4.16073 2.24411C6.23265 1.38107 7.64795 0.869318 8.40778 0.609939C8.83566 0.463354 9.30016 0.463354 9.72804 0.609939C10.4875 0.869318 11.9036 1.38107 13.9751 2.24411C15.4667 2.86529 16.5206 3.34511 17.2267 3.68316C17.7641 3.94098 17.7641 4.63655 17.2267 4.89437C16.5206 5.23242 15.4663 5.71223 13.9751 6.33342C11.9032 7.19646 10.4879 7.70821 9.72804 7.96759C9.30016 8.11417 8.83566 8.11417 8.40778 7.96759C7.64833 7.70821 6.23226 7.19646 4.16073 6.33342C2.66911 5.71185 1.61523 5.23242 0.909533 4.89437Z" stroke="#007BE3" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M4.04485 6.28516C4.01747 6.8093 4.00423 7.3341 4.00513 7.85896C4.00513 9.06394 4.06705 9.82066 4.12781 10.2736C4.18116 10.6693 4.40783 11.0058 4.76146 11.1908C5.44534 11.5491 6.83454 12.0784 9.06809 12.0784C11.3016 12.0784 12.6908 11.5495 13.3747 11.1912C13.7283 11.0062 13.955 10.6697 14.0084 10.2744C14.0691 9.82105 14.131 9.06433 14.131 7.85974C14.132 7.33474 14.1187 6.80982 14.0913 6.28555M2.83675 14.0256C2.83675 14.3355 2.71365 14.6327 2.49454 14.8518C2.27543 15.0709 1.97825 15.194 1.66838 15.194C1.3585 15.194 1.06132 15.0709 0.842209 14.8518C0.623096 14.6327 0.5 14.3355 0.5 14.0256C0.5 13.7158 0.623096 13.4186 0.842209 13.1995C1.06132 12.9804 1.3585 12.8573 1.66838 12.8573C1.97825 12.8573 2.27543 12.9804 2.49454 13.1995C2.71365 13.4186 2.83675 13.7158 2.83675 14.0256Z" stroke="#007BE3" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
               <span>{{ docente.universidad }}</span>
             </div>
 
             <div class="du-card__expert-uni">
               <svg width="15" height="13" viewBox="0 0 15 13" fill="none">
-                <path d="..." stroke="#007BE3"></path>
+                <path d="M7.5 1.99463C7.5 1.99463 4 -1.00537 0.5 1.49463V12.4946C4 9.99463 7.5 12.4946 7.5 12.4946M7.5 1.99463C7.5 1.99463 11 -1.00537 14.5 1.49463V12.4946C11 9.99463 7.5 12.4946 7.5 12.4946M7.5 1.99463V12.4946"
+                stroke="#007BE3"></path>
               </svg>
               <span>Programas:</span>
             </div>
 
             <div class="du-card__expert-tags">
-
               {% for programa in docente.programas %}
-                <span data-tag="{{ programa.tid }}">
-                  {{ programa.tipo }}
-                </span>
+                <span data-tag="{{ programa.tid }}">{{ programa.tipo }}</span>
               {% endfor %}
-
             </div>
 
             <div class="du-card__expert-detail">
@@ -77,9 +75,7 @@
             </div>
 
             <div class="du-card__expert-footer">
-              <a href="#" 
-                 class="du-link-more du-open-modal"
-                 data-target="modal-docente-{{ loop.index }}">
+              <a href="#" class="du-link-more du-open-modal" data-target="modal-docente-{{ loop.index }}">
                  Ver detalle
               </a>
             </div>
@@ -93,7 +89,7 @@
 
               <div class="du-modal__content">
                 <aside class="du-modal__aside">
-                  <img src="{{ docente.imagen }}" alt="{{ docente.nombre }}" class="du-modal__img" />
+                  <img src="{{ docente.imagen }}" alt="{{ docente.nombre }}" class="du-modal__img"/>
                   <div class="du-modal__personal-info">
                     <h3 class="du-modal__name">{{ docente.nombre }}</h3>
                     <p class="du-modal__role">{{ docente.especialidad }}</p>
@@ -132,27 +128,17 @@
                     <h4 class="du-modal__section-title">Programas vinculados</h4>
 
                     <div class="du-modal__programs">
-
                       {% for programa in docente.programas %}
                         <div class="du-program-tag">
-
-                          <span class="program-type" data-tag="{{ programa.tid }}">
-                            {{ programa.tipo }}
-                          </span>
-
-                          <span class="program-name">
-                            {{ programa.nombre }}
-                          </span>
-
+                          <span class="program-type" data-tag="{{ programa.tid }}">{{ programa.tipo }}</span>
+                          <span class="program-name">{{ programa.nombre }}</span>
                         </div>
                       {% endfor %}
-
                     </div>
 
                   </section>
 
                 </main>
-
               </div>
             </div>
           </div>
@@ -160,8 +146,11 @@
         </div>
 
         {% endfor %}
-
       </div>
+
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-pagination"></div>
 
     </div>
 
@@ -169,3 +158,68 @@
 </section>
 
 <div id="container-modal"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const input = document.getElementById("buscar-docente");
+  const cards = document.querySelectorAll("#card__expert .swiper-slide");
+
+  input.addEventListener("keyup", function () {
+
+    const filtro = this.value.toLowerCase();
+
+    cards.forEach(function(card) {
+
+      const nombre = card.getAttribute("data-nombre");
+
+      if (nombre.includes(filtro)) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+
+    });
+
+  });
+
+});
+
+document.addEventListener('click', function(e) {
+  const link = e.target.closest('.du-open-modal');
+  if (!link) return;
+
+  e.preventDefault();
+  const targetId = link.getAttribute('data-target');
+  const modalContent = document.getElementById(targetId);
+
+  if (modalContent) {
+
+    const contenedor = document.getElementById('container-modal');
+
+    contenedor.innerHTML = modalContent.outerHTML;
+
+    const modal = contenedor.querySelector('.du-modal');
+
+    modal.style.display = "flex";
+
+    document.body.style.overflow = "hidden";
+
+  }
+});
+
+document.addEventListener('click', function(e) {
+  if (
+    e.target.classList.contains('du-modal__close') ||
+    e.target.classList.contains('du-modal__overlay')
+  ) {
+
+    const contenedor = document.getElementById('container-modal');
+
+    document.body.style.overflow = "auto";
+
+    contenedor.innerHTML = '';
+
+  }
+});
+</script>
