@@ -75,6 +75,7 @@
 
 .du-generic-swiper .swiper-wrapper {
   padding-bottom: 10px;
+  padding-inline: 25px;
 }
 
 /* Flechas */
@@ -179,6 +180,7 @@
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
+  .du-generic-swiper { padding-inline: 2px; }
   .du-generic-swiper__header {
     flex-direction: column;
     text-align: center;
