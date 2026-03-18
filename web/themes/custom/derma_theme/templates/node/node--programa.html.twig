@@ -1,5 +1,8 @@
-{% set imagen_universidad = file_url(node.field_imagen_de_la_universidad.entity.uri.value) %}
-{% set alt_imagen_universidad = node.field_imagen_de_la_universidad.alt %}
+{% set imagen_universidad = '' %}
+{% if node.field_imagen_de_la_universidad.entity and node.field_imagen_de_la_universidad.entity.uri.value %}
+  {% set imagen_universidad = file_url(node.field_imagen_de_la_universidad.entity.uri.value) %}
+{% endif %}
+{% set alt_imagen_universidad = node.field_imagen_de_la_universidad.alt ?? '' %}
 
 <section class="du-hero" data-variation="medium"  data-column="true">
 
@@ -553,7 +556,7 @@
                           <div class="du-program-tag">
 
                             <span class="tag"
-                                  data-tag="{{ p.field_tipo_de_programa.entity.id() }}">
+                                  data-tag="{{ p.field_tipo_de_programa.entity ? p.field_tipo_de_programa.entity.id() : '' }}">
                               {{ p.field_tipo_de_programa.entity.label }}
                             </span>
 
