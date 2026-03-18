@@ -43,7 +43,7 @@ class DocentesBlockPage extends BlockBase {
             ->generateAbsoluteString($file->getFileUri());
         }
 
-        // Programas con nombre + tid del tipo de programa
+        // Programas con nombre + tipo + tid
         $programas = [];
 
         if (!$node->get('field_programas_vinculados')->isEmpty()) {
@@ -51,15 +51,23 @@ class DocentesBlockPage extends BlockBase {
           foreach ($node->get('field_programas_vinculados')->referencedEntities() as $programa) {
 
             $tid_tipo = null;
+            $tipo_nombre = '';
 
-            // Obtener el tid del campo field_tipo_de_programa
             if (!$programa->get('field_tipo_de_programa')->isEmpty()) {
-              $tid_tipo = $programa->get('field_tipo_de_programa')->target_id;
+
+              $term = $programa->get('field_tipo_de_programa')->entity;
+
+              if ($term) {
+                $tid_tipo = $term->id();
+                $tipo_nombre = $term->label();
+              }
+
             }
 
             $programas[] = [
-              'nombre' => $programa->label(),
-              'tid' => $tid_tipo,
+              'nombre' => $programa->label(), // nombre del programa
+              'tipo' => $tipo_nombre,        // Diplomado, Curso, etc
+              'tid' => $tid_tipo,            // tid del tipo
             ];
 
           }
@@ -88,7 +96,6 @@ class DocentesBlockPage extends BlockBase {
             TRUE
           ),
 
-          // Perfil completo para el modal
           'perfil' => $descripcion,
 
           'programas' => $programas,
