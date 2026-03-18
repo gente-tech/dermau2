@@ -394,27 +394,19 @@
               </div>
               <div class="du-card__expert-tags">
 
-  {% if d.field_programas_vinculados is not empty %}
+                {% if d.field_programas_vinculados is not empty %}
 
-    {% for programa in d.field_programas_vinculados %}
-      {% set p = programa.entity %}
+                  {% for programa in d.field_programas_vinculados %}
+                    {% set p = programa.entity %}
 
-      <span>
-        {{ p.label }}
-      </span>
+                    <span>
+                      {{ p.label }}
+                    </span>
 
-    {% endfor %}
+                  {% endfor %}
 
-  {% endif %}
+                {% endif %}
 
-</div>
-              <div class="du-card__expert-detail">
-                <p>
-                  {{ d.field_perfil_profesional.value|striptags|length > 250 
-  ? d.field_perfil_profesional.value|striptags|slice(0, 250) ~ '...' 
-  : d.field_perfil_profesional.value|striptags 
-}}
-                </p>
               </div>
 
               <div class="du-card__expert-footer">
