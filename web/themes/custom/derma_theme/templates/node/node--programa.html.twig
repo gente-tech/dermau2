@@ -397,17 +397,24 @@
               <div class="du-card__expert-tags">
 
                 {% for programa in d.field_programas_vinculados %}
-              
-                  {% set p = drupal_entity('node', programa.target_id) %}
-              
-                  {% if p %}
+                  {% if programa.entity %}
                     <span>
-                      {{ p.label }}
+                      {{ programa.entity.label }}
                     </span>
                   {% endif %}
-              
                 {% endfor %}
               
+              </div>
+
+              <div class="du-card__expert-detail">
+                <p>
+                  {{ d.field_perfil_profesional.value
+                    ? d.field_perfil_profesional.value|striptags|length > 180
+                      ? d.field_perfil_profesional.value|striptags|slice(0, 180) ~ '...'
+                      : d.field_perfil_profesional.value|striptags
+                    : ''
+                  }}
+                </p>
               </div>
 
               <div class="du-card__expert-footer">
