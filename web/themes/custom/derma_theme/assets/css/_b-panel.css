@@ -8,10 +8,6 @@
     margin: 0 auto;
 }
 
-.du-panel-block[data-variant="left"] .du-panel-block__container {
-    max-width: var(--du-max-width-left);
-    margin:0;
-}
 
 .du-panel-block__wrapper {}
 
@@ -131,6 +127,14 @@
     color: var(--du-color-primary);
     font-size: 15px;
     margin-bottom: 5px;
+}
+
+
+@media (min-width: 769px) {
+    .du-panel-block[data-variant="left"] .du-panel-block__container {
+        max-width: var(--du-max-width-left);
+        margin:0;
+    }
 }
 
 /* Responsive */

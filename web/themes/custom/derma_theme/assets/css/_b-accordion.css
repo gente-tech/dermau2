@@ -7,11 +7,6 @@
     margin: 0 auto;
 }
 
-.du-accordion-block[data-variant="left"] .du-accordion-block__container {
-    max-width: var(--du-max-width-left);
-    margin:0;
-}
-
 .du-accordion-block__items {
     background: var(--du-color-gray-02);
     border-radius: 12px;
@@ -73,6 +68,14 @@
 
 .du-accordion-block__item.is-open .du-accordion-block__body {
     max-height: 500px;
+}
+
+
+@media (min-width: 769px) {
+   .du-accordion-block[data-variant="left"] .du-accordion-block__container {
+        max-width: var(--du-max-width-left);
+        margin:0;
+    }
 }
 
 /* Ajuste móvil */
