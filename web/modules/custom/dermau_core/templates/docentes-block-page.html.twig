@@ -75,7 +75,7 @@
             <div class="du-card__expert-tags">
 
               {% for programa in docente.programas %}
-                <span>{{ programa }}</span>
+                <span data-tag="{{ programa.tid }}">{{ programa.nombre }}</span>
               {% endfor %}
 
             </div>
@@ -172,8 +172,8 @@
 
                       {% for programa in docente.programas %}
                         <div class="du-program-tag">
-                          <span class="program-name">
-                            {{ programa }}
+                          <span class="program-name" data-tag="{{ programa.tid }}">
+                            {{ programa.nombre }}
                           </span>
                         </div>
                       {% endfor %}
