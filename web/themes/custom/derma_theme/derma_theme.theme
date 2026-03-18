@@ -26,45 +26,46 @@ function derma_theme_preprocess_views_view_unformatted(array &$variables)
 {
   $view = $variables['view'];
 
-  \Drupal::logger('derma_theme_debug')->notice('<pre>@data</pre>', [
-    '@data' => print_r([
-      'hook' => 'preprocess_views_view_unformatted',
-      'view_id' => $view->id(),
-      'display_id' => $view->current_display,
-      'title' => $view->getTitle(),
-      'header_option' => $view->display_handler->getOption('header'),
-      'header_handlers' => array_keys($view->display_handler->getHandlers('header') ?? []),
-    ], TRUE),
-  ]);
+  if ($view->id() === 'convenios') {
+    $storage = $view->storage->get('display');
+    $debug = [];
 
-  if ($view->id() === 'convenios' && $view->current_display === 'page_1') {
-    $variables['texto_convenios_titulo_1'] = '';
-    $variables['texto_convenios_titulo_2'] = '';
-    $variables['texto_convenios_titulo_3'] = '';
+    $debug['view_id'] = $view->id();
+    $debug['display_id'] = $view->current_display;
 
-    $header_handlers = $view->display_handler->getHandlers('header');
+    foreach (['default', 'page_1'] as $display_id) {
+      if (!empty($storage[$display_id])) {
+        $display = $storage[$display_id];
+        $options = $display['display_options'] ?? [];
+        $defaults = $options['defaults'] ?? [];
 
-    \Drupal::logger('derma_theme_debug')->notice('<pre>@data</pre>', [
-      '@data' => print_r([
-        'matched_view' => TRUE,
-        'header_handlers_full' => $header_handlers,
-      ], TRUE),
-    ]);
+        $debug[$display_id] = [
+          'display_title' => $display['display_title'] ?? '',
+          'display_plugin' => $display['display_plugin'] ?? '',
+          'defaults_header' => $defaults['header'] ?? NULL,
+          'has_header' => isset($options['header']),
+          'header_keys' => isset($options['header']) && is_array($options['header']) ? array_keys($options['header']) : [],
+          'header_count' => isset($options['header']) && is_array($options['header']) ? count($options['header']) : 0,
+        ];
 
-    if (!empty($header_handlers) && is_array($header_handlers)) {
-      $headers = array_values($header_handlers);
-
-      if (!empty($headers[0]->options['content'])) {
-        $variables['texto_convenios_titulo_1'] = $headers[0]->options['content'];
-      }
-
-      if (!empty($headers[1]->options['content'])) {
-        $variables['texto_convenios_titulo_2'] = $headers[1]->options['content'];
-      }
-
-      if (!empty($headers[2]->options['content'])) {
-        $variables['texto_convenios_titulo_3'] = $headers[2]->options['content'];
+        if (!empty($options['header']) && is_array($options['header'])) {
+          foreach ($options['header'] as $key => $header_item) {
+            $debug[$display_id]['header_items'][$key] = [
+              'id' => $header_item['id'] ?? NULL,
+              'table' => $header_item['table'] ?? NULL,
+              'field' => $header_item['field'] ?? NULL,
+              'has_content' => !empty($header_item['content']),
+              'content_preview' => !empty($header_item['content'])
+                ? mb_substr(strip_tags($header_item['content']), 0, 120)
+                : '',
+            ];
+          }
+        }
       }
     }
+
+    \Drupal::logger('derma_theme_debug')->notice('<pre>@data</pre>', [
+      '@data' => print_r($debug, TRUE),
+    ]);
   }
 }
