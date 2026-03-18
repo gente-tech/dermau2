@@ -388,11 +388,26 @@
                 </svg>
 
                 <span>
-                  {{ d.field_ciudad.value }}
+                  {{ d.field_universidad.value }}
                 </span>
 
               </div>
+              <div class="du-card__expert-tags">
 
+  {% if d.field_programas_vinculados is not empty %}
+
+    {% for programa in d.field_programas_vinculados %}
+      {% set p = programa.entity %}
+
+      <span>
+        {{ p.label }}
+      </span>
+
+    {% endfor %}
+
+  {% endif %}
+
+</div>
               <div class="du-card__expert-detail">
                 <p>
                   {{ d.field_perfil_profesional.value|striptags|length > 250 
