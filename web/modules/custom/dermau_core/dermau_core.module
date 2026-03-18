@@ -133,6 +133,17 @@ function dermau_core_theme($existing, $type, $theme, $path)
       ],
       'template' => 'dermau-indicators-block',
     ],
+    'dermau_mission_vision_block' => [
+      'variables' => [
+        'mission_title_normal' => NULL,
+        'mission_title_color' => NULL,
+        'mission_description' => NULL,
+        'vision_title_normal' => NULL,
+        'vision_title_color' => NULL,
+        'vision_description' => NULL,
+      ],
+      'template' => 'dermau-mission-vision-block',
+    ],
   ];
 }
 
