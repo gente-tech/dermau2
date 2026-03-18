@@ -332,8 +332,11 @@
                   {{ loop.index }}
                 </span>
               {% else %}
+                {% set seconds = p.field_hora.0.value %}
+                {% set hours = (seconds / 3600)|round(0, 'floor') %}
+                {% set minutes = ((seconds % 3600) / 60)|round(0, 'floor') %}
                 <span class="du-panel-block__number large">
-                  {{ p.field_hora.0.value }}
+                  {{ hours > 12 ? hours - 12 : hours }}:{{ minutes < 10 ? '0' ~ minutes : minutes }} {{ hours >= 12 ? 'pm' : 'am' }}
                 </span>
               {% endif %}
               <div class="du-panel-block__title-group">
