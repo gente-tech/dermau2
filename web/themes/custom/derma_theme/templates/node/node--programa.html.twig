@@ -229,7 +229,6 @@
         </div>
       </div>
 
-
       <div class="du-accordion-block__item">
         <button class="du-accordion-block__header">
           <div class="du-accordion-block__title-group">
@@ -395,18 +394,15 @@
               </div>
               <div class="du-card__expert-tags">
 
-                {% if d.field_programas_vinculados is not empty %}
+                {% for programa in d.field_programas_vinculados %}
 
-                  {% for programa in d.field_programas_vinculados %}
-                    {% set p = programa.entity %}
-
+                  {% if programa.entity %}
                     <span>
-                      {{ p.label }}
+                      {{ programa.entity.label }}
                     </span>
+                  {% endif %}
 
-                  {% endfor %}
-
-                {% endif %}
+                {% endfor %}
 
               </div>
 
