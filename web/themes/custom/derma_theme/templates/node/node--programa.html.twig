@@ -166,29 +166,39 @@
 
 <section class="du-media-block">
   <div class="du-media-block__container">
-    <div class="du-media-block__video-side">
-      <div class="du-video-player">
-        <iframe src="https://www.youtube.com/embed/{{ node.field_id_video_youtube.value }}" title="YouTube video player" frameborder="0" allow="
-                        accelerometer;
-                        autoplay;
-                        clipboard-write;
-                        encrypted-media;
-                        gyroscope;
-                        picture-in-picture;
-                        web-share;
-                      " referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    {% if node.field_tipo_de_programa.entity.label != 'Webinars' %}
+      <div class="du-media-block__video-side">
+        <div class="du-video-player">
+          <iframe src="https://www.youtube.com/embed/{{ node.field_id_video_youtube.value }}" title="YouTube video player" frameborder="0" allow="
+                          accelerometer;
+                          autoplay;
+                          clipboard-write;
+                          encrypted-media;
+                          gyroscope;
+                          picture-in-picture;
+                          web-share;
+                        " referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
       </div>
-    </div>
-
-    <div class="du-media-block__text-side">
-      <h2 class="du-media-block__title">
-        <span>Descripción</span>
-        General
-      </h2>
-      <p class="du-media-block__description">
-        {{ node.field_descripcion_general.value }}
-      </p>
-    </div>
+      <div class="du-media-block__text-side">
+        <h2 class="du-media-block__title">
+          <span>Descripción</span>
+          General
+        </h2>
+        <p class="du-media-block__description">
+          {{ node.field_descripcion_general.value }}
+        </p>
+      </div>
+    {% else %}
+      <div class="du-media-block__text-side">
+        <h2 class="du-media-block__title">
+          <span>Descripción</span> General
+        </h2>
+        <p class="du-media-block__description">
+          {{ node.field_descripcion_general.value }}
+        </p>
+      </div>
+    {% endif %}
   </div>
 </section>
 
@@ -208,7 +218,12 @@
                 </clipPath>
               </defs>
             </svg>
-            <h3>Objetivos de aprendizaje</h3>
+            {% if node.field_tipo_de_programa.entity.label != 'Webinars' %}
+              <h3>Objetivos de aprendizaje</h3>
+            {% else %}
+              <h3>¿Qué aprenderás en esta sesión?</h3>
+            {% endif %}
+
           </div>
           <span class="du-icon-trigger__plus"></span>
         </button>
@@ -243,15 +258,44 @@
             <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M7 9V7H21V9H7ZM7 13V11H21V13H7ZM7 17V15H21V17H7ZM4 9C3.71667 9 3.47934 8.904 3.288 8.712C3.09667 8.52 3.00067 8.28267 3 8C2.99934 7.71733 3.09534 7.48 3.288 7.288C3.48067 7.096 3.718 7 4 7C4.282 7 4.51967 7.096 4.713 7.288C4.90634 7.48 5.002 7.71733 5 8C4.998 8.28267 4.902 8.52033 4.712 8.713C4.522 8.90567 4.28467 9.00133 4 9ZM4 13C3.71667 13 3.47934 12.904 3.288 12.712C3.09667 12.52 3.00067 12.2827 3 12C2.99934 11.7173 3.09534 11.48 3.288 11.288C3.48067 11.096 3.718 11 4 11C4.282 11 4.51967 11.096 4.713 11.288C4.90634 11.48 5.002 11.7173 5 12C4.998 12.2827 4.902 12.5203 4.712 12.713C4.522 12.9057 4.28467 13.0013 4 13ZM4 17C3.71667 17 3.47934 16.904 3.288 16.712C3.09667 16.52 3.00067 16.2827 3 16C2.99934 15.7173 3.09534 15.48 3.288 15.288C3.48067 15.096 3.718 15 4 15C4.282 15 4.51967 15.096 4.713 15.288C4.90634 15.48 5.002 15.7173 5 16C4.998 16.2827 4.902 16.5203 4.712 16.713C4.522 16.9057 4.28467 17.0013 4 17Z" fill="black"/>
             </svg>
-
-            <h3>Requisitos</h3>
+            {% if node.field_tipo_de_programa.entity.label != 'Webinars' %}
+              <h3>Requisitos</h3>
+            {% else %}
+              <h3>¿Qué Incluye?</h3>
+            {% endif %}
           </div>
           <span class="du-icon-trigger__plus"></span>
         </button>
         <div class="du-accordion-block__body">
-          <p>
-            {{ node.field_requisitos.value }}
-          </p>
+          {% if node.field_tipo_de_programa.entity.label != 'Webinars' %}
+            <p>
+              {{ node.field_requisitos.value }}
+            </p>
+          {% else %}
+            {% if node.field_incluye is not empty %}
+              <div class="du-accordion-block__content">
+                {% for itemmodl in node.field_incluye %}
+                  {% if itemmodl.entity %}
+                    {% set termino = itemmodl.entity %}
+                    {% set imagen = termino.field_logo.entity ?? null %}
+                    <div class="du-accordion-block__info">
+                      <div class="image">
+                        {% if imagen and imagen.uri.value %}
+                          <img 
+                            src="{{ file_url(imagen.uri.value) }}" 
+                            alt="{{ termino.name.value|default('') }}" 
+                          />
+                        {% endif %}
+                      </div>
+                      {% if termino.name.value %}
+                        <p class="texto">{{ termino.name.value }}</p>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endif %}
         </div>
       </div>
     </div>
@@ -261,46 +305,47 @@
 <section class="du-panel-block" data-variant="left" id="plan-estudio">
   <div class="du-panel-block__container">
     <div class="du-panel-block__header">
-      <h2>
-        <span>Plan</span>
-        de estudios</h2>
+      {% if node.field_tipo_de_programa.entity.label != 'Webinars' %}
+        <h2>
+          <span>Plan</span>
+          de estudios
+        </h2>
+      {% else %}
+        <h2>
+          <span>Agenda</span>
+          Académica
+        </h2>
+      {% endif %}
       <a href="{{ node.field_plan_de_estudios.entity ? file_url(node.field_plan_de_estudios.entity.fileuri) : '#' }}" class="du-link-download">Descargar Plan
         <span class="du-icon__next"></span>
       </a>
     </div>
 
     <div class="du-panel-block__wrapper">
-
       {% for modulo in node.field_modulos %}
-
         {% set p = modulo.entity %}
-
         <div class="du-panel-block__item {{ loop.first ? 'is-open' }}">
-
           <button class="du-panel-block__trigger">
-
             <div class="du-panel-block__info">
-
-              <span class="du-panel-block__number">
-                {{ loop.index }}
-              </span>
-
+              {% if node.field_tipo_de_programa.entity.label != 'Webinars' %}
+                <span class="du-panel-block__number">
+                  {{ loop.index }}
+                </span>
+              {% else %}
+                <span class="du-panel-block__number large">
+                  {{ p.field_hora.value|date("g:i a") }}
+                </span>
+              {% endif %}
               <div class="du-panel-block__title-group">
-
                 <h3>
                   {{ p.field_titulo_modulo.value }}
                 </h3>
-
                 <span class="du-panel-block__duration">
                   {{ p.field_duracion.value }}
                 </span>
-
               </div>
-
             </div>
-
             <div class="du-icon-trigger__plus"></div>
-
           </button>
 
 
@@ -639,7 +684,7 @@
       <h2 class="du-footer-info__title"> 	Listo para dar el siguiente paso en tu <span> 		Carrera </span> ? </h2>
       <p class="du-footer-info__description"> 	Únete a más de 5,000 profesionales que han transformado su práctica clínica con DermaU. Inscripciones abiertas para el periodo 2026. </p>
     </div>
-  </div>
+	</div>
 	<div class="du-footer-info__image">
 		<img src="https://catalogo.dermau.net/sites/default/files/info-block/Rectangle%2099.png" alt="Siguiente paso en t carrera" width="400" height="267">
 		<a class="du-footer-info__link" href="#">Solicitar Información</a>
