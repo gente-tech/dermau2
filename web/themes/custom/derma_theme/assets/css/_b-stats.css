@@ -1,11 +1,12 @@
 /* --- BLOQUE ESTADÍSTICAS --- */
 .du-stats {
   background: var(--du-color-gray-02);
+  padding-inline: 50px;
 }
 
 .du-stats__container{
   padding-block:60px;
-  max-width: 1366px;
+  max-width: var(--du-max-width);
   margin: 0 auto;
   text-align: left;
 }
@@ -96,6 +97,7 @@
 @media (max-width: 768px) {
   .du-stats {
     text-align: center;
+    padding-inline: 20px;
   }
 
   .du-stats__grid {

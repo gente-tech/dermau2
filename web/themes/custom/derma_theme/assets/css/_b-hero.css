@@ -50,7 +50,7 @@
 }
 
 .du-hero__title {
-  font-size: 46px;
+  font-size: 32px;
   font-weight: 900;
   line-height: 1.1;
   margin-bottom: 25px;
@@ -142,6 +142,7 @@
     flex: 1;
     color: #1C224A;
     font-weight: 600;
+    font-size:14px;
 }
 
 .du-hero__detail[data-variation="big"] .du-hero__detail-options{
@@ -171,7 +172,7 @@
     min-height: 280px;
   }
   .du-hero__title {
-    font-size: 32px;
+    font-size: 28px;
   }
   .du-hero__actions {
     flex-direction: column;

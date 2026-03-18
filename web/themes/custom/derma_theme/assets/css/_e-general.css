@@ -97,6 +97,36 @@
 }
 
 
+section#docentes, section#programas, section#plan-estudio{
+  position: relative;
+}
+
+/*  FORM LOGIN */
+form#user-login-form {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 50px;
+    background: aliceblue;
+    border-radius: 12px;
+}
+form#user-login-form > div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 4px;
+}
+form#user-login-form  input {
+    height: 25px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+form#user-login-form input#edit-submit {
+    width: 100%;
+    max-width: 300px;
+    margin-top: 15px;
+    background: #66dbff;
+}
 
 
 @media (min-width: 769px) {
@@ -109,9 +139,7 @@
 }
 
 
-section#docentes, section#programas, section#plan-estudio{
-  position: relative;
-}
+
 
 @media (max-width: 768px) {
   section#docentes, section#programas, section#plan-estudio{

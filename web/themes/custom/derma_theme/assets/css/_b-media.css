@@ -10,8 +10,12 @@
     gap: 40px;
 }
 
-.du-media-block__container.block{
+.du-media-block[data-variation="block"] .du-media-block__container{
     display: block;
+}
+.du-media-block[data-variation="center"] .du-media-block__container{
+    max-width: var(--du-max-width);
+    margin: 0 auto;
 }
 
 /* --- CONTENEDOR DE VIDEO --- */

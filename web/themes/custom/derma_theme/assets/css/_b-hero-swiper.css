@@ -55,7 +55,7 @@
 }
 
 .du-hero-swiper__title {
-  font-size: 46px;
+  font-size: 42px;
   font-weight: 900;
   line-height: 1.1;
   margin-bottom: 15px;
@@ -91,7 +91,7 @@
   display: flex;
   gap: 20px;
 }
-
+.du-hero-swiper__actions .du-btn{ font-size:16px; }
 
 /* Paginación Swiper Personalizada */
 .du-hero-swiper .swiper-pagination {
@@ -126,11 +126,13 @@
     min-height: 480px;
   }
   .du-hero-swiper__title {
-    font-size: 32px;
+    font-size: 26px;
   }
   .du-hero-swiper__actions {
     flex-direction: column;
   }
+  .du-hero-swiper__item { font-size: 16px; }
+  .du-hero-swiper__actions .du-btn{ font-size:15px; }
   .du-hero-swiper .swiper-pagination {
     text-align: center !important;
     bottom: 60px !important;
