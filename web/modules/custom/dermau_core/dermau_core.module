@@ -104,6 +104,19 @@ function dermau_core_theme($existing, $type, $theme, $path)
       ],
       'template' => 'info-simple-block',
     ],
+    'dermau_banner_simple_form_block' => [
+      'variables' => [
+        'titulo' => '',
+        'descripcion' => '',
+        'label' => '',
+        'link' => '',
+        'imagen' => [
+          'url' => '',
+          'alt' => '',
+        ],
+      ],
+      'template' => 'dermau-banner-simple-form-block',
+    ],
   ];
 }
 
