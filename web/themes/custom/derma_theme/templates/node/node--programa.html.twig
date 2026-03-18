@@ -1,12 +1,6 @@
 {% set imagen_universidad = file_url(node.field_imagen_de_la_universidad.entity.uri.value) %}
 {% set alt_imagen_universidad = file_url(node.field_imagen_de_la_universidad.entity.alt) %}
 
-{% if node.field_tipo_de_programa.entity.label != 'Webinars' %}
-  <h1>No es Webinars</h1>
-{% else %}
-  <h1>Es Webinars</h1>
-{% endif %}
-
 <section class="du-hero" data-variation="medium"  data-column="true">
 
   <section class="du-bar-menu">
@@ -163,8 +157,11 @@
   </div>
 </section>
 
-
-<section class="du-media-block">
+{% if node.field_tipo_de_programa.entity.label != 'Webinars' %}
+  <section class="du-media-block">
+{% else %}
+  <section class="du-media-block" data-variation="block">
+{% endif %}
   <div class="du-media-block__container">
     {% if node.field_tipo_de_programa.entity.label != 'Webinars' %}
       <div class="du-media-block__video-side">
