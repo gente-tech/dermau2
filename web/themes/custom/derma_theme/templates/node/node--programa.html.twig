@@ -1,8 +1,5 @@
-{% set imagen_universidad = '' %}
-{% if node.field_imagen_de_la_universidad.entity and node.field_imagen_de_la_universidad.entity.uri.value %}
-  {% set imagen_universidad = file_url(node.field_imagen_de_la_universidad.entity.uri.value) %}
-{% endif %}
-{% set alt_imagen_universidad = node.field_imagen_de_la_universidad.alt ?? '' %}
+{% set imagen_universidad = file_url(node.field_imagen_de_la_universidad.entity.uri.value) %}
+{% set alt_imagen_universidad = file_url(node.field_imagen_de_la_universidad.entity.alt) %}
 
 <section class="du-hero" data-variation="medium"  data-column="true">
 
@@ -48,12 +45,7 @@
   </section>
 
   <div class="du-hero__container">
-    {% set bg = '' %}
-    {% if node.field_imagen_programa.entity and node.field_imagen_programa.entity.uri.value %}
-      {% set bg = file_url(node.field_imagen_programa.entity.uri.value) %}
-    {% endif %}
-
-    <div class="du-hero__bg" style="background-image: url('{{ bg }}');"></div>
+    <div class="du-hero__bg" style="background-image: url('{{ node.field_imagen_programa.entity ? file_url(node.field_imagen_programa.entity.fileuri) : '' }}');"></div>
     <div class="du-hero__overlay"></div>
     <div class="du-hero__wrapper">
       <div class="du-hero__content">
@@ -116,9 +108,7 @@
                   <path d="M10 2.49376C10 2.49376 5.25 -1.50797 0.5 1.8268V16.4998C5.25 13.165 10 16.4998 10 16.4998M10 2.49376C10 2.49376 14.75 -1.50797 19.5 1.8268V16.4998C14.75 13.165 10 16.4998 10 16.4998M10 2.49376V16.4998" stroke="#0066BD" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </span>
-              <span class="du-hero__detail-option-text">
-                {{ node.field_metodologia.entity ? node.field_metodologia.entity.label : '' }}
-              </span>
+              <span class="du-hero__detail-option-text">{{ node.field_metodologia.entity.name.value }}</span>
             </div>
             <div class="du-hero__detail-option">
               <span class="du-hero__detail-option-icon">
@@ -268,12 +258,7 @@
       <h2>
         <span>Plan</span>
         de estudios</h2>
-      {% set plan_url = '#' %}
-{% if node.field_plan_de_estudios.entity and node.field_plan_de_estudios.entity.uri.value %}
-  {% set plan_url = file_url(node.field_plan_de_estudios.entity.uri.value) %}
-{% endif %}
-
-<a href="{{ plan_url }}" class="du-link-download">Descargar Plan
+      <a href="{{ node.field_plan_de_estudios.entity ? file_url(node.field_plan_de_estudios.entity.fileuri) : '#' }}" class="du-link-download">Descargar Plan
         <span class="du-icon__next"></span>
       </a>
     </div>
@@ -378,9 +363,7 @@
               <div class="du-card__expert-main">
 
                 {% if d.field_foto_docente.entity %}
-                  {% if d.field_foto_docente.entity and d.field_foto_docente.entity.uri.value %}
-  <img src="{{ file_url(d.field_foto_docente.entity.uri.value) }}" alt="{{ d.label }}" class="du-card__expert-img">
-{% endif %}
+                  <img src="{{ file_url(d.field_foto_docente.entity.fileuri) }}" alt="{{ d.label }}" class="du-card__expert-img">
                 {% endif %}
 
                 <div class="du-card__expert-intro">
@@ -451,7 +434,7 @@
 
                     {% if d.field_foto_docente.entity %}
                       <img
-                        src="{{ file_url(d.field_foto_docente.entity.uri.value) }}"
+                        src="{{ file_url(d.field_foto_docente.entity.fileuri) }}"
                         alt="{{ d.label }}"
                         class="du-modal__img"
                       />
@@ -491,41 +474,41 @@
                         {% if d.field_pagina_web.value %}
                         <div class="du-modal__contact-item du-colum">
 
-                          <div class="du-modal__contact-redes">
+                      <div class="du-modal__contact-redes">
 
-                            {% if d.field_linkedin.value %}
-                            <a href="{{ d.field_linkedin.value }}" target="_blank">
-                              <svg width="23" height="23" viewBox="0 0 23 23" fill="none">
-                                <path d="M20.4444 0C21.1222 0 21.7722 0.269244 22.2514 0.748502C22.7307 1.22776 22.9999 1.87777 22.9999 2.55555V20.4444C22.9999 21.1222 22.7307 21.7722 22.2514 22.2514C21.7722 22.7307 21.1222 22.9999 20.4444 22.9999H2.55555C1.87777 22.9999 1.22776 22.7307 0.748502 22.2514C0.269244 21.7722 0 21.1222 0 20.4444V2.55555C0 1.87777 0.269244 1.22776 0.748502 0.748502C1.22776 0.269244 1.87777 0 2.55555 0H20.4444Z" fill="#51BCD6"/>
-                              </svg>
-                            </a>
-                            {% endif %}
+                        {% if d.field_linkedin.value %}
+                        <a href="{{ d.field_linkedin.value }}" target="_blank">
+                          <svg width="23" height="23" viewBox="0 0 23 23" fill="none">
+                            <path d="M20.4444 0C21.1222 0 21.7722 0.269244 22.2514 0.748502C22.7307 1.22776 22.9999 1.87777 22.9999 2.55555V20.4444C22.9999 21.1222 22.7307 21.7722 22.2514 22.2514C21.7722 22.7307 21.1222 22.9999 20.4444 22.9999H2.55555C1.87777 22.9999 1.22776 22.7307 0.748502 22.2514C0.269244 21.7722 0 21.1222 0 20.4444V2.55555C0 1.87777 0.269244 1.22776 0.748502 0.748502C1.22776 0.269244 1.87777 0 2.55555 0H20.4444Z" fill="#51BCD6"/>
+                          </svg>
+                        </a>
+                        {% endif %}
 
-                            {% if d.field_facebook.value %}
-                            <a href="{{ d.field_facebook.value }}" target="_blank">
-                              <svg width="23" height="23" viewBox="0 0 23 23" fill="none">
-                                <path d="M21.7349 0H1.265C0.929498 0 0.607742 0.133276 0.370509 0.370509C0.133276 0.607742 0 0.929498 0 1.265V21.7349C0 22.0704 0.133276 22.3922 0.370509 22.6294C0.607742 22.8667 0.929498 22.9999 1.265 22.9999H12.282V14.0875H9.29197V10.6375H12.282V8.04997C12.22 7.4425 12.2917 6.82882 12.4921 6.252C12.6924 5.67517 13.0165 5.14916 13.4417 4.71086C13.8668 4.27256 14.3827 3.93257 14.9532 3.71476C15.5237 3.49695 16.1349 3.40658 16.7439 3.44999Z" fill="#51BCD6"/>
-                              </svg>
-                            </a>
-                            {% endif %}
+                        {% if d.field_facebook.value %}
+                        <a href="{{ d.field_facebook.value }}" target="_blank">
+                          <svg width="23" height="23" viewBox="0 0 23 23" fill="none">
+                            <path d="M21.7349 0H1.265C0.929498 0 0.607742 0.133276 0.370509 0.370509C0.133276 0.607742 0 0.929498 0 1.265V21.7349C0 22.0704 0.133276 22.3922 0.370509 22.6294C0.607742 22.8667 0.929498 22.9999 1.265 22.9999H12.282V14.0875H9.29197V10.6375H12.282V8.04997C12.22 7.4425 12.2917 6.82882 12.4921 6.252C12.6924 5.67517 13.0165 5.14916 13.4417 4.71086C13.8668 4.27256 14.3827 3.93257 14.9532 3.71476C15.5237 3.49695 16.1349 3.40658 16.7439 3.44999Z" fill="#51BCD6"/>
+                          </svg>
+                        </a>
+                        {% endif %}
 
-                            {% if d.field_instagram.value %}
-                            <a href="{{ d.field_instagram.value }}" target="_blank">
-                              <svg width="23" height="23" viewBox="0 0 23 23" fill="none">
-                                <path d="M12.6828 0C13.9766 0.00344999 14.6332 0.01035 15.2002 0.0264499..." fill="#51BCD6"/>
-                              </svg>
-                            </a>
-                            {% endif %}
+                        {% if d.field_instagram.value %}
+                        <a href="{{ d.field_instagram.value }}" target="_blank">
+                          <svg width="23" height="23" viewBox="0 0 23 23" fill="none">
+                            <path d="M12.6828 0C13.9766 0.00344999 14.6332 0.01035 15.2002 0.0264499..." fill="#51BCD6"/>
+                          </svg>
+                        </a>
+                        {% endif %}
 
-                          </div>
+                      </div>
 
-                          {% if d.field_pagina_web.value %}
-                          <a href="{{ d.field_pagina_web.value }}" target="_blank" class="du-link-external">
-                            {{ d.field_pagina_web.value }}
-                          </a>
-                          {% endif %}
+                      {% if d.field_pagina_web.value %}
+                      <a href="{{ d.field_pagina_web.value }}" target="_blank" class="du-link-external">
+                        {{ d.field_pagina_web.value }}
+                      </a>
+                      {% endif %}
 
-                        </div>
+                    </div>
                         {% endif %}
 
                       </div>
@@ -570,8 +553,8 @@
                           <div class="du-program-tag">
 
                             <span class="tag"
-                                  data-tag="{{ p.field_tipo_de_programa.entity ? p.field_tipo_de_programa.entity.id() : '' }}">
-                              {{ p.field_tipo_de_programa.entity ? p.field_tipo_de_programa.entity.label : '' }}
+                                  data-tag="{{ p.field_tipo_de_programa.entity.id() }}">
+                              {{ p.field_tipo_de_programa.entity.label }}
                             </span>
 
                             <span class="program-name">
@@ -635,7 +618,7 @@
                 </span>
 
                 {% if programa.field_imagen_programa.entity %}
-                  <img src="{{ file_url(programa.field_imagen_programa.entity.uri.value) }}" alt="{{ programa.label }}" class="du-card__diplomat-image">
+                  <img src="{{ file_url(programa.field_imagen_programa.entity.fileuri) }}" alt="{{ programa.label }}" class="du-card__diplomat-image">
                 {% endif %}
 
               </div>
