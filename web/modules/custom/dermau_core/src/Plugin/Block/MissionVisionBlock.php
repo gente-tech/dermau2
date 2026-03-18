@@ -81,12 +81,16 @@ class MissionVisionBlock extends BlockBase
 
 	public function blockSubmit($form, FormStateInterface $form_state)
 	{
-		$this->configuration['mission_title_normal'] = $form_state->getValue('mission_title_normal');
-		$this->configuration['mission_title_color'] = $form_state->getValue('mission_title_color');
-		$this->configuration['mission_description'] = $form_state->getValue('mission_description');
-		$this->configuration['vision_title_normal'] = $form_state->getValue('vision_title_normal');
-		$this->configuration['vision_title_color'] = $form_state->getValue('vision_title_color');
-		$this->configuration['vision_description'] = $form_state->getValue('vision_description');
+		$mission = $form_state->getValue('mission');
+		$vision = $form_state->getValue('vision');
+
+		$this->configuration['mission_title_normal'] = $mission['mission_title_normal'] ?? '';
+		$this->configuration['mission_title_color'] = $mission['mission_title_color'] ?? '';
+		$this->configuration['mission_description'] = $mission['mission_description'] ?? '';
+
+		$this->configuration['vision_title_normal'] = $vision['vision_title_normal'] ?? '';
+		$this->configuration['vision_title_color'] = $vision['vision_title_color'] ?? '';
+		$this->configuration['vision_description'] = $vision['vision_description'] ?? '';
 	}
 
 	public function build()
