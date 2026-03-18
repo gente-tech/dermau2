@@ -43,13 +43,18 @@ class DocentesBlockPage extends BlockBase {
             ->generateAbsoluteString($file->getFileUri());
         }
 
-        // Programas
+        // Programas con nombre + tid
         $programas = [];
 
         if (!$node->get('field_programas_vinculados')->isEmpty()) {
 
           foreach ($node->get('field_programas_vinculados')->referencedEntities() as $programa) {
-            $programas[] = $programa->label();
+
+            $programas[] = [
+              'nombre' => $programa->label(),
+              'tid' => $programa->id(),
+            ];
+
           }
 
         }
@@ -58,31 +63,31 @@ class DocentesBlockPage extends BlockBase {
 
         $docentes[] = [
           'id' => $node->id(),
-        
+
           'nombre' => $node->getTitle(),
-        
+
           'rol' => $node->get('field_especialidad')->value ?? '',
-        
+
           'ciudad' => $node->get('field_ciudad')->value ?? '',
-        
+
           'email' => $node->get('field_correo_electronico')->value ?? '',
-        
+
           'web' => $node->get('field_pagina_web')->value ?? '',
-        
+
           'descripcion' => Unicode::truncate(
             strip_tags($descripcion),
             285,
             TRUE,
             TRUE
           ),
-        
-          // PERFIL COMPLETO para el modal
+
+          // Perfil completo para el modal
           'perfil' => $descripcion,
-        
+
           'programas' => $programas,
-        
+
           'imagen' => $imagen,
-        
+
           'url' => $node->toUrl()->toString(),
         ];
 
