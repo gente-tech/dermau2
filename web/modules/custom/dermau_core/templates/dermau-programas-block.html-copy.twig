@@ -1,0 +1,34 @@
+<section class="du-oferta" id="oferta-academica">
+  <div class="du-oferta__container">
+
+    <div class="du-oferta__header">
+      <h2 class="du-oferta__title">
+        Explora nuestra <span>oferta académica</span>
+      </h2>
+      <p class="du-oferta__subtitle">
+        Encuentra el programa ideal para tu especialización académica y profesional en el área de la salud.
+      </p>
+    </div>
+
+    <div class="du-oferta__filters">
+      <button class="filter-btn filter-btn--active" data-tipo="all">
+        Todos
+      </button>
+
+      {% for term in terms %}
+        <button class="filter-btn" data-tipo="{{ term.tid }}">
+          {{ term.name }}
+        </button>
+      {% endfor %}
+    </div>
+
+    <div class="du-oferta__grid">
+      <!-- AJAX injecta aquí -->
+    </div>
+
+    <a href="/programas" class="du-btn du-btn--secundary-dark">
+      Ver todos los programas
+    </a>
+
+  </div>
+</section>
