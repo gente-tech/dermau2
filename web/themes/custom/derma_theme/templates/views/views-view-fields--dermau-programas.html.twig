@@ -24,13 +24,15 @@
 				
 				<span>{{ row._entity.field_fecha.0.value|date("d/m/Y") }}</span>
 				<span>{{ fields.field_duracion_programa.content }}</span>
-				<span>{{ fields.field_cupos.content }}</span>
+				{% set cupos = row._entity.field_cupos.value %}
+				<span>{{ cupos ? cupos : 0 }} cupos</span>
 
 			{% else %}
 				
 				<span>{{ fields.field_duracion_programa.content }}</span>
 				<span>{{ row._entity.get('field_modulos')|length }} módulos</span>
-				<span>{{ fields.field_cupos.content }}</span>
+				{% set cupos = row._entity.field_cupos.value %}
+				<span>{{ cupos ? cupos : 0 }} cupos</span>
 
 			{% endif %}
 
