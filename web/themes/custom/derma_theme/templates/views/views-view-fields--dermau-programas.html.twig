@@ -1,29 +1,29 @@
 <div class="du-program-card">
-  <div class="du-program-card__image">
-    {{ fields.field_imagen_programa.content }}
-  </div>
+	<div class="du-program-card__image">
+		{{ fields.field_imagen_programa.content }}
+	</div>
 
-  <div class="du-program-card__body">
-    <div class="du-program-card__tag">
-      {{ fields.field_tipo_de_programa.content }}
-    </div>
+	<div class="du-program-card__body">
+		<div class="du-program-card__tag">
+			{{ fields.field_tipo_de_programa.content }}
+		</div>
 
-    <h3 class="du-program-card__title">
-      {{ fields.title.content }}
-    </h3>
+		<h3 class="du-program-card__title">
+			{{ fields.title.content }}
+		</h3>
 
-    <div class="du-program-card__description">
-      {{ fields.field_descripcion_corta.content }}
-    </div>
+		<div class="du-program-card__description">
+			{{ fields.field_descripcion_corta.content }}
+		</div>
 
-    <div class="du-program-card__meta">
-      <span>{{ fields.field_duracion_programa.content }}</span>
-      <span>{{ row._entity.field_modulos|length }} módulos</span>
-      <span>{{ fields.field_cupos.content }} cupos</span>
-    </div>
+		<div class="du-program-card__meta">
+			<span>{{ fields.field_duracion_programa.content }}</span>
+			<span>{{ row._entity.get('field_modulos')|length }} módulos</span>
+			<span>{{ fields.field_cupos.content }} cupos</span>
+		</div>
 
-    <div class="du-program-card__action">
-      {{ fields.view_node.content }}
-    </div>
-  </div>
+		<div class="du-program-card__action">
+			{{ fields.view_node.content }}
+		</div>
+	</div>
 </div>
