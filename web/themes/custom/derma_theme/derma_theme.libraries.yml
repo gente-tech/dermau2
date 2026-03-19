@@ -23,3 +23,10 @@ convenios:
   dependencies:
     - core/drupal
     - core/once
+
+programas-filter:
+  js:
+    assets/js/programas-filter.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
