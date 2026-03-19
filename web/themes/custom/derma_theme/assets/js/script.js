@@ -104,7 +104,7 @@ const duSwiperOferta = new Swiper(".du-swiper-oferta .swiper", {
   autoplay: { delay: 3000 },
   breakpoints: {
     320: {
-      slidesPerView: 1,
+      slidesPerView: 1.2,
       spaceBetween: 20,
       pagination: { el: ".du-swiper-oferta .swiper-pagination", clickable: true },
     },
