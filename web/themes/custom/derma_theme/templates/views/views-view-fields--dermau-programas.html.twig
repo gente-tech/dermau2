@@ -39,7 +39,15 @@
 		</div>
 
 		<div class="du-program-card__action">
-			{{ fields.view_node.content }}
+			{% if tipo == 'Webinars' %}
+				<a href="{{ path('entity.node.canonical', {'node': row._entity.id()}) }}" class="du-btn du-btn--primary">
+					Inscribirme
+				</a>
+			{% else %}
+				<a href="{{ path('entity.node.canonical', {'node': row._entity.id()}) }}" class="du-btn du-btn--secondary">
+					Ver detalle
+				</a>
+			{% endif %}
 		</div>
 	</div>
 </div>
