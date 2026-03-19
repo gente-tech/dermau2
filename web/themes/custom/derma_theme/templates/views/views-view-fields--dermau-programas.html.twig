@@ -5,7 +5,7 @@
 
 	<div class="du-program-card__body">
 		{% set termino_tipo = row._entity.field_tipo_de_programa.entity %}
-		{% set tipo = termino_tipo.label %}
+		{% set tipo = termino_tipo.name.value %}
 		{% set color_tag = termino_tipo.field_id_color.value %}
 
 		<span class="du-card__diplomat-badge tag" data-tag="{{ color_tag }}">
