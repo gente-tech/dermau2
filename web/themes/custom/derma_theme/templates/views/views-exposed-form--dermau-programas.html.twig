@@ -3,7 +3,7 @@
 <form{{attributes}}>
 	<div class="du-filters">
 		<div class="du-search">
-			{{ form.title }}
+			{{ form.title|without('label') }}
 		</div>
 
 		<div class="du-select">
