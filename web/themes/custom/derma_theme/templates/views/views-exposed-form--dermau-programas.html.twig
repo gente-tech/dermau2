@@ -1,6 +1,7 @@
+{{ attach_library('derma_theme/programas-filter') }}
+
 <form{{ attributes }}>
   <div class="du-filters">
-
     <div class="du-search">
       {{ form.title }}
     </div>
@@ -12,8 +13,9 @@
     <div class="du-select">
       {{ form.field_tipo_de_programa_target_id }}
     </div>
-
   </div>
 
-  {{ form.actions }}
+  {{ form.form_build_id }}
+  {{ form.form_token }}
+  {{ form.form_id }}
 </form>
