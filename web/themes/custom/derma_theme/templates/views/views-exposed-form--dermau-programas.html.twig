@@ -7,17 +7,7 @@
 		</div>
 
 		<div class="du-select">
-			{% set universidad = form.field_universidad_del_programa_target_id %}
-
-			<select name="{{ universidad['#name'] }}" class="form-select">
-				<option value="">Todas las universidades</option>
-
-				{% for item in universidad['#options'] %}
-					<option value="{{ item.value }}" {% if item.value == universidad['#value'] %} selected {% endif %}>
-						{{ item.label }}
-					</option>
-				{% endfor %}
-			</select>
+			{{ form.field_universidad_del_programa_target_id }}
 		</div>
 
 		<div class="du-select">
