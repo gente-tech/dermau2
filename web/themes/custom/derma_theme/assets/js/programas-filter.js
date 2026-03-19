@@ -2,17 +2,17 @@
 	Drupal.behaviors.programasFilter = {
 		attach: function (context) {
 			once('programasFilter', '.du-filters', context).forEach(function (wrapper) {
-
 				const form = wrapper.closest('form');
+				const submitButton = form.querySelector('[data-drupal-selector="edit-submit-dermau-programas"], .form-submit');
 
-				// Autosubmit en selects
 				wrapper.querySelectorAll('select').forEach(function (select) {
 					select.addEventListener('change', function () {
-						form.submit();
+						if (submitButton) {
+							submitButton.click();
+						}
 					});
 				});
 
-				// Autosubmit en búsqueda (con delay)
 				const input = wrapper.querySelector('input[type="text"]');
 				if (input) {
 					let timeout = null;
@@ -20,11 +20,12 @@
 					input.addEventListener('keyup', function () {
 						clearTimeout(timeout);
 						timeout = setTimeout(function () {
-							form.submit();
+							if (submitButton) {
+								submitButton.click();
+							}
 						}, 500);
 					});
 				}
-
 			});
 		}
 	};
