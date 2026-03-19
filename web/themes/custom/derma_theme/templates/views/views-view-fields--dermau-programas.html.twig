@@ -22,8 +22,8 @@
 
 			{% if tipo == 'Webinars' %}
 				
-				<span>{{ fields.field_fecha.content }}</span>
-				<span>{{ fields.field_hora.content }}</span>
+				<span>{{ row._entity.field_fecha.value|date("d/m/Y") }}</span>
+				<span>{{ fields.field_duracion_programa.content }}</span>
 				<span>{{ fields.field_cupos.content }}</span>
 
 			{% else %}
