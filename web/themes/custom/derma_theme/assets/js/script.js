@@ -46,7 +46,7 @@ const duSwiperAgreement = new Swiper(".du-agreements .swiper", {
       spaceBetween: 20,
       navigation: {
         nextEl: ".du-agreements .swiper-button-next",
-        prevEl: ".du-agreements.swiper-button-prev",
+        prevEl: ".du-agreements .swiper-button-prev",
       },
       pagination: { el: ".du-agreements .swiper-pagination", clickable: true },
     },
