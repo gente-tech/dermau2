@@ -6,48 +6,55 @@
 	</div>
 
 	<div class="du-program-card__body">
-		<div class="du-program-card__tag">
-			{{ fields.field_tipo_de_programa.content }}
-		</div>
+		{% set termino_tipo = row._entity.field_tipo_de_programa.entity %}
+		{% set tipo = termino_tipo.label %}
+		{% set color_tag = termino_tipo.field_id_color.value %}
 
-		<h3 class="du-program-card__title">
-			{{ fields.title.content }}
-		</h3>
-
-		<div class="du-program-card__description">
-			{{ fields.field_descripcion_corta.content }}
-		</div>
-
-		<div class="du-program-card__meta">
-
-			{% if tipo == 'Webinars' %}
-				
-				<span>{{ row._entity.field_fecha.0.value|date("d/m/Y") }}</span>
-				<span>{{ fields.field_duracion_programa.content }}</span>
-				{% set cupos = row._entity.field_cupos.value %}
-				<span>{{ cupos ? cupos : 0 }} cupos</span>
-
-			{% else %}
-				
-				<span>{{ fields.field_duracion_programa.content }}</span>
-				<span>{{ row._entity.get('field_modulos')|length }} módulos</span>
-				{% set cupos = row._entity.field_cupos.value %}
-				<span>{{ cupos ? cupos : 0 }} cupos</span>
-
-			{% endif %}
-
-		</div>
-
-		<div class="du-program-card__action">
-			{% if tipo == 'Webinars' %}
-				<a href="{{ path('entity.node.canonical', {'node': row._entity.id()}) }}" class="du-btn du-btn--primary">
-					Inscribirme
-				</a>
-			{% else %}
-				<a href="{{ path('entity.node.canonical', {'node': row._entity.id()}) }}" class="du-btn du-btn--secondary">
-					Ver detalle
-				</a>
-			{% endif %}
-		</div>
+		<span class="du-card__diplomat-badge tag" data-tag="{{ color_tag }}">
+			{{ tipo }}
+		</span>
 	</div>
-</div>
+
+	<h3 class="du-program-card__title">
+		{{ fields.title.content }}
+	</h3>
+
+	<div class="du-program-card__description">
+		{{ fields.field_descripcion_corta.content }}
+	</div>
+
+	<div class="du-program-card__meta">
+
+		{% if tipo == 'Webinars' %}
+
+			<span>{{ row._entity.field_fecha.0.value|date("d/m/Y") }}</span>
+			<span>{{ fields.field_duracion_programa.content }}</span>
+			{% set cupos = row._entity.field_cupos.value %}
+			<span>{{ cupos ? cupos : 0 }}
+				cupos</span>
+
+		{% else %}
+
+			<span>{{ fields.field_duracion_programa.content }}</span>
+			<span>{{ row._entity.get('field_modulos')|length }}
+				módulos</span>
+			{% set cupos = row._entity.field_cupos.value %}
+			<span>{{ cupos ? cupos : 0 }}
+				cupos</span>
+
+		{% endif %}
+
+	</div>
+
+	<div class="du-program-card__action">
+		{% if tipo == 'Webinars' %}
+			<a href="{{ path('entity.node.canonical', {'node': row._entity.id()}) }}" class="du-btn du-btn--primary">
+				Inscribirme
+			</a>
+		{% else %}
+			<a href="{{ path('entity.node.canonical', {'node': row._entity.id()}) }}" class="du-btn du-btn--secondary">
+				Ver detalle
+			</a>
+		{% endif %}
+	</div>
+</div></div>
