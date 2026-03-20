@@ -1,95 +1,113 @@
 (function (Drupal, once) {
 	Drupal.behaviors.programasFilter = {
 		attach: function (context) {
-			once('programasFilter', '.du-seach__content', context).forEach(function (wrapper) {
-				const form = wrapper.closest('form');
-				if (!form) {
-					return;
-				}
+			once('programasFilterGlobal', 'body', context).forEach(function (body) {
 
-				const submitButton = form.querySelector('[data-drupal-selector="edit-submit-dermau-programas"], .form-submit');
-
-				const input = wrapper.querySelector('#program-search, input[type="text"]');
-				if (input && !input.dataset.searchBinded) {
-					input.dataset.searchBinded = 'true';
-
-					let timeout = null;
-					input.addEventListener('keyup', function () {
-						clearTimeout(timeout);
-						timeout = setTimeout(function () {
-							if (submitButton) {
-								submitButton.click();
-							}
-						}, 500);
-					});
-				}
-
-				wrapper.querySelectorAll('.du-filter-down').forEach(function (filter) {
-					if (filter.dataset.filterBinded === 'true') {
-						return;
-					}
-					filter.dataset.filterBinded = 'true';
-
-					const header = filter.querySelector('.du-filter-down__header');
-					const title = filter.querySelector('.du-filter-down__title');
-					const items = filter.querySelectorAll('.du-filter-down__options li');
-					const target = filter.getAttribute('data-target');
-					const nativeSelect = form.querySelector('select[name="' + target + '"]');
-
-					if (!header || !title || !items.length || !nativeSelect) {
-						return;
-					}
-
-					header.addEventListener('click', function (e) {
+				body.addEventListener('click', function (e) {
+					const header = e.target.closest('.du-filter-down__header');
+					if (header) {
 						e.preventDefault();
 						e.stopPropagation();
 
-						wrapper.querySelectorAll('.du-filter-down').forEach(function (otherFilter) {
-							if (otherFilter !== filter) {
-								otherFilter.classList.remove('active');
+						const currentFilter = header.closest('.du-filter-down');
+						if (!currentFilter) {
+							return;
+						}
+
+						document.querySelectorAll('.du-seach__content .du-filter-down').forEach(function (filter) {
+							if (filter !== currentFilter) {
+								filter.classList.remove('active');
 							}
 						});
 
-						filter.classList.toggle('active');
-					});
+						currentFilter.classList.toggle('active');
+						return;
+					}
 
-					items.forEach(function (item) {
-						item.addEventListener('click', function (e) {
-							e.preventDefault();
-							e.stopPropagation();
+					const item = e.target.closest('.du-filter-down__options li');
+					if (item) {
+						e.preventDefault();
+						e.stopPropagation();
 
-							const value = this.getAttribute('data-value');
-							const text = this.textContent.trim();
+						const filter = item.closest('.du-filter-down');
+						if (!filter) {
+							return;
+						}
 
-							const matchingOption = Array.from(nativeSelect.options).find(function (option) {
-								return option.value == value;
-							});
+						const wrapper = item.closest('.du-seach__content');
+						if (!wrapper) {
+							return;
+						}
 
-							if (!matchingOption) {
-								return;
-							}
+						const form = wrapper.closest('form');
+						if (!form) {
+							return;
+						}
 
-							nativeSelect.value = matchingOption.value;
-							title.textContent = text;
-							title.setAttribute('data-value', matchingOption.value);
+						const target = filter.getAttribute('data-target');
+						const nativeSelect = form.querySelector('select[name="' + target + '"]');
+						const title = filter.querySelector('.du-filter-down__title');
+						const submitButton = form.querySelector('[data-drupal-selector="edit-submit-dermau-programas"], .form-submit');
 
-							filter.classList.remove('active');
+						if (!nativeSelect || !title) {
+							return;
+						}
 
-							if (submitButton) {
-								submitButton.click();
-							}
+						const value = item.getAttribute('data-value');
+						const text = item.textContent.trim();
+
+						const optionExists = Array.from(nativeSelect.options).some(function (option) {
+							return option.value == value;
 						});
-					});
-				});
-			});
 
-			once('programasFilterClose', 'body', context).forEach(function (body) {
-				body.addEventListener('click', function (e) {
+						if (!optionExists) {
+							return;
+						}
+
+						nativeSelect.value = value;
+						title.textContent = text;
+						title.setAttribute('data-value', value);
+
+						filter.classList.remove('active');
+
+						if (submitButton) {
+							submitButton.click();
+						}
+						return;
+					}
+
 					document.querySelectorAll('.du-seach__content .du-filter-down').forEach(function (filter) {
 						if (!filter.contains(e.target)) {
 							filter.classList.remove('active');
 						}
 					});
+				});
+
+				body.addEventListener('keyup', function (e) {
+					const input = e.target.closest('#program-search, .du-seach__content input[type="text"]');
+					if (!input) {
+						return;
+					}
+
+					const wrapper = input.closest('.du-seach__content');
+					if (!wrapper) {
+						return;
+					}
+
+					const form = wrapper.closest('form');
+					if (!form) {
+						return;
+					}
+
+					const submitButton = form.querySelector('[data-drupal-selector="edit-submit-dermau-programas"], .form-submit');
+					if (!submitButton) {
+						return;
+					}
+
+					clearTimeout(input._duSearchTimeout);
+					input._duSearchTimeout = setTimeout(function () {
+						submitButton.click();
+					}, 500);
 				});
 			});
 		}

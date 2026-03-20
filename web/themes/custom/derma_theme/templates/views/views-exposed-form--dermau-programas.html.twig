@@ -67,6 +67,17 @@
 									{{ universidad_label }}
 								</div>
 							</div>
+
+							<ul class="du-filter-down__options" data-rel="filter-universidad">
+								<li data-value="{{ universidad_default_value }}">Todas las universidades</li>
+								{% for key, label in universidad_options %}
+									{% if label != '- Any -' %}
+										<li data-value="{{ key }}">
+											{{ label }}
+										</li>
+									{% endif %}
+								{% endfor %}
+							</ul>
 						</div>
 					{% endif %}
 
@@ -106,6 +117,17 @@
 									{{ tipo_label }}
 								</div>
 							</div>
+
+							<ul class="du-filter-down__options" data-rel="filter-programa">
+								<li data-value="{{ tipo_default_value }}">Todos los programas</li>
+								{% for key, label in tipo_options %}
+									{% if label != '- Any -' %}
+										<li data-value="{{ key }}">
+											{{ label }}
+										</li>
+									{% endif %}
+								{% endfor %}
+							</ul>
 						</div>
 					{% endif %}
 
