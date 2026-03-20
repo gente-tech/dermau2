@@ -1,5 +1,16 @@
+{% if view.total_rows > 0 %}
+	<div class="du-results-count">
+		{% if view.total_rows == 1 %}
+			<p>1 programa</p>
+		{% else %}
+			<p>{{ view.total_rows }}
+				programas</p>
+		{% endif %}
+	</div>
+{% endif %}
+
 <div class="du-programas__grid">
-  {% for row in rows %}
-    {{ row.content }}
-  {% endfor %}
+	{% for row in rows %}
+		{{ row.content }}
+	{% endfor %}
 </div>
