@@ -54,7 +54,7 @@
     max-height: 10px;
 }
 /* Estado abierto: Quita la línea vertical para formar el menos (-) */
-.is-open .du-icon-trigger__plus::after {
+.du-accordion-item.is-open .du-icon-trigger__plus::after {
     transform: translate(-50%, -50%) rotate(90deg);
     opacity: 0;
 }
