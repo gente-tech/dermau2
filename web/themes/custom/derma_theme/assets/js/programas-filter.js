@@ -3,10 +3,16 @@
 		attach: function (context) {
 			once('programasFilter', '.du-seach__content', context).forEach(function (wrapper) {
 				const form = wrapper.closest('form');
+				if (!form) {
+					return;
+				}
+
 				const submitButton = form.querySelector('[data-drupal-selector="edit-submit-dermau-programas"], .form-submit');
 
 				const input = wrapper.querySelector('#program-search, input[type="text"]');
-				if (input) {
+				if (input && !input.dataset.searchBinded) {
+					input.dataset.searchBinded = 'true';
+
 					let timeout = null;
 
 					input.addEventListener('keyup', function () {
@@ -20,6 +26,11 @@
 				}
 
 				wrapper.querySelectorAll('.du-filter-down').forEach(function (filter) {
+					if (filter.dataset.filterBinded === 'true') {
+						return;
+					}
+					filter.dataset.filterBinded = 'true';
+
 					const header = filter.querySelector('.du-filter-down__header');
 					const title = filter.querySelector('.du-filter-down__title');
 					const items = filter.querySelectorAll('.du-filter-down__options li');
@@ -31,6 +42,7 @@
 					}
 
 					header.addEventListener('click', function (e) {
+						e.preventDefault();
 						e.stopPropagation();
 
 						wrapper.querySelectorAll('.du-filter-down').forEach(function (otherFilter) {
@@ -44,6 +56,7 @@
 
 					items.forEach(function (item) {
 						item.addEventListener('click', function (e) {
+							e.preventDefault();
 							e.stopPropagation();
 
 							const value = this.getAttribute('data-value');
@@ -52,9 +65,13 @@
 							title.textContent = text;
 							title.setAttribute('data-value', value);
 
-							nativeSelect.value = value;
-							nativeSelect.dispatchEvent(new Event('change', { bubbles: true }));
+							const optionExists = Array.from(nativeSelect.options).some(function (option) {
+								return option.value == value;
+							});
 
+							if (optionExists) {
+								nativeSelect.value = value;
+							}
 							filter.classList.remove('active');
 
 							if (submitButton) {
@@ -63,10 +80,14 @@
 						});
 					});
 				});
+			});
 
-				document.addEventListener('click', function () {
-					wrapper.querySelectorAll('.du-filter-down').forEach(function (filter) {
-						filter.classList.remove('active');
+			once('programasFilterClose', 'html', context).forEach(function (html) {
+				html.addEventListener('click', function (e) {
+					document.querySelectorAll('.du-seach__content .du-filter-down').forEach(function (filter) {
+						if (!filter.contains(e.target)) {
+							filter.classList.remove('active');
+						}
 					});
 				});
 			});
