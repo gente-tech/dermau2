@@ -65,6 +65,7 @@
 						}
 
 						nativeSelect.value = value;
+						nativeSelect.dispatchEvent(new Event('change', { bubbles: true }));
 						title.textContent = text;
 						title.setAttribute('data-value', value);
 
