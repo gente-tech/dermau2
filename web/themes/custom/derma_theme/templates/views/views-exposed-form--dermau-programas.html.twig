@@ -1,29 +1,36 @@
 {{ attach_library('derma_theme/programas-filter') }}
 
-<form{{attributes}}>
-	<div class="du-filters">
-		<div class="du-search">
-			{{ form.title|without('label') }}
-		</div>
+<section class="du-seach">
+	<div class="du-seach__container">
+		<div class="du-seach__content">
+			<form{{attributes}}>
+				<div class="du-seach__input">
+					{{ form.title.setAttribute('placeholder', 'Buscar programa...').setAttribute('id', 'program-search') }}
+				</div>
+				<div class="du-filters">
+					<div class="du-search"></div>
 
-		<div class="du-select">
-			{% if form.field_universidad_del_programa_target_id_verf is defined %}
-				{% set universidad = form.field_universidad_del_programa_target_id_verf %}
+					<div class="du-select">
+						{% if form.field_universidad_del_programa_target_id_verf is defined %}
+							{% set universidad = form.field_universidad_del_programa_target_id_verf %}
 
-				{{ universidad|without('label') }}
-			{% endif %}
-		</div>
+							{{ universidad|without('label') }}
+						{% endif %}
+					</div>
 
-		<div class="du-select">
-			{{ form.field_tipo_de_programa_target_id|without('label') }}
+					<div class="du-select">
+						{{ form.field_tipo_de_programa_target_id|without('label') }}
+					</div>
+				</div>
+
+				<div style="display:none;">
+					{{ form.actions }}
+				</div>
+
+				{{ form.form_build_id }}
+				{{ form.form_token }}
+				{{ form.form_id }}
+			</form>
 		</div>
 	</div>
-
-	<div style="display:none;">
-		{{ form.actions }}
-	</div>
-
-	{{ form.form_build_id }}
-	{{ form.form_token }}
-	{{ form.form_id }}
-</form>
+</section>
