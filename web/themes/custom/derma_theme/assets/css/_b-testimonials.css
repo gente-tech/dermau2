@@ -30,8 +30,15 @@
 
 /* Botón Final */
 .du-testimonials__actions {
-  text-align: center;
-  margin-top: 50px;
+    text-align: center;
+    margin-top: 50px;
+    height: 40px;
+    position: relative;
+}
+.du-testimonials__actions  .du-btn {
+    position: absolute;
+    bottom: -10px;
+    left: calc(50% - 120px);
 }
 
 .du-btn-secondary {

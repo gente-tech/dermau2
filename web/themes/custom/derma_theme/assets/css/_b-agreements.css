@@ -3,13 +3,13 @@
 }
 
 .du-agreements__container {
-  padding-block: 60px;
+  padding-top: 20px;
   max-width: var(--du-max-width);
   margin: 0 auto;
 }
 
 .du-agreements__header {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   text-align: left;
 }
 .du-agreements__title {
@@ -38,7 +38,7 @@
 
 /* Contenedor Swiper */
 .du-agreements .swiper-container {
-  padding-bottom: 50px;
+  padding-bottom: 20px;
   position: relative;
 }
 
@@ -68,6 +68,9 @@
 }
 
 @media (max-width: 768px) {
+  .du-agreements {
+    padding-bottom: 20px;
+  }
   .du-agreements__header {
     text-align: center;
   }
