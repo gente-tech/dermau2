@@ -1,3 +1,10 @@
+<pre>
+  title: {{ dump(app.request.get('title')) }}
+  universidad: {{ dump(app.request.get('field_universidad_del_programa_target_id_verf')) }}
+  tipo: {{ dump(app.request.get('field_tipo_de_programa_target_id')) }}
+  query_all: {{ dump(app.request.query.all) }}
+</pre>
+
 {% set hay_filtros = false %}
 
 {% set universidad = app.request.get('field_universidad_del_programa_target_id_verf') %}
