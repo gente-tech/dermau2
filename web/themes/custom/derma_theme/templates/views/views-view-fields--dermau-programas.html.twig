@@ -2,52 +2,104 @@
 {% set tipo = termino_tipo.name.value %}
 {% set color_tag = termino_tipo.field_id_color.value %}
 
-<div class="du-program-card">
-	<div class="du-program-card__image">
-		{{ fields.field_imagen_programa.content }}
+<div class="swiper" id="programa-diplomat-swiper">
+	<div class="swiper-wrapper" id="card__diplomat">
+		<div class="swiper-slide">
+
+			<article class="du-card__diplomat">
+
+				<div class="du-program-card">
+					<div class="du-card__diplomat-image-container">
+						<span class="du-card__diplomat-badge">{{ tipo }}</span>
+
+						{# <img src="{{ programa.imagen }}" alt="{{ programa.titulo }}" class="du-card__diplomat-image"> #}
+						{{ fields.field_imagen_programa.content }}
+					</div>
+
+					<div class="du-card__diplomat-content">
+
+						<h3 class="du-card__diplomat-title">
+							{{ fields.title.content }}
+						</h3>
+
+						<p class="du-card__diplomat-description">
+							{{ fields.field_descripcion_corta.content }}
+						</p>
+
+						<div class="du-card__diplomat-info">
+
+							<div class="du-card__diplomat-info-item">
+								{% if tipo == 'Webinars' %}
+									<svg width="15" height="15" viewbox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M7.22917 13.9583C10.9456 13.9583 13.9583 10.9456 13.9583 7.22917C13.9583 3.51275 10.9456 0.5 7.22917 0.5C3.51275 0.5 0.5 3.51275 0.5 7.22917C0.5 10.9456 3.51275 13.9583 7.22917 13.9583Z" stroke="#007BE3"></path>
+										<path d="M10.7916 7.22921H7.42704C7.37455 7.22921 7.32421 7.20836 7.28709 7.17124C7.24998 7.13412 7.22913 7.08378 7.22913 7.03129V4.45837" stroke="#007BE3" stroke-linecap="round"></path>
+									</svg>
+									{{ fields.field_duracion_programa.content }}
+								{% else %}
+									<svg width="15" height="15" viewbox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M7.22917 13.9583C10.9456 13.9583 13.9583 10.9456 13.9583 7.22917C13.9583 3.51275 10.9456 0.5 7.22917 0.5C3.51275 0.5 0.5 3.51275 0.5 7.22917C0.5 10.9456 3.51275 13.9583 7.22917 13.9583Z" stroke="#007BE3"></path>
+										<path d="M10.7916 7.22921H7.42704C7.37455 7.22921 7.32421 7.20836 7.28709 7.17124C7.24998 7.13412 7.22913 7.08378 7.22913 7.03129V4.45837" stroke="#007BE3" stroke-linecap="round"></path>
+									</svg>
+									{{ fields.field_duracion_programa.content }}
+								{% endif %}
+							</div>
+
+							<div class="du-card__diplomat-info-item">
+								{% if tipo == 'Webinars' %}
+									<svg width="15" height="13" viewbox="0 0 15 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M7.5 1.99457C7.5 1.99457 4 -1.00543 0.5 1.49457V12.4946C4 9.99457 7.5 12.4946 7.5 12.4946M7.5 1.99457C7.5 1.99457 11 -1.00543 14.5 1.49457V12.4946C11 9.99457 7.5 12.4946 7.5 12.4946M7.5 1.99457V12.4946" stroke="#007BE3" stroke-linecap="round" stroke-linejoin="round"/>
+									</svg>
+									{{ row._entity.field_fecha.0.value|date("d/m/Y") }}
+								{% else %}
+									<svg width="15" height="13" viewbox="0 0 15 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M7.5 1.99457C7.5 1.99457 4 -1.00543 0.5 1.49457V12.4946C4 9.99457 7.5 12.4946 7.5 12.4946M7.5 1.99457C7.5 1.99457 11 -1.00543 14.5 1.49457V12.4946C11 9.99457 7.5 12.4946 7.5 12.4946M7.5 1.99457V12.4946" stroke="#007BE3" stroke-linecap="round" stroke-linejoin="round"/>
+									</svg>
+									{{ row._entity.get('field_modulos')|length }}
+									módulos
+								{% endif %}
+							</div>
+
+							<div class="du-card__diplomat-info-item">
+								<svg width="16" height="14" viewbox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M10.6111 13.5V12.0555C10.6111 11.2893 10.3067 10.5545 9.76497 10.0128C9.2232 9.47099 8.4884 9.16663 7.72222 9.16663H3.38889C2.62271 9.16663 1.88791 9.47099 1.34614 10.0128C0.804364 10.5545 0.5 11.2893 0.5 12.0555V13.5M10.6111 0.592407C11.2306 0.753008 11.7792 1.11476 12.1709 1.6209C12.5625 2.12703 12.775 2.74888 12.775 3.38885C12.775 4.02882 12.5625 4.65067 12.1709 5.15681C11.7792 5.66294 11.2306 6.0247 10.6111 6.1853M14.9444 13.5V12.0555C14.944 11.4154 14.7309 10.7936 14.3388 10.2877C13.9466 9.78186 13.3975 9.42054 12.7778 9.26052" stroke="#007BE3" stroke-linecap="round" stroke-linejoin="round"/>
+									<path d="M5.55558 6.27778C7.15106 6.27778 8.44446 4.98438 8.44446 3.38889C8.44446 1.7934 7.15106 0.5 5.55558 0.5C3.96009 0.5 2.66669 1.7934 2.66669 3.38889C2.66669 4.98438 3.96009 6.27778 5.55558 6.27778Z" stroke="#007BE3" stroke-linecap="round" stroke-linejoin="round"/>
+								</svg>
+								{% set cupos = row._entity.field_cupos.value %}
+								<span class="du-card__diplomat-info-text">{{ cupos ? cupos : 0 }}
+									cupos</span>
+							</div>
+						</div>
+
+						{% if tipo == 'Webinars' %}
+							<a href="{{ path('entity.node.canonical', {'node': row._entity.id()}) }}" class="du-card__diplomat-btn">
+								Inscribirme
+							</a>
+						{% else %}
+							<a href="{{ path('entity.node.canonical', {'node': row._entity.id()}) }}" class="du-card__diplomat-btn">
+								Ver detalle
+							</a>
+						{% endif %}
+					</div>
+				</div>
+			</article>
+		</div>
 	</div>
 
-	<div class="du-program-card__body">
-		{# <span class="du-card__diplomat-badge tag" data-tag="{{ color_tag }}"> #}
-		<span class="" data-tag="{{ color_tag }}">
-			{{ tipo }}
-		</span>
 
-		<h3 class="du-program-card__title">
-			{{ fields.title.content }}
-		</h3>
+	<div class="swiper-button-prev"></div>
+	<div class="swiper-button-next"></div>
+	<div class="swiper-pagination"></div>
 
-		<div class="du-program-card__description">
-			{{ fields.field_descripcion_corta.content }}
-		</div>
+</div>
 
-		<div class="du-program-card__meta">
-			{% if tipo == 'Webinars' %}
-				<span>{{ row._entity.field_fecha.0.value|date("d/m/Y") }}</span>
-				<span>{{ fields.field_duracion_programa.content }}</span>
-				{% set cupos = row._entity.field_cupos.value %}
-				<span>{{ cupos ? cupos : 0 }}
-					cupos</span>
-			{% else %}
-				<span>{{ fields.field_duracion_programa.content }}</span>
-				<span>{{ row._entity.get('field_modulos')|length }}
-					módulos</span>
-				{% set cupos = row._entity.field_cupos.value %}
-				<span>{{ cupos ? cupos : 0 }}
-					cupos</span>
-			{% endif %}
-		</div>
+<div class="du-generic-swiper__actions">
+	<button class="du-btn du-btn--secundary-dark" id="btn-more-programs">
+		<svg width="20" height="14" viewbox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M1.73072 4.84077V11.3204M0.931527 4.34797C0.36454 4.12221 0.36454 3.51312 0.931527 3.28736C1.67493 2.99134 2.78552 2.57119 4.35642 2.02724C6.53903 1.27151 8.02994 0.823397 8.83037 0.596269C9.28111 0.46791 9.77043 0.46791 10.2212 0.596269C11.0212 0.823397 12.5129 1.27151 14.6951 2.02724C16.2664 2.57119 17.3766 2.99134 18.1204 3.28736C18.6866 3.51312 18.6866 4.12221 18.1204 4.34797C17.3766 4.64399 16.266 5.06414 14.6951 5.60809C12.5125 6.36382 11.0216 6.81194 10.2212 7.03907C9.77043 7.16742 9.28111 7.16742 8.83037 7.03907C8.03035 6.81194 6.53862 6.36382 4.35642 5.60809C2.78511 5.0638 1.67493 4.64399 0.931527 4.34797Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+			<path d="M4.23424 5.56543C4.20539 6.02441 4.19144 6.48394 4.19239 6.94354C4.19239 7.9987 4.25762 8.66133 4.32162 9.05795C4.37783 9.40444 4.6166 9.69909 4.98912 9.86108C5.70955 10.1748 7.17297 10.6383 9.52584 10.6383C11.8787 10.6383 13.3421 10.1752 14.0626 9.86142C14.4351 9.69943 14.6739 9.40478 14.7301 9.05863C14.7941 8.66167 14.8593 7.99904 14.8593 6.94423C14.8602 6.48451 14.8463 6.02486 14.8174 5.56577M2.96159 12.3435C2.96159 12.6148 2.83192 12.875 2.6011 13.0669C2.37028 13.2588 2.05722 13.3666 1.7308 13.3666C1.40437 13.3666 1.09131 13.2588 0.860492 13.0669C0.629673 12.875 0.5 12.6148 0.5 12.3435C0.5 12.0721 0.629673 11.8119 0.860492 11.62C1.09131 11.4282 1.40437 11.3204 1.7308 11.3204C2.05722 11.3204 2.37028 11.4282 2.6011 11.62C2.83192 11.8119 2.96159 12.0721 2.96159 12.3435Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+		</svg>
 
-		<div class="du-program-card__action">
-			{% if tipo == 'Webinars' %}
-				<a href="{{ path('entity.node.canonical', {'node': row._entity.id()}) }}" class="du-btn du-btn--primary">
-					Inscribirme
-				</a>
-			{% else %}
-				<a href="{{ path('entity.node.canonical', {'node': row._entity.id()}) }}" class="du-btn du-btn--secondary">
-					Ver detalle
-				</a>
-			{% endif %}
-		</div>
-	</div>
+		Ver todos los
+		<span class="du-btn__link">programas</span>
+	</button>
 </div>

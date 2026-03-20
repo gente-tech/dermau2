@@ -5,29 +5,35 @@
 {% set title = view.exposed_raw_input.title|default('') %}
 
 {% if title|trim != '' %}
-  {% set hay_filtros = true %}
+	{% set hay_filtros = true %}
 {% endif %}
 
 {% if universidad != '' and universidad != 'All' %}
-  {% set hay_filtros = true %}
+	{% set hay_filtros = true %}
 {% endif %}
 
 {% if tipo != '' and tipo != 'All' %}
-  {% set hay_filtros = true %}
+	{% set hay_filtros = true %}
 {% endif %}
 
-<div class="du-results-count">
-  {% if hay_filtros %}
-    <p>
-      Mostrando {{ view.total_rows }} {{ view.total_rows == 1 ? 'programa' : 'programas' }}
-    </p>
-  {% else %}
-    <p>Programas Recomendados</p>
-  {% endif %}
-</div>
 
-<div class="du-programas__grid">
-  {% for row in rows %}
-    {{ row.content }}
-  {% endfor %}
-</div>
+<section class="du-generic-swiper du-swiper-program">
+	<div class="du-generic-swiper__container du-swiper-oferta__container">
+		<div class="du-generic-swiper__header">
+			{% if hay_filtros %}
+				<h3>
+					Mostrando
+					<span>{{ view.total_rows }}
+						{{ view.total_rows == 1 ? 'programa' : 'programas' }}</span>
+				</h3>
+			{% else %}
+				<h3>Programas Recomendados</h3>
+			{% endif %}
+		</div>
+
+		{% for row in rows %}
+			{{ row.content }}
+		{% endfor %}
+
+	</div>
+</section>
