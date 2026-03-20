@@ -86,7 +86,7 @@ const duSwiperExperts = new Swiper('.du-swiper-expert .swiper', {
     el: '.du-swiper-expert .swiper-pagination',
     clickable: true,
     renderBullet: function (index, className) {
-      let bullet =   `<span class="${className}" data-swiper-slide-index="${index}">${index + 1}</span>`;
+      let bullet = `<span class="${className}" data-swiper-slide-index="${index}">${index + 1}</span>`;
       /*let totalSlides = this.slides.length;
      if (index === 0)  bullet = `<span class="nav-label" onclick="duSwiperExperts.slideTo(0)" data-swiper-slide-index="${index}"> < </span>` + bullet;
       if (index === totalSlides - 1)  bullet = bullet + `<span class="nav-label" onclick="duSwiperExperts.slideTo(${totalSlides - 1})" data-swiper-slide-index="${index}"> > </span>`;*/
@@ -94,7 +94,7 @@ const duSwiperExperts = new Swiper('.du-swiper-expert .swiper', {
     },
   },
   breakpoints: {
-    1024: {  slidesPerView: 3,  spaceBetween: 30 }
+    1024: { slidesPerView: 3, spaceBetween: 30 }
   }
 });
 
@@ -116,32 +116,46 @@ const duSwiperOferta = new Swiper(".du-swiper-oferta .swiper", {
   },
 });
 
-const duSwiperProgram = new Swiper('.du-swiper-program .swiper', {
-  loop: false,
-  slidesPerView: 1,
-  spaceBetween: 20,
-   navigation: {
-    nextEl: '.du-swiper-program .swiper-button-next',
-    prevEl: '.du-swiper-program .swiper-button-prev',
-  },
-  pagination: {
-  el: '.du-swiper-program .swiper-pagination',
-  clickable: true,
-  renderBullet: function (index, className) {
-      return`<span class="${className}" data-swiper-slide-index="${index}">${index + 1}</span>`;
-  },
-},
-  breakpoints: {
-    1024: {  
-      slidesPerView: 4,  
-      spaceBetween: 30,
-      grid: {
-        rows: 2,
-        fill: 'row'
-      }, 
-    }
+window.initDuSwiperProgram = function () {
+  const swiperElement = document.querySelector('.du-swiper-program .swiper');
+
+  if (!swiperElement) {
+    return;
   }
-});
+
+  if (window.duSwiperProgram && typeof window.duSwiperProgram.destroy === 'function') {
+    window.duSwiperProgram.destroy(true, true);
+  }
+
+  window.duSwiperProgram = new Swiper('.du-swiper-program .swiper', {
+    loop: false,
+    slidesPerView: 1,
+    spaceBetween: 20,
+    navigation: {
+      nextEl: '.du-swiper-program .swiper-button-next',
+      prevEl: '.du-swiper-program .swiper-button-prev',
+    },
+    pagination: {
+      el: '.du-swiper-program .swiper-pagination',
+      clickable: true,
+      renderBullet: function (index, className) {
+        return `<span class="${className}" data-swiper-slide-index="${index}">${index + 1}</span>`;
+      },
+    },
+    breakpoints: {
+      1024: {
+        slidesPerView: 4,
+        spaceBetween: 30,
+        grid: {
+          rows: 2,
+          fill: 'row'
+        },
+      }
+    }
+  });
+}
+
+window.initDuSwiperProgram();
 
 
 
@@ -183,29 +197,29 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* Acordeón General */
- document.addEventListener('DOMContentLoaded', () => {
-    const accordionItems = document.querySelectorAll('.du-accordion-block__item');
-    if (accordionItems.length > 1)
-      accordionItems.forEach(item => {
-          const header = item.querySelector('.du-accordion-block__header');
-          header.addEventListener('click', () => {
-              const isOpen = item.classList.contains('is-open');
-              accordionItems.forEach(i => i.classList.remove('is-open'));
-              if (!isOpen)  item.classList.add('is-open');
-          });
+document.addEventListener('DOMContentLoaded', () => {
+  const accordionItems = document.querySelectorAll('.du-accordion-block__item');
+  if (accordionItems.length > 1)
+    accordionItems.forEach(item => {
+      const header = item.querySelector('.du-accordion-block__header');
+      header.addEventListener('click', () => {
+        const isOpen = item.classList.contains('is-open');
+        accordionItems.forEach(i => i.classList.remove('is-open'));
+        if (!isOpen) item.classList.add('is-open');
       });
+    });
 });
 
 /* Panel Acordeón */
 document.querySelectorAll('.du-panel-block__trigger').forEach(trigger => {
-    trigger.addEventListener('click', () => {
-        const parent = trigger.parentElement;
-        const isOpen = parent.classList.contains('is-open');
-        document.querySelectorAll('.du-panel-block__item').forEach(item => {
-            item.classList.remove('is-open');
-        });
-        if (!isOpen) parent.classList.add('is-open');
+  trigger.addEventListener('click', () => {
+    const parent = trigger.parentElement;
+    const isOpen = parent.classList.contains('is-open');
+    document.querySelectorAll('.du-panel-block__item').forEach(item => {
+      item.classList.remove('is-open');
     });
+    if (!isOpen) parent.classList.add('is-open');
+  });
 });
 
 /* Dropdowns */
@@ -243,8 +257,8 @@ document.addEventListener("DOMContentLoaded", () => {
 /*  Selector de País */
 function initCountrySelect(selectId, inputId, countryArr, baseUrl) {
   const selectContainer = document.getElementById(selectId);
-  if(!selectContainer) return;
-  
+  if (!selectContainer) return;
+
   const selected = selectContainer.querySelector('.selected');
   const optionsContainer = selectContainer.querySelector('.options');
   const telfInput = document.getElementById(inputId);
@@ -275,11 +289,11 @@ function initCountrySelect(selectId, inputId, countryArr, baseUrl) {
 }
 
 const countryArr = [
-  {name: 'Colombia', code: '+57', icon: 'co.png'},
-  {name: 'Venezuela', code: '+58', icon: 've.png'},
-  {name: 'México', code: '+52', icon: 'mx.png'},
-  {name: 'Argentina', code: '+54', icon: 'ar.png'},
-  {name: 'Chile', code: '+56', icon: 'cl.png'},
+  { name: 'Colombia', code: '+57', icon: 'co.png' },
+  { name: 'Venezuela', code: '+58', icon: 've.png' },
+  { name: 'México', code: '+52', icon: 'mx.png' },
+  { name: 'Argentina', code: '+54', icon: 'ar.png' },
+  { name: 'Chile', code: '+56', icon: 'cl.png' },
   /*{name: 'Perú', code: '+51', icon: 'pe.png'},
   {name: 'Ecuador', code: '+593', icon: 'ec.png'},
   {name: 'Uruguay', code: '+598', icon: 'uy.png'},
@@ -316,7 +330,7 @@ document.addEventListener("DOMContentLoaded", () => {
     formShow(true);
   });
 
-   btnTitle.addEventListener("click", () => {
+  btnTitle.addEventListener("click", () => {
     formShow(true);
   });
 

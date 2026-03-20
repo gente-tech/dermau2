@@ -1,4 +1,19 @@
 (function (Drupal, once) {
+	function refreshProgramSwiper() {
+		setTimeout(function () {
+			if (typeof window.initDuSwiperProgram === 'function') {
+				window.initDuSwiperProgram();
+				console.log('Swiper de programas reinicializado');
+				return;
+			}
+
+			if (window.duSwiperProgram && typeof window.duSwiperProgram.update === 'function') {
+				window.duSwiperProgram.update();
+				console.log('Swiper de programas actualizado');
+			}
+		}, 300);
+	}
+
 	Drupal.behaviors.programasFilterDebug = {
 		attach: function (context) {
 			once('programasFilterDebug', 'body', context).forEach(function (body) {
@@ -99,6 +114,7 @@
 						if (submitButton) {
 							console.log('Click submit manual');
 							submitButton.click();
+							refreshProgramSwiper();
 						}
 
 						setTimeout(function () {
@@ -163,6 +179,7 @@
 					input._duSearchTimeout = setTimeout(function () {
 						console.log('Click submit por search');
 						submitButton.click();
+						refreshProgramSwiper();
 					}, 500);
 				});
 			});
