@@ -7,9 +7,14 @@
 <div class="swiper-slide">
 	<article class="du-card__diplomat">
 		<div class="du-card__diplomat-image-container">
-			<span class="du-card__diplomat-badge tag"  data-tag="1">{{ tipo }}</span>
-			{# <img src="{{ programa.imagen }}" alt="{{ programa.titulo }}" class="du-card__diplomat-image"> #}
-			{{ fields.field_imagen_programa.content }}
+			<span class="du-card__diplomat-badge tag"  data-tag="{{ color_tag }}">{{ tipo }}</span>
+			{% if row._entity.field_imagen_programa.entity %}
+				<img 
+					src="{{ file_url(row._entity.field_imagen_programa.entity.uri.value) }}" 
+					alt="{{ row._entity.title.value }}" 
+					class="du-card__diplomat-image"
+				>
+			{% endif %}
 		</div>
 		<div class="du-card__diplomat-content">
 			<h3 class="du-card__diplomat-title">{{ fields.title.content }}</h3>
