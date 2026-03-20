@@ -1,7 +1,7 @@
 (function (Drupal, once) {
-	Drupal.behaviors.programasFilter = {
+	Drupal.behaviors.programasFilterDebug = {
 		attach: function (context) {
-			once('programasFilterGlobal', 'body', context).forEach(function (body) {
+			once('programasFilterDebug', 'body', context).forEach(function (body) {
 
 				body.addEventListener('click', function (e) {
 					const header = e.target.closest('.du-filter-down__header');
@@ -11,8 +11,13 @@
 
 						const currentFilter = header.closest('.du-filter-down');
 						if (!currentFilter) {
+							console.log('No se encontró currentFilter');
 							return;
 						}
+
+						console.log('CLICK HEADER');
+						console.log('Filtro actual:', currentFilter);
+						console.log('Target:', currentFilter.getAttribute('data-target'));
 
 						document.querySelectorAll('.du-seach__content .du-filter-down').forEach(function (filter) {
 							if (filter !== currentFilter) {
@@ -21,6 +26,7 @@
 						});
 
 						currentFilter.classList.toggle('active');
+						console.log('¿Quedó active?', currentFilter.classList.contains('active'));
 						return;
 					}
 
@@ -30,17 +36,16 @@
 						e.stopPropagation();
 
 						const filter = item.closest('.du-filter-down');
-						if (!filter) {
-							return;
-						}
-
 						const wrapper = item.closest('.du-seach__content');
-						if (!wrapper) {
-							return;
-						}
+						const form = wrapper ? wrapper.closest('form') : null;
 
-						const form = wrapper.closest('form');
-						if (!form) {
+						console.log('CLICK ITEM');
+						console.log('LI clickeado:', item);
+						console.log('data-value:', item.getAttribute('data-value'));
+						console.log('texto:', item.textContent.trim());
+
+						if (!filter || !wrapper || !form) {
+							console.log('Faltan nodos filter/wrapper/form', { filter, wrapper, form });
 							return;
 						}
 
@@ -49,31 +54,67 @@
 						const title = filter.querySelector('.du-filter-down__title');
 						const submitButton = form.querySelector('[data-drupal-selector="edit-submit-dermau-programas"], .form-submit');
 
+						console.log('target:', target);
+						console.log('nativeSelect:', nativeSelect);
+						console.log('title:', title);
+						console.log('submitButton:', submitButton);
+
 						if (!nativeSelect || !title) {
+							console.log('No existe nativeSelect o title');
 							return;
 						}
+
+						console.log('Opciones reales del select:');
+						Array.from(nativeSelect.options).forEach(function (option, index) {
+							console.log(index, 'value=', option.value, 'text=', option.textContent.trim());
+						});
 
 						const value = item.getAttribute('data-value');
 						const text = item.textContent.trim();
 
-						const optionExists = Array.from(nativeSelect.options).some(function (option) {
+						console.log('ANTES select.value =', nativeSelect.value);
+
+						const matchingOption = Array.from(nativeSelect.options).find(function (option) {
 							return option.value == value;
 						});
 
-						if (!optionExists) {
+						console.log('matchingOption:', matchingOption);
+
+						if (!matchingOption) {
+							console.log('No existe opción real en select para value=', value);
 							return;
 						}
 
-						nativeSelect.value = value;
+						nativeSelect.value = matchingOption.value;
+						console.log('DESPUÉS set value, select.value =', nativeSelect.value);
+
 						nativeSelect.dispatchEvent(new Event('change', { bubbles: true }));
+						console.log('Se disparó change');
+
 						title.textContent = text;
-						title.setAttribute('data-value', value);
+						title.setAttribute('data-value', matchingOption.value);
 
 						filter.classList.remove('active');
 
 						if (submitButton) {
+							console.log('Click submit manual');
 							submitButton.click();
 						}
+
+						setTimeout(function () {
+							const refreshedSelect = document.querySelector('select[name="' + target + '"]');
+							console.log('500ms después del click:');
+							console.log('refreshedSelect:', refreshedSelect);
+							console.log('refreshedSelect value:', refreshedSelect ? refreshedSelect.value : 'no existe');
+						}, 500);
+
+						setTimeout(function () {
+							const refreshedSelect = document.querySelector('select[name="' + target + '"]');
+							console.log('1500ms después del click:');
+							console.log('refreshedSelect:', refreshedSelect);
+							console.log('refreshedSelect value:', refreshedSelect ? refreshedSelect.value : 'no existe');
+						}, 1500);
+
 						return;
 					}
 
@@ -84,6 +125,17 @@
 					});
 				});
 
+				body.addEventListener('change', function (e) {
+					const select = e.target.closest('select');
+					if (!select) {
+						return;
+					}
+
+					console.log('EVENTO CHANGE DETECTADO');
+					console.log('select name:', select.name);
+					console.log('select value:', select.value);
+				});
+
 				body.addEventListener('keyup', function (e) {
 					const input = e.target.closest('#program-search, .du-seach__content input[type="text"]');
 					if (!input) {
@@ -91,22 +143,25 @@
 					}
 
 					const wrapper = input.closest('.du-seach__content');
-					if (!wrapper) {
-						return;
-					}
+					const form = wrapper ? wrapper.closest('form') : null;
 
-					const form = wrapper.closest('form');
+					console.log('KEYUP SEARCH');
+					console.log('valor input:', input.value);
+
 					if (!form) {
+						console.log('No hay form en search');
 						return;
 					}
 
 					const submitButton = form.querySelector('[data-drupal-selector="edit-submit-dermau-programas"], .form-submit');
 					if (!submitButton) {
+						console.log('No hay submitButton en search');
 						return;
 					}
 
 					clearTimeout(input._duSearchTimeout);
 					input._duSearchTimeout = setTimeout(function () {
+						console.log('Click submit por search');
 						submitButton.click();
 					}, 500);
 				});
