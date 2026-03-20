@@ -120,6 +120,10 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
+.du-card__diplomat-title a {
+    text-decoration: none;
+    color: var(--du-color-text-dark);
+}
 .du-card__diplomat-description {
   font-size: 14px;
   margin-bottom: 20px;
