@@ -1,24 +1,28 @@
 {% set hay_filtros = false %}
 
-{% if exposed %}
-	{% if exposed.title['#value'] is not empty %}
-		{% set hay_filtros = true %}
-	{% endif %}
+{% set universidad = app.request.get('field_universidad_del_programa_target_id_verf') %}
+{% set tipo = app.request.get('field_tipo_de_programa_target_id') %}
+{% set title = app.request.get('title') %}
 
-	{% if exposed.field_universidad_del_programa_target_id_verf['#value'] is defined and exposed.field_universidad_del_programa_target_id_verf['#value'] != 'All' and exposed.field_universidad_del_programa_target_id_verf['#value'] is not empty %}
-		{% set hay_filtros = true %}
-	{% endif %}
+{% if title is not empty %}
+	{% set hay_filtros = true %}
+{% endif %}
 
-	{% if exposed.field_tipo_de_programa_target_id['#value'] is defined and exposed.field_tipo_de_programa_target_id['#value'] != 'All' and exposed.field_tipo_de_programa_target_id['#value'] is not empty %}
-		{% set hay_filtros = true %}
-	{% endif %}
+{% if universidad is not empty and universidad != 'All' %}
+	{% set hay_filtros = true %}
+{% endif %}
+
+{% if tipo is not empty and tipo != 'All' %}
+	{% set hay_filtros = true %}
 {% endif %}
 
 <div class="du-results-count">
 	{% if hay_filtros %}
-		<p>Mostrando
+		<p>
+			Mostrando
 			{{ view.total_rows }}
-			programas</p>
+			{{ view.total_rows == 1 ? 'programa' : 'programas' }}
+		</p>
 	{% else %}
 		<p>Programas Recomendados</p>
 	{% endif %}
