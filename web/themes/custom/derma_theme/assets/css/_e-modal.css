@@ -172,6 +172,16 @@
 .tag--webinar, .tag[data-tag="4"] {
   color: #FFBB93;
 }
+.tag--otro-1, .tag[data-tag="5"] {
+  color: #d5e4ff;
+}
+.tag--otro-2, .tag[data-tag="6"] {
+  color: #9cd3f5;
+}
+.tag--otro-3, .tag[data-tag="7"] {
+  color: #9cf5f3;
+}
+
 
 .program-name {
   font-size: 13px;
