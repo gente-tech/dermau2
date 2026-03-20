@@ -1,8 +1,9 @@
 <pre>
-  title: {{ dump(app.request.get('title')) }}
-  universidad: {{ dump(app.request.get('field_universidad_del_programa_target_id_verf')) }}
-  tipo: {{ dump(app.request.get('field_tipo_de_programa_target_id')) }}
-  query_all: {{ dump(app.request.query.all) }}
+  exposed_raw_input:
+  {{ dump(view.exposed_raw_input) }}
+
+  exposed_input:
+  {{ dump(view.exposed_input) }}
 </pre>
 
 {% set hay_filtros = false %}
