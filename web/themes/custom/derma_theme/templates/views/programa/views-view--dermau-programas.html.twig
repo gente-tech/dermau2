@@ -1,0 +1,25 @@
+<section class="du-generic-swiper du-swiper-program">
+	<div class="du-generic-swiper__container du-swiper-oferta__container">
+
+		<div class="du-generic-swiper__header">
+			{% if rows %}
+				<h3>
+					Mostrando
+					<span>{{ view.total_rows }}
+						{{ view.total_rows == 1 ? 'programa' : 'programas' }}</span>
+				</h3>
+			{% else %}
+				<h3>Resultados</h3>
+			{% endif %}
+		</div>
+
+		{% if rows %}
+			{{ rows }}
+		{% else %}
+			<div class="du-empty-results">
+				<p>Ups, no hay resultados por ahora.</p>
+			</div>
+		{% endif %}
+
+	</div>
+</section>
