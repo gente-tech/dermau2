@@ -18,6 +18,7 @@
 					{% endif %}
 				</div>
 
+				{# filtros #}
 				<div class="du-seach__filters">
 
 					<div class="du-filter-native" style="display:none;">
@@ -33,6 +34,14 @@
 					{% if form.field_universidad_del_programa_target_id_verf is defined %}
 						{% set uni_options = form.field_universidad_del_programa_target_id_verf['#options'] %}
 						{% set uni_selected = form.field_universidad_del_programa_target_id_verf['#value'] %}
+						{% set uni_label = 'Todas las universidades' %}
+
+						{% for key, label in uni_options %}
+							{% if key == uni_selected %}
+								{% set uni_label = label %}
+							{% endif %}
+						{% endfor %}
+
 						<div class="du-filter-down" data-target="field_universidad_del_programa_target_id_verf">
 							<div class="du-filter-down__header">
 								<div class="du-filter-down__icon">
@@ -41,12 +50,6 @@
 									</svg>
 								</div>
 								<div class="du-filter-down__title" id="filter-universidad" data-value="{{ uni_selected }}">
-									{% set uni_label = 'Todas las universidades' %}
-									{% for key, label in uni_options %}
-										{% if key|string == uni_selected|string %}
-											{% set uni_label = label %}
-										{% endif %}
-									{% endfor %}
 									{{ uni_label }}
 								</div>
 							</div>
@@ -62,6 +65,14 @@
 					{% if form.field_tipo_de_programa_target_id is defined %}
 						{% set tipo_options = form.field_tipo_de_programa_target_id['#options'] %}
 						{% set tipo_selected = form.field_tipo_de_programa_target_id['#value'] %}
+						{% set tipo_label = 'Todos los programas' %}
+
+						{% for key, label in tipo_options %}
+							{% if key == tipo_selected %}
+								{% set tipo_label = label %}
+							{% endif %}
+						{% endfor %}
+
 						<div class="du-filter-down" data-target="field_tipo_de_programa_target_id">
 							<div class="du-filter-down__header">
 								<div class="du-filter-down__icon">
@@ -70,12 +81,6 @@
 									</svg>
 								</div>
 								<div class="du-filter-down__title" id="filter-programa" data-value="{{ tipo_selected }}">
-									{% set tipo_label = 'Todos los programas' %}
-									{% for key, label in tipo_options %}
-										{% if key|string == tipo_selected|string %}
-											{% set tipo_label = label %}
-										{% endif %}
-									{% endfor %}
 									{{ tipo_label }}
 								</div>
 							</div>
