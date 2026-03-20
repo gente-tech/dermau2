@@ -14,7 +14,6 @@
 					input.dataset.searchBinded = 'true';
 
 					let timeout = null;
-
 					input.addEventListener('keyup', function () {
 						clearTimeout(timeout);
 						timeout = setTimeout(function () {
@@ -62,16 +61,18 @@
 							const value = this.getAttribute('data-value');
 							const text = this.textContent.trim();
 
-							title.textContent = text;
-							title.setAttribute('data-value', value);
-
-							const optionExists = Array.from(nativeSelect.options).some(function (option) {
+							const matchingOption = Array.from(nativeSelect.options).find(function (option) {
 								return option.value == value;
 							});
 
-							if (optionExists) {
-								nativeSelect.value = value;
+							if (!matchingOption) {
+								return;
 							}
+
+							nativeSelect.value = matchingOption.value;
+							title.textContent = text;
+							title.setAttribute('data-value', matchingOption.value);
+
 							filter.classList.remove('active');
 
 							if (submitButton) {
@@ -82,8 +83,8 @@
 				});
 			});
 
-			once('programasFilterClose', 'html', context).forEach(function (html) {
-				html.addEventListener('click', function (e) {
+			once('programasFilterClose', 'body', context).forEach(function (body) {
+				body.addEventListener('click', function (e) {
 					document.querySelectorAll('.du-seach__content .du-filter-down').forEach(function (filter) {
 						if (!filter.contains(e.target)) {
 							filter.classList.remove('active');
