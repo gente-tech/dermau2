@@ -6,6 +6,18 @@
 				const submitButton = form.querySelector('[data-drupal-selector="edit-submit-dermau-programas"], .form-submit');
 
 				wrapper.querySelectorAll('select').forEach(function (select) {
+					const allOption = select.querySelector('option[value="All"]');
+
+					if (allOption) {
+						if (select.name.includes('field_universidad')) {
+							allOption.textContent = 'Todas las universidades';
+						}
+
+						if (select.name.includes('field_tipo_de_programa')) {
+							allOption.textContent = 'Todos los programas';
+						}
+					}
+
 					select.addEventListener('change', function () {
 						if (submitButton) {
 							submitButton.click();

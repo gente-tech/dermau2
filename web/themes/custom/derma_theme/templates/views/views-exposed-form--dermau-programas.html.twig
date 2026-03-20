@@ -7,11 +7,15 @@
 		</div>
 
 		<div class="du-select">
-			{{ form.field_universidad_del_programa_target_id_verf }}
+			{% if form.field_universidad_del_programa_target_id_verf is defined %}
+				{% set universidad = form.field_universidad_del_programa_target_id_verf %}
+
+				{{ universidad|without('label') }}
+			{% endif %}
 		</div>
 
 		<div class="du-select">
-			{{ form.field_tipo_de_programa_target_id }}
+			{{ form.field_tipo_de_programa_target_id|without('label') }}
 		</div>
 	</div>
 
