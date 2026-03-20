@@ -48,7 +48,7 @@
     color: var(--du-color-text-dark);
 }
 .du-cost-box__price {
-    color: #00C777;
+    color: var(--du-color-secondary-dark);
 }
 
 /* Estilos para select pais */
