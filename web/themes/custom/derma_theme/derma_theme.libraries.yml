@@ -25,6 +25,8 @@ convenios:
     - core/once
 
 programas-filter:
+  css:
+    assets/css/filter_programas.css: {}
   js:
     assets/js/programas-filter.js: {}
   dependencies:
