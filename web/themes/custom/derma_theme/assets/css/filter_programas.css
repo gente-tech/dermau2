@@ -1,0 +1,16 @@
+.du-programs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 30px;
+}
+
+.du-programs-grid__item {
+  min-width: 0;
+}
+
+@media (max-width: 1023px) {
+  .du-programs-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}

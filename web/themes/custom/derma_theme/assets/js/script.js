@@ -224,7 +224,7 @@ document.querySelectorAll('.du-panel-block__trigger').forEach(trigger => {
 
 /* Dropdowns */
 document.addEventListener("DOMContentLoaded", () => {
-  const dropdowns = document.querySelectorAll(".du-filter-down");
+  const dropdowns = document.querySelectorAll(".du-filter-down:not([data-target])");
   if (!dropdowns) return;
   dropdowns.forEach(dropdown => {
     const header = dropdown.querySelector(".du-filter-down__header");
