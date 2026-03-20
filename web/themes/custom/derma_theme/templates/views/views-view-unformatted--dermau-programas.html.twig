@@ -1,43 +1,33 @@
-<pre>
-  exposed_raw_input:
-  {{ dump(view.exposed_raw_input) }}
-
-  exposed_input:
-  {{ dump(view.exposed_input) }}
-</pre>
-
 {% set hay_filtros = false %}
 
-{% set universidad = app.request.get('field_universidad_del_programa_target_id_verf') %}
-{% set tipo = app.request.get('field_tipo_de_programa_target_id') %}
-{% set title = app.request.get('title') %}
+{% set universidad = view.exposed_raw_input.field_universidad_del_programa_target_id_verf|default('') %}
+{% set tipo = view.exposed_raw_input.field_tipo_de_programa_target_id|default('') %}
+{% set title = view.exposed_raw_input.title|default('') %}
 
-{% if title is not empty %}
-	{% set hay_filtros = true %}
+{% if title|trim != '' %}
+  {% set hay_filtros = true %}
 {% endif %}
 
-{% if universidad is not empty and universidad != 'All' %}
-	{% set hay_filtros = true %}
+{% if universidad != '' and universidad != 'All' %}
+  {% set hay_filtros = true %}
 {% endif %}
 
-{% if tipo is not empty and tipo != 'All' %}
-	{% set hay_filtros = true %}
+{% if tipo != '' and tipo != 'All' %}
+  {% set hay_filtros = true %}
 {% endif %}
 
 <div class="du-results-count">
-	{% if hay_filtros %}
-		<p>
-			Mostrando
-			{{ view.total_rows }}
-			{{ view.total_rows == 1 ? 'programa' : 'programas' }}
-		</p>
-	{% else %}
-		<p>Programas Recomendados</p>
-	{% endif %}
+  {% if hay_filtros %}
+    <p>
+      Mostrando {{ view.total_rows }} {{ view.total_rows == 1 ? 'programa' : 'programas' }}
+    </p>
+  {% else %}
+    <p>Programas Recomendados</p>
+  {% endif %}
 </div>
 
 <div class="du-programas__grid">
-	{% for row in rows %}
-		{{ row.content }}
-	{% endfor %}
+  {% for row in rows %}
+    {{ row.content }}
+  {% endfor %}
 </div>
