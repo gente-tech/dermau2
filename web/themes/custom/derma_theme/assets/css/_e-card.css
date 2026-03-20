@@ -162,7 +162,22 @@
 }
 .du-card__diplomat-btn:hover {
   background: var(--du-color-primary);
+  border-color: var(--du-color-primary);
 }
+
+.du-card__diplomat.destacar .du-card__diplomat-content {
+    background: #EBF6FF;
+}
+
+.du-card__diplomat.destacar .du-card__diplomat-btn{
+	background: var(--du-color-primary);
+	border-color: var(--du-color-primary);
+}
+.du-card__diplomat.destacar .du-card__diplomat-btn:hover{
+  border-color: var(--du-color-secondary-dark);
+}
+
+
 .du-oferta__footer-btn {
   background-color: var(--du-color-secondary-dark);
   color: white;
