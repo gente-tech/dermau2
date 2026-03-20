@@ -134,7 +134,7 @@ class ProgramaInteresadoForm extends FormBase
 			'#title' => $this->t('Ciudad'),
 			'#title_display' => 'invisible',
 			'#options' => $this->getCiudades(),
-			'#empty_option' => $this->t('Seleccione tu ciudad'),
+			'#empty_option' => $this->t('Selecciona tu ciudad'),
 			'#empty_value' => '',
 			'#required' => TRUE,
 			'#attributes' => [
@@ -148,7 +148,7 @@ class ProgramaInteresadoForm extends FormBase
 			'#title' => $this->t('Profesión'),
 			'#title_display' => 'invisible',
 			'#options' => $this->getProfesiones(),
-			'#empty_option' => $this->t('Seleccione tu profesión'),
+			'#empty_option' => $this->t('Selecciona tu profesión'),
 			'#empty_value' => '',
 			'#required' => TRUE,
 			'#attributes' => [
@@ -171,7 +171,7 @@ class ProgramaInteresadoForm extends FormBase
 
 		$form['autorizacion'] = [
 			'#type' => 'checkbox',
-			'#title' => $this->t('Autorizo a eClass a enviarme información vía email'),
+			'#title' => $this->t('Autorizo a DermaU a enviarme información vía email'),
 			'#required' => TRUE,
 			'#attributes' => [
 				'class' => ['du-form-checkbox'],
