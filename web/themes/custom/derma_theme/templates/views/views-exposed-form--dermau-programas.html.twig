@@ -30,6 +30,8 @@
 							{{ form.field_tipo_de_programa_target_id }}
 						{% endif %}
 					</div>
+					<pre>{{ dump(form.field_universidad_del_programa_target_id_verf['#options']) }}</pre>
+					<pre>{{ dump(form.field_tipo_de_programa_target_id['#options']) }}</pre>
 
 					{% if form.field_universidad_del_programa_target_id_verf is defined %}
 						{% set universidad_options = form.field_universidad_del_programa_target_id_verf['#options']|default([]) %}
