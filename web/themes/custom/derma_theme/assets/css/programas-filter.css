@@ -1,34 +1,27 @@
 .du-seach__content,
 .du-filters,
-.du-seach__filters {
-	position: relative;
-	overflow: visible !important;
-	z-index: 20;
-}
-
+.du-seach__filters,
 .du-filter-down {
-	position: relative;
-	overflow: visible !important;
-	z-index: 30;
+  position: relative;
+  overflow: visible !important;
 }
 
 .du-filter-down__header {
-	position: relative;
-	z-index: 31;
-	cursor: pointer;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
 }
 
 .du-filter-down__options {
-	position: absolute;
-	top: calc(100% + 8px);
-	left: 0;
-	width: 100%;
-	z-index: 9999;
-	display: none;
-	background: #fff;
-	pointer-events: auto;
+  display: none !important;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  background: #fff;
 }
 
 .du-filter-down.active .du-filter-down__options {
-	display: block;
+  display: block !important;
 }
