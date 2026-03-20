@@ -169,10 +169,17 @@
 
     <div class="du-cost-box">
       <h2 class="du-cost-box__title">Inversión</h2>
-      <div class="du-cost-box__content">
-        <p class="du-cost-box__subtitle">Precio Regular</p>
-        <p class="du-cost-box__price">{{ node.field_inversion_precio_regular.value }}</p>
-      </div>
+      {% if node.field_listado_de_precios is not empty and node.field_listado_de_precios|length > 0 %}
+        {% for precios_programa in node.field_listado_de_precios %}
+          {% set precio_entidad = precios_programa.entity %}
+          <div class="du-cost-box__content">
+            <p class="du-cost-box__subtitle">{{ precio_entidad.field_categoria_del_precio.value }}</p>
+            <p class="du-cost-box__price">{{ precio_entidad.field_precio.value }}</p>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p>Aún no hay precios registrados para este programa.</p>
+      {% endif %}
     </div>
   </div>
 </section>
