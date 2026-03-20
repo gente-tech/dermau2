@@ -5,7 +5,17 @@
 		<div class="du-seach__content">
 			<form{{attributes}}>
 				<div class="du-seach__input">
-					{{ form.title.children.value.setAttribute('placeholder', 'Buscar programa...').setAttribute('id', 'program-search') }}
+					{% if form.title.children.value is defined %}
+						{{ form.title.children.value
+              .setAttribute('placeholder', 'Buscar programa...')
+              .setAttribute('id', 'program-search') }}
+					{% elseif form.title.widget[0] is defined %}
+						{{ form.title.widget[0]
+              .setAttribute('placeholder', 'Buscar programa...')
+              .setAttribute('id', 'program-search') }}
+					{% else %}
+						{{ form.title }}
+					{% endif %}
 				</div>
 				<div class="du-filters">
 					<div class="du-search"></div>
