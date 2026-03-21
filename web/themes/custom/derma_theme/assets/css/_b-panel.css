@@ -92,6 +92,7 @@
 
 .du-panel-block__header h2 span, .du-panel-block__header h3 span{ 
     color: var(--du-color-primary);
+    font-weight: 600;
 }
 
 /* --- CONTENIDO EXPANDIBLE --- */
