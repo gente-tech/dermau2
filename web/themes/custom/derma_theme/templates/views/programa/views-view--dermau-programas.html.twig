@@ -28,10 +28,11 @@
 		{{ empty }}
 	{% endif %}
 
-	<pre>
-		pager:
-		{{ dump(pager) }}
-	</pre>
+	{% if pager %}
+		<div class="du-pagination">
+			{{ pager }}
+		</div>
+	{% endif %}
 
 	{% if attachment_after %}
 		{{ attachment_after }}
