@@ -3,48 +3,49 @@
     dom_id ? 'js-view-dom-id-' ~ dom_id,
   ]
 %}
-<div{{ attributes.addClass(classes) }}>
-  {{ title_prefix }}
-  {% if title %}
-    {{ title }}
-  {% endif %}
-  {{ title_suffix }}
+<div{{attributes.addClass(classes)}}>
+	{{ title_prefix }}
+	{% if title %}
+		{{ title }}
+	{% endif %}
+	{{ title_suffix }}
 
-  {% if header %}
-    {{ header }}
-  {% endif %}
+	{% if header %}
+		{{ header }}
+	{% endif %}
 
-  {% if exposed %}
-    {{ exposed }}
-  {% endif %}
+	{% if exposed %}
+		{{ exposed }}
+	{% endif %}
 
-  {% if attachment_before %}
-    {{ attachment_before }}
-  {% endif %}
+	{% if attachment_before %}
+		{{ attachment_before }}
+	{% endif %}
 
-  {% if rows %}
-    {{ rows }}
-  {% elseif empty %}
-    {{ empty }}
-  {% endif %}
+	{% if rows %}
+		{{ rows }}
+	{% elseif empty %}
+		{{ empty }}
+	{% endif %}
 
-  {% if pager %}
-    {{ pager }}
-  {% endif %}
+	<pre>
+		pager:
+		{{ dump(pager) }}
+	</pre>
 
-  {% if attachment_after %}
-    {{ attachment_after }}
-  {% endif %}
+	{% if attachment_after %}
+		{{ attachment_after }}
+	{% endif %}
 
-  {% if more %}
-    {{ more }}
-  {% endif %}
+	{% if more %}
+		{{ more }}
+	{% endif %}
 
-  {% if footer %}
-    {{ footer }}
-  {% endif %}
+	{% if footer %}
+		{{ footer }}
+	{% endif %}
 
-  {% if feed_icons %}
-    {{ feed_icons }}
-  {% endif %}
+	{% if feed_icons %}
+		{{ feed_icons }}
+	{% endif %}
 </div>
