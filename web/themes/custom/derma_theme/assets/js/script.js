@@ -116,6 +116,22 @@ const duSwiperOferta = new Swiper(".du-swiper-oferta .swiper", {
   },
 });
 
+/*
+|--------------------------------------------------------------------------
+| Comentado por relación directa con los twig adjuntos de programas:
+| - views-view-unformatted--dermau-programas.html.twig
+| - views-view-fields--dermau-programas.html.twig
+|
+| Clases / ids relacionadas:
+| - .du-swiper-program
+| - #programa-diplomat-swiper
+| - .swiper-button-next
+| - .swiper-button-prev
+| - .swiper-pagination
+| - .swiper-slide
+| - .du-programs-grid
+| - #card__diplomat
+|--------------------------------------------------------------------------
 window.initDuSwiperProgram = function () {
   const swiperElement = document.querySelector('.du-swiper-program .swiper');
 
@@ -156,7 +172,7 @@ window.initDuSwiperProgram = function () {
 }
 
 window.initDuSwiperProgram();
-
+*/
 
 
 /* FAQ Interacciones */
@@ -222,7 +238,20 @@ document.querySelectorAll('.du-panel-block__trigger').forEach(trigger => {
   });
 });
 
-/* Dropdowns */
+/*
+|--------------------------------------------------------------------------
+| Comentado por relación directa con el twig adjunto del exposed form:
+| - views-exposed-form--dermau-programas.html.twig
+|
+| Clases / ids / atributos relacionados:
+| - .du-filter-down
+| - .du-filter-down__header
+| - .du-filter-down__options
+| - .du-filter-down__title
+| - [data-target]
+| - #filter-universidad
+| - #filter-programa
+|--------------------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
   const dropdowns = document.querySelectorAll(".du-filter-down:not([data-target])");
   if (!dropdowns) return;
@@ -252,6 +281,7 @@ document.addEventListener("DOMContentLoaded", () => {
     dropdowns.forEach(dropdown => dropdown.classList.remove("open"));
   });
 });
+*/
 
 
 /*  Selector de País */
