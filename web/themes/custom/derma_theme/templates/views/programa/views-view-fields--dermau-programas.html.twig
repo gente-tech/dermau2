@@ -21,7 +21,7 @@
 
 
 {# cards #}
-<div class="{{ hay_filtros ? 'du-programs-grid__item' : 'swiper-slide' }}">
+<div class="{{ hay_filtros ? 'du-programs-grid__item' : 'du-programs-item' }}">
 	{% if row._entity.field_destacado.value == 1 %}
 		<article class="du-card__diplomat destacar">
 		{% else %}
@@ -84,5 +84,5 @@
 				{% endif %}
 			</div>
 		</article>
-	</div>
-	{# fin cards #}
+</div>
+{# fin cards #}
