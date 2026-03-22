@@ -1,6 +1,9 @@
 .du-agreements {
   background: var(--du-color-gray-02);
 }
+.du-agreements[data-variation="bottom"] {
+  padding-bottom: 90px;
+}
 
 .du-agreements__container {
   padding-top: 20px;
@@ -70,6 +73,9 @@
 @media (max-width: 768px) {
   .du-agreements {
     padding-bottom: 20px;
+  }
+  .du-agreements[data-variation="bottom"] {
+    padding-bottom: 90px;
   }
   .du-agreements__header {
     text-align: center;
