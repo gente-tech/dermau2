@@ -227,7 +227,7 @@ class ContactoRegistroForm extends FormBase {
 
     $form['autorizacion'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Autorizo a eClass a enviarme información vía email'),
+      '#title' => $this->t('Autorizo a DermaU a enviarme información vía email'),
       '#attributes' => [
         'class' => ['du-form-checkbox'],
         'id' => 'du-reg-consent'
