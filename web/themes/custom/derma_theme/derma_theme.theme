@@ -17,9 +17,6 @@ function derma_theme_preprocess_node(&$variables) {
     return;
   }
 
-  // Clonar estructura
-  $items = [];
-
   foreach ($node->get('field_docentes')->referencedEntities() as $docente) {
 
     $query = \Drupal::entityQuery('node')
@@ -32,7 +29,7 @@ function derma_theme_preprocess_node(&$variables) {
 
     $programas = [];
 
-    if ($nids) {
+    if (!empty($nids)) {
       $nodes = Node::loadMultiple($nids);
 
       foreach ($nodes as $programa) {
@@ -42,17 +39,9 @@ function derma_theme_preprocess_node(&$variables) {
       }
     }
 
-    // CLON docente para no tocar entity original
-    $clone = clone $docente;
-    $clone->field_programas_vinculados = $programas;
-
-    $items[] = (object)[
-      'entity' => $clone
-    ];
+    // ⚠️ NO usar field_
+    $docente->programas_vinculados = $programas;
   }
-
-  // Sobrescribir lo que Twig recorre
-  $variables['node']->field_docentes = $items;
 }
 
 function derma_theme_preprocess_views_view(array &$variables)
