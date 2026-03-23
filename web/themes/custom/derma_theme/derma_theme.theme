@@ -33,14 +33,17 @@ function derma_theme_preprocess_node(&$variables) {
       $nodes = Node::loadMultiple($nids);
 
       foreach ($nodes as $programa) {
-        $programas[] = (object)[
-          'entity' => $programa
+        $programas[] = (object) [
+          'entity' => $programa,
         ];
       }
     }
 
-    // ⚠️ NO usar field_
+    // para cards
     $docente->programas_vinculados = $programas;
+
+    // para modal (twig existente)
+    $docente->field_programas_vinculados = $programas;
   }
 }
 
