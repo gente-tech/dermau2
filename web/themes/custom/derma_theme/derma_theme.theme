@@ -2,24 +2,27 @@
 
 use Drupal\node\Entity\Node;
 
-/**
- * Implements hook_preprocess_node().
- */
 function derma_theme_preprocess_node(&$variables) {
 
   if ($variables['node']->bundle() !== 'programa') {
     return;
   }
 
-  $node = $variables['node'];
-
-  if (!$node->hasField('field_docentes') || $node->get('field_docentes')->isEmpty()) {
+  if (empty($variables['content']['field_docentes']['#items'])) {
     return;
   }
 
-  $docentes = [];
+  foreach ($variables['content']['field_docentes'] as $delta => &$item) {
 
-  foreach ($node->get('field_docentes')->referencedEntities() as $docente) {
+    if (!is_numeric($delta)) {
+      continue;
+    }
+
+    if (empty($item['#node'])) {
+      continue;
+    }
+
+    $docente = $item['#node'];
 
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'programa')
@@ -31,7 +34,7 @@ function derma_theme_preprocess_node(&$variables) {
 
     $programas = [];
 
-    if (!empty($nids)) {
+    if ($nids) {
       $nodes = Node::loadMultiple($nids);
 
       foreach ($nodes as $programa) {
@@ -41,16 +44,10 @@ function derma_theme_preprocess_node(&$variables) {
       }
     }
 
-    // clonar docente para no romper render arrays
-    $docente_clone = clone $docente;
-    $docente_clone->programas_vinculados = $programas;
-    $docente_clone->field_programas_vinculados = $programas;
-
-    $docentes[] = $docente_clone;
+    // esto es lo que tu twig espera
+    $item['#node']->programas_vinculados = $programas;
+    $item['#node']->field_programas_vinculados = $programas;
   }
-
-  // sobrescribimos docentes para twig
-  $variables['node']->field_docentes_entities = $docentes;
 }
 
 function derma_theme_preprocess_field(&$variables) {
