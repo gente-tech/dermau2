@@ -1,46 +1,49 @@
 <?php
 
-use Drupal\node\Entity\Node;
+uuse Drupal\node\Entity\Node;
 
-function derma_theme_preprocess_node(&$variables)
-{
+function derma_theme_preprocess_node(&$variables) {
+
+  if (empty($variables['node'])) {
+    return;
+  }
+
   $node = $variables['node'];
 
-  if ($node->bundle() === 'programa') {
+  if ($node->bundle() !== 'programa') {
+    return;
+  }
 
-    $docentes = $node->get('field_docentes')->referencedEntities();
+  if (!$node->hasField('field_docentes') || $node->get('field_docentes')->isEmpty()) {
+    return;
+  }
 
-    if (!empty($docentes)) {
+  foreach ($node->get('field_docentes')->referencedEntities() as $docente) {
 
-      foreach ($docentes as $docente) {
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'programa')
+      ->condition('status', 1)
+      ->condition('field_docentes.target_id', $docente->id())
+      ->accessCheck(TRUE);
 
-        $query = \Drupal::entityQuery('node')
-          ->condition('type', 'programa')
-          ->condition('field_docentes.target_id', $docente->id())
-          ->accessCheck(TRUE);
+    $nids = $query->execute();
 
-        $nids = $query->execute();
+    $items = [];
 
-        if ($nids) {
+    if ($nids) {
+      $programas = Node::loadMultiple($nids);
 
-          $programas = \Drupal::entityTypeManager()
-            ->getStorage('node')
-            ->loadMultiple($nids);
+      foreach ($programas as $programa) {
 
-          // Crear estructura que twig espera
-          $items = [];
+        $item = new \stdClass();
+        $item->entity = $programa;
 
-          foreach ($programas as $programa) {
-            $items[] = (object) [
-              'entity' => $programa
-            ];
-          }
-
-          // inyectar propiedad dinámica
-          $docente->field_programas_vinculados = $items;
-        }
+        $items[] = $item;
       }
     }
+
+    // IMPORTANT: usar propiedad dinámica como objeto
+    $docente->field_programas_vinculados = $items;
   }
 }
 
