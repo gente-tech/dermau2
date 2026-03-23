@@ -1,24 +1,59 @@
 <?php
 
+use Drupal\node\Entity\Node;
+
 function derma_theme_preprocess_node(&$variables)
 {
+  if (empty($variables['node'])) {
+    return;
+  }
+
   $node = $variables['node'];
 
-  if ($node->bundle() === 'programa') {
-    $query = \Drupal::entityQuery('node')
-      ->condition('type', 'docente')
-      ->accessCheck(TRUE);
-
-    $nids = $query->execute();
-
-    if ($nids) {
-      $docentes = \Drupal::entityTypeManager()
-        ->getStorage('node')
-        ->loadMultiple($nids);
-
-      $variables['docentes_programa'] = $docentes;
-    }
+  if ($node->bundle() !== 'programa') {
+    return;
   }
+
+  if (!$node->hasField('field_docentes') || $node->get('field_docentes')->isEmpty()) {
+    $variables['docentes_programa'] = [];
+    return;
+  }
+
+  $docentes_output = [];
+
+  foreach ($node->get('field_docentes')->referencedEntities() as $docente) {
+
+    // Buscar programas donde este docente esté referenciado
+    $programas_ids = \Drupal::entityQuery('node')
+      ->accessCheck(TRUE)
+      ->condition('type', 'programa')
+      ->condition('status', 1)
+      ->condition('field_docentes.target_id', $docente->id())
+      ->execute();
+
+    $programas = [];
+
+    if ($programas_ids) {
+      $programas_nodes = Node::loadMultiple($programas_ids);
+
+      foreach ($programas_nodes as $programa) {
+        $programas[] = [
+          'title' => $programa->label(),
+          'url' => $programa->toUrl()->toString(),
+          'nid' => $programa->id(),
+        ];
+      }
+    }
+
+    $docentes_output[] = [
+      'title' => $docente->label(),
+      'url' => $docente->toUrl()->toString(),
+      'entity' => $docente,
+      'programas' => $programas,
+    ];
+  }
+
+  $variables['docentes_programa'] = $docentes_output;
 }
 
 function derma_theme_preprocess_views_view(array &$variables)
