@@ -1,9 +1,17 @@
 {% for row in rows %}
-  {% set docente = row.content['#row']._entity %}
-  {% set programa = row.content['#view'].style_plugin.getField(loop.index0 - 1, 'title_1') %}
+	{% set docente = row.content['#row']._entity %}
+	{% set programas = docente.field_docentes %}
 
-  <div>
-    <h3>{{ docente.label }}</h3>
-    <div>Programa: {{ programa }}</div>
-  </div>
+	<div class="docente-item">
+		<h3>{{ docente.label }}</h3>
+
+		<div>
+			<strong>Programas:</strong>
+			{% for programa in programas %}
+				{{ programa.entity.label }}
+				{% if not loop.last %},
+				{% endif %}
+			{% endfor %}
+		</div>
+	</div>
 {% endfor %}
