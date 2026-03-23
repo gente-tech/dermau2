@@ -4,21 +4,17 @@ use Drupal\node\Entity\Node;
 
 function derma_theme_preprocess_node(&$variables) {
 
-  if (empty($variables['node'])) {
+  if ($variables['node']->bundle() !== 'programa') {
     return;
   }
 
-  $node = $variables['node'];
-
-  if ($node->bundle() !== 'programa') {
+  if (empty($variables['content']['field_docentes'])) {
     return;
   }
 
-  if (!$node->hasField('field_docentes') || $node->get('field_docentes')->isEmpty()) {
-    return;
-  }
+  foreach ($variables['content']['field_docentes']['#items'] as $delta => $item) {
 
-  foreach ($node->get('field_docentes')->referencedEntities() as $docente) {
+    $docente = $item->entity;
 
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'programa')
@@ -28,22 +24,20 @@ function derma_theme_preprocess_node(&$variables) {
 
     $nids = $query->execute();
 
-    $items = [];
+    $programas = [];
 
     if ($nids) {
-      $programas = Node::loadMultiple($nids);
+      $nodes = Node::loadMultiple($nids);
 
-      foreach ($programas as $programa) {
-
-        $item = new \stdClass();
-        $item->entity = $programa;
-
-        $items[] = $item;
+      foreach ($nodes as $node) {
+        $programas[] = [
+          'entity' => $node
+        ];
       }
     }
 
-    // IMPORTANT: usar propiedad dinámica como objeto
-    $docente->field_programas_vinculados = $items;
+    // aquí está la clave
+    $variables['content']['field_docentes'][$delta]['#docente_programas'] = $programas;
   }
 }
 
