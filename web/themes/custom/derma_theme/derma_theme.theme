@@ -1,6 +1,6 @@
 <?php
 
-uuse Drupal\node\Entity\Node;
+use Drupal\node\Entity\Node;
 
 function derma_theme_preprocess_node(&$variables) {
 
