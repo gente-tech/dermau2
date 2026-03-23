@@ -7,21 +7,20 @@ use Drupal\node\Entity\Node;
  */
 function derma_theme_preprocess_node(&$variables) {
 
-  if (empty($variables['node']) || $variables['node']->bundle() !== 'programa') {
+  if ($variables['node']->bundle() !== 'programa') {
     return;
   }
 
-  if (empty($variables['node']->field_docentes)) {
+  $node = $variables['node'];
+
+  if (!$node->hasField('field_docentes') || $node->get('field_docentes')->isEmpty()) {
     return;
   }
 
-  foreach ($variables['node']->field_docentes as $delta => $item) {
+  // Clonar estructura
+  $items = [];
 
-    if (empty($item->entity)) {
-      continue;
-    }
-
-    $docente = $item->entity;
+  foreach ($node->get('field_docentes')->referencedEntities() as $docente) {
 
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'programa')
@@ -33,19 +32,27 @@ function derma_theme_preprocess_node(&$variables) {
 
     $programas = [];
 
-    if (!empty($nids)) {
+    if ($nids) {
       $nodes = Node::loadMultiple($nids);
 
       foreach ($nodes as $programa) {
-        $programas[] = (object) [
+        $programas[] = (object)[
           'entity' => $programa
         ];
       }
     }
 
-    // Esto sí llega a Twig
-    $variables['node']->field_docentes[$delta]->entity->field_programas_vinculados = $programas;
+    // CLON docente para no tocar entity original
+    $clone = clone $docente;
+    $clone->field_programas_vinculados = $programas;
+
+    $items[] = (object)[
+      'entity' => $clone
+    ];
   }
+
+  // Sobrescribir lo que Twig recorre
+  $variables['node']->field_docentes = $items;
 }
 
 function derma_theme_preprocess_views_view(array &$variables)
