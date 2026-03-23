@@ -7,7 +7,6 @@ function derma_theme_preprocess_node(&$variables)
   if ($node->bundle() === 'programa') {
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'docente')
-      ->condition('field_programas_vinculados.target_id', $node->id())
       ->accessCheck(TRUE);
 
     $nids = $query->execute();
