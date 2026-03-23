@@ -57,3 +57,46 @@ function derma_theme_preprocess_views_view(array &$variables)
     unset($variables['header']);
   }
 }
+
+function derma_theme_preprocess_views_view_unformatted(array &$variables) {
+  $view = $variables['view'];
+
+  if ($view->id() === 'dermau_docentes' && $view->current_display === 'page_1') {
+    foreach ($variables['rows'] as $index => &$row) {
+      $result_row = $row['content']['#row'] ?? NULL;
+
+      if (!$result_row || empty($result_row->_entity)) {
+        continue;
+      }
+
+      $docente = $result_row->_entity;
+      $programas = [];
+
+      $query = \Drupal::entityTypeManager()
+        ->getStorage('node')
+        ->getQuery()
+        ->accessCheck(TRUE)
+        ->condition('type', 'programa')
+        ->condition('status', 1)
+        ->condition('field_docentes.target_id', $docente->id())
+        ->sort('created', 'DESC');
+
+      $nids = $query->execute();
+
+      if (!empty($nids)) {
+        $nodes = \Drupal\node\Entity\Node::loadMultiple($nids);
+
+        foreach ($nodes as $node) {
+          $programas[] = [
+            'nid' => $node->id(),
+            'title' => $node->label(),
+            'url' => $node->toUrl()->toString(),
+          ];
+        }
+      }
+
+      $row['docente_entity'] = $docente;
+      $row['programas_relacionados'] = $programas;
+    }
+  }
+}

@@ -1,3 +1,21 @@
 {% for row in rows %}
-  <pre>{{ dump(row.content['#view'].style_plugin.rendered_fields[loop.index0]) }}</pre>
+	{% set docente = row.docente_entity %}
+	{% set programas = row.programas_relacionados %}
+
+	<div class="docente-item">
+		<h3>{{ docente.label }}</h3>
+
+		<div>
+			<strong>Programas:</strong>
+			{% if programas %}
+				{% for programa in programas %}
+					<a href="{{ programa.url }}">{{ programa.title }}</a>
+					{% if not loop.last %},
+					{% endif %}
+				{% endfor %}
+			{% else %}
+				Sin programas
+			{% endif %}
+		</div>
+	</div>
 {% endfor %}
