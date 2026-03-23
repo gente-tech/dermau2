@@ -29,5 +29,15 @@
       </div>
     {% endif %}
 
+	{% if not docente.field_perfil_profesional.isEmpty %}
+      <div class="du-docente-card__perfil">
+        {{ docente.field_perfil_profesional.value }}
+      </div>
+    {% endif %}
+
+    <div class="du-docente-card__link">
+      <a href="{{ docente.toUrl().toString() }}">Ver detalle</a>
+    </div>
+
   </div>
 {% endfor %}
