@@ -134,7 +134,7 @@ function derma_theme_preprocess_views_view_unformatted(array &$variables) {
 
       $row['docente_entity'] = $docente;
       $row['programas_relacionados'] = $programas;
-      $row->docente_url = $docente->toUrl()->toString();
+      $row['docente_url'] = $docente->toUrl()->toString();
     }
   }
 }
