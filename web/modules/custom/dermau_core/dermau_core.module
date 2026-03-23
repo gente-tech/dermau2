@@ -178,67 +178,100 @@ function dermau_core_preprocess_node(&$variables)
     : [];
 }
 
-function dermau_core_views_query_alter(&$view, &$query) {
-  // if ($view->id() !== 'dermau_docentes' || $view->current_display !== 'page_1') {
-  //   return;
-  // }
+// function dermau_core_views_query_alter(&$view, &$query) {
+//   // if ($view->id() !== 'dermau_docentes' || $view->current_display !== 'page_1') {
+//   //   return;
+//   // }
 
-  // $tipo_programa = \Drupal::request()->query->get('tipo_programa_docente');
+//   // $tipo_programa = \Drupal::request()->query->get('tipo_programa_docente');
 
-  // if (empty($tipo_programa) || $tipo_programa === 'All') {
-  //   return;
-  // }
+//   // if (empty($tipo_programa) || $tipo_programa === 'All') {
+//   //   return;
+//   // }
 
-  // $connection = \Drupal::database();
+//   // $connection = \Drupal::database();
 
-  // $subquery = $connection->select('node_field_data', 'p');
-  // $subquery->innerJoin('node__field_docentes', 'fd', 'fd.entity_id = p.nid');
-  // $subquery->innerJoin('node__field_tipo_de_programa', 'ftp', 'ftp.entity_id = p.nid');
+//   // $subquery = $connection->select('node_field_data', 'p');
+//   // $subquery->innerJoin('node__field_docentes', 'fd', 'fd.entity_id = p.nid');
+//   // $subquery->innerJoin('node__field_tipo_de_programa', 'ftp', 'ftp.entity_id = p.nid');
 
-  // $subquery->addField('fd', 'field_docentes_target_id');
-  // $subquery->condition('p.type', 'programa');
-  // $subquery->condition('p.status', 1);
-  // $subquery->condition('ftp.field_tipo_de_programa_target_id', (int) $tipo_programa, '=');
-  // $subquery->distinct();
+//   // $subquery->addField('fd', 'field_docentes_target_id');
+//   // $subquery->condition('p.type', 'programa');
+//   // $subquery->condition('p.status', 1);
+//   // $subquery->condition('ftp.field_tipo_de_programa_target_id', (int) $tipo_programa, '=');
+//   // $subquery->distinct();
 
-  // $docente_ids = $subquery->execute()->fetchCol();
+//   // $docente_ids = $subquery->execute()->fetchCol();
 
-  // if (empty($docente_ids)) {
-  //   $docente_ids = [0];
-  // }
+//   // if (empty($docente_ids)) {
+//   //   $docente_ids = [0];
+//   // }
 
-  // $query->addWhere(0, 'node_field_data.nid', $docente_ids, 'IN');
+//   // $query->addWhere(0, 'node_field_data.nid', $docente_ids, 'IN');
   
 
-  // dump_1
-  // if ($view->id() !== 'dermau_docentes' || $view->current_display !== 'page_1') {
-  //   return;
-  // }
+//   // dump_1
+//   // if ($view->id() !== 'dermau_docentes' || $view->current_display !== 'page_1') {
+//   //   return;
+//   // }
 
-  // $tipo_programa = \Drupal::request()->query->get('tipo_programa_docente');
+//   // $tipo_programa = \Drupal::request()->query->get('tipo_programa_docente');
 
-  // \Drupal::logger('dermau_docentes_debug')->notice(
-  //   'HOOK ejecutado. View: @view | Display: @display | tipo_programa_docente: <pre>@tipo</pre>',
-  //   [
-  //     '@view' => $view->id(),
-  //     '@display' => $view->current_display,
-  //     '@tipo' => print_r($tipo_programa, TRUE),
-  //   ]
-  // );
+//   // \Drupal::logger('dermau_docentes_debug')->notice(
+//   //   'HOOK ejecutado. View: @view | Display: @display | tipo_programa_docente: <pre>@tipo</pre>',
+//   //   [
+//   //     '@view' => $view->id(),
+//   //     '@display' => $view->current_display,
+//   //     '@tipo' => print_r($tipo_programa, TRUE),
+//   //   ]
+//   // );
 
 
-  // dump_2
+//   // dump_2
+//   if ($view->id() !== 'dermau_docentes' || $view->current_display !== 'page_1') {
+//     return;
+//   }
+
+//   $tipo_programa = \Drupal::request()->query->get('tipo_programa_docente');
+
+//   dump([
+//     'HOOK_OK' => TRUE,
+//     'view_id' => $view->id(),
+//     'display' => $view->current_display,
+//     'tipo_programa_docente' => $tipo_programa,
+//     'query_params' => \Drupal::request()->query->all(),
+//   ]);
+// }
+
+function dermau_core_views_query_alter(\Drupal\views\ViewExecutable $view, \Drupal\views\Plugin\views\query\QueryPluginBase $query) {
+
   if ($view->id() !== 'dermau_docentes' || $view->current_display !== 'page_1') {
     return;
   }
 
   $tipo_programa = \Drupal::request()->query->get('tipo_programa_docente');
 
-  dump([
-    'HOOK_OK' => TRUE,
-    'view_id' => $view->id(),
-    'display' => $view->current_display,
-    'tipo_programa_docente' => $tipo_programa,
-    'query_params' => \Drupal::request()->query->all(),
-  ]);
+  if (empty($tipo_programa) || $tipo_programa === 'All') {
+    return;
+  }
+
+  $connection = \Drupal::database();
+
+  $subquery = $connection->select('node_field_data', 'p');
+  $subquery->innerJoin('node__field_docentes', 'fd', 'fd.entity_id = p.nid');
+  $subquery->innerJoin('node__field_tipo_de_programa', 'ftp', 'ftp.entity_id = p.nid');
+
+  $subquery->addField('fd', 'field_docentes_target_id');
+  $subquery->condition('p.type', 'programa');
+  $subquery->condition('p.status', 1);
+  $subquery->condition('ftp.field_tipo_de_programa_target_id', (int) $tipo_programa, '=');
+  $subquery->distinct();
+
+  $docente_ids = $subquery->execute()->fetchCol();
+
+  if (empty($docente_ids)) {
+    $docente_ids = [0];
+  }
+
+  $query->addWhere(0, 'node_field_data.nid', $docente_ids, 'IN');
 }
