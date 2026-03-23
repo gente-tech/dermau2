@@ -1,3 +1,9 @@
 {% for row in rows %}
-  <pre>{{ dump(row.content['#view'].field|keys) }}</pre>
+  {% set docente = row.content['#row']._entity %}
+  {% set programa = row.content['#view'].style_plugin.getField(loop.index0 - 1, 'title_1') %}
+
+  <div>
+    <h3>{{ docente.label }}</h3>
+    <div>Programa: {{ programa }}</div>
+  </div>
 {% endfor %}
