@@ -8,6 +8,12 @@
       {{ docente.label }}
     </h3>
 
+	{% if not docente.field_especialidad.isEmpty %}
+		<div class="du-docente-card__especialidad">
+			{{ docente.field_especialidad.entity.label }}
+		</div>	
+	{% endif %}
+
     {% if programas %}
       <div class="du-docente-card__programas">
         {% for programa in programas %}
