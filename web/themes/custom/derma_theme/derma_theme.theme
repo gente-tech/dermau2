@@ -122,28 +122,29 @@ function derma_theme_preprocess_views_view_unformatted(array &$variables) {
         $nodes = \Drupal\node\Entity\Node::loadMultiple($nids);
 
         foreach ($nodes as $node) {
-        $tipo_programa = NULL;
-        $tipo_programa_nombre = '';
-        $tipo_programa_color = '';
+          $tipo_programa = NULL;
+          $tipo_programa_nombre = '';
+          $tipo_programa_color = '';
 
-        if (!$node->get('field_tipo_de_programa')->isEmpty()) {
-          $tipo_programa = $node->get('field_tipo_de_programa')->entity;
+          if (!$node->get('field_tipo_de_programa')->isEmpty()) {
+            $tipo_programa = $node->get('field_tipo_de_programa')->entity;
 
-          if ($tipo_programa) {
-            $tipo_programa_nombre = $tipo_programa->label();
+            if ($tipo_programa) {
+              $tipo_programa_nombre = $tipo_programa->label();
 
-            if ($tipo_programa->hasField('field_id_color') && !$tipo_programa->get('field_id_color')->isEmpty()) {
-              $tipo_programa_color = $tipo_programa->get('field_id_color')->value;
+              if ($tipo_programa->hasField('field_id_color') && !$tipo_programa->get('field_id_color')->isEmpty()) {
+                $tipo_programa_color = $tipo_programa->get('field_id_color')->value;
+              }
             }
           }
+          $programas[] = [
+            'nid' => $node->id(),
+            'title' => $node->label(),
+            'url' => $node->toUrl()->toString(),
+            'tipo_programa' => $tipo_programa_nombre,
+            'tipo_programa_color' => $tipo_programa_color,
+          ];
         }
-        $programas[] = [
-          'nid' => $node->id(),
-          'title' => $node->label(),
-          'url' => $node->toUrl()->toString(),
-          'tipo_programa' => $tipo_programa_nombre,
-          'tipo_programa_color' => $tipo_programa_color,
-        ];
       }
 
       $row['docente_entity'] = $docente;
