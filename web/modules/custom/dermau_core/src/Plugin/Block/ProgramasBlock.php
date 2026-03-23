@@ -80,7 +80,7 @@ class ProgramasBlock extends BlockBase implements ContainerFactoryPluginInterfac
       ->accessCheck(TRUE)
       ->condition('type', 'programa')
       ->condition('status', 1)
-      ->condition('field_destacado_home', 1)
+      ->condition('field_destacado_home.value', 1)
       ->sort('created', 'DESC')
       ->execute();
 
