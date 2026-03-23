@@ -14,6 +14,12 @@
 		</div>	
 	{% endif %}
 
+	{% if not docente.field_universidad.isEmpty %}
+		<div class="du-docente-card__universidad">
+			{{ docente.field_universidad.entity.label }}
+		</div>	
+	{% endif %}
+
     {% if programas %}
       <div class="du-docente-card__programas">
         {% for programa in programas %}
