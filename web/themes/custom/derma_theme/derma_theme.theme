@@ -8,14 +8,12 @@ function derma_theme_preprocess_node(&$variables)
 
   if ($node->bundle() === 'programa') {
 
-    // Obtener docentes del programa actual
     $docentes = $node->get('field_docentes')->referencedEntities();
 
     if (!empty($docentes)) {
 
       foreach ($docentes as $docente) {
 
-        // buscar todos los programas donde este docente está referenciado
         $query = \Drupal::entityQuery('node')
           ->condition('type', 'programa')
           ->condition('field_docentes.target_id', $docente->id())
@@ -29,23 +27,22 @@ function derma_theme_preprocess_node(&$variables)
             ->getStorage('node')
             ->loadMultiple($nids);
 
-          // Inyectamos un campo falso que el twig espera
-          $items = [];
+          // Crear estructura que Twig espera
+          $values = [];
 
           foreach ($programas as $programa) {
-            $items[] = [
-              'entity' => $programa,
+            $values[] = [
+              'target_id' => $programa->id(),
             ];
           }
 
-          // IMPORTANTISIMO: esto simula field_programas_vinculados
-          $docente->field_programas_vinculados = $items;
+          // crear field virtual correctamente
+          $docente->set('field_programas_vinculados', $values);
         }
       }
     }
   }
 }
-
 function derma_theme_preprocess_views_view(array &$variables)
 {
   $view = $variables['view'];
