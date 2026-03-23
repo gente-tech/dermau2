@@ -168,6 +168,7 @@ class ProgramasBlock extends BlockBase implements ContainerFactoryPluginInterfac
 
         $programas[] = $programa;
         $cache_tags = Cache::mergeTags($cache_tags, $node->getCacheTags());
+        var_dump( $programas );
       }
     }
 
