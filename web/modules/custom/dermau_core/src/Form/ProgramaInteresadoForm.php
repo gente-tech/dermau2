@@ -105,6 +105,20 @@ class ProgramaInteresadoForm extends FormBase
 			],
 		];
 
+		$form['group_container']['group1']['email'] = [
+			'#type' => 'email',
+			'#title' => $this->t('Email'),
+			'#title_display' => 'invisible',
+			'#required' => TRUE,
+			'#maxlength' => 150,
+			'#attributes' => [
+				'class' => ['du-form-input'],
+				'placeholder' => 'Email',
+				'id' => 'du-reg-email',
+				'autocomplete' => 'email',
+			],
+		];
+
 		$form['group_container']['group2'] = [
 			'#type' => 'container',
 			'#attributes' => [
@@ -211,6 +225,7 @@ class ProgramaInteresadoForm extends FormBase
 		$programa_title = trim((string) $form_state->getValue('programa_title'));
 		$indicativo = trim((string) $form_state->getValue('indicativo'));
 		$telefono = preg_replace('/\D+/', '', (string) $form_state->getValue('telefono'));
+		$email = trim((string) $form_state->getValue('email'));
 
 		if ($programa_id !== (int) $node->id()) {
 			$form_state->setErrorByName('programa', $this->t('El programa enviado no coincide con el programa actual.'));
@@ -227,6 +242,10 @@ class ProgramaInteresadoForm extends FormBase
 		if ($telefono === '' || !preg_match('/^[0-9]{7,15}$/', $telefono)) {
 			$form_state->setErrorByName('telefono', $this->t('Ingresa un número de teléfono válido.'));
 		}
+
+		if ($email === '' || !\Drupal::service('email.validator')->isValid($email)) {
+			$form_state->setErrorByName('email', $this->t('Ingresa un correo electrónico válido.'));
+		}
 	}
 
 	public function submitForm(array &$form, FormStateInterface $form_state)
@@ -242,6 +261,7 @@ class ProgramaInteresadoForm extends FormBase
 				'programa_title' => trim((string) $form_state->getValue('programa_title')),
 				'nombre' => trim((string) $form_state->getValue('nombre')),
 				'apellido' => trim((string) $form_state->getValue('apellido')),
+				'email' => trim((string) $form_state->getValue('email')),
 				'indicativo' => $indicativo,
 				'telefono' => $telefono,
 				'ciudad' => trim((string) $form_state->getValue('ciudad')),
