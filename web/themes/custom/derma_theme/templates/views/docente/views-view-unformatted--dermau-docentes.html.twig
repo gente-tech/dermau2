@@ -1,21 +1,33 @@
 {% for row in rows %}
-	{% set docente = row.docente_entity %}
-	{% set programas = row.programas_relacionados %}
+  {% set docente = row.docente_entity %}
+  {% set programas = row.programas_relacionados %}
 
-	<div class="docente-item">
-		<h3>{{ docente.label }}</h3>
+  <div class="du-docente-card">
 
-		<div>
-			<strong>Programas:</strong>
-			{% if programas %}
-				{% for programa in programas %}
-					<a href="{{ programa.url }}">{{ programa.title }}</a>
-					{% if not loop.last %},
-					{% endif %}
-				{% endfor %}
-			{% else %}
-				Sin programas
-			{% endif %}
-		</div>
-	</div>
+    <h3 class="du-docente-card__name">
+      {{ docente.label }}
+    </h3>
+
+    {% if programas %}
+      <div class="du-docente-card__programas">
+        {% for programa in programas %}
+          
+          <a href="{{ programa.url }}" class="du-docente-card__programa">
+            
+            <span 
+              class="du-docente-card__programa-tag"
+              style="background-color: {{ programa.tipo_programa_color }}"
+            >
+              {{ programa.tipo_programa }}
+            </span>
+
+            {{ programa.title }}
+
+          </a>
+
+        {% endfor %}
+      </div>
+    {% endif %}
+
+  </div>
 {% endfor %}
