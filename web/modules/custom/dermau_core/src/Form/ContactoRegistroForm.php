@@ -90,7 +90,7 @@ class ContactoRegistroForm extends FormBase {
       '#type' => 'select',
       '#options' => $programas,
       '#default_value' => $current_program,
-      '#empty_option' => $this->t('Seleccione tu programa'),
+      '#empty_option' => $this->t('Selecciona tu programa'),
       '#attributes' => [
         'class' => ['du-form-select'],
         'id' => 'du-reg-program'
@@ -180,7 +180,7 @@ class ContactoRegistroForm extends FormBase {
       '#options' => [
         '1' => 'Ciudad 1'
       ],
-      '#empty_option' => $this->t('Seleccione tu ciudad'),
+      '#empty_option' => $this->t('Selecciona tu ciudad'),
       '#attributes' => [
         'class' => ['du-form-select'],
         'id' => 'du-reg-city'
@@ -198,7 +198,7 @@ class ContactoRegistroForm extends FormBase {
       '#options' => [
         '1' => 'Profesión 1'
       ],
-      '#empty_option' => $this->t('Seleccione tu profesión'),
+      '#empty_option' => $this->t('Selecciona tu profesión'),
       '#attributes' => [
         'class' => ['du-form-select'],
         'id' => 'du-reg-profesion'
