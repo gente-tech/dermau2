@@ -2,27 +2,25 @@
 
 use Drupal\node\Entity\Node;
 
+/**
+ * Implements hook_preprocess_node().
+ */
 function derma_theme_preprocess_node(&$variables) {
 
   if ($variables['node']->bundle() !== 'programa') {
     return;
   }
 
-  if (empty($variables['content']['field_docentes']['#items'])) {
+  $node = $variables['node'];
+
+  if (!$node->hasField('field_docentes') || $node->get('field_docentes')->isEmpty()) {
+    $variables['docentes_programa'] = [];
     return;
   }
 
-  foreach ($variables['content']['field_docentes'] as $delta => &$item) {
+  $docentes_programa = [];
 
-    if (!is_numeric($delta)) {
-      continue;
-    }
-
-    if (empty($item['#node'])) {
-      continue;
-    }
-
-    $docente = $item['#node'];
+  foreach ($node->get('field_docentes')->referencedEntities() as $docente) {
 
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'programa')
@@ -39,15 +37,19 @@ function derma_theme_preprocess_node(&$variables) {
 
       foreach ($nodes as $programa) {
         $programas[] = (object)[
-          'entity' => $programa,
+          'entity' => $programa
         ];
       }
     }
 
-    // esto es lo que tu twig espera
-    $item['#node']->programas_vinculados = $programas;
-    $item['#node']->field_programas_vinculados = $programas;
+    $docentes_programa[] = (object)[
+      'entity' => $docente,
+      'programas_vinculados' => $programas,
+      'field_programas_vinculados' => $programas
+    ];
   }
+
+  $variables['docentes_programa'] = $docentes_programa;
 }
 
 function derma_theme_preprocess_field(&$variables) {
