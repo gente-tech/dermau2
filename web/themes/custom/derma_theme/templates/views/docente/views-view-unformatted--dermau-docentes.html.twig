@@ -1,5 +1,3 @@
 {% for row in rows %}
-  <pre>
-    {{ dump(row.content['#row']) }}
-  </pre>
+  <pre>{{ dump(row.content) }}</pre>
 {% endfor %}
