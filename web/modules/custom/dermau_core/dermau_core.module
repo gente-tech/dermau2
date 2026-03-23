@@ -18,6 +18,14 @@ function dermau_core_theme($existing, $type, $theme, $path)
     ],
     'dermau_programas_block' => [
       'variables' => [
+        'programas' => NULL,
+        'terms' => NULL,
+      ],
+      'template' => 'dermau-programas-block',
+      'path' => $path . '/templates',
+    ],
+    'dermau_programas_block' => [
+      'variables' => [
         'terms' => [],
       ],
       'template' => 'dermau-programas-block',
