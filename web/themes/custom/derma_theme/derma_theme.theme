@@ -27,22 +27,23 @@ function derma_theme_preprocess_node(&$variables)
             ->getStorage('node')
             ->loadMultiple($nids);
 
-          // Crear estructura que Twig espera
-          $values = [];
+          // Crear estructura que twig espera
+          $items = [];
 
           foreach ($programas as $programa) {
-            $values[] = [
-              'target_id' => $programa->id(),
+            $items[] = (object) [
+              'entity' => $programa
             ];
           }
 
-          // crear field virtual correctamente
-          $docente->set('field_programas_vinculados', $values);
+          // inyectar propiedad dinámica
+          $docente->field_programas_vinculados = $items;
         }
       }
     }
   }
 }
+
 function derma_theme_preprocess_views_view(array &$variables)
 {
   $view = $variables['view'];
