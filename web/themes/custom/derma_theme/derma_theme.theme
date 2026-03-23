@@ -17,6 +17,8 @@ function derma_theme_preprocess_node(&$variables) {
     return;
   }
 
+  $docentes = [];
+
   foreach ($node->get('field_docentes')->referencedEntities() as $docente) {
 
     $query = \Drupal::entityQuery('node')
@@ -33,17 +35,48 @@ function derma_theme_preprocess_node(&$variables) {
       $nodes = Node::loadMultiple($nids);
 
       foreach ($nodes as $programa) {
-        $programas[] = (object) [
+        $programas[] = (object)[
           'entity' => $programa,
         ];
       }
     }
 
-    // para cards
-    $docente->programas_vinculados = $programas;
+    // clonar docente para no romper render arrays
+    $docente_clone = clone $docente;
+    $docente_clone->programas_vinculados = $programas;
+    $docente_clone->field_programas_vinculados = $programas;
 
-    // para modal (twig existente)
-    $docente->field_programas_vinculados = $programas;
+    $docentes[] = $docente_clone;
+  }
+
+  // sobrescribimos docentes para twig
+  $variables['node']->field_docentes_entities = $docentes;
+}
+
+function derma_theme_preprocess_field(&$variables) {
+
+  if ($variables['element']['#field_name'] !== 'field_docentes') {
+    return;
+  }
+
+  $node = $variables['element']['#object'];
+
+  if ($node->bundle() !== 'programa') {
+    return;
+  }
+
+  $docentes_programas = \Drupal::service('renderer')
+    ->renderPlain([
+      '#theme' => 'nothing'
+    ]);
+
+  foreach ($variables['items'] as &$item) {
+    if (!empty($item['content']['#node'])) {
+      $docente = $item['content']['#node'];
+      if (isset($variables['docentes_programas'][$docente->id()])) {
+        $docente->programas_vinculados = $variables['docentes_programas'][$docente->id()];
+      }
+    }
   }
 }
 
