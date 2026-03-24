@@ -9,7 +9,7 @@
 .du-programs-grid__item, .du-programs-item{
   width: 100%;
   min-width: 250px;
-  max-width: 330px;
+  max-width: 325px;
 }
 
 .du-pagination {
@@ -78,5 +78,7 @@
 .view-dermau-programas-catalogo {  min-height: 43vh; }
 
 @media (max-width: 768px) {
-  
+  .du-programs-container {
+    justify-content: center;
+  }
 }
