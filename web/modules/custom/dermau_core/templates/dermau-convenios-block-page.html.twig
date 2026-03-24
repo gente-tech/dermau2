@@ -332,3 +332,52 @@ document.addEventListener("DOMContentLoaded", function() {
 
 });
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+  /* =========================
+     ABRIR MODAL
+  ========================= */
+  document.querySelectorAll('.du-open-modal').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+
+      const target = this.dataset.target;
+      const modal = document.getElementById(target);
+
+      if(modal){
+        modal.classList.add('is-active');
+        document.body.classList.add('du-modal-open');
+      }
+    });
+  });
+
+  /* =========================
+     CERRAR MODAL
+  ========================= */
+  document.querySelectorAll('.du-modal__close, .du-modal__overlay').forEach(btn => {
+    btn.addEventListener('click', function() {
+
+      const modal = this.closest('.du-modal');
+      if(modal){
+        modal.classList.remove('is-active');
+        document.body.classList.remove('du-modal-open');
+      }
+
+    });
+  });
+
+  /* =========================
+     ESC cerrar
+  ========================= */
+  document.addEventListener('keydown', function(e){
+    if(e.key === "Escape"){
+      document.querySelectorAll('.du-modal.is-active').forEach(modal=>{
+        modal.classList.remove('is-active');
+        document.body.classList.remove('du-modal-open');
+      });
+    }
+  });
+
+});
+</script>
