@@ -61,46 +61,196 @@
 
     <h3 class="du-convenio-block__subtitle">Docentes vinculados</h3>
 
-    <div class="du-swiper-expert">
-      <div class="swiper" id="sw-convenio-experto-{{ convenio.id }}">
-        <div class="swiper-wrapper">
+<div class="du-swiper-expert">
+  <div class="swiper" id="sw-convenio-experto-{{ convenio.id }}">
+    <div class="swiper-wrapper">
 
-          {% for docente in convenio.docentes %}
-          <div class="swiper-slide">
-            <article class="du-card__expert">
+      {% for docente in convenio.docentes %}
+      <div class="swiper-slide">
 
-              <div class="du-card__expert-main">
-                <img src="{{ docente.image }}" class="du-card__expert-img">
-                <div class="du-card__expert-intro">
-                  <h3 class="du-card__expert-title">{{ docente.title }}</h3>
-                  <p class="du-card__expert-role">{{ docente.cargo }}</p>
-                </div>
-              </div>
+        <article class="du-card__expert">
 
-              <div class="du-card__expert-uni">
-                <span>{{ docente.universidad }}</span>
-              </div>
+          <div class="du-card__expert-main">
 
-              <div class="du-card__expert-detail">
-                <p>{{ docente.descripcion }}</p>
-              </div>
+            {% if docente.image %}
+            <img src="{{ docente.image }}" class="du-card__expert-img">
+            {% endif %}
 
-              <div class="du-card__expert-footer">
-                <a href="{{ docente.url }}" class="du-link-more">Ver detalle</a>
-              </div>
+            <div class="du-card__expert-intro">
+              <h3 class="du-card__expert-title">
+                {{ docente.title }}
+              </h3>
 
-            </article>
+              {% if docente.cargo %}
+              <p class="du-card__expert-role">
+                {{ docente.cargo }}
+              </p>
+              {% endif %}
+            </div>
+
           </div>
-          {% endfor %}
+
+          <div class="du-card__expert-uni">
+
+            <svg width="21" height="21" viewbox="0 0 21 21" fill="none">
+              <path d="M2.0432 7.26354V14.6632" stroke="#007BE3"/>
+            </svg>
+
+            <span>{{ docente.universidad }}</span>
+
+          </div>
+
+          <div class="du-card__expert-detail">
+            <p>
+              {{ docente.descripcion|striptags|length > 180
+                ? docente.descripcion|striptags|slice(0, 180) ~ '...'
+                : docente.descripcion|striptags
+              }}
+            </p>
+          </div>
+
+          <div class="du-card__expert-footer">
+            <a href="#" 
+               class="du-link-more du-open-modal"
+               data-target="modal-docente-{{ convenio.id }}-{{ loop.index }}">
+              Ver detalle
+            </a>
+          </div>
+
+        </article>
+
+      </div>
+      {% endfor %}
+
+    </div>
+
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-pagination"></div>
+
+  </div>
+</div>
+{% for docente in convenio.docentes %}
+<div id="modal-docente-{{ convenio.id }}-{{ loop.index }}" class="du-modal">
+  <div class="du-modal__overlay"></div>
+
+  <div class="du-modal__container">
+    <button class="du-modal__close">&times;</button>
+
+    <div class="du-modal__content">
+
+      <aside class="du-modal__aside">
+
+        <img src="{{ docente.image }}" class="du-modal__img">
+
+        <div class="du-modal__personal-info">
+
+          <h3 class="du-modal__name">
+            {{ docente.title }}
+          </h3>
+
+          <p class="du-modal__role">
+            {{ docente.cargo }}
+          </p>
+
+          <div class="du-modal__contact">
+
+            {% if docente.ciudad %}
+            <div class="du-modal__contact-item">
+              <span>{{ docente.ciudad }}</span>
+            </div>
+            {% endif %}
+
+            {% if docente.email %}
+            <div class="du-modal__contact-item">
+              <a href="mailto:{{ docente.email }}">
+                {{ docente.email }}
+              </a>
+            </div>
+            {% endif %}
+
+            <div class="du-modal__contact-item du-colum">
+
+              <div class="du-modal__contact-redes">
+
+                {% if docente.linkedin %}
+                <a href="{{ docente.linkedin }}" target="_blank">
+                  LinkedIn
+                </a>
+                {% endif %}
+
+                {% if docente.facebook %}
+                <a href="{{ docente.facebook }}" target="_blank">
+                  Facebook
+                </a>
+                {% endif %}
+
+                {% if docente.instagram %}
+                <a href="{{ docente.instagram }}" target="_blank">
+                  Instagram
+                </a>
+                {% endif %}
+
+              </div>
+
+              {% if docente.web %}
+              <a href="{{ docente.web }}"
+                 class="du-link-external"
+                 target="_blank">
+                 {{ docente.web }}
+              </a>
+              {% endif %}
+
+            </div>
+
+          </div>
 
         </div>
 
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-pagination"></div>
+      </aside>
 
-      </div>
+      <main class="du-modal__main">
+
+        <section class="du-modal__section">
+          <h4 class="du-modal__section-title">
+            Perfil profesional
+          </h4>
+
+          <div class="du-modal__bio">
+            {{ docente.descripcion|raw }}
+          </div>
+        </section>
+
+        {% if docente.programas %}
+        <section class="du-modal__section">
+          <h4 class="du-modal__section-title">
+            Programas vinculados
+          </h4>
+
+          <div class="du-modal__programs">
+
+            {% for programa in docente.programas %}
+            <div class="du-program-tag">
+              <span class="tag {{ programa.tipo_clase }}">
+                {{ programa.tipo }}
+              </span>
+              <span class="program-name">
+                {{ programa.titulo }}
+              </span>
+            </div>
+            {% endfor %}
+
+          </div>
+        </section>
+        {% endif %}
+
+      </main>
+
     </div>
+
+  </div>
+</div>
+{% endfor %}
 
   </div>
 </section>
