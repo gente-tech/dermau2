@@ -142,8 +142,7 @@
           </div>
         </div>
         <div class="du-hero__actions">
-          <a href="#" class="du-btn du-btn--primary">Inscribirme
-          </a>
+          <a href="#" class="du-btn du-btn--primary du-open-inscripcion">Inscribirme</a>
           {% if node.field_tipo_de_programa.entity.label != 'Webinar' %}
             <a href="#" class="du-btn du-btn--secundary-dark">Descargar Programa
               <span class="du-icon__next"></span>
@@ -706,7 +705,22 @@
       <div class="swiper-pagination"></div>
     </div>
   </div>
-</section><div id="container-modal"></div>
+</section>
+<!-- AQUI PEGAS EL MODAL -->
+<div id="du-modal-inscripcion" class="du-modal">
+  <div class="du-modal__overlay"></div>
+  <div class="du-modal__container" style="max-width:520px;">
+    <button class="du-modal__close">&times;</button>
+
+    <div class="du-modal__content" style="padding:40px; text-align:center;">
+      <p style="font-size:18px; line-height:1.4;">
+        Completa el Formulario de la Derecha.<br>
+        En el celular lo encuentras abajo
+      </p>
+    </div>
+  </div>
+</div>
+<div id="container-modal"></div>
 
 <section class="du-footer-info" data-variation="">
 	<div class="du-footer-info__text">
@@ -761,6 +775,32 @@ document.addEventListener('click', function(e) {
 
     contenedor.innerHTML = '';
 
+  }
+
+});
+</script>
+<script>
+document.addEventListener('click', function(e){
+
+  const btn = e.target.closest('.du-open-inscripcion');
+  if(!btn) return;
+
+  e.preventDefault();
+
+  const modal = document.getElementById('du-modal-inscripcion');
+  modal.style.display = "flex";
+  document.body.style.overflow = "hidden";
+
+});
+
+document.addEventListener('click', function(e){
+
+  if(
+    e.target.classList.contains('du-modal__close') ||
+    e.target.classList.contains('du-modal__overlay')
+  ){
+    document.getElementById('du-modal-inscripcion').style.display = "none";
+    document.body.style.overflow = "auto";
   }
 
 });
