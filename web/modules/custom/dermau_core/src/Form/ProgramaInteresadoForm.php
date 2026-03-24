@@ -305,12 +305,10 @@ class ProgramaInteresadoForm extends FormBase
 	protected function getProfesiones()
 	{
 		return [
-			'Dermatólogo(a)' => 'Dermatólogo(a)',
-			'Médico(a) general' => 'Médico(a) general',
-			'Residente' => 'Residente',
-			'Enfermero(a)' => 'Enfermero(a)',
-			'Estudiante' => 'Estudiante',
-			'Otro profesional de la salud' => 'Otro profesional de la salud',
+			'Méd. dermatólogo asociado' => 'Méd. dermatólogo asociado',
+      'Méd. dermatólogo no asociado' => 'Méd. dermatólogo no asociado',
+      'Residente dermatología en Colombia' => 'Residente dermatología en Colombia',
+      'Residente dermatología fuera de Colombia' => 'Residente dermatología fuera de Colombia',
 			'Otra' => 'Otra',
 		];
 	}
