@@ -1,6 +1,6 @@
 {% set hay_filtros = false %}
 
-{% set universidad = view.exposed_raw_input.field_universidad_principal_target_id|default('') %}
+{% set universidad = view.exposed_raw_input.field_universidad_target_id|default(view.exposed_raw_input.field_universidad_principal_target_id|default('')) %}
 {% set tipo_programa = view.exposed_raw_input.field_tipo_de_programa_target_id|default(view.exposed_raw_input.tipo_programa_docente|default('')) %}
 {% set title = view.exposed_raw_input.title|default('') %}
 
