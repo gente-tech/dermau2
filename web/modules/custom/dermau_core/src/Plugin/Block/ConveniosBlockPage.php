@@ -53,14 +53,21 @@ class ConveniosBlockPage extends BlockBase {
       $docentes = [];
       if (!$convenio->get('field_docentes_vinculados')->isEmpty()) {
         foreach ($convenio->get('field_docentes_vinculados')->referencedEntities() as $docente) {
+
+          $descripcion = '';
+          if ($docente->hasField('body') && !$docente->get('body')->isEmpty()) {
+            $descripcion = $docente->get('body')->value;
+          }
+
           $docentes[] = [
             'id' => $docente->id(),
             'title' => $docente->label(),
-            'body' => !$docente->get('body')->isEmpty() ? $docente->get('body')->value : '',
+            'body' => $descripcion,
           ];
         }
       }
 
+      // Logo
       $logo = '';
       if (!$convenio->get('field_logo')->isEmpty()) {
         $logo = \Drupal::service('file_url_generator')
