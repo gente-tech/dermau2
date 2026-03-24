@@ -71,8 +71,9 @@ function derma_theme_preprocess_node(&$variables) {
     // IMAGEN
     // =============================
     $imagen = '';
-    if (!$docente->get('field_imagen')->isEmpty()) {
-      $file = $docente->get('field_imagen')->entity;
+
+    if ($docente->hasField('field_foto_docente') && !$docente->get('field_foto_docente')->isEmpty()) {
+      $file = $docente->get('field_foto_docente')->entity;
       $imagen = \Drupal::service('file_url_generator')
         ->generateAbsoluteString($file->getFileUri());
     }
