@@ -361,3 +361,43 @@ document.addEventListener("DOMContentLoaded", function() {
 
 });
 </script>
+
+<script>
+document.addEventListener('click', function(e) {
+
+  const link = e.target.closest('.du-open-modal');
+  if (!link) return;
+
+  e.preventDefault();
+
+  const targetId = link.getAttribute('data-target');
+  const modalContent = document.getElementById(targetId);
+
+  if (modalContent) {
+    const contenedor = document.getElementById('container-modal');
+
+    contenedor.innerHTML = modalContent.outerHTML;
+
+    const modal = contenedor.querySelector('.du-modal');
+
+    modal.style.display = "flex";
+
+    document.body.style.overflow = "hidden";
+  }
+
+});
+
+document.addEventListener('click', function(e) {
+
+  if (
+    e.target.classList.contains('du-modal__close') ||
+    e.target.classList.contains('du-modal__overlay')
+  ) {
+    const contenedor = document.getElementById('container-modal');
+
+    document.body.style.overflow = "auto";
+    contenedor.innerHTML = '';
+  }
+
+});
+</script>
