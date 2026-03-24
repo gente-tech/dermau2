@@ -209,33 +209,28 @@
 <div id="container-modal"></div>
 
 <script>
-(function(){
 
-  document.addEventListener("click", function(e){
+document.addEventListener('click', function(e) {
+  const link = e.target.closest('.du-open-modal');
+  if (!link) return;
+  e.preventDefault();
+  const targetId = link.getAttribute('data-target');
+  const modalContent = document.getElementById(targetId);
+  if (modalContent) {
+    const contenedor = document.getElementById('container-modal');
+    contenedor.innerHTML = modalContent.outerHTML;
+    const modal = contenedor.querySelector('.du-modal');
+    modal.style.display = "flex";
+    document.body.style.overflow = "hidden";
+  }
+});
 
-    const btn = e.target.closest(".du-open-modal");
-    if(btn){
-      e.preventDefault();
-      const modal = document.getElementById(btn.dataset.target);
-      if(modal){
-        modal.classList.add("active");
-        document.body.style.overflow = "hidden";
-      }
-      return;
-    }
+document.addEventListener('click', function(e) {
+  if ( e.target.classList.contains('du-modal__close') || e.target.classList.contains('du-modal__overlay') ) {
+    const contenedor = document.getElementById('container-modal');
+    document.body.style.overflow = "auto";
+    contenedor.innerHTML = '';
+  }
+});
 
-    if(
-      e.target.classList.contains("du-modal__overlay") ||
-      e.target.classList.contains("du-modal__close")
-    ){
-      const modal = e.target.closest(".du-modal");
-      if(modal){
-        modal.classList.remove("active");
-        document.body.style.overflow = "auto";
-      }
-    }
-
-  });
-
-})();
 </script>
