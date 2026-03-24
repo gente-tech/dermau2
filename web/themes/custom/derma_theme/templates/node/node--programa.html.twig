@@ -516,7 +516,110 @@
               <div class="swiper-button-next"></div>
               <div class="swiper-pagination"></div>
             </div>
+
           </div>
+          {% for docente in docentes_programa %}
+            <div id="modal-docente-{{ loop.index }}" class="du-modal">
+              <div class="du-modal__overlay"></div>
+              <div class="du-modal__container">
+                <button class="du-modal__close">&times;</button>
+
+                <div class="du-modal__content">
+                  <aside class="du-modal__aside">
+                    <img src="{{ docente.imagen }}" alt="{{ docente.nombre }}"
+                      class="du-modal__img" />
+                    <div class="du-modal__personal-info">
+                      <h3 class="du-modal__name">
+                        {{ docente.nombre }}
+                      </h3>
+                      <p class="du-modal__role">{{ docente.especialidad }}</p>
+
+                      <div class="du-modal__contact">
+                        <div class="du-modal__contact-item">
+                          <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7 9.4375C8.34619 9.4375 9.4375 8.34619 9.4375 7C9.4375 5.65381 8.34619 4.5625 7 4.5625C5.65381 4.5625 4.5625 5.65381 4.5625 7C4.5625 8.34619 5.65381 9.4375 7 9.4375Z"
+                              stroke="#007BE3" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M7 0.5C5.27609 0.5 3.62279 1.18482 2.40381 2.40381C1.18482 3.62279 0.5 5.27609 0.5 7C0.5 8.53725 0.826625 9.54312 1.71875 10.6562L7 16.75L12.2812 10.6562C13.1734 9.54312 13.5 8.53725 13.5 7C13.5 5.27609 12.8152 3.62279 11.5962 2.40381C10.3772 1.18482 8.72391 0.5 7 0.5Z"
+                              stroke="#007BE3" stroke-linecap="round" stroke-linejoin="round" />
+                          </svg>
+                          <span>{{ docente.ciudad }}</span>
+                        </div>
+
+                        {% if docente.email %}
+                        <div class="du-modal__contact-item">
+                          <svg width="14" height="11" viewBox="0 0 14 11" fill="none">
+                            <path fill="#007BE3"/>
+                          </svg>
+                          <a href="mailto:{{ docente.email }}">{{ docente.email }}</a>
+                        </div>
+                        {% endif %}
+
+                        <div class="du-modal__contact-item  du-colum">
+                          <div class="du-modal__contact-redes">
+
+                            {% if docente.linkedin %}
+                            <a href="{{ docente.linkedin }}" target="_blank">
+                              <!-- svg linkedin intacto -->
+                            </a>
+                            {% endif %}
+
+                            {% if docente.facebook %}
+                            <a href="{{ docente.facebook }}" target="_blank">
+                              <!-- svg facebook intacto -->
+                            </a>
+                            {% endif %}
+
+                            {% if docente.instagram %}
+                            <a href="{{ docente.instagram }}" target="_blank">
+                              <!-- svg instagram intacto -->
+                            </a>
+                            {% endif %}
+
+                          </div>
+
+                          {% if docente.web %}
+                          <a href="{{ docente.web }}" target="_blank"
+                            class="du-link-external">{{ docente.web }}</a>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </aside>
+
+                  <main class="du-modal__main">
+                    <section class="du-modal__section">
+                      <h4 class="du-modal__section-title">
+                        <!-- SVG intacto -->
+                        Perfil profesional
+                      </h4>
+                      <div class="du-modal__bio">
+                        {{ docente.perfil|raw }}
+                      </div>
+                    </section>
+
+                    <section class="du-modal__section">
+                      <h4 class="du-modal__section-title">
+                        <!-- SVG intacto -->
+                        Programas vinculados
+                      </h4>
+
+                      <div class="du-modal__programs">
+
+                        {% for programa in docente.programas %}
+                        <div class="du-program-tag">
+                          <span class="tag {{ programa.tipo_clase }}">{{ programa.tipo }}</span>
+                          <span class="program-name">{{ programa.titulo }}</span>
+                        </div>
+                        {% endfor %}
+
+                      </div>
+
+                    </section>
+                  </main>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
         </section>
 
 
