@@ -3,7 +3,9 @@
   padding-block: 5px;
   background-color: white;
 }
-
+.du-generic-swiper[data-inline="small"] {
+  padding-inline: 25px;
+}
 .du-generic-swiper__container {
   max-width: var(--du-max-width);
   margin: 0 auto;

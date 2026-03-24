@@ -9,7 +9,8 @@
 .du-programs-grid__item, .du-programs-item{
   width: 100%;
   min-width: 250px;
-  max-width: 325px;
+  max-width: 330px;
+  flex:1;
 }
 
 .du-pagination {
