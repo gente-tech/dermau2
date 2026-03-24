@@ -63,21 +63,36 @@ function derma_theme_preprocess_node(&$variables) {
       $imagen = \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
     }
 
+    $especialidad = '';
+    $universidad = '';
+    $ciudad = '';
+    
+    if (!$docente->get('field_especialidad')->isEmpty()) {
+      $especialidad = $docente->get('field_especialidad')->entity->label();
+    }
+    
+    if (!$docente->get('field_universidad')->isEmpty()) {
+      $universidad = $docente->get('field_universidad')->entity->label();
+    }
+    
+    if (!$docente->get('field_ciudad')->isEmpty()) {
+      $ciudad = $docente->get('field_ciudad')->entity->label();
+    }
+
     $docentes_programa[] = [
-    'nombre' => $docente->label(),
-    'imagen' => $imagen,
-    'especialidad' => !empty($docente->get('field_especialidad')->entity)
-      ? $docente->get('field_especialidad')->entity->label()
-      : '',
-    'ciudad' => $docente->get('field_ciudad')->value ?? '',
-    'email' => $docente->get('field_correo_electronico')->value ?? '',
-    'linkedin' => $docente->get('field_linkedin')->uri ?? '',
-    'facebook' => $docente->get('field_facebook')->uri ?? '',
-    'instagram' => $docente->get('field_instagram')->uri ?? '',
-    'web' => $docente->get('field_pagina_web')->value ?? '',
-    'perfil' => $docente->get('field_perfil_profesional')->value ?? '',
-    'programas' => $programas,
-  ];
+      'nombre' => $docente->label(),
+      'imagen' => $imagen,
+      'especialidad' => $especialidad,
+      'universidad' => $universidad,
+      'ciudad' => $ciudad,
+      'email' => $email,
+      'linkedin' => $linkedin,
+      'facebook' => $facebook,
+      'instagram' => $instagram,
+      'web' => $web,
+      'perfil' => $perfil,
+      'programas' => $programas,
+    ];
   }
 
   $variables['docentes_programa'] = $docentes_programa;
