@@ -10,6 +10,8 @@
   flex-direction: column;
   gap: 10px;
   transition: transform 0.3s ease;
+  min-height: 400px;
+  position: relative;
   /*margin-inline: 1rem;*/
 }
 .du-card__expert:nth-child(even) {
@@ -57,17 +59,22 @@
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 10;
+  -webkit-line-clamp: 4;
 
 }
 .du-card__expert-footer {
     display: flex;
     justify-content: end;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
 }
 .du-card__expert-tags {
     display: flex;
     gap: 5px;
     flex-wrap: wrap;
+    align-content: flex-start;
+    min-height: 90px;
 }
 
 /* ------------ Card Diplomat ------------ */

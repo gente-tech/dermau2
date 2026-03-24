@@ -1,7 +1,7 @@
 .du-programs-container{
     display: flex;
     justify-content: start;
-    align-items: center;
+    align-items: start;
     flex-wrap: wrap;
     gap: 40px;
 }

@@ -159,6 +159,9 @@
   color: white;
   background: #1C224A;
   color:white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .tag--diplomado, .tag[data-tag="1"] {
   color: #93FFD4;
