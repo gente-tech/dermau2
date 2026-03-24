@@ -41,7 +41,3 @@ body {
   overflow-x: hidden;
 }
 
-.du-modal.active {
-  opacity: 1;
-  visibility: visible;
-}
