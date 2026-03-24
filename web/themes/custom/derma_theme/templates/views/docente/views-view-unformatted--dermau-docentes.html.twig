@@ -90,9 +90,10 @@
                 {% if programas %}
                   <div class="du-card-docente__programas-tags">
                     {% for programa in programas %}
-                      <a href="{{ programa.url }}" class="du-card-docente__program-tag du-tag-programa-{{ programa.tipo_programa_color|default('default')|clean_class }}">
-                        {{ programa.title }}
-                      </a>
+                      <h5>{{ programa.title }}</h5>
+                      <h5>{{ programa.url }}</h5>
+                      <h5>{{ programa.tipo_programa }}</h5>
+                      <h5>{{ programa.tipo_programa_color }}</h5>
                     {% endfor %}
                   </div>
                 {% endif %}
