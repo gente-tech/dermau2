@@ -145,6 +145,8 @@
 							<p class="du-modal__role">{{ especialidad }}</p>
 
 							<div class="du-modal__contact">
+								<h1>Ciudad: {{ row._entity.field_ciudad.entity.name.value }}</h1>
+								<h1>Ciudad2: {{ docente.field_ciudad.entity.name.value }}</h1>
 								{% if row._entity.field_ciudad is defined and row._entity.field_ciudad.entity %}
 									<div class="du-modal__contact-item">
 										<span>{{ row._entity.field_ciudad.entity.name.value }}</span>
