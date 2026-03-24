@@ -1,1 +1,108 @@
-TWIG DEL BLOCK PAGE CONVENIOS
+<main class="du-main">
+
+      <section class="du-agreements" data-active="true">
+        <div class="du-agreements__container">
+          <div class="du-agreements__header center">
+            <h2 class="du-agreements__title">
+              <span>Convenios</span> Universitarios
+            </h2>
+            <p class="du-agreements__subtitle">
+              Nuestros convenios fortalecen el aprendizaje y aseguran que cada
+              programa cumpla con estándares educativos.
+            </p>
+          </div>
+
+          <div class="swiper swiper-container"  id="sw-convenio-agreements">
+            <div class="swiper-wrapper">
+
+              {% for convenio in convenios %}
+              <div class="swiper-slide du-agreements__slide" data-action="block-{{ convenio.id }}">
+                  <img src="{{ convenio.logo }}" alt="{{ convenio.title }}" />
+              </div>
+              {% endfor %}
+
+            </div>
+
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+
+          </div>
+        </div>
+      </section>
+
+      {% for convenio in convenios %}
+      <section class="du-convenio-block" id="block-{{ convenio.id }}">
+        <div class="du-convenio-block__container">
+          <div class="du-convenio-block__header">
+            <h2 class="du-convenio-block__title">
+              {{ convenio.title }}
+            </h2>
+            <div class="du-convenio-block__info">
+              <span> 📍 {{ convenio.ciudad }}  </span>
+              <span> 🏛️ Fundada en {{ convenio.ano }} </span>
+              <span> 📚 {{ convenio.programas|length }} programas</span>
+            </div>
+            <p class="du-convenio-block__description">
+              {{ convenio.descripcion }}
+            </p>
+          </div>
+
+          <h3 class="du-convenio-block__subtitle">Programas vinculados</h3>
+          <div class="du-convenio-block__tags">
+
+            {% for programa in convenio.programas %}
+            <div class="du-convenio-block__tag"> 
+              <span class="tag tag--diplomado">Programa</span>  
+              <span>{{ programa.title }}</span> 
+            </div>
+            {% endfor %}
+
+          </div>
+
+          <h3 class="du-convenio-block__subtitle">Docentes vinculados</h3>
+          
+          <div class="du-swiper-expert">
+            <div class="swiper" id="sw-convenio-experto-{{ convenio.id }}">
+              <div class="swiper-wrapper" id="card__expert">
+
+                {% for docente in convenio.docentes %}
+                <div class="swiper-slide">
+                  <div class="du-expert-card">
+                    <h3>{{ docente.title }}</h3>
+                    <p>{{ docente.body|striptags|truncate(140) }}</p>
+                  </div>
+                </div>
+                {% endfor %}
+
+              </div>
+
+              <div class="swiper-button-next"></div>
+              <div class="swiper-button-prev"></div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+          
+
+        </div>
+      </section>
+      {% endfor %}
+
+      <section class="du-footer-info" data-variation="gray">
+        <div class="du-footer-info__text">
+          <h2 class="du-footer-info__title">
+            ¿Listo para dar el siguiente paso en tu <span>carrera</span> ?
+          </h2>
+          <p class="du-footer-info__description">
+            Únete a más de 5,000 profesionales que han transformado su práctica
+            clínica con DermaU. Inscripciones abiertas para el periodo 2026.
+          </p>
+        </div>
+        <div class="du-footer-info__image">
+          <img
+            src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=400"
+            alt="Profesional de la salud"
+          />
+          <a href="contacto.html" class="du-footer-info__link">Solicitar Información</a>
+        </div>
+      </section>
+    </main>
