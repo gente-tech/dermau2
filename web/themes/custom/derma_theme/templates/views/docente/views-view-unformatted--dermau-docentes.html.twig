@@ -214,13 +214,17 @@
   document.addEventListener("click", function(e){
 
     const btn = e.target.closest(".du-open-modal");
+
     if(btn){
       e.preventDefault();
+
       const modal = document.getElementById(btn.dataset.target);
+
       if(modal){
         modal.classList.add("active");
         document.body.style.overflow = "hidden";
       }
+
       return;
     }
 
@@ -229,6 +233,7 @@
       e.target.classList.contains("du-modal__close")
     ){
       const modal = e.target.closest(".du-modal");
+
       if(modal){
         modal.classList.remove("active");
         document.body.style.overflow = "auto";
