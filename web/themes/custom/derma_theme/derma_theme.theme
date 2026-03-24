@@ -51,7 +51,9 @@ function derma_theme_preprocess_node(&$variables) {
       'nombre' => $docente->label(),
       'url' => $docente->toUrl()->toString(),
       'imagen' => $imagen,
-      'especialidad' => $docente->get('field_especialidad')->value ?? '',
+      'especialidad' => !empty($docente->get('field_especialidad')->entity)
+          ? $docente->get('field_especialidad')->entity->label()
+          : '',
       'universidad' => $docente->get('field_universidad')->entity?->label() ?? '',
       'perfil' => $docente->get('field_perfil_profesional')->value ?? '',
       'programas' => $programas,
