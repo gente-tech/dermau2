@@ -61,6 +61,14 @@ class ConveniosBlockPage extends BlockBase {
         }
       }
 
+      $logo = '';
+      if (!$convenio->get('field_logo')->isEmpty()) {
+        $logo = \Drupal::service('file_url_generator')
+          ->generateAbsoluteString(
+            $convenio->get('field_logo')->entity->getFileUri()
+          );
+      }
+
       $data[] = [
         'id' => $convenio->id(),
         'title' => $convenio->label(),
@@ -69,9 +77,7 @@ class ConveniosBlockPage extends BlockBase {
         'descripcion' => !$convenio->get('field_descripcion_corta_convenio')->isEmpty()
           ? $convenio->get('field_descripcion_corta_convenio')->value
           : '',
-        'logo' => !$convenio->get('field_logo')->isEmpty()
-          ? file_create_url($convenio->get('field_logo')->entity->getFileUri())
-          : '',
+        'logo' => $logo,
         'programas' => $programas,
         'docentes' => $docentes,
       ];
