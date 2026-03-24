@@ -19,6 +19,67 @@ function derma_theme_preprocess_node(&$variables) {
 
   foreach ($node->get('field_docentes')->referencedEntities() as $docente) {
 
+    // =============================
+    // ESPECIALIDAD (taxonomy)
+    // =============================
+    $especialidad = '';
+    if (!$docente->get('field_especialidad')->isEmpty()) {
+      $especialidad = $docente->get('field_especialidad')->entity->label();
+    }
+
+    // =============================
+    // UNIVERSIDAD (taxonomy)
+    // =============================
+    $universidad = '';
+    if (!$docente->get('field_universidad')->isEmpty()) {
+      $universidad = $docente->get('field_universidad')->entity->label();
+    }
+
+    // =============================
+    // CIUDAD (taxonomy)
+    // =============================
+    $ciudad = '';
+    if (!$docente->get('field_ciudad')->isEmpty()) {
+      $ciudad = $docente->get('field_ciudad')->entity->label();
+    }
+
+    // =============================
+    // PERFIL
+    // =============================
+    $perfil = '';
+    if (!$docente->get('field_perfil_profesional')->isEmpty()) {
+      $perfil = $docente->get('field_perfil_profesional')->value;
+    }
+
+    // =============================
+    // EMAIL
+    // =============================
+    $email = '';
+    if (!$docente->get('field_correo_electronico')->isEmpty()) {
+      $email = $docente->get('field_correo_electronico')->value;
+    }
+
+    // =============================
+    // REDES
+    // =============================
+    $linkedin = !$docente->get('field_linkedin')->isEmpty() ? $docente->get('field_linkedin')->uri : '';
+    $facebook = !$docente->get('field_facebook')->isEmpty() ? $docente->get('field_facebook')->uri : '';
+    $instagram = !$docente->get('field_instagram')->isEmpty() ? $docente->get('field_instagram')->uri : '';
+    $web = !$docente->get('field_pagina_web')->isEmpty() ? $docente->get('field_pagina_web')->uri : '';
+
+    // =============================
+    // IMAGEN
+    // =============================
+    $imagen = '';
+    if (!$docente->get('field_imagen')->isEmpty()) {
+      $file = $docente->get('field_imagen')->entity;
+      $imagen = \Drupal::service('file_url_generator')
+        ->generateAbsoluteString($file->getFileUri());
+    }
+
+    // =============================
+    // PROGRAMAS RELACIONADOS
+    // =============================
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'programa')
       ->condition('status', 1)
@@ -27,58 +88,47 @@ function derma_theme_preprocess_node(&$variables) {
 
     $nids = $query->execute();
 
-    $tipo_programa_clase = '';
-    $tipo_programa_nombre = '';
-    
-    if (!$node->get('field_tipo_de_programa')->isEmpty()) {
-      $tipo = $node->get('field_tipo_de_programa')->entity;
-    
-      if ($tipo) {
-        $tipo_programa_nombre = $tipo->label();
-    
-        $slug = strtolower(trim($tipo_programa_nombre));
-    
-        if (strpos($slug, 'diplom') !== false) {
-          $tipo_programa_clase = 'tag--diplomado';
+    $programas = [];
+
+    if (!empty($nids)) {
+      $nodes = \Drupal\node\Entity\Node::loadMultiple($nids);
+
+      foreach ($nodes as $programa) {
+
+        $tipo_programa_nombre = '';
+        $tipo_programa_clase = '';
+
+        if (!$programa->get('field_tipo_de_programa')->isEmpty()) {
+          $tipo = $programa->get('field_tipo_de_programa')->entity;
+
+          if ($tipo) {
+            $tipo_programa_nombre = $tipo->label();
+
+            $slug = strtolower($tipo_programa_nombre);
+
+            if (strpos($slug, 'diplom') !== FALSE) {
+              $tipo_programa_clase = 'tag--diplomado';
+            }
+            elseif (strpos($slug, 'curso') !== FALSE) {
+              $tipo_programa_clase = 'tag--curso';
+            }
+            elseif (strpos($slug, 'especial') !== FALSE) {
+              $tipo_programa_clase = 'tag--especial';
+            }
+          }
         }
-        elseif (strpos($slug, 'curso') !== false) {
-          $tipo_programa_clase = 'tag--curso';
-        }
-        elseif (strpos($slug, 'especial') !== false) {
-          $tipo_programa_clase = 'tag--especial';
-        }
+
+        $programas[] = [
+          'titulo' => $programa->label(),
+          'tipo' => $tipo_programa_nombre,
+          'tipo_clase' => $tipo_programa_clase,
+        ];
       }
     }
-    
-    $programas[] = [
-      'tipo' => $tipo_programa_nombre,
-      'tipo_clase' => $tipo_programa_clase,
-      'titulo' => $node->label(),
-    ];
 
-    // imagen docente
-    $imagen = '';
-    if ($docente->hasField('field_foto_docente') && !$docente->get('field_foto_docente')->isEmpty()) {
-      $file = $docente->get('field_foto_docente')->entity;
-      $imagen = \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
-    }
-
-    $especialidad = '';
-    $universidad = '';
-    $ciudad = '';
-    
-    if (!$docente->get('field_especialidad')->isEmpty()) {
-      $especialidad = $docente->get('field_especialidad')->entity->label();
-    }
-    
-    if (!$docente->get('field_universidad')->isEmpty()) {
-      $universidad = $docente->get('field_universidad')->entity->label();
-    }
-    
-    if (!$docente->get('field_ciudad')->isEmpty()) {
-      $ciudad = $docente->get('field_ciudad')->entity->label();
-    }
-
+    // =============================
+    // ARRAY FINAL (NO SE ELIMINA NADA)
+    // =============================
     $docentes_programa[] = [
       'nombre' => $docente->label(),
       'imagen' => $imagen,
