@@ -30,7 +30,7 @@ class ConveniosBlockPage extends BlockBase {
       ->condition('type', 'convenio')
       ->condition('status', 1)
       ->accessCheck(FALSE)
-      ->sort('field_orden_visualizacion', 'ASC')
+      ->sort('field_orden_visualizacion.value', 'ASC')
       ->execute();
 
     $convenios = $storage->loadMultiple($ids);
