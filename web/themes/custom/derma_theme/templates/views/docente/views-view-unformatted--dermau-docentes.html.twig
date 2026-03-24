@@ -145,37 +145,35 @@
 							<p class="du-modal__role">{{ especialidad }}</p>
 
 							<div class="du-modal__contact">
-								<h1>Ciudad: {{ row._entity.field_ciudad.entity.name.value }}</h1>
-								<h1>Ciudad2: {{ docente.field_ciudad.entity.name.value }}</h1>
-								{% if row._entity.field_ciudad is defined and row._entity.field_ciudad.entity %}
+								{% if docente.field_ciudad.entity.name.value %}
 									<div class="du-modal__contact-item">
-										<span>{{ row._entity.field_ciudad.entity.name.value }}</span>
+										<span>{{ docente.field_ciudad.entity.name.value }}</span>
 									</div>
 								{% endif %}
 
-								{% if row._entity.field_correo_electronico is defined and row._entity.field_correo_electronico.value %}
+								{% if docente.field_correo_electronico.value %}
 									<div class="du-modal__contact-item">
-										<a href="mailto:{{ row._entity.field_correo_electronico.value }}">{{ row._entity.field_correo_electronico.value }}</a>
+										<a href="mailto:{{ docente.field_correo_electronico.value }}">{{ docente.field_correo_electronico.value }}</a>
 									</div>
 								{% endif %}
 
 								<div class="du-modal__contact-item du-colum">
 									<div class="du-modal__contact-redes">
-										{% if row._entity.field_linkedin is defined and row._entity.field_linkedin.value %}
-											<a href="{{ row._entity.field_linkedin.value }}" target="_blank">LinkedIn</a>
+										{% if docente.field_linkedin.value %}
+											<a href="{{ docente.field_linkedin.value }}" target="_blank">LinkedIn</a>
 										{% endif %}
 
-										{% if row._entity.field_facebook is defined and row._entity.field_facebook.value %}
-											<a href="{{ row._entity.field_facebook.value }}" target="_blank">Facebook</a>
+										{% if docente.field_facebook.value %}
+											<a href="{{ docente.field_facebook.value }}" target="_blank">Facebook</a>
 										{% endif %}
 
-										{% if row._entity.field_instagram is defined and row._entity.field_instagram.value %}
-											<a href="{{ row._entity.field_instagram.value }}" target="_blank">Instagram</a>
+										{% if docente.field_instagram.value %}
+											<a href="{{ docente.field_instagram.value }}" target="_blank">Instagram</a>
 										{% endif %}
 									</div>
 
-									{% if row._entity.field_web is defined and row._entity.field_web.value %}
-										<a href="{{ row._entity.field_web.value }}" target="_blank" class="du-link-external">{{ row._entity.field_web.value }}</a>
+									{% if docente.field_pagina_web.value %}
+										<a href="{{ docente.field_pagina_web.value }}" target="_blank" class="du-link-external">{{ docente.field_pagina_web.value }}</a>
 									{% endif %}
 								</div>
 							</div>
@@ -186,7 +184,7 @@
 						<section class="du-modal__section">
 							<h4 class="du-modal__section-title">Perfil profesional</h4>
 							<div class="du-modal__bio">
-								{{ row._entity.field_perfil_profesional.value|raw }}
+								{{ docente.field_perfil_profesional.value }}
 							</div>
 						</section>
 
