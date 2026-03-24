@@ -19,7 +19,6 @@ function derma_theme_preprocess_node(&$variables) {
 
   foreach ($node->get('field_docentes')->referencedEntities() as $docente) {
 
-    // buscar programas del docente
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'programa')
       ->condition('status', 1)
@@ -45,7 +44,7 @@ function derma_theme_preprocess_node(&$variables) {
     $imagen = '';
     if ($docente->hasField('field_foto_docente') && !$docente->get('field_foto_docente')->isEmpty()) {
       $file = $docente->get('field_foto_docente')->entity;
-      $imagen = file_create_url($file->getFileUri());
+      $imagen = \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
     }
 
     $docentes_programa[] = [
