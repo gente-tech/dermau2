@@ -56,7 +56,7 @@
               <div class="du-card__diplomat-content">
                 <div class="du-card-docente__top">
                   <div class="du-card-docente__image-wrap du-card__diplomat-image-container">
-                    {% if docente and docente.hasField('field_foto') and docente.field_foto_docente.entity %}
+                    {% if docente and docente.hasField('field_foto_docente') and docente.field_foto_docente.entity %}
                       <img src="{{ file_url(docente.field_foto_docente.entity.uri.value) }}" alt="{{ nombre }}" class="du-card__diplomat-image">
                     {% endif %}
                   </div>
