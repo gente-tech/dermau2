@@ -48,10 +48,9 @@
     max-width: 350px;
     align-items: center;
 }
-
-
-
-
+.du-convenio-block__tag span:nth-of-type(2) {
+    flex:1;
+}
 
 .du-agreements[data-active="true"] .swiper-slide-active {
     border-bottom: 5px solid #60e0ff;
