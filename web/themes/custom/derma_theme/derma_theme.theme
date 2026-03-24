@@ -3,9 +3,6 @@
 use Drupal\node\Entity\Node;
 use Drupal\Core\Form\FormStateInterface;
 
-/**
- * Implements hook_preprocess_node().
- */
 function derma_theme_preprocess_node(&$variables) {
 
   if ($variables['node']->bundle() !== 'programa') {
@@ -15,7 +12,6 @@ function derma_theme_preprocess_node(&$variables) {
   $node = $variables['node'];
 
   if (!$node->hasField('field_docentes') || $node->get('field_docentes')->isEmpty()) {
-    $variables['docentes_programa'] = [];
     return;
   }
 
@@ -23,6 +19,7 @@ function derma_theme_preprocess_node(&$variables) {
 
   foreach ($node->get('field_docentes')->referencedEntities() as $docente) {
 
+    // buscar programas del docente
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'programa')
       ->condition('status', 1)
@@ -33,20 +30,29 @@ function derma_theme_preprocess_node(&$variables) {
 
     $programas = [];
 
-    if ($nids) {
-      $nodes = Node::loadMultiple($nids);
+    if (!empty($nids)) {
+      $programa_nodes = \Drupal\node\Entity\Node::loadMultiple($nids);
 
-      foreach ($nodes as $programa) {
-        $programas[] = (object)[
-          'entity' => $programa
+      foreach ($programa_nodes as $programa) {
+        $programas[] = [
+          'titulo' => $programa->label(),
+          'url' => $programa->toUrl()->toString(),
         ];
       }
     }
 
-    $docentes_programa[] = (object)[
-      'entity' => $docente,
-      'programas_vinculados' => $programas,
-      'field_programas_vinculados' => $programas
+    // imagen docente
+    $imagen = '';
+    if ($docente->hasField('field_foto_docente') && !$docente->get('field_foto_docente')->isEmpty()) {
+      $file = $docente->get('field_foto_docente')->entity;
+      $imagen = file_create_url($file->getFileUri());
+    }
+
+    $docentes_programa[] = [
+      'nombre' => $docente->label(),
+      'url' => $docente->toUrl()->toString(),
+      'imagen' => $imagen,
+      'programas' => $programas,
     ];
   }
 
