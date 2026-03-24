@@ -27,18 +27,34 @@ function derma_theme_preprocess_node(&$variables) {
 
     $nids = $query->execute();
 
-    $programas = [];
-
-    if (!empty($nids)) {
-      $programa_nodes = \Drupal\node\Entity\Node::loadMultiple($nids);
-
-      foreach ($programa_nodes as $programa) {
-        $programas[] = [
-          'titulo' => $programa->label(),
-          'url' => $programa->toUrl()->toString(),
-        ];
+    $tipo_programa_clase = '';
+    $tipo_programa_nombre = '';
+    
+    if (!$node->get('field_tipo_de_programa')->isEmpty()) {
+      $tipo = $node->get('field_tipo_de_programa')->entity;
+    
+      if ($tipo) {
+        $tipo_programa_nombre = $tipo->label();
+    
+        $slug = strtolower(trim($tipo_programa_nombre));
+    
+        if (strpos($slug, 'diplom') !== false) {
+          $tipo_programa_clase = 'tag--diplomado';
+        }
+        elseif (strpos($slug, 'curso') !== false) {
+          $tipo_programa_clase = 'tag--curso';
+        }
+        elseif (strpos($slug, 'especial') !== false) {
+          $tipo_programa_clase = 'tag--especial';
+        }
       }
     }
+    
+    $programas[] = [
+      'tipo' => $tipo_programa_nombre,
+      'tipo_clase' => $tipo_programa_clase,
+      'titulo' => $node->label(),
+    ];
 
     // imagen docente
     $imagen = '';
