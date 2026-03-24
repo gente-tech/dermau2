@@ -106,6 +106,33 @@
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 
+  /* ================================
+     SWIPER LOGOS UNIVERSIDADES
+  ==================================*/
+  const swConvenios = new Swiper('#sw-convenio-agreements', {
+    slidesPerView: 2,
+    spaceBetween: 20,
+    loop: false,
+    navigation: {
+      nextEl: '#sw-convenio-agreements .swiper-button-next',
+      prevEl: '#sw-convenio-agreements .swiper-button-prev',
+    },
+    breakpoints: {
+      768: {
+        slidesPerView: 3,
+        spaceBetween: 30
+      },
+      1024: {
+        slidesPerView: 4,
+        spaceBetween: 40
+      }
+    }
+  });
+
+
+  /* ================================
+     TABS CONVENIOS
+  ==================================*/
   const tabs = document.querySelectorAll('.du-agreements__slide');
   const blocks = document.querySelectorAll('.du-convenio-block');
 
@@ -125,6 +152,10 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   });
 
+
+  /* ================================
+     SWIPER DOCENTES
+  ==================================*/
   document.querySelectorAll('.du-swiper-expert .swiper').forEach(sw => {
     new Swiper(sw, {
       slidesPerView: 1,
