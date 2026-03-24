@@ -51,7 +51,6 @@ class ConveniosBlockPage extends BlockBase {
 
           if ($programa->hasField('field_tipo_de_programa') && !$programa->get('field_tipo_de_programa')->isEmpty()) {
             $tipo = $programa->get('field_tipo_de_programa')->entity->label();
-
             $tipo_clase = 'tag--' . strtolower(str_replace(' ', '-', $tipo));
           }
 
@@ -65,124 +64,110 @@ class ConveniosBlockPage extends BlockBase {
       }
 
       // ========================
-// DOCENTES
-// ========================
-$docentes = [];
+      // DOCENTES
+      // ========================
+      $docentes = [];
 
-if (!$convenio->get('field_docentes_vinculados')->isEmpty()) {
-  foreach ($convenio->get('field_docentes_vinculados')->referencedEntities() as $docente) {
+      if (!$convenio->get('field_docentes_vinculados')->isEmpty()) {
+        foreach ($convenio->get('field_docentes_vinculados')->referencedEntities() as $docente) {
 
-    // ======================
-    // DESCRIPCION
-    // ======================
-    $descripcion = '';
-    if ($docente->hasField('body') && !$docente->get('body')->isEmpty()) {
-      $descripcion = $docente->get('body')->value;
-    }
+          // descripcion
+          $descripcion = '';
+          if ($docente->hasField('field_perfil_profesional') && !$docente->get('field_perfil_profesional')->isEmpty()) {
+            $descripcion = $docente->get('field_perfil_profesional')->value;
+          }
 
-    // ======================
-    // IMAGEN
-    // ======================
-    $imagen = '';
-    if ($docente->hasField('field_imagen') && !$docente->get('field_imagen')->isEmpty()) {
-      $imagen = \Drupal::service('file_url_generator')
-        ->generateAbsoluteString(
-          $docente->get('field_imagen')->entity->getFileUri()
-        );
-    }
+          // imagen
+          $imagen = '';
+          if ($docente->hasField('field_foto_docente') && !$docente->get('field_foto_docente')->isEmpty()) {
+            $imagen = \Drupal::service('file_url_generator')
+              ->generateAbsoluteString(
+                $docente->get('field_foto_docente')->entity->getFileUri()
+              );
+          }
 
-    // ======================
-    // ESPECIALIDAD (cargo)
-    // ======================
-    $cargo = '';
-    if ($docente->hasField('field_especialidad') && !$docente->get('field_especialidad')->isEmpty()) {
-      $cargo = $docente->get('field_especialidad')->value;
-    }
+          // especialidad
+          $cargo = '';
+          if ($docente->hasField('field_especialidad') && !$docente->get('field_especialidad')->isEmpty()) {
+            $cargo = $docente->get('field_especialidad')->entity->label();
+          }
 
-    // ======================
-    // UNIVERSIDAD
-    // ======================
-    $universidad = '';
-    if ($docente->hasField('field_universidad') && !$docente->get('field_universidad')->isEmpty()) {
-      $universidad = $docente->get('field_universidad')->entity->label();
-    }
+          // universidad
+          $universidad = '';
+          if ($docente->hasField('field_universidad') && !$docente->get('field_universidad')->isEmpty()) {
+            $universidad = $docente->get('field_universidad')->entity->label();
+          }
 
-    // ======================
-    // CIUDAD
-    // ======================
-    $ciudad = '';
-    if ($docente->hasField('field_ciudad') && !$docente->get('field_ciudad')->isEmpty()) {
-      $ciudad = $docente->get('field_ciudad')->value;
-    }
+          // ciudad
+          $ciudad = '';
+          if ($docente->hasField('field_ciudad') && !$docente->get('field_ciudad')->isEmpty()) {
+            $ciudad = $docente->get('field_ciudad')->entity->label();
+          }
 
-    // ======================
-    // EMAIL
-    // ======================
-    $email = '';
-    if ($docente->hasField('field_email') && !$docente->get('field_email')->isEmpty()) {
-      $email = $docente->get('field_email')->value;
-    }
+          // email
+          $email = '';
+          if ($docente->hasField('field_correo_electronico') && !$docente->get('field_correo_electronico')->isEmpty()) {
+            $email = $docente->get('field_correo_electronico')->value;
+          }
 
-    // ======================
-    // REDES
-    // ======================
-    $linkedin = !$docente->get('field_linkedin')->isEmpty()
-      ? $docente->get('field_linkedin')->uri
-      : '';
+          // redes
+          $linkedin = !$docente->get('field_linkedin')->isEmpty()
+            ? $docente->get('field_linkedin')->uri
+            : '';
 
-    $facebook = !$docente->get('field_facebook')->isEmpty()
-      ? $docente->get('field_facebook')->uri
-      : '';
+          $facebook = !$docente->get('field_facebook')->isEmpty()
+            ? $docente->get('field_facebook')->uri
+            : '';
 
-    $instagram = !$docente->get('field_instagram')->isEmpty()
-      ? $docente->get('field_instagram')->uri
-      : '';
+          $instagram = !$docente->get('field_instagram')->isEmpty()
+            ? $docente->get('field_instagram')->uri
+            : '';
 
-    $web = !$docente->get('field_web')->isEmpty()
-      ? $docente->get('field_web')->uri
-      : '';
+          // pagina web
+          $web = '';
+          if ($docente->hasField('field_pagina_web') && !$docente->get('field_pagina_web')->isEmpty()) {
+            $web = $docente->get('field_pagina_web')->value;
+          }
 
-    // ======================
-    // PROGRAMAS DEL DOCENTE
-    // ======================
-    $programas_docente = [];
+          // PROGRAMAS DOCENTE
+          $programas_docente = [];
 
-    if ($docente->hasField('field_programas_vinculados') && !$docente->get('field_programas_vinculados')->isEmpty()) {
-      foreach ($docente->get('field_programas_vinculados')->referencedEntities() as $prog) {
+          if ($docente->hasField('field_programas_vinculados') && !$docente->get('field_programas_vinculados')->isEmpty()) {
+            foreach ($docente->get('field_programas_vinculados')->referencedEntities() as $prog) {
 
-        $tipo = '';
-        $tipo_clase = 'tag--diplomado';
+              $tipo = '';
+              $tipo_clase = 'tag--diplomado';
 
-        if ($prog->hasField('field_tipo_de_programa') && !$prog->get('field_tipo_de_programa')->isEmpty()) {
-          $tipo = $prog->get('field_tipo_de_programa')->entity->label();
-          $tipo_clase = 'tag--' . strtolower(str_replace(' ', '-', $tipo));
+              if ($prog->hasField('field_tipo_de_programa') && !$prog->get('field_tipo_de_programa')->isEmpty()) {
+                $tipo = $prog->get('field_tipo_de_programa')->entity->label();
+                $tipo_clase = 'tag--' . strtolower(str_replace(' ', '-', $tipo));
+              }
+
+              $programas_docente[] = [
+                'titulo' => $prog->label(),
+                'tipo' => $tipo,
+                'tipo_clase' => $tipo_clase,
+              ];
+            }
+          }
+
+          $docentes[] = [
+            'id' => $docente->id(),
+            'title' => $docente->label(),
+            'descripcion' => $descripcion,
+            'image' => $imagen,
+            'cargo' => $cargo,
+            'universidad' => $universidad,
+            'ciudad' => $ciudad,
+            'email' => $email,
+            'linkedin' => $linkedin,
+            'facebook' => $facebook,
+            'instagram' => $instagram,
+            'web' => $web,
+            'programas' => $programas_docente,
+          ];
         }
-
-        $programas_docente[] = [
-          'titulo' => $prog->label(),
-          'tipo' => $tipo,
-          'tipo_clase' => $tipo_clase,
-        ];
       }
-    }
-
-    $docentes[] = [
-      'id' => $docente->id(),
-      'title' => $docente->label(),
-      'descripcion' => $descripcion,
-      'image' => $imagen,
-      'cargo' => $cargo,
-      'universidad' => $universidad,
-      'ciudad' => $ciudad,
-      'email' => $email,
-      'linkedin' => $linkedin,
-      'facebook' => $facebook,
-      'instagram' => $instagram,
-      'web' => $web,
-      'programas' => $programas_docente,
-    ];
-  }
-}
 
       // ========================
       // LOGO
