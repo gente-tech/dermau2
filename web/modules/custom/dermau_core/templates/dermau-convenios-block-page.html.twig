@@ -17,7 +17,7 @@
         {% for convenio in convenios %}
         <div class="swiper-slide du-agreements__slide {% if loop.first %}is-active{% endif %}"
              data-target="block-{{ convenio.id }}">
-            <img src="{{ convenio.logo }}" alt="{{ convenio.title }}">
+          <img src="{{ convenio.logo }}" alt="{{ convenio.title }}">
         </div>
         {% endfor %}
       </div>
@@ -32,6 +32,7 @@
 <section class="du-convenio-block"
          id="block-{{ convenio.id }}"
          {% if not loop.first %}style="display:none"{% endif %}>
+
   <div class="du-convenio-block__container">
 
     <div class="du-convenio-block__header">
@@ -67,6 +68,7 @@
           {% for docente in convenio.docentes %}
           <div class="swiper-slide">
             <article class="du-card__expert">
+
               <div class="du-card__expert-main">
                 <img src="{{ docente.image }}" class="du-card__expert-img">
                 <div class="du-card__expert-intro">
@@ -86,6 +88,7 @@
               <div class="du-card__expert-footer">
                 <a href="{{ docente.url }}" class="du-link-more">Ver detalle</a>
               </div>
+
             </article>
           </div>
           {% endfor %}
@@ -95,6 +98,7 @@
         <div class="swiper-button-next"></div>
         <div class="swiper-button-prev"></div>
         <div class="swiper-pagination"></div>
+
       </div>
     </div>
 
@@ -106,33 +110,19 @@
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 
-  /* ================================
-     SWIPER LOGOS UNIVERSIDADES
-  ==================================*/
-  const swConvenios = new Swiper('#sw-convenio-agreements', {
+  new Swiper('#sw-convenio-agreements', {
     slidesPerView: 2,
     spaceBetween: 20,
-    loop: false,
     navigation: {
       nextEl: '#sw-convenio-agreements .swiper-button-next',
       prevEl: '#sw-convenio-agreements .swiper-button-prev',
     },
     breakpoints: {
-      768: {
-        slidesPerView: 3,
-        spaceBetween: 30
-      },
-      1024: {
-        slidesPerView: 4,
-        spaceBetween: 40
-      }
+      768: { slidesPerView: 3 },
+      1024: { slidesPerView: 4 }
     }
   });
 
-
-  /* ================================
-     TABS CONVENIOS
-  ==================================*/
   const tabs = document.querySelectorAll('.du-agreements__slide');
   const blocks = document.querySelectorAll('.du-convenio-block');
 
@@ -148,14 +138,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
       const active = document.getElementById(target);
       if (active) active.style.display = "block";
-
     });
   });
 
-
-  /* ================================
-     SWIPER DOCENTES
-  ==================================*/
   document.querySelectorAll('.du-swiper-expert .swiper').forEach(sw => {
     new Swiper(sw, {
       slidesPerView: 1,
@@ -169,10 +154,7 @@ document.addEventListener("DOMContentLoaded", function() {
         clickable: true
       },
       breakpoints: {
-        1024: {
-          slidesPerView: 4,
-          spaceBetween: 30
-        }
+        1024: { slidesPerView: 4 }
       }
     });
   });
