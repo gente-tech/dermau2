@@ -326,38 +326,6 @@ document.addEventListener("DOMContentLoaded", function() {
   /* =========================
      MODAL DOCENTES
   ========================= */
-  document.querySelectorAll('.du-open-modal').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-
-      const target = this.dataset.target;
-      const modal = document.getElementById(target);
-
-      if (modal) {
-        modal.classList.add('active');   // <-- IMPORTANTE
-        document.body.classList.add('du-modal-open');
-      }
-    });
-  });
-
-  document.querySelectorAll('.du-modal__close, .du-modal__overlay').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const modal = this.closest('.du-modal');
-      if (modal) {
-        modal.classList.remove('active');
-        document.body.classList.remove('du-modal-open');
-      }
-    });
-  });
-
-  document.addEventListener('keydown', function(e){
-    if(e.key === "Escape"){
-      document.querySelectorAll('.du-modal.active').forEach(modal=>{
-        modal.classList.remove('active');
-        document.body.classList.remove('du-modal-open');
-      });
-    }
-  });
 
 });
 </script>
