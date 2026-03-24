@@ -64,16 +64,20 @@ function derma_theme_preprocess_node(&$variables) {
     }
 
     $docentes_programa[] = [
-      'nombre' => $docente->label(),
-      'url' => $docente->toUrl()->toString(),
-      'imagen' => $imagen,
-      'especialidad' => !empty($docente->get('field_especialidad')->entity)
-          ? $docente->get('field_especialidad')->entity->label()
-          : '',
-      'universidad' => $docente->get('field_universidad')->entity?->label() ?? '',
-      'perfil' => $docente->get('field_perfil_profesional')->value ?? '',
-      'programas' => $programas,
-    ];
+    'nombre' => $docente->label(),
+    'imagen' => $imagen,
+    'especialidad' => !empty($docente->get('field_especialidad')->entity)
+      ? $docente->get('field_especialidad')->entity->label()
+      : '',
+    'ciudad' => $docente->get('field_ciudad')->value ?? '',
+    'email' => $docente->get('field_correo_electronico')->value ?? '',
+    'linkedin' => $docente->get('field_linkedin')->uri ?? '',
+    'facebook' => $docente->get('field_facebook')->uri ?? '',
+    'instagram' => $docente->get('field_instagram')->uri ?? '',
+    'web' => $docente->get('field_pagina_web')->value ?? '',
+    'perfil' => $docente->get('field_perfil_profesional')->value ?? '',
+    'programas' => $programas,
+  ];
   }
 
   $variables['docentes_programa'] = $docentes_programa;
