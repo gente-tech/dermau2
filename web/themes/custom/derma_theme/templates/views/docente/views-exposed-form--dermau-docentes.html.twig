@@ -1,25 +1,5 @@
 {{ attach_library('derma_theme/docentes-filter') }}
 
-<div class="du-docentes-exposed-form du-docentes-filters">
-
-  {% if form.sort_by is defined %}
-    {{ form.sort_by }}
-  {% endif %}
-
-  {% if form.sort_order is defined %}
-    {{ form.sort_order }}
-  {% endif %}
-
-  {% if form.items_per_page is defined %}
-    {{ form.items_per_page }}
-  {% endif %}
-
-  {% if form.offset is defined %}
-    {{ form.offset }}
-  {% endif %}
-
-</div>
-
 
 <section class="du-seach">
 	<div class="du-seach__container">
