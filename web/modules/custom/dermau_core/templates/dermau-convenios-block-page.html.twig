@@ -30,8 +30,9 @@
         </div>
       </section>
 
+
       {% for convenio in convenios %}
-      <section class="du-convenio-block" id="block-{{ convenio.id }}">
+      <section class="du-convenio-block" id="block-{{ convenio.id }}" {% if not loop.first %}style="display:none"{% endif %}>
         <div class="du-convenio-block__container">
           <div class="du-convenio-block__header">
             <h2 class="du-convenio-block__title">
@@ -51,9 +52,9 @@
           <div class="du-convenio-block__tags">
 
             {% for programa in convenio.programas %}
-            <div class="du-convenio-block__tag"> 
-              <span class="tag tag--diplomado">Programa</span>  
-              <span>{{ programa.title }}</span> 
+            <div class="du-convenio-block__tag">
+              <span class="tag tag--diplomado">Programa</span>
+              <span>{{ programa.title }}</span>
             </div>
             {% endfor %}
 
@@ -63,13 +64,13 @@
           
           <div class="du-swiper-expert">
             <div class="swiper" id="sw-convenio-experto-{{ convenio.id }}">
-              <div class="swiper-wrapper" id="card__expert">
+              <div class="swiper-wrapper" id="card__expert-{{ convenio.id }}">
 
                 {% for docente in convenio.docentes %}
                 <div class="swiper-slide">
                   <div class="du-expert-card">
                     <h3>{{ docente.title }}</h3>
-                    <p>{{ docente.body|striptags|truncate(140) }}</p>
+                    <p>{{ docente.body }}</p>
                   </div>
                 </div>
                 {% endfor %}
