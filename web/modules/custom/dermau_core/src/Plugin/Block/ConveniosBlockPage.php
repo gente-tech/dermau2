@@ -30,7 +30,6 @@ class ConveniosBlockPage extends BlockBase {
       ->condition('type', 'convenio')
       ->condition('status', 1)
       ->accessCheck(FALSE)
-      ->sort('field_orden_visualizacion.value', 'ASC')
       ->execute();
 
     $convenios = $storage->loadMultiple($ids);
@@ -39,12 +38,10 @@ class ConveniosBlockPage extends BlockBase {
 
     foreach ($convenios as $convenio) {
 
-      // Programas relacionados directamente
+      // Programas
       $programas = [];
       if (!$convenio->get('field_programas_vinculados_conve')->isEmpty()) {
-        $programas_entities = $convenio->get('field_programas_vinculados_conve')->referencedEntities();
-
-        foreach ($programas_entities as $programa) {
+        foreach ($convenio->get('field_programas_vinculados_conve')->referencedEntities() as $programa) {
           $programas[] = [
             'id' => $programa->id(),
             'title' => $programa->label(),
@@ -52,13 +49,10 @@ class ConveniosBlockPage extends BlockBase {
         }
       }
 
-      // Docentes relacionados directamente
+      // Docentes
       $docentes = [];
       if (!$convenio->get('field_docentes_vinculados')->isEmpty()) {
-        $docentes_entities = $convenio->get('field_docentes_vinculados')->referencedEntities();
-
-        foreach ($docentes_entities as $docente) {
-
+        foreach ($convenio->get('field_docentes_vinculados')->referencedEntities() as $docente) {
           $docentes[] = [
             'id' => $docente->id(),
             'title' => $docente->label(),
