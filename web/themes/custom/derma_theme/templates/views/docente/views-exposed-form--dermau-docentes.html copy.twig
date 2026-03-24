@@ -1,0 +1,49 @@
+{{ attach_library('derma_theme/docentes-filter') }}
+
+<div class="du-docentes-exposed-form du-docentes-filters">
+
+  <div>
+    {% if form.title is defined %}
+      {{ form.title }}
+    {% endif %}
+  </div>
+
+  <div>
+    {% if form.field_universidad_target_id is defined %}
+      {{ form.field_universidad_target_id }}
+    {% endif %}
+  </div>
+
+  <div>
+    {% if form.tipo_programa_docente is defined %}
+      {{ form.tipo_programa_docente }}
+    {% elseif form.field_tipo_de_programa_target_id is defined %}
+      {{ form.field_tipo_de_programa_target_id }}
+    {% endif %}
+  </div>
+
+  <div style="display:none;">
+    {{ form.actions }}
+  </div>
+
+  {{ form.form_build_id }}
+  {{ form.form_token }}
+  {{ form.form_id }}
+
+  {% if form.sort_by is defined %}
+    {{ form.sort_by }}
+  {% endif %}
+
+  {% if form.sort_order is defined %}
+    {{ form.sort_order }}
+  {% endif %}
+
+  {% if form.items_per_page is defined %}
+    {{ form.items_per_page }}
+  {% endif %}
+
+  {% if form.offset is defined %}
+    {{ form.offset }}
+  {% endif %}
+
+</div>
