@@ -1,23 +1,177 @@
 <?php
 
-function derma_theme_preprocess_node(&$variables)
-{
+use Drupal\node\Entity\Node;
+use Drupal\Core\Form\FormStateInterface;
+
+function derma_theme_preprocess_node(&$variables) {
+
+  if ($variables['node']->bundle() !== 'programa') {
+    return;
+  }
+
   $node = $variables['node'];
 
-  if ($node->bundle() === 'programa') {
+  if (!$node->hasField('field_docentes') || $node->get('field_docentes')->isEmpty()) {
+    return;
+  }
+
+  $docentes_programa = [];
+
+  foreach ($node->get('field_docentes')->referencedEntities() as $docente) {
+
+    // =============================
+    // ESPECIALIDAD (taxonomy)
+    // =============================
+    $especialidad = '';
+    if (!$docente->get('field_especialidad')->isEmpty()) {
+      $especialidad = $docente->get('field_especialidad')->entity->label();
+    }
+
+    // =============================
+    // UNIVERSIDAD (taxonomy)
+    // =============================
+    $universidad = '';
+    if (!$docente->get('field_universidad')->isEmpty()) {
+      $universidad = $docente->get('field_universidad')->entity->label();
+    }
+
+    // =============================
+    // CIUDAD (taxonomy)
+    // =============================
+    $ciudad = '';
+    if (!$docente->get('field_ciudad')->isEmpty()) {
+      $ciudad = $docente->get('field_ciudad')->entity->label();
+    }
+
+    // =============================
+    // PERFIL
+    // =============================
+    $perfil = '';
+    if (!$docente->get('field_perfil_profesional')->isEmpty()) {
+      $perfil = $docente->get('field_perfil_profesional')->value;
+    }
+
+    // =============================
+    // EMAIL
+    // =============================
+    $email = '';
+    if (!$docente->get('field_correo_electronico')->isEmpty()) {
+      $email = $docente->get('field_correo_electronico')->value;
+    }
+
+    // =============================
+    // REDES
+    // =============================
+    $linkedin = !$docente->get('field_linkedin')->isEmpty() ? $docente->get('field_linkedin')->uri : '';
+    $facebook = !$docente->get('field_facebook')->isEmpty() ? $docente->get('field_facebook')->uri : '';
+    $instagram = !$docente->get('field_instagram')->isEmpty() ? $docente->get('field_instagram')->uri : '';
+    $web = !$docente->get('field_pagina_web')->isEmpty() ? $docente->get('field_pagina_web')->uri : '';
+
+    // =============================
+    // IMAGEN
+    // =============================
+    $imagen = '';
+
+    if ($docente->hasField('field_foto_docente') && !$docente->get('field_foto_docente')->isEmpty()) {
+      $file = $docente->get('field_foto_docente')->entity;
+      $imagen = \Drupal::service('file_url_generator')
+        ->generateAbsoluteString($file->getFileUri());
+    }
+
+    // =============================
+    // PROGRAMAS RELACIONADOS
+    // =============================
     $query = \Drupal::entityQuery('node')
-      ->condition('type', 'docente')
-      ->condition('field_programas_vinculados', $node->id())
+      ->condition('type', 'programa')
+      ->condition('status', 1)
+      ->condition('field_docentes.target_id', $docente->id())
       ->accessCheck(TRUE);
 
     $nids = $query->execute();
 
-    if ($nids) {
-      $docentes = \Drupal::entityTypeManager()
-        ->getStorage('node')
-        ->loadMultiple($nids);
+    $programas = [];
 
-      $variables['docentes_programa'] = $docentes;
+    if (!empty($nids)) {
+      $nodes = \Drupal\node\Entity\Node::loadMultiple($nids);
+
+      foreach ($nodes as $programa) {
+
+        $tipo_programa_nombre = '';
+        $tipo_programa_clase = '';
+
+        if (!$programa->get('field_tipo_de_programa')->isEmpty()) {
+          $tipo = $programa->get('field_tipo_de_programa')->entity;
+
+          if ($tipo) {
+            $tipo_programa_nombre = $tipo->label();
+
+            $slug = strtolower($tipo_programa_nombre);
+
+            if (strpos($slug, 'diplom') !== FALSE) {
+              $tipo_programa_clase = 'tag--diplomado';
+            }
+            elseif (strpos($slug, 'curso') !== FALSE) {
+              $tipo_programa_clase = 'tag--curso';
+            }
+            elseif (strpos($slug, 'especial') !== FALSE) {
+              $tipo_programa_clase = 'tag--especial';
+            }
+          }
+        }
+
+        $programas[] = [
+          'titulo' => $programa->label(),
+          'tipo' => $tipo_programa_nombre,
+          'tipo_clase' => $tipo_programa_clase,
+        ];
+      }
+    }
+
+    // =============================
+    // ARRAY FINAL (NO SE ELIMINA NADA)
+    // =============================
+    $docentes_programa[] = [
+      'nombre' => $docente->label(),
+      'imagen' => $imagen,
+      'especialidad' => $especialidad,
+      'universidad' => $universidad,
+      'ciudad' => $ciudad,
+      'email' => $email,
+      'linkedin' => $linkedin,
+      'facebook' => $facebook,
+      'instagram' => $instagram,
+      'web' => $web,
+      'perfil' => $perfil,
+      'programas' => $programas,
+    ];
+  }
+
+  $variables['docentes_programa'] = $docentes_programa;
+}
+
+function derma_theme_preprocess_field(&$variables) {
+
+  if ($variables['element']['#field_name'] !== 'field_docentes') {
+    return;
+  }
+
+  $node = $variables['element']['#object'];
+
+  if ($node->bundle() !== 'programa') {
+    return;
+  }
+
+  $docentes_programas = \Drupal::service('renderer')
+    ->renderPlain([
+      '#theme' => 'nothing'
+    ]);
+
+  foreach ($variables['items'] as &$item) {
+    if (!empty($item['content']['#node'])) {
+      $docente = $item['content']['#node'];
+      if (isset($variables['docentes_programas'][$docente->id()])) {
+        $docente->programas_vinculados = $variables['docentes_programas'][$docente->id()];
+      }
     }
   }
 }
@@ -57,4 +211,93 @@ function derma_theme_preprocess_views_view(array &$variables)
 
     unset($variables['header']);
   }
+}
+
+function derma_theme_preprocess_views_view_unformatted(array &$variables) {
+  $view = $variables['view'];
+
+  if ($view->id() === 'dermau_docentes' && $view->current_display === 'page_1') {
+    foreach ($variables['rows'] as $index => &$row) {
+      $result_row = $row['content']['#row'] ?? NULL;
+
+      if (!$result_row || empty($result_row->_entity)) {
+        continue;
+      }
+
+      $docente = $result_row->_entity;
+      $programas = [];
+
+      $query = \Drupal::entityTypeManager()
+        ->getStorage('node')
+        ->getQuery()
+        ->accessCheck(TRUE)
+        ->condition('type', 'programa')
+        ->condition('status', 1)
+        ->condition('field_docentes.target_id', $docente->id())
+        ->sort('created', 'DESC');
+
+      $nids = $query->execute();
+
+      if (!empty($nids)) {
+        $nodes = \Drupal\node\Entity\Node::loadMultiple($nids);
+
+        foreach ($nodes as $node) {
+          $tipo_programa = NULL;
+          $tipo_programa_nombre = '';
+          $tipo_programa_color = '';
+
+          if (!$node->get('field_tipo_de_programa')->isEmpty()) {
+            $tipo_programa = $node->get('field_tipo_de_programa')->entity;
+
+            if ($tipo_programa) {
+              $tipo_programa_nombre = $tipo_programa->label();
+
+              if ($tipo_programa->hasField('field_id_color') && !$tipo_programa->get('field_id_color')->isEmpty()) {
+                $tipo_programa_color = $tipo_programa->get('field_id_color')->value;
+              }
+            }
+          }
+          $programas[] = [
+            'nid' => $node->id(),
+            'title' => $node->label(),
+            'url' => $node->toUrl()->toString(),
+            'tipo_programa' => $tipo_programa_nombre,
+            'tipo_programa_color' => $tipo_programa_color,
+          ];
+        }
+      }
+
+      $row['docente_entity'] = $docente;
+      $row['programas_relacionados'] = $programas;
+      $row['docente_url'] = $docente->toUrl()->toString();
+    }
+  }
+}
+
+function derma_theme_form_views_exposed_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  $view = $form_state->get('view');
+
+  if (!$view || $view->id() !== 'dermau_docentes' || $view->current_display !== 'page_1') {
+    return;
+  }
+
+  $options = ['All' => 'Todos los programas'];
+
+  $terms = \Drupal::entityTypeManager()
+    ->getStorage('taxonomy_term')
+    ->loadTree('tipos_de_programas');
+
+  foreach ($terms as $term) {
+    $options[$term->tid] = $term->name;
+  }
+
+  $selected = \Drupal::request()->query->get('tipo_programa_docente', 'All');
+
+  $form['tipo_programa_docente'] = [
+    '#type' => 'select',
+    '#options' => $options,
+    '#default_value' => $selected,
+    '#empty_option' => 'Todos los programas',
+    '#empty_value' => 'All',
+  ];
 }

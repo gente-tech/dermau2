@@ -32,3 +32,10 @@ programas-filter:
   dependencies:
     - core/drupal
     - core/once
+
+docentes-filter:
+  js:
+    assets/js/docentes-filter.js: {}
+  dependencies:
+    - core/drupal
+    - core/once

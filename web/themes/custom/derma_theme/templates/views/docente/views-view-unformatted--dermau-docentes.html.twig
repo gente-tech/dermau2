@@ -1,0 +1,116 @@
+{% set hay_filtros = false %}
+
+{% set universidad = view.exposed_raw_input.field_universidad_principal_target_id|default('') %}
+{% set tipo_programa = view.exposed_raw_input.field_tipo_de_programa_target_id|default(view.exposed_raw_input.tipo_programa_docente|default('')) %}
+{% set title = view.exposed_raw_input.title|default('') %}
+
+{% if title|trim != '' %}
+  {% set hay_filtros = true %}
+{% endif %}
+
+{% if universidad != '' and universidad != 'All' %}
+  {% set hay_filtros = true %}
+{% endif %}
+
+{% if tipo_programa != '' and tipo_programa != 'All' %}
+  {% set hay_filtros = true %}
+{% endif %}
+
+<section class="du-generic-swiper du-swiper-program">
+  <div class="du-generic-swiper__container du-swiper-program__container">
+    <div class="du-generic-swiper__header">
+      {% if hay_filtros %}
+        <h3>Mostrando <span>{{ view.total_rows }} {{ view.total_rows == 1 ? 'Docente' : 'Docentes' }}</span></h3>
+      {% else %}
+        <h3>Docentes <span>Recomendados</span></h3>
+      {% endif %}
+    </div>
+
+    {% if rows %}
+      <div class="du-programs-container">
+        {% for row in rows %}
+          {% set docente = row.docente_entity %}
+          {% set programas = row.programas_relacionados|default([]) %}
+          {% set docente_url = row.docente_url|default(path('entity.node.canonical', {'node': docente.id()})) %}
+          {% set nombre = docente ? docente.label() : '' %}
+          {% set especialidad = '' %}
+          {% set universidad_label = '' %}
+          {% set perfil = '' %}
+
+          {% if docente and docente.hasField('field_especialidad') and not docente.field_especialidad.isEmpty %}
+            {% set especialidad = docente.field_especialidad.entity ? docente.field_especialidad.entity.label() : docente.field_especialidad.value %}
+          {% endif %}
+
+          {% if docente and docente.hasField('field_universidad_principal') and not docente.field_universidad_principal.isEmpty %}
+            {% set universidad_label = docente.field_universidad_principal.entity ? docente.field_universidad_principal.entity.label() : docente.field_universidad_principal.value %}
+          {% elseif docente and docente.hasField('field_universidad') and not docente.field_universidad.isEmpty %}
+            {% set universidad_label = docente.field_universidad.entity ? docente.field_universidad.entity.label() : docente.field_universidad.value %}
+          {% endif %}
+
+          {% if docente and docente.hasField('field_perfil_profesional') and not docente.field_perfil_profesional.isEmpty %}
+            {% set perfil = docente.field_perfil_profesional.value %}
+          {% endif %}
+
+          <div class="du-programs-item">
+            <article class="du-card__diplomat du-card-docente">
+              <div class="du-card__diplomat-content">
+                <div class="du-card-docente__top">
+                  <div class="du-card-docente__image-wrap du-card__diplomat-image-container">
+                    {% if docente and docente.hasField('field_foto') and docente.field_foto.entity %}
+                      <img src="{{ file_url(docente.field_foto.entity.uri.value) }}" alt="{{ nombre }}" class="du-card__diplomat-image">
+                    {% endif %}
+                  </div>
+
+                  <div class="du-card-docente__heading">
+                    <h3 class="du-card__diplomat-title">{{ nombre }}</h3>
+                    {% if especialidad != '' %}
+                      <p class="du-card__diplomat-description">{{ especialidad }}</p>
+                    {% endif %}
+                  </div>
+                </div>
+
+                <div class="du-card__diplomat-info du-card-docente__info-list">
+                  {% if universidad_label != '' %}
+                    <div class="du-card__diplomat-info-item">
+                      <svg width="15" height="13" viewBox="0 0 15 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.5 1.99457C7.5 1.99457 4 -1.00543 0.5 1.49457V12.4946C4 9.99457 7.5 12.4946 7.5 12.4946M7.5 1.99457C7.5 1.99457 11 -1.00543 14.5 1.49457V12.4946C11 9.99457 7.5 12.4946 7.5 12.4946M7.5 1.99457V12.4946" stroke="#007BE3" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span class="du-card__diplomat-info-text">{{ universidad_label }}</span>
+                    </div>
+                  {% endif %}
+
+                  <div class="du-card__diplomat-info-item du-card-docente__programs-title">
+                    <svg width="15" height="13" viewBox="0 0 15 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M7.5 1.99457C7.5 1.99457 4 -1.00543 0.5 1.49457V12.4946C4 9.99457 7.5 12.4946 7.5 12.4946M7.5 1.99457C7.5 1.99457 11 -1.00543 14.5 1.49457V12.4946C11 9.99457 7.5 12.4946 7.5 12.4946M7.5 1.99457V12.4946" stroke="#007BE3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="du-card__diplomat-info-text">Programas:</span>
+                  </div>
+                </div>
+
+                {% if programas %}
+                  <div class="du-card-docente__programas-tags">
+                    {% for programa in programas %}
+                      <a href="{{ programa.url }}" class="du-card-docente__program-tag du-tag-programa-{{ programa.tipo_programa_color|default('default')|clean_class }}">
+                        {{ programa.title }}
+                      </a>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+
+                {% if perfil != '' %}
+                  <p class="du-card__diplomat-description du-card-docente__bio">{{ perfil|striptags|trim }}</p>
+                {% endif %}
+
+                <a href="{{ docente_url }}" class="du-card__diplomat-btn">Ver detalle</a>
+              </div>
+            </article>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="du-generic-swiper__header">
+        <h3 class="du-programs-message">Ups, no hay resultados <span>por ahora.</span></h3>
+      </div>
+    {% endif %}
+  </div>
+</section>

@@ -8,25 +8,24 @@
           <div class="swiper" id="bloque-programa-swiper">
             <div class="swiper-wrapper">
                 
-                {% for i in 1..4 %}
+                {% for programa in programas %}
 
                   <div class="swiper-slide">
                     <article class="du-card__diplomat">
                       <div class="du-card__diplomat-image-container">
-                        <span class="du-card__diplomat-badge tag" data-tag="1" >Diplomado</span>
+                        <span class="du-card__diplomat-badge tag" data-tag="{{ programa.tipo_programa_id }}" >{{ programa.tipo_programa }}</span>
                         <img
-                          src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=400"
-                          alt="Curso"
+                          src="{{ programa.image_url }}"
+                          alt="{{ programa.image_alt }}"
                           class="du-card__diplomat-image"
                         />
                       </div>
                       <div class="du-card__diplomat-content">
                         <h3 class="du-card__diplomat-title">
-                          Diplomado en dermoscopia facial estándar y avanzada
+                          {{ programa.title }}
                         </h3>
                         <p class="du-card__diplomat-description">
-                          Aprende las técnicas más avanzadas de dermoscopia digital
-                          para el diagnóstico precoz de lesiones cutáneas.
+                          {{ programa.descripcion_corta }}
                         </p>
 
                         <div class="du-card__diplomat-info">
@@ -48,7 +47,7 @@
                                 stroke-linecap="round"
                               />
                             </svg>
-                            6 meses
+                            {{ programa.duracion_programa }}
                           </div>
                           <div class="du-card__diplomat-info-item">
                             <svg
@@ -63,7 +62,7 @@
                                 fill="#007BE3"
                               />
                             </svg>
-                            8 módulos
+                            {{ programa.modulos_count }} módulos
                           </div>
                           <div class="du-card__diplomat-info-item">
                             <svg
@@ -87,12 +86,12 @@
                               />
                             </svg>
                             <span class="du-card__diplomat-info-text"
-                              >Cupos limitados</span
+                              >{{ programa.cupos_label }}</span
                             >
                           </div>
                         </div>
 
-                        <a href="#" class="du-card__diplomat-btn">Ver detalle</a>
+                        <a href="{{ programa.url }}" class="du-card__diplomat-btn">Ver detalle</a>
                       </div>
                     </article>
                   </div>
