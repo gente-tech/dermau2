@@ -197,7 +197,7 @@ function bindDocumentEvents() {
 }
 
 
-Drupal.behaviors.programasFilter = {
+Drupal.behaviors.docentesFilter = {
 		attach: function (context) {
 			once('docentesFilter', 'form[data-drupal-selector="views-exposed-form-dermau-docentes-page-1"]', context).forEach(function (form) {
 				normalizeSelectOptions(form);
