@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\dermau_core_extend\Plugin\Block;
+namespace Drupal\dermau_core\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 
