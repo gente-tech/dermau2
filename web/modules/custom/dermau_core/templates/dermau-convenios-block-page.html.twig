@@ -134,3 +134,50 @@
 </section>
 
 </main>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+  const slides = document.querySelectorAll('#sw-convenio-agreements .swiper-slide');
+
+  slides.forEach((slide) => {
+    slide.addEventListener('click', () => {
+
+      slides.forEach(s => s.classList.remove('swiper-slide-active'));
+      slide.classList.add('swiper-slide-active');
+
+      const target = slide.dataset.action;
+
+      document.querySelectorAll('.du-convenio-block').forEach(block => {
+        block.style.display = 'none';
+      });
+
+      const active = document.getElementById(target);
+      if(active){
+        active.style.display = 'block';
+      }
+    });
+  });
+
+  document.querySelectorAll('.du-swiper-expert .swiper').forEach(sw => {
+    new Swiper(sw, {
+      slidesPerView: 1,
+      spaceBetween: 20,
+      navigation: {
+        nextEl: sw.querySelector('.swiper-button-next'),
+        prevEl: sw.querySelector('.swiper-button-prev'),
+      },
+      pagination: {
+        el: sw.querySelector('.swiper-pagination'),
+        clickable: true,
+      },
+      breakpoints: {
+        1024: {
+          slidesPerView: 4,
+          spaceBetween: 30
+        }
+      }
+    });
+  });
+
+});
+</script>
