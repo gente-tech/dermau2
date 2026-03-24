@@ -56,13 +56,13 @@
               <div class="du-card__diplomat-content">
                 <div class="du-card-docente__top">
                   <div class="du-card-docente__image-wrap du-card__diplomat-image-container">
-                    {% if docente and docente.hasField('field_foto') and docente.field_foto.entity %}
-                      <img src="{{ file_url(docente.field_foto.entity.uri.value) }}" alt="{{ nombre }}" class="du-card__diplomat-image">
+                    {% if docente and docente.hasField('field_foto_docente') and docente.field_foto_docente.entity %}
+                      <img src="{{ file_url(docente.field_foto_docente.entity.uri.value) }}" alt="{{ nombre }}" class="du-card__diplomat-image">
                     {% endif %}
                   </div>
 
                   <div class="du-card-docente__heading">
-                    <h3 class="du-card__diplomat-title">test-{{ nombre }}</h3>
+                    <h3 class="du-card__diplomat-title">{{ nombre }}</h3>
                     {% if especialidad != '' %}
                       <p class="du-card__diplomat-description">{{ especialidad }}</p>
                     {% endif %}
