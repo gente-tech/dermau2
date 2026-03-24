@@ -15,7 +15,7 @@
     <div class="swiper swiper-container" id="sw-convenio-agreements">
       <div class="swiper-wrapper">
         {% for convenio in convenios %}
-        <div class="swiper-slide du-agreements__slide {% if loop.first %}is-active{% endif %}"
+        <div class="swiper-slide du-agreements__slide {% if loop.first %}is-active swiper-slide-active{% endif %}"
              data-target="block-{{ convenio.id }}">
           <img src="{{ convenio.logo }}" alt="{{ convenio.title }}">
         </div>
@@ -110,7 +110,7 @@
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 
-  new Swiper('#sw-convenio-agreements', {
+  const convenioSwiper = new Swiper('#sw-convenio-agreements', {
     slidesPerView: 2,
     spaceBetween: 20,
     navigation: {
@@ -118,26 +118,38 @@ document.addEventListener("DOMContentLoaded", function() {
       prevEl: '#sw-convenio-agreements .swiper-button-prev',
     },
     breakpoints: {
-      768: { slidesPerView: 3 },
-      1024: { slidesPerView: 4 }
+      768: { slidesPerView: 3, spaceBetween: 30 },
+      1024: { slidesPerView: 4, spaceBetween: 40 }
     }
   });
 
-  const tabs = document.querySelectorAll('.du-agreements__slide');
+  const tabs = document.querySelectorAll('#sw-convenio-agreements .swiper-slide');
   const blocks = document.querySelectorAll('.du-convenio-block');
+
+  function activateTab(tab) {
+    tabs.forEach(t => {
+      t.classList.remove('is-active');
+      t.classList.remove('swiper-slide-active');
+    });
+
+    tab.classList.add('is-active');
+    tab.classList.add('swiper-slide-active');
+
+    const target = tab.dataset.target;
+
+    blocks.forEach(block => {
+      block.style.display = 'none';
+    });
+
+    const activeBlock = document.getElementById(target);
+    if (activeBlock) {
+      activeBlock.style.display = 'block';
+    }
+  }
 
   tabs.forEach(tab => {
     tab.addEventListener('click', function() {
-
-      tabs.forEach(t => t.classList.remove('is-active'));
-      this.classList.add('is-active');
-
-      const target = this.dataset.target;
-
-      blocks.forEach(block => block.style.display = "none");
-
-      const active = document.getElementById(target);
-      if (active) active.style.display = "block";
+      activateTab(this);
     });
   });
 
@@ -154,10 +166,18 @@ document.addEventListener("DOMContentLoaded", function() {
         clickable: true
       },
       breakpoints: {
-        1024: { slidesPerView: 4 }
+        1024: {
+          slidesPerView: 4,
+          spaceBetween: 30
+        }
       }
     });
   });
+
+  // Asegura el primer tab activo al cargar
+  if (tabs.length) {
+    activateTab(tabs[0]);
+  }
 
 });
 </script>
