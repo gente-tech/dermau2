@@ -46,10 +46,10 @@ class ConveniosBlockPage extends BlockBase {
       if (!$convenio->get('field_programas_vinculados_conve')->isEmpty()) {
         foreach ($convenio->get('field_programas_vinculados_conve')->referencedEntities() as $programa) {
 
-          // tipo del programa (taxonomy)
           $tipo = '';
-          if ($programa->hasField('field_tipo') && !$programa->get('field_tipo')->isEmpty()) {
-            $tipo = $programa->get('field_tipo')->entity->label();
+
+          if ($programa->hasField('field_tipo_de_programa') && !$programa->get('field_tipo_de_programa')->isEmpty()) {
+            $tipo = $programa->get('field_tipo_de_programa')->entity->label();
           }
 
           $programas[] = [
@@ -73,7 +73,6 @@ class ConveniosBlockPage extends BlockBase {
             $descripcion = $docente->get('body')->value;
           }
 
-          // imagen docente
           $imagen = '';
           if ($docente->hasField('field_imagen') && !$docente->get('field_imagen')->isEmpty()) {
             $imagen = \Drupal::service('file_url_generator')
