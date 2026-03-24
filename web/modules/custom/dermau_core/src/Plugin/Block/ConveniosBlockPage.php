@@ -89,7 +89,7 @@ class ConveniosBlockPage extends BlockBase {
         'docentes' => $docentes,
       ];
     }
-
+    var_dump($data);
     return $data;
   }
 
