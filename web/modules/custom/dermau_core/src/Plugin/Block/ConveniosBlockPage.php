@@ -38,19 +38,33 @@ class ConveniosBlockPage extends BlockBase {
 
     foreach ($convenios as $convenio) {
 
-      // Programas
+      // ========================
+      // PROGRAMAS
+      // ========================
       $programas = [];
+
       if (!$convenio->get('field_programas_vinculados_conve')->isEmpty()) {
         foreach ($convenio->get('field_programas_vinculados_conve')->referencedEntities() as $programa) {
+
+          $tipo = '';
+
+          if ($programa->hasField('field_tipo_de_programa') && !$programa->get('field_tipo_de_programa')->isEmpty()) {
+            $tipo = $programa->get('field_tipo_de_programa')->entity->label();
+          }
+
           $programas[] = [
             'id' => $programa->id(),
             'title' => $programa->label(),
+            'tipo' => $tipo,
           ];
         }
       }
 
-      // Docentes
+      // ========================
+      // DOCENTES
+      // ========================
       $docentes = [];
+
       if (!$convenio->get('field_docentes_vinculados')->isEmpty()) {
         foreach ($convenio->get('field_docentes_vinculados')->referencedEntities() as $docente) {
 
@@ -59,15 +73,26 @@ class ConveniosBlockPage extends BlockBase {
             $descripcion = $docente->get('body')->value;
           }
 
+          $imagen = '';
+          if ($docente->hasField('field_imagen') && !$docente->get('field_imagen')->isEmpty()) {
+            $imagen = \Drupal::service('file_url_generator')
+              ->generateAbsoluteString(
+                $docente->get('field_imagen')->entity->getFileUri()
+              );
+          }
+
           $docentes[] = [
             'id' => $docente->id(),
             'title' => $docente->label(),
             'body' => $descripcion,
+            'imagen' => $imagen,
           ];
         }
       }
 
-      // Logo
+      // ========================
+      // LOGO
+      // ========================
       $logo = '';
       if (!$convenio->get('field_logo')->isEmpty()) {
         $logo = \Drupal::service('file_url_generator')
@@ -76,6 +101,9 @@ class ConveniosBlockPage extends BlockBase {
           );
       }
 
+      // ========================
+      // DATA FINAL
+      // ========================
       $data[] = [
         'id' => $convenio->id(),
         'title' => $convenio->label(),
@@ -89,7 +117,7 @@ class ConveniosBlockPage extends BlockBase {
         'docentes' => $docentes,
       ];
     }
-    //var_dump($data);
+
     return $data;
   }
 
