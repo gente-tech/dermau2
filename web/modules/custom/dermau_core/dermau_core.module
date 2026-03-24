@@ -6,6 +6,12 @@
 function dermau_core_theme($existing, $type, $theme, $path)
 {
   return [
+    'dermau_convenios_block_page' => [
+      'variables' => [
+        'convenios' => [],
+      ],
+      'template' => 'dermau-convenios-block-page',
+    ],
     'dermau_slider_block' => [
       'variables' => [
         'sliders' => [],
