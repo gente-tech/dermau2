@@ -96,7 +96,7 @@ class ConveniosBlockPage extends BlockBase {
           // universidad
           $universidad = '';
           if ($docente->hasField('field_universidad') && !$docente->get('field_universidad')->isEmpty()) {
-            $universidad = $docente->get('field_universidad')->value;
+            $universidad = $docente->get('field_universidad')->entity->label();
           }
 
           // ciudad
