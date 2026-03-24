@@ -1,55 +1,41 @@
-{% for row in rows %}
-  {% set docente = row.docente_entity %}
-  {% set programas = row.programas_relacionados %}
+{% set hay_filtros = false %}
 
-  <div class="du-docente-card">
+{% set universidad = view.exposed_raw_input.field_universidad_principal_target_id|default('') %}
+{% set especialidad = view.exposed_raw_input.field_especialidad_target_id|default('') %}
+{% set title = view.exposed_raw_input.title|default('') %}
 
-    <h3 class="du-docente-card__name">
-      {{ docente.label }}
-    </h3>
+{% if title|trim != '' %}
+  {% set hay_filtros = true %}
+{% endif %}
 
-	{% if not docente.field_especialidad.isEmpty %}
-		<div class="du-docente-card__especialidad">
-			{{ docente.field_especialidad.entity.label }}
-		</div>	
-	{% endif %}
+{% if universidad != '' and universidad != 'All' %}
+  {% set hay_filtros = true %}
+{% endif %}
 
-	{% if not docente.field_universidad.isEmpty %}
-		<div class="du-docente-card__universidad">
-			{{ docente.field_universidad.entity.label }}
-		</div>	
-	{% endif %}
+{% if especialidad != '' and especialidad != 'All' %}
+  {% set hay_filtros = true %}
+{% endif %}
 
-    {% if programas %}
-      <div class="du-docente-card__programas">
-        {% for programa in programas %}
-          
-          <a href="{{ programa.url }}" class="du-docente-card__programa">
-            
-            <span 
-              class="du-docente-card__programa-tag"
-              style="background-color: {{ programa.tipo_programa_color }}"
-            >
-              {{ programa.tipo_programa }}
-            </span>
-
-            {{ programa.title }}
-
-          </a>
-
-        {% endfor %}
-      </div>
-    {% endif %}
-
-	{% if not docente.field_perfil_profesional.isEmpty %}
-      <div class="du-docente-card__perfil">
-        {{ docente.field_perfil_profesional.value }}
-      </div>
-    {% endif %}
-
-    <div class="du-docente-card__link">
-      <a href="{{ row.docente_url }}">{{ docente.label }}</a>
+<section class="du-generic-swiper du-swiper-program">
+  <div class="du-generic-swiper__container du-swiper-oferta__container">
+    <div class="du-generic-swiper__header">
+      {% if hay_filtros %}
+        <h3>Mostrando <span>{{ view.total_rows }} {{ view.total_rows == 1 ? 'docente' : 'docentes' }}</span></h3>
+      {% else %}
+        <h3>Docentes <span>Recomendados</span></h3>
+      {% endif %}
     </div>
 
+    {% if rows %}
+      <div class="du-programs-container">
+        {% for row in rows %}
+          {{ row.content }}
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="du-generic-swiper__header">
+        <h3 class="du-programs-message">Ups, no hay resultados <span>por ahora.</span></h3>
+      </div>
+    {% endif %}
   </div>
-{% endfor %}
+</section>
