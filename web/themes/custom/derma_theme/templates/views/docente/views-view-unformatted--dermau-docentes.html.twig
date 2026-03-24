@@ -119,26 +119,14 @@
 	</div>
 
 	{# {% for docente in docentes_programa %} #}
-  {% for row in rows %}
+	{% for row in rows %}
 		{% set docente = row.docente_entity %}
 		{% set programas = row.programas_relacionados|default([]) %}
 		{% set nombre = docente ? docente.label() : '' %}
 		{% set especialidad = '' %}
-		{% set universidad_label = '' %}
-		{% set perfil = '' %}
 
 		{% if docente and docente.hasField('field_especialidad') and not docente.field_especialidad.isEmpty %}
 			{% set especialidad = docente.field_especialidad.entity ? docente.field_especialidad.entity.label() : docente.field_especialidad.value %}
-		{% endif %}
-
-		{% if docente and docente.hasField('field_universidad_principal') and not docente.field_universidad_principal.isEmpty %}
-			{% set universidad_label = docente.field_universidad_principal.entity ? docente.field_universidad_principal.entity.label() : docente.field_universidad_principal.value %}
-		{% elseif docente and docente.hasField('field_universidad') and not docente.field_universidad.isEmpty %}
-			{% set universidad_label = docente.field_universidad.entity ? docente.field_universidad.entity.label() : docente.field_universidad.value %}
-		{% endif %}
-
-		{% if docente and docente.hasField('field_perfil_profesional') and not docente.field_perfil_profesional.isEmpty %}
-			{% set perfil = docente.field_perfil_profesional.value %}
 		{% endif %}
 
 		<div id="modal-docente-{{ loop.index }}" class="du-modal" style="display:none;">
@@ -149,7 +137,7 @@
 				<div class="du-modal__content">
 					<aside class="du-modal__aside">
 						{% if docente and docente.hasField('field_foto_docente') and docente.field_foto_docente.entity %}
-							<img src="{{ file_url(docente.field_foto_docente.entity.uri.value) }}" alt="{{ nombre }}" class="du-modal__img"/>
+							<img src="{{ file_url(docente.field_foto_docente.entity.uri.value) }}" alt="{{ nombre }}" class="du-modal__img" />
 						{% endif %}
 
 						<div class="du-modal__personal-info">
@@ -159,19 +147,12 @@
 							<div class="du-modal__contact">
 								{% if row._entity.field_ciudad is defined and row._entity.field_ciudad.entity %}
 									<div class="du-modal__contact-item">
-										<svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<path d="M7 9.4375C8.34619 9.4375 9.4375 8.34619 9.4375 7C9.4375 5.65381 8.34619 4.5625 7 4.5625C5.65381 4.5625 4.5625 5.65381 4.5625 7C4.5625 8.34619 5.65381 9.4375 7 9.4375Z" stroke="#007BE3" stroke-linecap="round" stroke-linejoin="round"/>
-											<path d="M7 0.5C5.27609 0.5 3.62279 1.18482 2.40381 2.40381C1.18482 3.62279 0.5 5.27609 0.5 7C0.5 8.53725 0.826625 9.54312 1.71875 10.6562L7 16.75L12.2812 10.6562C13.1734 9.54312 13.5 8.53725 13.5 7C13.5 5.27609 12.8152 3.62279 11.5962 2.40381C10.3772 1.18482 8.72391 0.5 7 0.5Z" stroke="#007BE3" stroke-linecap="round" stroke-linejoin="round"/>
-										</svg>
 										<span>{{ row._entity.field_ciudad.entity.name.value }}</span>
 									</div>
 								{% endif %}
 
 								{% if row._entity.field_correo_electronico is defined and row._entity.field_correo_electronico.value %}
 									<div class="du-modal__contact-item">
-										<svg width="14" height="11" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<path d="M1.25689 11C0.898593 11 0.599667 10.879 0.360111 10.637C0.120556 10.395 0.000518519 10.0928 0 9.73028V1.26971C0 0.907762 0.120037 0.605785 0.360111 0.363786C0.600185 0.121786 0.898852 0.000523809 1.25611 0H12.7439C13.1017 0 13.4003 0.121262 13.6399 0.363786C13.8794 0.606309 13.9995 0.908286 14 1.26971V9.73107C14 10.0925 13.88 10.3945 13.6399 10.637C13.3998 10.8795 13.1011 11.0005 12.7439 11H1.25689Z" fill="#007BE3"/>
-										</svg>
 										<a href="mailto:{{ row._entity.field_correo_electronico.value }}">{{ row._entity.field_correo_electronico.value }}</a>
 									</div>
 								{% endif %}
