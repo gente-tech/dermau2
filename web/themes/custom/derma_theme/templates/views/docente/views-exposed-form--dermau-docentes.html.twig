@@ -79,9 +79,9 @@
 					</div>
 				{% endif %}
 
-				{% if form.field_tipo_de_programa_target_id is defined %}
-					{% set tipo_options = form.field_tipo_de_programa_target_id['#options']|default([]) %}
-					{% set tipo_selected = form.field_tipo_de_programa_target_id['#value']|default('All') %}
+				{% if form.tipo_programa_docente is defined %}
+					{% set tipo_options = form.tipo_programa_docente['#options']|default([]) %}
+					{% set tipo_selected = form.tipo_programa_docente['#value']|default('All') %}
 					{% set tipo_label = 'Todos los programas' %}
 
 					{% for key, label in tipo_options %}
@@ -112,6 +112,8 @@
 						</ul>
 					</div>
 				{% endif %}
+
+
 			</div>
 
 			<div style="display:none;">
