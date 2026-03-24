@@ -198,7 +198,7 @@ class ProgramaInteresadoForm extends FormBase
 
 		$form['submit'] = [
 			'#type' => 'submit',
-			'#value' => $this->t('Contáctame'),
+			'#value' => $this->t('Pre- Inscribirme'),
 			'#attributes' => [
 				'class' => ['du-btn', 'full', 'du-btn--primary'],
 			],
