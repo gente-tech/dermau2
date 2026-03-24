@@ -164,4 +164,8 @@ form#user-login-form input#edit-submit {
     background-position: bottom;
     background-size: cover;
   }
+
+  .du-float-chat{
+    display:none;
+  }
 }
