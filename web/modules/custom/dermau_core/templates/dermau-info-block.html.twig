@@ -10,7 +10,9 @@
 						{{ titulo_resaltado }}
 					{% endif %}
 				</span>
-				?
+				{% if titulo_tercero %}
+					{{ titulo_tercero }}
+				{% endif %}
 			</h2>
 			<p class="du-footer-info__description">
 				{% if descripcion %}
@@ -21,6 +23,6 @@
 	</div>
 	<div class="du-footer-info__image">
 		<img src="{{ imagen.url }}" alt="{{ imagen.alt }}" width="400" height="267">
-		<a class="du-footer-info__link" href="#">{{ label_btn }}</a>
+		<a class="du-footer-info__link" href="{{ enlace_btn ?: '#' }}">{{ label_btn }}</a>
 	</div>
 </section>

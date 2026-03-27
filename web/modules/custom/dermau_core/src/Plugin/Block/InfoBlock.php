@@ -14,140 +14,156 @@ use Drupal\file\Entity\File;
  *   admin_label = @Translation("Dermau Info Block")
  * )
  */
-class InfoBlock extends BlockBase
-{
+class InfoBlock extends BlockBase {
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function defaultConfiguration()
-	{
-		return [
-			'bg_color' => '',
-			'titulo_normal' => '',
-			'titulo_resaltado' => '',
-			'descripcion' => '',
-			'imagen' => [],
-			'imagen_alt' => '',
-			'label_btn' => '',
-		];
-	}
+  /**
+   * {@inheritdoc}
+   */
+  public function defaultConfiguration() {
+    return [
+      'bg_color' => '',
+      'titulo_normal' => '',
+      'titulo_resaltado' => '',
+      'titulo_tercero' => '',
+      'descripcion' => '',
+      'imagen' => [],
+      'imagen_alt' => '',
+      'label_btn' => '',
+      'enlace_btn' => '',
+    ];
+  }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function blockForm($form, FormStateInterface $form_state)
-	{
-		$form['bg_color'] = [
-			'#type' => 'textfield',
-			'#title' => $this->t('Color de fondo'),
-			'#default_value' => $this->configuration['bg_color'] ?? '',
-		];
+  /**
+   * {@inheritdoc}
+   */
+  public function blockForm($form, FormStateInterface $form_state) {
+    $form['bg_color'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Color de fondo'),
+      '#default_value' => $this->configuration['bg_color'] ?? '',
+    ];
 
-		$form['titulo_normal'] = [
-			'#type' => 'textfield',
-			'#title' => $this->t('Título normal'),
-			'#default_value' => $this->configuration['titulo_normal'] ?? '',
-		];
+    $form['titulo_normal'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Título normal'),
+      '#default_value' => $this->configuration['titulo_normal'] ?? '',
+    ];
 
-		$form['titulo_resaltado'] = [
-			'#type' => 'textfield',
-			'#title' => $this->t('Título resaltado'),
-			'#default_value' => $this->configuration['titulo_resaltado'] ?? '',
-		];
+    $form['titulo_resaltado'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Título resaltado'),
+      '#default_value' => $this->configuration['titulo_resaltado'] ?? '',
+    ];
 
-		$form['descripcion'] = [
-			'#type' => 'textarea',
-			'#title' => $this->t('Descripción'),
-			'#default_value' => $this->configuration['descripcion'] ?? '',
-		];
+    $form['titulo_tercero'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Tercer título'),
+      '#default_value' => $this->configuration['titulo_tercero'] ?? '',
+    ];
 
-		$form['imagen'] = [
-			'#type' => 'managed_file',
-			'#title' => $this->t('Imagen'),
-			'#upload_location' => 'public://info-block/',
-			'#default_value' => $this->configuration['imagen'] ?? [],
-			'#multiple' => FALSE,
-		];
+    $form['descripcion'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Descripción'),
+      '#default_value' => $this->configuration['descripcion'] ?? '',
+    ];
 
-		$form['imagen_alt'] = [
-			'#type' => 'textfield',
-			'#title' => $this->t('Alt de la imagen'),
-			'#default_value' => $this->configuration['imagen_alt'] ?? '',
-		];
-		
-		$form['label_btn'] = [
-			'#type' => 'textfield',
-			'#title' => $this->t('Label del botón'),
-			'#default_value' => $this->configuration['label_btn'] ?? '',
-		];
+    $form['imagen'] = [
+      '#type' => 'managed_file',
+      '#title' => $this->t('Imagen'),
+      '#upload_location' => 'public://info-block/',
+      '#default_value' => $this->configuration['imagen'] ?? [],
+      '#multiple' => FALSE,
+    ];
 
-		return $form;
-	}
+    $form['imagen_alt'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Alt de la imagen'),
+      '#default_value' => $this->configuration['imagen_alt'] ?? '',
+    ];
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function blockSubmit($form, FormStateInterface $form_state)
-	{
-		\Drupal::logger('dermau_info_block')->notice('<pre>@data</pre>', [
-			'@data' => print_r($form_state->getValues(), TRUE),
-		]);
-		$imagen = $form_state->getValue('imagen');
+    $form['label_btn'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Label del botón'),
+      '#default_value' => $this->configuration['label_btn'] ?? '',
+    ];
 
-		if (empty($imagen) && !empty($this->configuration['imagen'])) {
-			$imagen = $this->configuration['imagen'];
-		}
+    $form['enlace_btn'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Enlace del botón'),
+      '#default_value' => $this->configuration['enlace_btn'] ?? '',
+      '#description' => $this->t('Ejemplo: /contacto o https://midominio.com/pagina'),
+    ];
 
-		if (!empty($imagen[0])) {
-			$file = File::load($imagen[0]);
+    return $form;
+  }
 
-			if ($file) {
-				$file->setPermanent();
-				$file->save();
-			}
-		}
+  /**
+   * {@inheritdoc}
+   */
+  public function blockSubmit($form, FormStateInterface $form_state) {
+    \Drupal::logger('dermau_info_block')->notice('<pre>@data</pre>', [
+      '@data' => print_r($form_state->getValues(), TRUE),
+    ]);
 
-		$this->configuration['bg_color'] = $form_state->getValue('bg_color');
-		$this->configuration['titulo_normal'] = $form_state->getValue('titulo_normal');
-		$this->configuration['titulo_resaltado'] = $form_state->getValue('titulo_resaltado');
-		$this->configuration['descripcion'] = $form_state->getValue('descripcion');
-		$this->configuration['imagen'] = $imagen ?: [];
-		$this->configuration['imagen_alt'] = $form_state->getValue('imagen_alt');
-		$this->configuration['label_btn'] = $form_state->getValue('label_btn');
-	}
+    $imagen = $form_state->getValue('imagen');
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function build()
-	{
-		$image_url = '';
-		$image_alt = $this->configuration['imagen_alt'] ?? '';
+    if (empty($imagen) && !empty($this->configuration['imagen'])) {
+      $imagen = $this->configuration['imagen'];
+    }
 
-		if (!empty($this->configuration['imagen'][0])) {
-			$file = File::load($this->configuration['imagen'][0]);
+    if (!empty($imagen[0])) {
+      $file = File::load($imagen[0]);
 
-			if ($file) {
-				$image_url = \Drupal::service('file_url_generator')
-					->generateAbsoluteString($file->getFileUri());
-			}
-		}
+      if ($file) {
+        $file->setPermanent();
+        $file->save();
+      }
+    }
 
-		return [
-			'#theme' => 'dermau_info_block',
-			'#bg_color' => $this->configuration['bg_color'] ?? '',
-			'#titulo_normal' => $this->configuration['titulo_normal'] ?? '',
-			'#titulo_resaltado' => $this->configuration['titulo_resaltado'] ?? '',
-			'#descripcion' => $this->configuration['descripcion'] ?? '',
-			'#label_btn' => $this->configuration['label_btn'] ?? '',
-			'#imagen' => [
-				'url' => $image_url,
-				'alt' => $image_alt,
-			],
-			'#cache' => [
-				'max-age' => 0,
-			],
-		];
-	}
+    $this->configuration['bg_color'] = $form_state->getValue('bg_color');
+    $this->configuration['titulo_normal'] = $form_state->getValue('titulo_normal');
+    $this->configuration['titulo_resaltado'] = $form_state->getValue('titulo_resaltado');
+    $this->configuration['titulo_tercero'] = $form_state->getValue('titulo_tercero');
+    $this->configuration['descripcion'] = $form_state->getValue('descripcion');
+    $this->configuration['imagen'] = $imagen ?: [];
+    $this->configuration['imagen_alt'] = $form_state->getValue('imagen_alt');
+    $this->configuration['label_btn'] = $form_state->getValue('label_btn');
+    $this->configuration['enlace_btn'] = $form_state->getValue('enlace_btn');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function build() {
+    $image_url = '';
+    $image_alt = $this->configuration['imagen_alt'] ?? '';
+
+    if (!empty($this->configuration['imagen'][0])) {
+      $file = File::load($this->configuration['imagen'][0]);
+
+      if ($file) {
+        $image_url = \Drupal::service('file_url_generator')
+          ->generateAbsoluteString($file->getFileUri());
+      }
+    }
+
+    return [
+      '#theme' => 'dermau_info_block',
+      '#bg_color' => $this->configuration['bg_color'] ?? '',
+      '#titulo_normal' => $this->configuration['titulo_normal'] ?? '',
+      '#titulo_resaltado' => $this->configuration['titulo_resaltado'] ?? '',
+      '#titulo_tercero' => $this->configuration['titulo_tercero'] ?? '',
+      '#descripcion' => $this->configuration['descripcion'] ?? '',
+      '#label_btn' => $this->configuration['label_btn'] ?? '',
+      '#enlace_btn' => $this->configuration['enlace_btn'] ?? '',
+      '#imagen' => [
+        'url' => $image_url,
+        'alt' => $image_alt,
+      ],
+      '#cache' => [
+        'max-age' => 0,
+      ],
+    ];
+  }
+
 }
