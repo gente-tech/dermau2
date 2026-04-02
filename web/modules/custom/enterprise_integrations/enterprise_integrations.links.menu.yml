@@ -1,0 +1,6 @@
+enterprise_integrations.settings:
+  title: 'Mandrill configuraciones'
+  description: 'Configuración Mailchimp Transactional (Mandrill) integration.'
+  route_name: enterprise_integrations.settings
+  parent: system.admin_config_system
+  weight: 100

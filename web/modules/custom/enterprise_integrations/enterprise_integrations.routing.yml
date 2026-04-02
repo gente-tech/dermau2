@@ -1,0 +1,7 @@
+enterprise_integrations.settings:
+  path: '/admin/config/system/enterprise-integrations/mandrill'
+  defaults:
+    _form: '\Drupal\enterprise_integrations\Form\MandrillSettingsForm'
+    _title: 'Mandrill Settings'
+  requirements:
+    _permission: 'administer site configuration'

@@ -8,20 +8,24 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\enterprise_integrations\Service\MandrillService;
 
 class ProgramaInteresadoForm extends FormBase
 {
 	protected $database;
+	protected $mandrillService;
 
-	public function __construct(Connection $database)
+	public function __construct(Connection $database, MandrillService $mandrillService)
 	{
 		$this->database = $database;
+		$this->mandrillService = $mandrillService;
 	}
 
 	public static function create(ContainerInterface $container)
 	{
 		return new static(
-			$container->get('database')
+			$container->get('database'),
+			$container->get('enterprise_integrations.mandrill')
 		);
 	}
 
@@ -278,6 +282,41 @@ class ProgramaInteresadoForm extends FormBase
 		$current_query = $request->query->all();
 		$current_query['registro_exitoso'] = 1;
 
+		// Envío de correo
+		$nombre = trim((string) $form_state->getValue('nombre'));
+		$apellido = trim((string) $form_state->getValue('apellido'));
+		$email = trim((string) $form_state->getValue('email'));
+		$telefono = $indicativo . ' ' . $telefono;
+		$programa = trim((string) $form_state->getValue('programa_title'));
+		$mensaje = trim((string) $form_state->getValue('mensaje'));
+
+		// Obtener plantilla desde configuración
+		$config = \Drupal::config('enterprise_integrations.settings');
+		$template = $config->get('mandrill.default_html_template');
+
+		// Reemplazar tokens
+		$html = $this->mandrillService->renderTemplate($template, [
+			'nombre' => $nombre . ' ' . $apellido,
+			'email' => $email,
+			'telefono' => $telefono,
+			'programa' => $programa,
+			'mensaje' => $mensaje,
+		]);
+
+		// Enviar correo
+		$result = $this->mandrillService->send([
+			'to_email' => $email,
+			'to_name' => $nombre,
+			'subject' => 'Preinscripción programa ' . $programa,
+			'html' => $html,
+			'reply_to' => $email,
+			'tags' => ['programa_interesado'],
+			'metadata' => [
+				'programa' => $programa,
+				'form' => 'programa_interesado',
+			],
+		]);
+
 		$form_state->setRedirectUrl(
 			Url::fromUserInput($current_path, [
 				'query' => $current_query,
@@ -306,9 +345,9 @@ class ProgramaInteresadoForm extends FormBase
 	{
 		return [
 			'Méd. dermatólogo asociado' => 'Méd. dermatólogo asociado',
-      'Méd. dermatólogo no asociado' => 'Méd. dermatólogo no asociado',
-      'Residente dermatología en Colombia' => 'Residente dermatología en Colombia',
-      'Residente dermatología fuera de Colombia' => 'Residente dermatología fuera de Colombia',
+			'Méd. dermatólogo no asociado' => 'Méd. dermatólogo no asociado',
+			'Residente dermatología en Colombia' => 'Residente dermatología en Colombia',
+			'Residente dermatología fuera de Colombia' => 'Residente dermatología fuera de Colombia',
 			'Otra' => 'Otra',
 		];
 	}
