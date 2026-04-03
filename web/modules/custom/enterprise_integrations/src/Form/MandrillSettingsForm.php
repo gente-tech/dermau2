@@ -78,7 +78,9 @@ class MandrillSettingsForm extends ConfigFormBase {
   }
 
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $this->config('enterprise_integrations.settings')
+    $config = $this->configFactory->getEditable('enterprise_integrations.settings');
+
+    $config
       ->set('mandrill.api_key', $form_state->getValue('api_key'))
       ->set('mandrill.from_email', $form_state->getValue('from_email'))
       ->set('mandrill.from_name', $form_state->getValue('from_name'))
@@ -86,10 +88,7 @@ class MandrillSettingsForm extends ConfigFormBase {
       ->set('mandrill.default_html_template', $form_state->getValue('default_html_template'))
       ->set('mandrill.internal_copy_enabled', $form_state->getValue('internal_copy_enabled'))
       ->set('mandrill.internal_copy_email', $form_state->getValue('internal_copy_email'))
-      ->set('mandrill.internal_copy_name', $form_state->getValue('internal_copy_name'))
-      ->save();
-
-    $config = $this->configFactory->getEditable('dermau_integrations.settings');
+      ->set('mandrill.internal_copy_name', $form_state->getValue('internal_copy_name'));
 
     // Guardar logo
     $logo = $form_state->getValue('mail_logo');
