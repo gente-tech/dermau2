@@ -9,23 +9,27 @@ use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\enterprise_integrations\Service\MandrillService;
+use Drupal\enterprise_integrations\Service\HubspotService;
 
 class ProgramaInteresadoForm extends FormBase
 {
 	protected $database;
 	protected $mandrillService;
+	protected $hubspotService;
 
-	public function __construct(Connection $database, MandrillService $mandrillService)
+	public function __construct(Connection $database, MandrillService $mandrillService, HubspotService $hubspotService)
 	{
 		$this->database = $database;
 		$this->mandrillService = $mandrillService;
+		$this->hubspotService = $hubspotService;
 	}
 
 	public static function create(ContainerInterface $container)
 	{
 		return new static(
 			$container->get('database'),
-			$container->get('enterprise_integrations.mandrill')
+			$container->get('enterprise_integrations.mandrill'),
+			$container->get('enterprise_integrations.hubspot')
 		);
 	}
 
@@ -317,6 +321,27 @@ class ProgramaInteresadoForm extends FormBase
 			],
 		]);
 
+		// Crear usuario en hubspot
+		$hubspotData = [
+		'email' => $email,
+		'firstname' => $nombre,
+		'lastname' => $apellido,
+		'phone' => $telefono,
+		];
+
+		$hubspotResult = $this->hubspotService->createContact($hubspotData);
+
+		if (!$hubspotResult['success']) {
+		\Drupal::logger('enterprise_integrations')->warning(
+			'No se pudo crear el contacto en HubSpot para %email. Mensaje: %message',
+			[
+			'%email' => $hubspotData['email'],
+			'%message' => $hubspotResult['message'],
+			]
+		);
+		}
+		
+		// Redireccionar
 		$form_state->setRedirectUrl(
 			Url::fromUserInput($current_path, [
 				'query' => $current_query,
