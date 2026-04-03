@@ -7,8 +7,22 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
 use Drupal\Core\Url;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\enterprise_integrations\Service\MandrillService;
 
 class ContactoRegistroForm extends FormBase {
+
+  protected $mandrillService;
+
+  public function __construct(MandrillService $mandrillService) {
+    $this->mandrillService = $mandrillService;
+  }
+
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('enterprise_integrations.mandrill')
+    );
+  }
 
   public function getFormId() {
     return 'dermau_contacto_registro_form';
@@ -308,18 +322,63 @@ class ContactoRegistroForm extends FormBase {
 
   $user->save();
 
+    /*
+  ---------------------------------
+  Envío de correo
+  ---------------------------------
+  */
+
+  $programa = '';
+  $node = Node::load($programa_id);
+
+  if ($node) {
+    $programa = $node->getTitle();
+  }
+
+  $telefono = trim((string) $form_state->getValue('telefono'));
+  $ciudad = trim((string) $form_state->getValue('ciudad'));
+  $profesion = trim((string) $form_state->getValue('profesion'));
+  $mensaje = trim((string) $form_state->getValue('mensaje'));
+
+  $config = \Drupal::config('enterprise_integrations.settings');
+  $template = (string) $config->get('mandrill.default_html_template');
+
+  $html = $this->mandrillService->renderTemplate($template, [
+    'nombre' => trim($nombre . ' ' . $apellido),
+    'email' => $correo_real,
+    'telefono' => $telefono,
+    'programa' => $programa,
+    'ciudad' => $ciudad,
+    'profesion' => $profesion,
+    'mensaje' => $mensaje,
+  ]);
+
+  $result = $this->mandrillService->send([
+    'to_email' => $correo_real,
+    'to_name' => trim($nombre . ' ' . $apellido),
+    'subject' => 'Gracias por registrarte en DermaU',
+    'html' => $html,
+    'reply_to' => $correo_real,
+    'tags' => ['contacto_registro'],
+    'metadata' => [
+      'form' => 'contacto_registro',
+      'programa_id' => (string) $programa_id,
+      'programa' => $programa,
+    ],
+  ]);
+
   /*
   ---------------------------------
   Obtener PDF del programa
   ---------------------------------
   */
 
-  $node = Node::load($programa_id);
+  $node_pdf = Node::load($programa_id);
   $pdf_url = '';
 
-  if ($node && $node->hasField('field_pdf_registro')) {
+  if ($node_pdf && $node_pdf->hasField('field_pdf_registro')) {
 
-    $file = $node->get('field_pdf_registro')->entity;
+    $file = $node_pdf->get('field_pdf_registro')->entity;
 
     if ($file) {
 
