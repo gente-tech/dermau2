@@ -4,3 +4,10 @@ enterprise_integrations.settings:
   route_name: enterprise_integrations.settings
   parent: system.admin_config_system
   weight: 100
+
+enterprise_integrations.hubspot_settings:
+  title: 'HubSpot Integration'
+  description: 'HubSpot API configuration'
+  parent: system.admin_config_services
+  route_name: enterprise_integrations.hubspot_settings
+  weight: 200

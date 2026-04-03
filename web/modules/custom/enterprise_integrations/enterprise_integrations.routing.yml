@@ -5,3 +5,11 @@ enterprise_integrations.settings:
     _title: 'Mandrill Settings'
   requirements:
     _permission: 'administer site configuration'
+
+enterprise_integrations.hubspot_settings:
+  path: '/admin/config/integrations/hubspot'
+  defaults:
+    _form: '\Drupal\enterprise_integrations\Form\HubspotSettingsForm'
+    _title: 'HubSpot Settings'
+  requirements:
+    _permission: 'administer site configuration'
