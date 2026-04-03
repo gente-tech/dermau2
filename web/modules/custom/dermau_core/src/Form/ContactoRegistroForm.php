@@ -9,18 +9,22 @@ use Drupal\user\Entity\User;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\enterprise_integrations\Service\MandrillService;
+use Drupal\enterprise_integrations\Service\HubspotService;
 
 class ContactoRegistroForm extends FormBase {
 
   protected $mandrillService;
+  protected $hubspotService;
 
-  public function __construct(MandrillService $mandrillService) {
+  public function __construct(MandrillService $mandrillService, HubspotService $hubspotService) {
     $this->mandrillService = $mandrillService;
+		$this->hubspotService = $hubspotService;
   }
 
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('enterprise_integrations.mandrill')
+      $container->get('enterprise_integrations.mandrill'),
+			$container->get('enterprise_integrations.hubspot')
     );
   }
 
@@ -366,6 +370,26 @@ class ContactoRegistroForm extends FormBase {
       'programa' => $programa,
     ],
   ]);
+
+  // Crear usuario en hubspot
+  $hubspotData = [
+  'email' => $correo_real,
+  'firstname' => $nombre,
+  'lastname' => $apellido,
+  'phone' => $telefono,
+  ];
+
+  $hubspotResult = $this->hubspotService->createContact($hubspotData);
+
+  if (!$hubspotResult['success']) {
+    \Drupal::logger('enterprise_integrations')->warning(
+      'No se pudo crear el contacto en HubSpot para %email. Mensaje: %message',
+      [
+      '%email' => $hubspotData['email'],
+      '%message' => $hubspotResult['message'],
+      ]
+    );
+  }
 
   /*
   ---------------------------------
