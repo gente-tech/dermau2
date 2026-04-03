@@ -9,3 +9,10 @@ services:
       - '@http_client'
       - '@config.factory'
       - '@logger.channel.enterprise_integrations'
+  
+  enterprise_integrations.hubspot:
+    class: Drupal\enterprise_integrations\Service\HubspotService
+    arguments:
+      - '@http_client'
+      - '@config.factory'
+      - '@logger.channel.enterprise_integrations'
