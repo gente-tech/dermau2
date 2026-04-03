@@ -54,9 +54,9 @@ final class MandrillService
 		$this->logger = $logger;
 	}
 
-	private function getMailAssets()
+	private function getMailAssets(): array
 	{
-		$config = \Drupal::config('enterprise_integrations.settings');
+		$config = $this->configFactory->get('enterprise_integrations.settings');
 
 		$logo_fid = $config->get('mail_logo');
 		$banner_fid = $config->get('mail_banner');
@@ -65,16 +65,16 @@ final class MandrillService
 		$banner_url = '';
 
 		if (!empty($logo_fid[0])) {
-			$file = \Drupal\file\Entity\File::load($logo_fid[0]);
+			$file = \Drupal\file\Entity\File::load((int) $logo_fid[0]);
 			if ($file) {
-				$logo_url = file_create_url($file->getFileUri());
+				$logo_url = \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
 			}
 		}
 
 		if (!empty($banner_fid[0])) {
-			$file = \Drupal\file\Entity\File::load($banner_fid[0]);
+			$file = \Drupal\file\Entity\File::load((int) $banner_fid[0]);
 			if ($file) {
-				$banner_url = file_create_url($file->getFileUri());
+				$banner_url = \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
 			}
 		}
 
