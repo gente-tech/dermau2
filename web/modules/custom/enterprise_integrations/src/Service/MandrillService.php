@@ -54,6 +54,36 @@ final class MandrillService
 		$this->logger = $logger;
 	}
 
+	private function getMailAssets()
+	{
+		$config = \Drupal::config('enterprise_integrations.settings');
+
+		$logo_fid = $config->get('mail_logo');
+		$banner_fid = $config->get('mail_banner');
+
+		$logo_url = '';
+		$banner_url = '';
+
+		if (!empty($logo_fid[0])) {
+			$file = \Drupal\file\Entity\File::load($logo_fid[0]);
+			if ($file) {
+				$logo_url = file_create_url($file->getFileUri());
+			}
+		}
+
+		if (!empty($banner_fid[0])) {
+			$file = \Drupal\file\Entity\File::load($banner_fid[0]);
+			if ($file) {
+				$banner_url = file_create_url($file->getFileUri());
+			}
+		}
+
+		return [
+			'logo_url' => $logo_url,
+			'banner_url' => $banner_url,
+		];
+	}
+
 	/**
 	 * Sends an email through Mandrill using the configured defaults.
 	 *
@@ -268,6 +298,11 @@ final class MandrillService
 	public function renderTemplate(string $template, array $tokens = []): string
 	{
 		$replace = [];
+
+		$assets = $this->getMailAssets();
+
+		$replace['{{logo_url}}'] = $assets['logo_url'] ?? '';
+		$replace['{{banner_url}}'] = $assets['banner_url'] ?? '';
 
 		foreach ($tokens as $key => $value) {
 			$replace['{{' . trim((string) $key) . '}}'] = nl2br((string) $value);

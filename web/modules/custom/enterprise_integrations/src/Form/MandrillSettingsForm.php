@@ -4,6 +4,7 @@ namespace Drupal\enterprise_integrations\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\file\Entity\File;
 
 class MandrillSettingsForm extends ConfigFormBase {
 
@@ -51,6 +52,20 @@ class MandrillSettingsForm extends ConfigFormBase {
       '#default_value' => $config->get('mandrill.default_subject'),
     ];
 
+    $form['mail_logo'] = [
+      '#type' => 'managed_file',
+      '#title' => $this->t('Logo del correo'),
+      '#upload_location' => 'public://dermau_mail/',
+      '#default_value' => $config->get('mail_logo'),
+    ];
+
+    $form['mail_banner'] = [
+      '#type' => 'managed_file',
+      '#title' => $this->t('Banner del correo'),
+      '#upload_location' => 'public://dermau_mail/',
+      '#default_value' => $config->get('mail_banner'),
+    ];
+
     $form['mandrill']['default_html_template'] = [
       '#type' => 'textarea',
       '#title' => $this->t('HTML Template'),
@@ -73,6 +88,28 @@ class MandrillSettingsForm extends ConfigFormBase {
       ->set('mandrill.internal_copy_email', $form_state->getValue('internal_copy_email'))
       ->set('mandrill.internal_copy_name', $form_state->getValue('internal_copy_name'))
       ->save();
+
+    $config = $this->configFactory->getEditable('dermau_integrations.settings');
+
+    // Guardar logo
+    $logo = $form_state->getValue('mail_logo');
+    if (!empty($logo[0])) {
+      $file = File::load($logo[0]);
+      $file->setPermanent();
+      $file->save();
+      $config->set('mail_logo', $logo);
+    }
+
+    // Guardar banner
+    $banner = $form_state->getValue('mail_banner');
+    if (!empty($banner[0])) {
+      $file = File::load($banner[0]);
+      $file->setPermanent();
+      $file->save();
+      $config->set('mail_banner', $banner);
+    }
+
+    $config->save();
 
     parent::submitForm($form, $form_state);
   }
