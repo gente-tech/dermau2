@@ -18,14 +18,9 @@
         const closeModal = () => {
           modal.style.display = 'none';
           document.body.style.overflow = 'auto';
-
-          const url = new URL(window.location.href);
-          url.searchParams.delete('registro_exitoso');
-          window.history.replaceState({}, document.title, url.toString());
         };
 
-        const params = new URLSearchParams(window.location.search);
-        if (params.get('registro_exitoso') === '1') {
+        if (modal.dataset.autoOpen === '1') {
           openModal();
         }
 

@@ -268,8 +268,16 @@ class ContactoRegistroForm extends FormBase {
       ]
     ];
 
+    $session = \Drupal::request()->getSession();
+    $mostrar_modal = (bool) $session->get('registro_exitoso', FALSE);
+
+    if ($mostrar_modal) {
+      $session->remove('registro_exitoso');
+    }
+
     $form['modal_registro_exitoso'] = [
       '#theme' => 'dermau_modal_registro_exitoso',
+      '#mostrar_modal' => $mostrar_modal,
       '#weight' => 999,
     ];
 
@@ -426,14 +434,11 @@ class ContactoRegistroForm extends FormBase {
 
   $request = \Drupal::request();
 
+  $request->getSession()->set('registro_exitoso', TRUE);
   $current_path = \Drupal::service('path.current')->getPath();
-  $current_query = $request->query->all();
-  $current_query['registro_exitoso'] = 1;
 
   $form_state->setRedirectUrl(
-    Url::fromUserInput($current_path, [
-      'query' => $current_query,
-    ])
+    Url::fromUserInput($current_path)
   );
 
 //   if ($pdf_url) {
