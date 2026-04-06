@@ -271,6 +271,13 @@ class ProgramaInteresadoForm extends FormBase
 	{
 		$request = \Drupal::request();
 
+		$ciudad_tid = $form_state->getValue('ciudad');
+		$profesion_tid = $form_state->getValue('profesion');
+		$ciudad_term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($ciudad_tid);
+		$profesion_term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($profesion_tid);
+		$ciudad_nombre = $ciudad_term ? $ciudad_term->getName() : '';
+		$profesion_nombre = $profesion_term ? $profesion_term->getName() : '';
+
 		$indicativo = trim((string) $form_state->getValue('indicativo'));
 		$telefono = preg_replace('/\D+/', '', trim((string) $form_state->getValue('telefono')));
 
@@ -283,8 +290,8 @@ class ProgramaInteresadoForm extends FormBase
 				'email' => trim((string) $form_state->getValue('email')),
 				'indicativo' => $indicativo,
 				'telefono' => $telefono,
-				'ciudad' => trim((string) $form_state->getValue('ciudad')),
-				'profesion' => trim((string) $form_state->getValue('profesion')),
+				'ciudad' => $ciudad_nombre,
+				'profesion' => $profesion_nombre,
 				'mensaje' => trim((string) $form_state->getValue('mensaje')),
 				'autorizacion' => (int) $form_state->getValue('autorizacion'),
 				'ip' => $request->getClientIp(),
@@ -359,29 +366,36 @@ class ProgramaInteresadoForm extends FormBase
 
 	protected function getCiudades()
 	{
-		return [
-			'Bogotá' => 'Bogotá',
-			'Medellín' => 'Medellín',
-			'Cali' => 'Cali',
-			'Barranquilla' => 'Barranquilla',
-			'Cartagena' => 'Cartagena',
-			'Bucaramanga' => 'Bucaramanga',
-			'Pereira' => 'Pereira',
-			'Manizales' => 'Manizales',
-			'Santa Marta' => 'Santa Marta',
-			'Cúcuta' => 'Cúcuta',
-			'Otra' => 'Otra',
-		];
+		$options = [];
+
+		$terms = \Drupal::entityTypeManager()
+			->getStorage('taxonomy_term')
+			->loadTree('ciudades', 0, NULL, TRUE);
+
+		// Ordenar alfabéticamente por nombre
+		usort($terms, function ($a, $b) {
+			return strcmp($a->getName(), $b->getName());
+		});
+
+		foreach ($terms as $term) {
+			$options[$term->id()] = $term->getName();
+		}
+
+		return $options;
 	}
 
 	protected function getProfesiones()
 	{
-		return [
-			'Méd. dermatólogo asociado' => 'Méd. dermatólogo asociado',
-			'Méd. dermatólogo no asociado' => 'Méd. dermatólogo no asociado',
-			'Residente dermatología en Colombia' => 'Residente dermatología en Colombia',
-			'Residente dermatología fuera de Colombia' => 'Residente dermatología fuera de Colombia',
-			'Otra' => 'Otra',
-		];
+		$options = [];
+
+		$terms = \Drupal::entityTypeManager()
+			->getStorage('taxonomy_term')
+			->loadTree('profesiones');
+
+		foreach ($terms as $term) {
+			$options[$term->tid] = $term->name;
+		}
+
+		return $options;
 	}
 }
