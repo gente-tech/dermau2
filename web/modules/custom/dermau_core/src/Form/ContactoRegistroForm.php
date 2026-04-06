@@ -41,7 +41,7 @@ class ContactoRegistroForm extends FormBase {
     */
 
     $form['#attached']['library'][] = 'dermau_core/intl_tel_input';
-
+    $form['#attached']['library'][] = 'dermau_core/registro_exitoso_modal';
     $form['#attributes']['class'][] = 'du-form-register__form';
 
     /*
@@ -268,6 +268,11 @@ class ContactoRegistroForm extends FormBase {
       ]
     ];
 
+    $form['modal_registro_exitoso'] = [
+      '#theme' => 'dermau_modal_registro_exitoso',
+      '#weight' => 999,
+    ];
+
     return $form;
   }
 
@@ -419,14 +424,26 @@ class ContactoRegistroForm extends FormBase {
   ---------------------------------
   */
 
-  if ($pdf_url) {
+  $request = \Drupal::request();
 
-    $form_state->setRedirect(
-  'dermau_core.descargar',
-  ['node' => $programa_id]
-);
+  $current_path = \Drupal::service('path.current')->getPath();
+  $current_query = $request->query->all();
+  $current_query['registro_exitoso'] = 1;
 
-  }
+  $form_state->setRedirectUrl(
+    Url::fromUserInput($current_path, [
+      'query' => $current_query,
+    ])
+  );
+
+//   if ($pdf_url) {
+
+//     $form_state->setRedirect(
+//   'dermau_core.descargar',
+//   ['node' => $programa_id]
+// );
+
+//   }
 
 }
 
