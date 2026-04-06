@@ -34,6 +34,8 @@ class ContactoRegistroForm extends FormBase {
 
   public function buildForm(array $form, FormStateInterface $form_state) {
 
+    $form['#cache']['max-age'] = 0;
+
     /*
     -----------------------------------------
     Cargar librería del teléfono
@@ -279,6 +281,9 @@ class ContactoRegistroForm extends FormBase {
       '#theme' => 'dermau_modal_registro_exitoso',
       '#mostrar_modal' => $mostrar_modal,
       '#weight' => 999,
+      '#cache' => [
+        'max-age' => 0,
+      ],
     ];
 
     return $form;
