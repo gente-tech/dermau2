@@ -212,9 +212,20 @@ class ProgramaInteresadoForm extends FormBase
 			],
 		];
 
+		$session = \Drupal::request()->getSession();
+		$mostrar_modal = (bool) $session->get('registro_exitoso', FALSE);
+
+		if ($mostrar_modal) {
+		$session->remove('registro_exitoso');
+		}
+
 		$form['modal_registro_exitoso'] = [
 			'#theme' => 'dermau_modal_registro_exitoso',
+			'#mostrar_modal' => $mostrar_modal,
 			'#weight' => 999,
+			'#cache' => [
+				'max-age' => 0,
+			],
 		];
 
 		return $form;
@@ -282,10 +293,6 @@ class ProgramaInteresadoForm extends FormBase
 			])
 			->execute();
 
-		$current_path = \Drupal::service('path.current')->getPath();
-		$current_query = $request->query->all();
-		$current_query['registro_exitoso'] = 1;
-
 		// Envío de correo
 		$nombre = trim((string) $form_state->getValue('nombre'));
 		$apellido = trim((string) $form_state->getValue('apellido'));
@@ -340,12 +347,13 @@ class ProgramaInteresadoForm extends FormBase
 			]
 		);
 		}
+
+		$request->getSession()->set('registro_exitoso', TRUE);
+		$current_path = \Drupal::service('path.current')->getPath();
 		
 		// Redireccionar
 		$form_state->setRedirectUrl(
-			Url::fromUserInput($current_path, [
-				'query' => $current_query,
-			])
+			Url::fromUserInput($current_path)
 		);
 	}
 
