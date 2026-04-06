@@ -3,14 +3,11 @@
   Drupal.behaviors.dermauRegistroExitosoModal = {
     attach(context) {
       console.log('attach del modal ejecutado');
-      once('dermauRegistroExitosoModal', 'body', context).forEach(() => {
-        const modal = document.getElementById('modal-ok');
+      once('dermauRegistroExitosoModal', '#modal-ok', context).forEach((modal) => {
         console.log('modal encontrado:', modal);
         if (!modal) {
           return;
         }
-
-        console.log('data-auto-open:', modal.dataset.autoOpen);
 
         const closeBtn = modal.querySelector('.du-modal__close');
         const overlay = modal.querySelector('.du-modal__overlay');
@@ -25,6 +22,8 @@
           modal.style.display = 'none';
           document.body.style.overflow = 'auto';
         };
+
+        console.log('data-auto-open:', modal.dataset.autoOpen);
 
         if (modal.dataset.autoOpen === '1') {
           openModal();
