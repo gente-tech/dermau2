@@ -197,9 +197,7 @@ class ContactoRegistroForm extends FormBase {
 
     $form['group_container']['group2']['ciudad'] = [
       '#type' => 'select',
-      '#options' => [
-        '1' => 'Ciudad 1'
-      ],
+      '#options' => $this->getCiudades(),
       '#empty_option' => $this->t('Selecciona tu ciudad'),
       '#attributes' => [
         'class' => ['du-form-select'],
@@ -215,9 +213,7 @@ class ContactoRegistroForm extends FormBase {
 
     $form['group_container']['group2']['profesion'] = [
       '#type' => 'select',
-      '#options' => [
-        '1' => 'Profesión 1'
-      ],
+      '#options' => $this->getProfesiones(),
       '#empty_option' => $this->t('Selecciona tu profesión'),
       '#attributes' => [
         'class' => ['du-form-select'],
@@ -290,6 +286,14 @@ class ContactoRegistroForm extends FormBase {
   }
 
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    $ciudad_tid = $form_state->getValue('ciudad');
+    $profesion_tid = $form_state->getValue('profesion');
+
+    $ciudad_term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($ciudad_tid);
+    $profesion_term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($profesion_tid);
+
+    $ciudad_nombre = $ciudad_term ? $ciudad_term->getName() : '';
+    $profesion_nombre = $profesion_term ? $profesion_term->getName() : '';
 
   $programa_id = $form_state->getValue('programa');
 
@@ -358,8 +362,8 @@ class ContactoRegistroForm extends FormBase {
   }
 
   $telefono = trim((string) $form_state->getValue('telefono'));
-  $ciudad = trim((string) $form_state->getValue('ciudad'));
-  $profesion = trim((string) $form_state->getValue('profesion'));
+  $ciudad = $ciudad_nombre;
+  $profesion = $profesion_nombre;
   $mensaje = trim((string) $form_state->getValue('mensaje'));
 
   $config = \Drupal::config('enterprise_integrations.settings');
@@ -455,6 +459,42 @@ class ContactoRegistroForm extends FormBase {
 
 //   }
 
+}
+
+protected function getCiudades() {
+  $options = [];
+
+  $terms = \Drupal::entityTypeManager()
+    ->getStorage('taxonomy_term')
+    ->loadTree('ciudades', 0, NULL, TRUE);
+
+  usort($terms, function ($a, $b) {
+    return strcmp($a->getName(), $b->getName());
+  });
+
+  foreach ($terms as $term) {
+    $options[$term->id()] = $term->getName();
+  }
+
+  return $options;
+}
+
+protected function getProfesiones() {
+  $options = [];
+
+  $terms = \Drupal::entityTypeManager()
+    ->getStorage('taxonomy_term')
+    ->loadTree('profesiones', 0, NULL, TRUE);
+
+  usort($terms, function ($a, $b) {
+    return strcmp($a->getName(), $b->getName());
+  });
+
+  foreach ($terms as $term) {
+    $options[$term->id()] = $term->getName();
+  }
+
+  return $options;
 }
 
 }
