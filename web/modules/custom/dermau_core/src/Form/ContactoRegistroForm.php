@@ -271,9 +271,9 @@ class ContactoRegistroForm extends FormBase {
     $session = \Drupal::request()->getSession();
     $mostrar_modal = (bool) $session->get('registro_exitoso', FALSE);
 
-    if ($mostrar_modal) {
-      $session->remove('registro_exitoso');
-    }
+    // if ($mostrar_modal) {
+    //   $session->remove('registro_exitoso');
+    // }
 
     $form['modal_registro_exitoso'] = [
       '#theme' => 'dermau_modal_registro_exitoso',
