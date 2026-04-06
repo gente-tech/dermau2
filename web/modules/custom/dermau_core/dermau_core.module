@@ -91,7 +91,9 @@ function dermau_core_theme($existing, $type, $theme, $path)
       'template' => 'dermau-info-block',
     ],
     'dermau_modal_registro_exitoso' => [
-      'variables' => [],
+      'variables' => [
+        'mostrar_modal' => FALSE,
+      ],
       'template' => 'modal-registro-exitoso',
       'path' => $path . '/templates',
     ],
