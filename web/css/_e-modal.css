@@ -103,11 +103,11 @@
   font-size: 13px;
   display: flex;
   gap: 10px;
-  color: #1c224a;
+  color: var(--du-color-text-black);
 }
 
 .du-modal__section-title {
-  color: #1c224a;
+  color: var(--du-color-text-black);
   font-size: 18px;
   margin-bottom: 15px;
   display: flex;
@@ -143,7 +143,7 @@
   font-size: 11px;
   font-weight: 800;
   color: white;
-  background: #1C224A;
+  background: var(--du-color-text-black);
   color:white;
 }
 .tag--diplomado {

@@ -33,7 +33,7 @@
 .du-footer-info__description {
     font-size: 20px;
     line-height: 1.6;
-    color: #1C224A;
+    color: var(--du-color-text-black);
 }
 
 /* Contenedor de Imagen y Botón */
@@ -55,8 +55,8 @@
 .du-footer-info__link {
     position: absolute;
     bottom: 30px;
-    background-color: var(--color-primary, #66DBFF);
-    color: var(--color-dark-blue, #1a2344);
+    background-color: var(--du-color-primary);
+    color: var(--du-color-text-black);
     padding: 10px 40px;
     border-radius: 26px;
     text-decoration: none;

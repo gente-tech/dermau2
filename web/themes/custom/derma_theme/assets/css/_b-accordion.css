@@ -79,7 +79,7 @@
 }
 .du-accordion-block__info {
     background: white;
-    border: 1px solid #66dbff;
+    border: 1px solid var(--du-color-primary);
     border-radius: 4px;
     display: flex;
     justify-content: start;

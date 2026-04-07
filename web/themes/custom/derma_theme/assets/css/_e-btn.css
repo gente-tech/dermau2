@@ -15,7 +15,7 @@
 
 .du-btn--primary {
   background-color: var(--du-color-primary);
-  color: var(--du-color-text-dark);
+  color: white;
 }
 .du-btn--secundary {
   background-color: var(--du-color-secondary);

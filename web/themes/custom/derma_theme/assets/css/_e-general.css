@@ -133,7 +133,7 @@ form#user-login-form input#edit-submit {
     width: 100%;
     max-width: 300px;
     margin-top: 15px;
-    background: #66dbff;
+    background: var(--du-color-primary);
 }
 
 

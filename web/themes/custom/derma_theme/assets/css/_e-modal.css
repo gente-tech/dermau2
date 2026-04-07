@@ -115,11 +115,11 @@
   font-size: 13px;
   display: flex;
   gap: 10px;
-  color: #1c224a;
+  color: var(--du-color-text-black);
 }
 
 .du-modal__section-title {
-  color: #1c224a;
+  color: var(--du-color-text-black);
   font-size: 18px;
   margin-bottom: 15px;
   display: flex;
@@ -157,7 +157,7 @@
   font-size: 11px;
   font-weight: 500;
   color: white;
-  background: #1C224A;
+  background: var(--du-color-text-black);
   color:white;
   white-space: nowrap;
   overflow: hidden;
@@ -176,15 +176,20 @@
   color: #FFBB93;
 }
 .tag--otro-1, .tag[data-tag="5"] {
-  color: #d5e4ff;
+  color: #50A7D8;
 }
 .tag--otro-2, .tag[data-tag="6"] {
-  color: #9cd3f5;
+  color: #12A19A;
 }
 .tag--otro-3, .tag[data-tag="7"] {
-  color: #9cf5f3;
+  color: #F5C514;
 }
-
+.tag--otro-4, .tag[data-tag="8"] {
+  color: #E52385;
+}
+.tag--otro-5, .tag[data-tag="9"] {
+  color: #F07F16;
+}
 
 .program-name {
   font-size: 13px;
