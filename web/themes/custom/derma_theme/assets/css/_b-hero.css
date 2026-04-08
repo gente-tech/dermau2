@@ -110,7 +110,7 @@
 .du-hero__tags .tag-4{
 	border-color: #0066BD;
 	background-color: #D6ECFFAD;
-	color: var(--du-color-text-black);
+	color: #1C224A;
 }
 
 
@@ -140,7 +140,7 @@
     align-items: center;
     gap: 10px;
     flex: 1;
-    color: var(--du-color-text-black);
+    color: #1C224A;
     font-weight: 600;
     font-size:14px;
 }

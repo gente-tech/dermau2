@@ -41,11 +41,11 @@
 }
 
 .du-pagination li.pager__item a:hover {
-    background: color-mix(in srgb, var(--du-color-primary) 30%, transparent);
+    background: #66dbff3d;
 }
 
 .du-pagination li.pager__item.is-active a{
-    background: var(--du-color-text-black);
+    background: #1c224a;
     color: #66dafe;
 }
 
@@ -72,7 +72,7 @@
     padding: 50px;
     text-align: center;
     font-size: 18px;
-    color: var(--du-color-text-black);
+    color: #1c224a;
     font-weight: 400;
 }
 
