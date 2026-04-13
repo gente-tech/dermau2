@@ -17,7 +17,7 @@ class TestimoniosBlockTwig extends BlockBase {
   public function defaultConfiguration() {
     return [
       'titulo_parte_1' => 'Somos la Plataforma de Educación Dermatológica',
-      'titulo_parte_2' => 'Líder en Colombia',
+      'titulo_parte_2' => 'Líder en Colombia test',
       'texto_boton' => 'Conoce más sobre',
       'texto_boton_highlight' => 'DermaU',
       'url_boton' => '#',
