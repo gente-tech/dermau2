@@ -61,6 +61,7 @@ function dermau_core_theme($existing, $type, $theme, $path)
         'items' => [],
       ],
       'template' => 'block-testimonios',
+      'path' => drupal_get_path('module', 'dermau_core') . '/templates',
     ],
     'block_faq' => [
       'variables' => [
