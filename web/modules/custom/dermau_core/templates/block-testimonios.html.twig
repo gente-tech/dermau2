@@ -55,12 +55,16 @@
       <div class="swiper-pagination du-testimonials__pagination"></div>
     </div>
 
-    <div class="du-testimonials__actions">
-      <a href="{{ url_boton }}" class="du-btn du-btn--secundary-dark">
-        {{ texto_boton }}
-        <span class="du-btn__link">{{ texto_boton_highlight }}</span>
-      </a>
-    </div>
+    {% if texto_boton is not empty %}
+      <div class="du-testimonials__actions">
+        <a href="{{ url_boton }}" class="du-btn du-btn--secundary-dark">
+          {{ texto_boton }}
+          {% if texto_boton_highlight is not empty %}
+            <span class="du-btn__link">{{ texto_boton_highlight }}</span>
+          {% endif %}
+        </a>
+      </div>
+    {% endif %}
 
   </div>
 </section>
