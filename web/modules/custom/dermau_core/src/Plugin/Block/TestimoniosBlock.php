@@ -106,7 +106,8 @@ class TestimoniosBlock extends BlockBase {
     }
 
     return [
-      '#markup' => '<pre>' . print_r($items, TRUE) . '</pre>',
+      '#theme' => 'block_testimonios',
+      '#markup' => 'TEST',
     ];
 
     // return [
