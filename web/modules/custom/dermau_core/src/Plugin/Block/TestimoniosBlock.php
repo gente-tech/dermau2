@@ -107,26 +107,21 @@ class TestimoniosBlock extends BlockBase {
 
     return [
       '#theme' => 'block_testimonios',
-      '#markup' => 'TEST',
+      '#titulo_parte_1' => $this->configuration['titulo_parte_1'],
+      '#titulo_parte_2' => $this->configuration['titulo_parte_2'],
+      '#texto_boton' => $this->configuration['texto_boton'],
+      '#texto_boton_highlight' => $this->configuration['texto_boton_highlight'],
+      '#url_boton' => $this->configuration['url_boton'],
+      '#items' => $items,
+      '#attached' => [
+        'library' => [
+          'dermau_core/testimonios-swiper',
+        ],
+      ],
+      '#cache' => [
+        'tags' => ['node_list'],
+      ],
     ];
-
-    // return [
-    //   '#theme' => 'block_testimonios',
-    //   '#titulo_parte_1' => $this->configuration['titulo_parte_1'],
-    //   '#titulo_parte_2' => $this->configuration['titulo_parte_2'],
-    //   '#texto_boton' => $this->configuration['texto_boton'],
-    //   '#texto_boton_highlight' => $this->configuration['texto_boton_highlight'],
-    //   '#url_boton' => $this->configuration['url_boton'],
-    //   '#items' => $items,
-    //   '#attached' => [
-    //     'library' => [
-    //       'dermau_core/testimonios-swiper',
-    //     ],
-    //   ],
-    //   '#cache' => [
-    //     'tags' => ['node_list'],
-    //   ],
-    // ];
   }
 
 }
