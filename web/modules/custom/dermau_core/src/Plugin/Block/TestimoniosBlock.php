@@ -71,57 +71,63 @@ class TestimoniosBlock extends BlockBase {
   }
 
   public function build() {
-
-    $query = \Drupal::entityQuery('node')
-      ->condition('type', 'testimonio')
-      ->condition('status', 1)
-      ->sort('created', 'DESC')
-      ->accessCheck(TRUE);
-
-    $nids = $query->execute();
-
-    $items = [];
-    $file_url_generator = \Drupal::service('file_url_generator');
-
-    if (!empty($nids)) {
-
-      $nodes = Node::loadMultiple($nids);
-
-      foreach ($nodes as $node) {
-
-        $foto = '';
-
-        if (!$node->get('field_foto')->isEmpty()) {
-          $image = $node->get('field_foto')->entity;
-          $foto = $file_url_generator->generateAbsoluteString($image->getFileUri());
-        }
-
-        $items[] = [
-          'foto' => $foto,
-          'nombre' => $node->get('field_nombre')->value ?? '',
-          'cargo' => $node->get('field_cargo_persona')->value ?? '',
-          'testimonio' => $node->get('field_testimonio')->value ?? '',
-        ];
-      }
-    }
-
     return [
-      '#theme' => 'block_testimonios',
-      '#titulo_parte_1' => $this->configuration['titulo_parte_1'],
-      '#titulo_parte_2' => $this->configuration['titulo_parte_2'],
-      '#texto_boton' => $this->configuration['texto_boton'],
-      '#texto_boton_highlight' => $this->configuration['texto_boton_highlight'],
-      '#url_boton' => $this->configuration['url_boton'],
-      '#items' => $items,
-      '#attached' => [
-        'library' => [
-          'dermau_core/testimonios-swiper',
-        ],
-      ],
-      '#cache' => [
-        'tags' => ['node_list'],
-      ],
+      '#markup' => 'TEST BLOQUE OK',
     ];
   }
+
+  // public function build() {
+
+  //   $query = \Drupal::entityQuery('node')
+  //     ->condition('type', 'testimonio')
+  //     ->condition('status', 1)
+  //     ->sort('created', 'DESC')
+  //     ->accessCheck(TRUE);
+
+  //   $nids = $query->execute();
+
+  //   $items = [];
+  //   $file_url_generator = \Drupal::service('file_url_generator');
+
+  //   if (!empty($nids)) {
+
+  //     $nodes = Node::loadMultiple($nids);
+
+  //     foreach ($nodes as $node) {
+
+  //       $foto = '';
+
+  //       if (!$node->get('field_foto')->isEmpty()) {
+  //         $image = $node->get('field_foto')->entity;
+  //         $foto = $file_url_generator->generateAbsoluteString($image->getFileUri());
+  //       }
+
+  //       $items[] = [
+  //         'foto' => $foto,
+  //         'nombre' => $node->get('field_nombre')->value ?? '',
+  //         'cargo' => $node->get('field_cargo_persona')->value ?? '',
+  //         'testimonio' => $node->get('field_testimonio')->value ?? '',
+  //       ];
+  //     }
+  //   }
+
+  //   return [
+  //     '#theme' => 'block_testimonios',
+  //     '#titulo_parte_1' => $this->configuration['titulo_parte_1'],
+  //     '#titulo_parte_2' => $this->configuration['titulo_parte_2'],
+  //     '#texto_boton' => $this->configuration['texto_boton'],
+  //     '#texto_boton_highlight' => $this->configuration['texto_boton_highlight'],
+  //     '#url_boton' => $this->configuration['url_boton'],
+  //     '#items' => $items,
+  //     '#attached' => [
+  //       'library' => [
+  //         'dermau_core/testimonios-swiper',
+  //       ],
+  //     ],
+  //     '#cache' => [
+  //       'tags' => ['node_list'],
+  //     ],
+  //   ];
+  // }
 
 }
