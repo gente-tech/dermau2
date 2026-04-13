@@ -246,7 +246,14 @@
 
 {# testimonios de los estudiantes #}
 {# {{ drupal_entity('block', 'derma_theme_dermautestimonios_3') }} #}
-{{ drupal_block('dermau_testimonios_block') }}
+{# {{ drupal_block('dermau_testimonios_block') }} #}
+{{ drupal_block('dermau_testimonios_block', {
+  titulo_parte_1: 'Testimonios de quienes se forman en',
+  titulo_parte_2: 'DermaU test',
+  texto_boton: 'Conoce los',
+  texto_boton_highlight: 'Docentes',
+  url_boton: 'https://catalogo.dermau.net/docentes'
+}) }}
 <br>
 
 <section class="du-accordion-block" data-variant="left">
