@@ -246,7 +246,10 @@
 
 {# testimonios de los estudiantes #}
 {# este si sale {{ drupal_block('dermau_testimonios_block_twig') }} #}
-{{ drupal_entity('block', 'dermau_testimonios_block_twig', check_access=false) }}
+{# {{ drupal_entity('block', 'dermau_testimonios_block_twig', check_access=false) }} #}
+
+{{ drupal_entity('block', 'derma_theme_dermautestimoniostwig', check_access=false) }}
+
 {# {{ drupal_block('dermau_testimonios_block', {
   titulo_parte_1: 'Testimonios de quienes se forman en',
   titulo_parte_2: 'DermaU',
