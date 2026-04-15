@@ -16,7 +16,6 @@ testimonios-swiper:
     js/testimonios-swiper.js: {}
   dependencies:
     - core/drupal
-    - core/once
 
 faq:
   js:
