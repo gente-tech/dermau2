@@ -1,4 +1,7 @@
-<section class="du-testimonials">
+{% set slides_per_view = slides_per_view|default(2) %}
+{% set content_alignment = content_alignment|default('full') %}
+
+<section class="du-testimonials du-testimonials--{{ content_alignment }}">
 	<div class="du-testimonials__container">
 
 		<h2 class="du-testimonials__title">
@@ -9,7 +12,7 @@
 		</h2>
 
 		<div class="du-testimonials__slider-wrapper">
-			<div class="swiper du-testimonials__swiper" id="home-testimonial-swiper">
+			<div id="testimonial-swiper-{{ loop.index0|default(0) }}-{{ random() }}" class="swiper du-testimonials__swiper" data-slides-per-view="{{ slides_per_view }}" data-content-alignment="{{ content_alignment }}">
 				<div class="swiper-wrapper">
 
 					{% for item in items %}
