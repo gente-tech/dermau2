@@ -21,7 +21,9 @@ class TestimoniosBlock extends BlockBase {
       'texto_boton' => 'Conoce más sobre',
       'texto_boton_highlight' => 'DermaU',
       'url_boton' => '#',
-    ];
+      'slides_per_view' => 2,
+      'content_alignment' => 'full',
+    ] + parent::defaultConfiguration();
   }
 
   public function blockForm($form, FormStateInterface $form_state) {
@@ -58,6 +60,28 @@ class TestimoniosBlock extends BlockBase {
       '#default_value' => $this->configuration['url_boton'],
     ];
 
+    $form['slides_per_view'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Cantidad de testimonios visibles'),
+      '#options' => [
+        1 => $this->t('1 testimonio'),
+        2 => $this->t('2 testimonios'),
+      ],
+      '#default_value' => $this->configuration['slides_per_view'] ?? 2,
+      '#required' => TRUE,
+    ];
+
+    $form['content_alignment'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Alineación del bloque'),
+      '#options' => [
+        'full' => $this->t('Centrado / ancho completo'),
+        'left' => $this->t('Alineado a la izquierda'),
+      ],
+      '#default_value' => $this->configuration['content_alignment'] ?? 'full',
+      '#required' => TRUE,
+    ];
+
     return $form;
   }
 
@@ -68,6 +92,8 @@ class TestimoniosBlock extends BlockBase {
     $this->configuration['texto_boton'] = $form_state->getValue('texto_boton');
     $this->configuration['texto_boton_highlight'] = $form_state->getValue('texto_boton_highlight');
     $this->configuration['url_boton'] = $form_state->getValue('url_boton');
+    $this->configuration['slides_per_view'] = (int) $form_state->getValue('slides_per_view');
+    $this->configuration['content_alignment'] = $form_state->getValue('content_alignment');
   }
 
   public function build() {
@@ -113,6 +139,8 @@ class TestimoniosBlock extends BlockBase {
       '#texto_boton_highlight' => $this->configuration['texto_boton_highlight'],
       '#url_boton' => $this->configuration['url_boton'],
       '#items' => $items,
+      '#slides_per_view' => (int) ($this->configuration['slides_per_view'] ?? 2),
+      '#content_alignment' => $this->configuration['content_alignment'] ?? 'full',
       '#attached' => [
         'library' => [
           'dermau_core/testimonios-swiper',
