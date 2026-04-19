@@ -58,7 +58,7 @@ const duSwiperAgreement = new Swiper(".du-agreements .swiper", {
   },
 });
 
-const duSwiperTestimonials = new Swiper(".du-testimonials .swiper", {
+const duSwiperTestimonials = new Swiper("#general-testimonials-swiper", {
   slidesPerView: 1,
   spaceBetween: 30,
   loop: false,
