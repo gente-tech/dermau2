@@ -14,13 +14,10 @@
           centeredSlides: false,
           watchOverflow: true,
           navigation: {
-            nextEl: wrapper ? wrapper.querySelector('.du-testimonials__next') : null,
-            prevEl: wrapper ? wrapper.querySelector('.du-testimonials__prev') : null,
+            nextEl: ".du-testimonials__next",
+            prevEl: ".du-testimonials__prev",
           },
-          pagination: {
-            el: wrapper ? wrapper.querySelector('.du-testimonials__pagination') : null,
-            clickable: true,
-          },
+          pagination: { el: ".du-testimonials__pagination", clickable: true },
           breakpoints: {
             0: {
               slidesPerView: 1,
