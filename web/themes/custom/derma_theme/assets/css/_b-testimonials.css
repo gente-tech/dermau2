@@ -8,6 +8,11 @@
   font-family: var(--du-font-main);
 }
 
+.du-testimonials__container {
+    max-width: var(--du-max-width);
+    margin: 0 auto;
+}
+
 .du-testimonials__title {
   text-align: center;
   color: var(--du-color-secondary-dark);
