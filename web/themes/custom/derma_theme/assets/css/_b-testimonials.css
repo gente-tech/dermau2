@@ -7,6 +7,9 @@
   background-size: contain;
   font-family: var(--du-font-main);
 }
+.du-testimonials--left{
+  background-position: -100px bottom;
+}
 
 .du-testimonials__container {
     max-width: var(--du-max-width);
