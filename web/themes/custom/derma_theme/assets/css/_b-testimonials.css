@@ -148,3 +148,7 @@
     display: none !important;
   }
 }
+
+.du-testimonials__slider-wrapper_1{
+  position: relative;
+}
