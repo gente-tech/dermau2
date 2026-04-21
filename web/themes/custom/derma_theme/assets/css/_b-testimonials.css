@@ -149,6 +149,6 @@
   }
 }
 
-.du-testimonials__slider-wrapper_1, du-testimonials__slider-wrapper_2{
+[class="du-testimonials__slider-wrapper"]{
   position: relative;
 }
