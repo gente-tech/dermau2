@@ -149,13 +149,4 @@
   }
 }
 
-[class*="du-testimonials__slider-wrapper"]{
-  position: relative;
-}
 
-[class*="swiper-button"]{
-  background: #1c224a;
-    color: #ffffff;
-    border-radius: 50%;
-    padding: 2rem;
-}
