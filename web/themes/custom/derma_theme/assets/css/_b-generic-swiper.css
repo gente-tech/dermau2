@@ -188,9 +188,10 @@
 .du-testimonials__slider-wrapper_2 {
   position: relative;
 }
-
-.du-testimonials__slider-wrapper_1[class*="swiper-button"],
-.du-testimonials__slider-wrapper_2[class*="swiper-button"] {
+.du-testimonials__slider-wrapper_1 .swiper-button-next,
+.du-testimonials__slider-wrapper_1 .swiper-button-prev,
+.du-testimonials__slider-wrapper_2 .swiper-button-next,
+.du-testimonials__slider-wrapper_2 .swiper-button-prev {
   background: #1c224a;
   color: #ffffff !important;
   border-radius: 50%;
