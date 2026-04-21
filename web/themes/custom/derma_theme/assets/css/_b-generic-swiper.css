@@ -198,12 +198,13 @@
   padding: 2rem;
 }
 
-.du-testimonials_slider-wrapper_1 .swiper-button-next, .du-testimonials_slider-wrapper_2 .swiper-button-next{
+.du-testimonials__slider-wrapper_1 .swiper-button-next, .du-testimonials__slider-wrapper_2 .swiper-button-next{
   right: -40px !important;
 }
-.du-testimonials_slider-wrapper_1 .swiper-button-prev, .du-testimonials_slider-wrapper_2 .swiper-button-prev {
+.du-testimonials__slider-wrapper_1 .swiper-button-prev, .du-testimonials__slider-wrapper_2 .swiper-button-prev {
   left: -40px !important;
 }
+
 
 
 
