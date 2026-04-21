@@ -184,6 +184,19 @@
  .du-generic-swiper__container.left {   max-width: 100%;  }
 }
 
+.du-testimonials__slider-wrapper_1,
+.du-testimonials__slider-wrapper_2 {
+  position: relative;
+}
+
+.du-testimonials__slider-wrapper_1[class*="swiper-button"],
+.du-testimonials__slider-wrapper_2[class*="swiper-button"] {
+  background: #1c224a;
+  color: #ffffff !important;
+  border-radius: 50%;
+  padding: 2rem;
+}
+
 
 
 
