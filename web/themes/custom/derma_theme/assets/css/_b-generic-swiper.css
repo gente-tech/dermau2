@@ -199,10 +199,10 @@
 }
 
 .du-testimonials_slider-wrapper_1 .swiper-button-next, .du-testimonials_slider-wrapper_2 .swiper-button-next{
-  right: -40px;
+  right: -40px !important;
 }
 .du-testimonials_slider-wrapper_1 .swiper-button-prev, .du-testimonials_slider-wrapper_2 .swiper-button-prev {
-  left: -40px;
+  left: -40px !important;
 }
 
 
