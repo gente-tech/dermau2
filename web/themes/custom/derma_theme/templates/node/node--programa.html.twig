@@ -144,7 +144,8 @@
         <div class="du-hero__actions">
           <a href="#" class="du-btn du-btn--primary du-open-inscripcion">Inscribirme</a>
           {% if node.field_tipo_de_programa.entity.label != 'Webinar' %}
-            <a href="#" class="du-btn du-btn--secundary-dark">Descargar Programa
+            <a href="/descargar-programa{{ path('entity.node.canonical', {'node': node.id}) }}" 
+   class="du-btn du-btn--secundary-dark">Descargar Programa
               <span class="du-icon__next"></span>
             </a>
           {% endif %}
