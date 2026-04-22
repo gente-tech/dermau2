@@ -4,7 +4,6 @@ namespace Drupal\dermau_core\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\node\NodeInterface;
 use Drupal\node\Entity\Node;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\enterprise_integrations\Service\HubspotService;
@@ -28,21 +27,33 @@ class DescargarProgramaForm extends FormBase {
     );
   }
 
-  public function buildForm(array $form, FormStateInterface $form_state, NodeInterface $nid = NULL) {
+  // 🔥 CAMBIO AQUÍ: ahora recibe alias
+  public function buildForm(array $form, FormStateInterface $form_state, $alias = NULL) {
 
-    if (!$nid || $nid->bundle() !== 'programa') {
+    // 🔥 Resolver alias → path interno (/node/ID)
+    $internal_path = \Drupal::service('path_alias.manager')->getPathByAlias('/' . $alias);
+
+    if (!preg_match('/^\/node\/(\d+)$/', $internal_path, $matches)) {
       return ['#markup' => 'Programa no válido'];
     }
 
-    $form_state->set('programa_nid', $nid->id());
+    $nid = $matches[1];
+    $node = Node::load($nid);
+
+    if (!$node || $node->bundle() !== 'programa') {
+      return ['#markup' => 'Programa no válido'];
+    }
+
+    // Guardar NID (NO CAMBIA)
+    $form_state->set('programa_nid', $nid);
 
     // =========================
-    // BACKGROUND
+    // BACKGROUND (SIN CAMBIOS)
     // =========================
     $image_url = '';
 
-    if (!$nid->get('field_imagen_programa')->isEmpty()) {
-      $file = $nid->get('field_imagen_programa')->first()->entity;
+    if (!$node->get('field_imagen_programa')->isEmpty()) {
+      $file = $node->get('field_imagen_programa')->first()->entity;
       if ($file) {
         $image_url = \Drupal::service('file_url_generator')
           ->generateAbsoluteString($file->getFileUri());
@@ -73,7 +84,7 @@ class DescargarProgramaForm extends FormBase {
       </div>
     ';
 
-    $titulo_programa = Html::escape($nid->getTitle());
+    $titulo_programa = Html::escape($node->getTitle());
 
     // HEADER
     $form['intro'] = [
@@ -87,7 +98,7 @@ class DescargarProgramaForm extends FormBase {
       ',
     ];
 
-    // CAMPOS
+    // CAMPOS (SIN CAMBIOS)
     $form['nombre'] = [
       '#type' => 'textfield',
       '#title' => 'Nombre(s)',
@@ -112,7 +123,7 @@ class DescargarProgramaForm extends FormBase {
       '#required' => TRUE,
     ];
 
-    // TAXONOMÍA
+    // TAXONOMÍA (SIN CAMBIOS)
     $terms = \Drupal::entityTypeManager()
       ->getStorage('taxonomy_term')
       ->loadTree('profesiones');
@@ -145,7 +156,7 @@ class DescargarProgramaForm extends FormBase {
     ];
 
     // =========================
-    // MODAL (FIX REAL)
+    // MODAL (SIN CAMBIOS)
     // =========================
     $download_url = $form_state->get('download_url');
 
@@ -156,7 +167,6 @@ class DescargarProgramaForm extends FormBase {
           <div id="modal-descarga" class="custom-modal">
             <div class="modal-content">
               <span class="modal-close" id="modal-close">&times;</span>
-      
               <h3>Muchas gracias</h3>
               <p>Un ejecutivo te contactará para ayudarte con tu proceso de inscripción.</p>
               <p style="font-size:13px;color:#6b7280;">Tu descarga comenzará automáticamente...</p>
@@ -165,61 +175,50 @@ class DescargarProgramaForm extends FormBase {
         ',
       ];
 
-      // 🔥 JS BIEN INYECTADO (NO se imprime como texto)
-     $form['#attached']['html_head'][] = [
-      [
-        '#tag' => 'script',
-        '#value' => '
-          window.addEventListener("load", function(){
-    
-            var modal = document.getElementById("modal-descarga");
-            var closeBtn = document.getElementById("modal-close");
-            var downloadUrl = "' . $download_url . '";
-    
-            function forceDownload(url) {
-              var a = document.createElement("a");
-              a.href = url;
-              a.download = "";
-              document.body.appendChild(a);
-              a.click();
-              document.body.removeChild(a);
-            }
-    
-            if(modal){
-              modal.style.display = "flex";
-            }
-    
-            // 🔥 Auto descarga
-            setTimeout(function(){
-              forceDownload(downloadUrl);
-            }, 2000);
-    
-            // 🔥 Botón manual
-            var btn = document.getElementById("btn-descargar-pdf");
-            if(btn){
-              btn.addEventListener("click", function(){
-                forceDownload(downloadUrl);
-              });
-            }
-    
-            // ❌ Cerrar
-            if(closeBtn){
-              closeBtn.addEventListener("click", function(){
-                modal.style.display = "none";
-              });
-            }
-    
-            window.addEventListener("click", function(e){
-              if(e.target === modal){
-                modal.style.display = "none";
+      $form['#attached']['html_head'][] = [
+        [
+          '#tag' => 'script',
+          '#value' => '
+            window.addEventListener("load", function(){
+
+              var modal = document.getElementById("modal-descarga");
+              var closeBtn = document.getElementById("modal-close");
+              var downloadUrl = "' . $download_url . '";
+
+              function forceDownload(url) {
+                var a = document.createElement("a");
+                a.href = url;
+                a.setAttribute("download", "");
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
               }
+
+              if(modal){
+                modal.style.display = "flex";
+              }
+
+              setTimeout(function(){
+                forceDownload(downloadUrl);
+              }, 2000);
+
+              if(closeBtn){
+                closeBtn.addEventListener("click", function(){
+                  modal.style.display = "none";
+                });
+              }
+
+              window.addEventListener("click", function(e){
+                if(e.target === modal){
+                  modal.style.display = "none";
+                }
+              });
+
             });
-    
-          });
-        ',
-      ],
-      'modal-script'
-    ];
+          ',
+        ],
+        'modal-script'
+      ];
     }
 
     return $form;
@@ -237,7 +236,6 @@ class DescargarProgramaForm extends FormBase {
       'profesion' => $form_state->getValue('profesion'),
     ];
 
-    // Guardar nodo
     try {
       $node = Node::create([
         'type' => 'registro_programa',
@@ -251,7 +249,6 @@ class DescargarProgramaForm extends FormBase {
       \Drupal::logger('dermau_core')->error($e->getMessage());
     }
 
-    // HubSpot
     $this->hubspotService->createContact([
       'email' => $data['email'],
       'firstname' => $data['nombre'],
@@ -259,7 +256,6 @@ class DescargarProgramaForm extends FormBase {
       'phone' => $data['telefono'],
     ]);
 
-    // Generar URL descarga
     $programa = Node::load($nid);
 
     if ($programa && $programa->hasField('field_pdf_registro')) {
