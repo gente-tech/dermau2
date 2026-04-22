@@ -246,3 +246,42 @@ body {
     padding: 20px;
   }
 }
+
+/* GRID FORM */
+.descargar-programa-wrapper .form-item {
+  margin-bottom: 15px;
+}
+
+.descargar-programa-wrapper .form-item:nth-child(2),
+.descargar-programa-wrapper .form-item:nth-child(3) {
+  width: 48%;
+  display: inline-block;
+}
+
+.descargar-programa-wrapper .form-item:nth-child(3) {
+  float: right;
+}
+
+/* SELECT */
+.descargar-programa-wrapper select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* CHECKBOX */
+.descargar-programa-wrapper .form-item-privacidad {
+  margin-top: 10px;
+  font-size: 13px;
+}
+
+/* BOTÓN */
+.btn-descargar {
+  width: 100%;
+  background: linear-gradient(135deg, #4aa3c7, #2a7de1);
+  padding: 14px;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: 600;
+}
