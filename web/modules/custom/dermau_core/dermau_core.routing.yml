@@ -27,3 +27,15 @@ dermau_core.programa_interesado_export_download:
     _title: "Descargar Excel"
   requirements:
     _permission: "exportar registros programa interesado"
+
+dermau_core.descargar_programa:
+  path: '/descargar-programa/{nid}'
+  defaults:
+    _form: '\Drupal\dermau_core\Form\DescargarProgramaForm'
+    _title: 'Descargar programa'
+  requirements:
+    _permission: 'access content'
+  options:
+    parameters:
+      nid:
+        type: entity:node
