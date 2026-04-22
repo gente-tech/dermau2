@@ -38,24 +38,40 @@ class DescargarProgramaForm extends FormBase {
 
     $form_state->set('programa_nid', $nid->id());
 
-    // 🔥 Imagen dinámica
+    // =========================
+    // 🔥 IMAGEN (CORRECTO PARA MEDIA)
+    // =========================
     $image_url = '';
+
     if ($nid->hasField('field_imagen_programa') && !$nid->get('field_imagen_programa')->isEmpty()) {
-      $image = $nid->get('field_imagen_programa')->entity;
-      if ($image) {
-        $image_url = \Drupal::service('file_url_generator')
-          ->generateAbsoluteString($image->getFileUri());
+
+      $media = $nid->get('field_imagen_programa')->entity;
+
+      if ($media && $media->hasField('field_media_image')) {
+
+        $file = $media->get('field_media_image')->entity;
+
+        if ($file) {
+          $image_url = \Drupal::service('file_url_generator')
+            ->generateAbsoluteString($file->getFileUri());
+        }
       }
     }
 
-    // Fallback
-    if (!$image_url) {
+    // Fallback seguro
+    if (empty($image_url)) {
       $image_url = '/themes/custom/tu_tema/images/default-programa.jpg';
     }
 
-    // 🔥 Wrapper con background
-    $form['#prefix'] = '<div class="programa-background" style="background-image:url(' . $image_url . ')"><div class="programa-overlay"><div class="descargar-programa-wrapper">';
-    $form['#suffix'] = '</div></div></div>';
+    // =========================
+    // WRAPPER CON BACKGROUND
+    // =========================
+    $form['#prefix'] = '<div class="programa-background" style="background-image:url(' . $image_url . ')">
+                          <div class="programa-overlay">
+                            <div class="descargar-programa-wrapper">';
+    $form['#suffix'] = '      </div>
+                          </div>
+                        </div>';
 
     $titulo_programa = Html::escape($nid->getTitle());
 
