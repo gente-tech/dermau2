@@ -39,26 +39,23 @@ class DescargarProgramaForm extends FormBase {
     $form_state->set('programa_nid', $nid->id());
 
     // =========================
-    // 🔥 IMAGEN (CORRECTO PARA MEDIA)
+    // 🔥 IMAGEN (FIELD TYPE: IMAGE)
     // =========================
     $image_url = '';
 
     if ($nid->hasField('field_imagen_programa') && !$nid->get('field_imagen_programa')->isEmpty()) {
 
-      $media = $nid->get('field_imagen_programa')->entity;
+      $item = $nid->get('field_imagen_programa')->first();
 
-      if ($media && $media->hasField('field_media_image')) {
+      if ($item && $item->entity) {
+        $file = $item->entity;
 
-        $file = $media->get('field_media_image')->entity;
-
-        if ($file) {
-          $image_url = \Drupal::service('file_url_generator')
-            ->generateAbsoluteString($file->getFileUri());
-        }
+        $image_url = \Drupal::service('file_url_generator')
+          ->generateAbsoluteString($file->getFileUri());
       }
     }
 
-    // Fallback seguro
+    // Fallback
     if (empty($image_url)) {
       $image_url = '/themes/custom/tu_tema/images/default-programa.jpg';
     }
@@ -90,20 +87,26 @@ class DescargarProgramaForm extends FormBase {
       '#type' => 'textfield',
       '#title' => 'Nombre completo',
       '#required' => TRUE,
-      '#attributes' => ['placeholder' => 'Ingresa tu nombre'],
+      '#attributes' => [
+        'placeholder' => 'Ingresa tu nombre',
+      ],
     ];
 
     $form['email'] = [
       '#type' => 'email',
       '#title' => 'Correo electrónico',
       '#required' => TRUE,
-      '#attributes' => ['placeholder' => 'correo@ejemplo.com'],
+      '#attributes' => [
+        'placeholder' => 'correo@ejemplo.com',
+      ],
     ];
 
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => 'Descargar programa',
-      '#attributes' => ['class' => ['btn-descargar']],
+      '#attributes' => [
+        'class' => ['btn-descargar'],
+      ],
     ];
 
     return $form;
@@ -115,6 +118,9 @@ class DescargarProgramaForm extends FormBase {
     $nombre = $form_state->getValue('nombre');
     $email = $form_state->getValue('email');
 
+    // =========================
+    // 1. Guardar registro
+    // =========================
     try {
       $node = Node::create([
         'type' => 'registro_programa',
@@ -128,6 +134,9 @@ class DescargarProgramaForm extends FormBase {
       \Drupal::logger('dermau_core')->error($e->getMessage());
     }
 
+    // =========================
+    // 2. HubSpot
+    // =========================
     $hubspotData = [
       'email' => $email,
       'firstname' => $nombre,
@@ -137,6 +146,9 @@ class DescargarProgramaForm extends FormBase {
 
     $this->hubspotService->createContact($hubspotData);
 
+    // =========================
+    // 3. Descargar PDF
+    // =========================
     $programa = Node::load($nid);
 
     if ($programa && $programa->hasField('field_pdf_registro')) {
