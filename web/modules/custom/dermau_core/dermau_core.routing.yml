@@ -29,13 +29,10 @@ dermau_core.programa_interesado_export_download:
     _permission: "exportar registros programa interesado"
 
 dermau_core.descargar_programa:
-  path: '/descargar-programa/{nid}'
+  path: '/descargar-programa/{alias}'
   defaults:
     _form: '\Drupal\dermau_core\Form\DescargarProgramaForm'
     _title: 'Descargar programa'
   requirements:
     _permission: 'access content'
-  options:
-    parameters:
-      nid:
-        type: entity:node
+    alias: '.+'
