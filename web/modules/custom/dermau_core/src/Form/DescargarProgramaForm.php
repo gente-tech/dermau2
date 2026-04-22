@@ -6,12 +6,10 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\NodeInterface;
 use Drupal\node\Entity\Node;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\enterprise_integrations\Service\HubspotService;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-
 
 class DescargarProgramaForm extends FormBase {
 
@@ -22,14 +20,14 @@ class DescargarProgramaForm extends FormBase {
   }
 
   public function __construct(HubspotService $hubspotService){
-		$this->hubspotService = $hubspotService;
-	}
+    $this->hubspotService = $hubspotService;
+  }
 
   public static function create(ContainerInterface $container){
-		return new static(
-			$container->get('enterprise_integrations.hubspot')
-		);
-	}
+    return new static(
+      $container->get('enterprise_integrations.hubspot')
+    );
+  }
 
   public function buildForm(array $form, FormStateInterface $form_state, NodeInterface $nid = NULL) {
 
@@ -40,24 +38,45 @@ class DescargarProgramaForm extends FormBase {
       ];
     }
 
-    // Guardar nid en el form_state
+    // Wrapper para CSS
+    $form['#prefix'] = '<div class="descargar-programa-wrapper">';
+    $form['#suffix'] = '</div>';
+
+    // Guardar nid
     $form_state->set('programa_nid', $nid->id());
+
+    // Header bonito
+    $form['intro'] = [
+      '#markup' => '
+        <h2>Descargar programa</h2>
+        <p>Completa tus datos para acceder al contenido académico.</p>
+      ',
+    ];
 
     $form['nombre'] = [
       '#type' => 'textfield',
-      '#title' => 'Nombre',
+      '#title' => 'Nombre completo',
       '#required' => TRUE,
+      '#attributes' => [
+        'placeholder' => 'Ingresa tu nombre',
+      ],
     ];
 
     $form['email'] = [
       '#type' => 'email',
-      '#title' => 'Email',
+      '#title' => 'Correo electrónico',
       '#required' => TRUE,
+      '#attributes' => [
+        'placeholder' => 'correo@ejemplo.com',
+      ],
     ];
 
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => 'Descargar programa',
+      '#attributes' => [
+        'class' => ['btn-descargar'],
+      ],
     ];
 
     return $form;
@@ -70,7 +89,7 @@ class DescargarProgramaForm extends FormBase {
     $email = $form_state->getValue('email');
 
     // =========================
-    // 1. Crear nodo registro
+    // 1. Guardar registro
     // =========================
     try {
       $node = Node::create([
@@ -86,27 +105,26 @@ class DescargarProgramaForm extends FormBase {
     }
 
     // =========================
-    // 2. Enviar a HubSpot
+    // 2. HubSpot
     // =========================
-      // Crear usuario en hubspot
-  		$hubspotData = [
-  		'email' => $email,
-  		'firstname' => $nombre,
-  		'lastname' => 'Programa ' . $nid,
+    $hubspotData = [
+      'email' => $email,
+      'firstname' => $nombre,
+      'lastname' => 'Programa ' . $nid,
       'phone' => '',
-  		];
-  
-  		$hubspotResult = $this->hubspotService->createContact($hubspotData);
-  
-  		if (!$hubspotResult['success']) {
-  		\Drupal::logger('enterprise_integrations')->warning(
-  			'No se pudo crear el contacto en HubSpot para %email. Mensaje: %message',
-  			[
-  			'%email' => $hubspotData['email'],
-  			'%message' => $hubspotResult['message'],
-  			]
-  		);
-  		}
+    ];
+
+    $hubspotResult = $this->hubspotService->createContact($hubspotData);
+
+    if (!$hubspotResult['success']) {
+      \Drupal::logger('enterprise_integrations')->warning(
+        'No se pudo crear el contacto en HubSpot para %email. Mensaje: %message',
+        [
+          '%email' => $hubspotData['email'],
+          '%message' => $hubspotResult['message'],
+        ]
+      );
+    }
 
     // =========================
     // 3. Descargar PDF
@@ -114,28 +132,25 @@ class DescargarProgramaForm extends FormBase {
     $programa = Node::load($nid);
 
     if ($programa && $programa->hasField('field_pdf_registro')) {
-    
+
       $file = $programa->get('field_pdf_registro')->entity;
-    
+
       if ($file) {
         $uri = $file->getFileUri();
         $path = \Drupal::service('file_system')->realpath($uri);
-    
+
         $response = new BinaryFileResponse($path);
         $response->setContentDisposition(
           ResponseHeaderBag::DISPOSITION_ATTACHMENT,
           $file->getFilename()
         );
-    
+
         $response->send();
         exit;
       }
     }
 
-    // Fallback si no hay PDF
     \Drupal::messenger()->addError('No se encontró el archivo para descargar.');
   }
-
-
 
 }
