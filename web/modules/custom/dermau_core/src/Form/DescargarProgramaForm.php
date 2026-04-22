@@ -174,31 +174,39 @@ class DescargarProgramaForm extends FormBase {
             var closeBtn = document.getElementById("modal-close");
             var downloadUrl = "' . $download_url . '";
     
+            function forceDownload(url) {
+              var a = document.createElement("a");
+              a.href = url;
+              a.download = "";
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+            }
+    
             if(modal){
               modal.style.display = "flex";
             }
     
             // 🔥 Auto descarga
             setTimeout(function(){
-              window.location.href = downloadUrl;
+              forceDownload(downloadUrl);
             }, 2000);
     
-            // Botón descargar
+            // 🔥 Botón manual
             var btn = document.getElementById("btn-descargar-pdf");
             if(btn){
               btn.addEventListener("click", function(){
-                window.location.href = downloadUrl;
+                forceDownload(downloadUrl);
               });
             }
     
-            // ❌ Cerrar con X
+            // ❌ Cerrar
             if(closeBtn){
               closeBtn.addEventListener("click", function(){
                 modal.style.display = "none";
               });
             }
     
-            // ❌ Cerrar haciendo click fuera
             window.addEventListener("click", function(e){
               if(e.target === modal){
                 modal.style.display = "none";
