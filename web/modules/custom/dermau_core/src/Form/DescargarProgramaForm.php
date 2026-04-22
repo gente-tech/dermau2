@@ -9,6 +9,8 @@ use Drupal\node\Entity\Node;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\enterprise_integrations\Service\HubspotService;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 
 class DescargarProgramaForm extends FormBase {
@@ -112,15 +114,21 @@ class DescargarProgramaForm extends FormBase {
     $programa = Node::load($nid);
 
     if ($programa && $programa->hasField('field_pdf_registro')) {
-
+    
       $file = $programa->get('field_pdf_registro')->entity;
-
+    
       if ($file) {
-        $url = \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
-
-        // Redirección correcta en Drupal
-        $form_state->setRedirectUrl(\Drupal\Core\Url::fromUri($url));
-        return;
+        $uri = $file->getFileUri();
+        $path = \Drupal::service('file_system')->realpath($uri);
+    
+        $response = new BinaryFileResponse($path);
+        $response->setContentDisposition(
+          ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+          $file->getFilename()
+        );
+    
+        $response->send();
+        exit;
       }
     }
 
