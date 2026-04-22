@@ -90,8 +90,8 @@ class DescargarProgramaForm extends FormBase {
   		$hubspotData = [
   		'email' => $email,
   		'firstname' => $nombre,
-  		'lastname' => ['target_id' => $nid],
-  		'phone' => ['target_id' => $nid],
+  		'lastname' => 'Programa ' . $nid,
+      'phone' => '',
   		];
   
   		$hubspotResult = $this->hubspotService->createContact($hubspotData);
@@ -116,7 +116,7 @@ class DescargarProgramaForm extends FormBase {
       $file = $programa->get('field_pdf_registro')->entity;
 
       if ($file) {
-        $url = file_create_url($file->getFileUri());
+        $url = \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
 
         // Redirección correcta en Drupal
         $form_state->setRedirectUrl(\Drupal\Core\Url::fromUri($url));
