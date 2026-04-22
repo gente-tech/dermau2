@@ -150,3 +150,51 @@ body {
   color: #6b7280;
   margin-bottom: 10px;
 }
+/* BACKGROUND FULL */
+.programa-background {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+/* OVERLAY PREMIUM */
+.programa-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.75),
+    rgba(30, 64, 175, 0.65)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* FORM ENCIMA */
+.descargar-programa-wrapper {
+  position: relative;
+  z-index: 2;
+}
+
+/* GLASS EFFECT PRO */
+.descargar-programa-wrapper {
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+/* MEJORA HEADER */
+.form-header {
+  text-align: left;
+}
+
+/* RESPONSIVE FINO */
+@media (max-width: 768px) {
+  .programa-background {
+    padding: 20px;
+  }
+}
