@@ -314,3 +314,22 @@ body {
 .modal-content p {
   margin-bottom: 20px;
 }
+
+/* BOTÓN CERRAR */
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 22px;
+  cursor: pointer;
+  color: #6b7280;
+}
+
+.modal-close:hover {
+  color: #111827;
+}
+
+/* POSICIÓN RELATIVA */
+.modal-content {
+  position: relative;
+}
