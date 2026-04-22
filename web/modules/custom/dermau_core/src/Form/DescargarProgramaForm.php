@@ -153,38 +153,63 @@ class DescargarProgramaForm extends FormBase {
         '#markup' => '
           <div id="modal-descarga" class="custom-modal">
             <div class="modal-content">
+              <span class="modal-close" id="modal-close">&times;</span>
+      
               <h3>Muchas gracias</h3>
               <p>Un ejecutivo te contactará para ayudarte con tu proceso de inscripción.</p>
-              <button class="btn-descargar" id="btn-descargar-pdf">Descargar ahora</button>
+              <p style="font-size:13px;color:#6b7280;">Tu descarga comenzará automáticamente...</p>
             </div>
           </div>
         ',
       ];
 
       // 🔥 JS BIEN INYECTADO (NO se imprime como texto)
-      $form['#attached']['html_head'][] = [
-        [
-          '#tag' => 'script',
-          '#value' => '
-            window.addEventListener("load", function(){
-
-              var modal = document.getElementById("modal-descarga");
-              if(modal){
-                modal.style.display = "flex";
+     $form['#attached']['html_head'][] = [
+      [
+        '#tag' => 'script',
+        '#value' => '
+          window.addEventListener("load", function(){
+    
+            var modal = document.getElementById("modal-descarga");
+            var closeBtn = document.getElementById("modal-close");
+            var downloadUrl = "' . $download_url . '";
+    
+            if(modal){
+              modal.style.display = "flex";
+            }
+    
+            // 🔥 Auto descarga
+            setTimeout(function(){
+              window.location.href = downloadUrl;
+            }, 2000);
+    
+            // Botón descargar
+            var btn = document.getElementById("btn-descargar-pdf");
+            if(btn){
+              btn.addEventListener("click", function(){
+                window.location.href = downloadUrl;
+              });
+            }
+    
+            // ❌ Cerrar con X
+            if(closeBtn){
+              closeBtn.addEventListener("click", function(){
+                modal.style.display = "none";
+              });
+            }
+    
+            // ❌ Cerrar haciendo click fuera
+            window.addEventListener("click", function(e){
+              if(e.target === modal){
+                modal.style.display = "none";
               }
-
-              var btn = document.getElementById("btn-descargar-pdf");
-              if(btn){
-                btn.addEventListener("click", function(){
-                  window.location.href = "' . $download_url . '";
-                });
-              }
-
             });
-          ',
-        ],
-        'modal-script'
-      ];
+    
+          });
+        ',
+      ],
+      'modal-script'
+    ];
     }
 
     return $form;
