@@ -8,10 +8,7 @@ use Drupal\node\NodeInterface;
 use Drupal\node\Entity\Node;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\enterprise_integrations\Service\HubspotService;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Drupal\Component\Utility\Html;
-use Drupal\taxonomy\Entity\Term;
 
 class DescargarProgramaForm extends FormBase {
 
@@ -40,7 +37,7 @@ class DescargarProgramaForm extends FormBase {
     $form_state->set('programa_nid', $nid->id());
 
     // =========================
-    // IMAGEN BACKGROUND
+    // BACKGROUND
     // =========================
     $image_url = '';
 
@@ -56,7 +53,6 @@ class DescargarProgramaForm extends FormBase {
       $image_url = '/themes/custom/tu_tema/images/default-programa.jpg';
     }
 
-    // CSS dinámico correcto
     $form['#attached']['html_head'][] = [
       [
         '#tag' => 'style',
@@ -96,7 +92,6 @@ class DescargarProgramaForm extends FormBase {
     // =========================
     // CAMPOS
     // =========================
-
     $form['nombre'] = [
       '#type' => 'textfield',
       '#title' => 'Nombre(s)',
@@ -122,7 +117,7 @@ class DescargarProgramaForm extends FormBase {
     ];
 
     // =========================
-    // TAXONOMÍA PROFESIÓN
+    // PROFESIÓN (TAXONOMÍA)
     // =========================
     $terms = \Drupal::entityTypeManager()
       ->getStorage('taxonomy_term')
@@ -141,9 +136,6 @@ class DescargarProgramaForm extends FormBase {
       '#required' => TRUE,
     ];
 
-    // =========================
-    // CHECK LEGAL
-    // =========================
     $form['privacidad'] = [
       '#type' => 'checkbox',
       '#title' => 'He leído y acepto el Aviso de privacidad',
@@ -155,6 +147,36 @@ class DescargarProgramaForm extends FormBase {
       '#value' => 'Solicitar información',
       '#attributes' => ['class' => ['btn-descargar']],
     ];
+
+    // =========================
+    // MODAL (SI YA ENVIÓ)
+    // =========================
+    $download_url = $form_state->get('download_url');
+
+    if ($download_url) {
+      $form['modal'] = [
+        '#markup' => '
+          <div id="modal-descarga" class="custom-modal">
+            <div class="modal-content">
+              <h3>Muchas gracias</h3>
+              <p>Un ejecutivo te contactará para ayudarte con tu proceso de inscripción.</p>
+              <button class="btn-descargar" id="btn-descargar-pdf">Descargar ahora</button>
+            </div>
+          </div>
+
+          <script>
+            document.addEventListener("DOMContentLoaded", function(){
+              var modal = document.getElementById("modal-descarga");
+              modal.style.display = "flex";
+
+              document.getElementById("btn-descargar-pdf").addEventListener("click", function(){
+                window.location.href = "' . $download_url . '";
+              });
+            });
+          </script>
+        ',
+      ];
+    }
 
     return $form;
   }
@@ -193,7 +215,9 @@ class DescargarProgramaForm extends FormBase {
       'phone' => $data['telefono'],
     ]);
 
-    // Descargar PDF
+    // =========================
+    // GENERAR URL DE DESCARGA
+    // =========================
     $programa = Node::load($nid);
 
     if ($programa && $programa->hasField('field_pdf_registro')) {
@@ -201,17 +225,11 @@ class DescargarProgramaForm extends FormBase {
       $file = $programa->get('field_pdf_registro')->entity;
 
       if ($file) {
-        $uri = $file->getFileUri();
-        $path = \Drupal::service('file_system')->realpath($uri);
+        $download_url = \Drupal::service('file_url_generator')
+          ->generateAbsoluteString($file->getFileUri());
 
-        $response = new BinaryFileResponse($path);
-        $response->setContentDisposition(
-          ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-          $file->getFilename()
-        );
-
-        $response->send();
-        exit;
+        $form_state->set('download_url', $download_url);
+        $form_state->setRebuild(TRUE);
       }
     }
   }
