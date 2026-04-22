@@ -34,6 +34,7 @@ class DescargarProgramaForm extends FormBase {
     // =========================
     $request = \Drupal::request();
     $alias = $request->query->get('programa');
+    $form['#cache']['contexts'][] = 'url.query_args:programa';
 
     if (!$alias) {
       return ['#markup' => 'Programa no válido'];
