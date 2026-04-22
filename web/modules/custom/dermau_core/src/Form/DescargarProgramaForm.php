@@ -128,6 +128,8 @@ class DescargarProgramaForm extends FormBase {
       '#title' => 'Profesión',
       '#options' => $options,
       '#required' => TRUE,
+      '#empty_option' => 'Selecciona tu profesión',
+      '#empty_value' => '',
     ];
 
     $form['privacidad'] = [
