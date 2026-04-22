@@ -10,6 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\enterprise_integrations\Service\HubspotService;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Drupal\Component\Utility\Html;
 
 class DescargarProgramaForm extends FormBase {
 
@@ -46,10 +47,16 @@ class DescargarProgramaForm extends FormBase {
     $form_state->set('programa_nid', $nid->id());
 
     // Header bonito
+    $titulo_programa = Html::escape($nid->getTitle());
+
     $form['intro'] = [
       '#markup' => '
-        <h2>Descargar programa</h2>
-        <p>Completa tus datos para acceder al contenido académico.</p>
+        <div class="form-header">
+          <h2>Descargar programa</h2>
+          <p class="programa-titulo">' . $titulo_programa . '</p>
+          <div class="form-divider"></div>
+          <p class="form-subtitle">Completa tus datos para acceder al contenido académico.</p>
+        </div>
       ',
     ];
 
