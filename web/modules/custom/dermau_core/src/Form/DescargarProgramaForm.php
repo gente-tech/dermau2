@@ -62,17 +62,23 @@ class DescargarProgramaForm extends FormBase {
     // =========================
     // 🔥 FIX REAL (NO inline style)
     // =========================
+    $form['#attached']['html_head'][] = [
+      [
+        '#tag' => 'style',
+        '#value' => '
+          .programa-background {
+            background-image: url("' . $image_url . '");
+          }
+        ',
+      ],
+      'programa-background-style'
+    ];
     $form['#prefix'] = '
-      <style>
-        .programa-background {
-          background-image: url("' . $image_url . '");
-        }
-      </style>
       <div class="programa-background">
         <div class="programa-overlay">
           <div class="descargar-programa-wrapper">
     ';
-
+    
     $form['#suffix'] = '
           </div>
         </div>
