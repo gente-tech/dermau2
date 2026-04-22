@@ -27,11 +27,23 @@ class DescargarProgramaForm extends FormBase {
     );
   }
 
-  // 🔥 CAMBIO AQUÍ: ahora recibe alias
-  public function buildForm(array $form, FormStateInterface $form_state, $alias = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state) {
 
-    // 🔥 Resolver alias → path interno (/node/ID)
-    $internal_path = \Drupal::service('path_alias.manager')->getPathByAlias('/' . $alias);
+    // =========================
+    // 🔥 OBTENER ALIAS DESDE URL
+    // =========================
+    $request = \Drupal::request();
+    $alias = $request->query->get('programa');
+
+    if (!$alias) {
+      return ['#markup' => 'Programa no válido'];
+    }
+
+    $alias = ltrim($alias, '/');
+
+    // Resolver alias → /node/NID
+    $internal_path = \Drupal::service('path_alias.manager')
+      ->getPathByAlias('/' . $alias);
 
     if (!preg_match('/^\/node\/(\d+)$/', $internal_path, $matches)) {
       return ['#markup' => 'Programa no válido'];
@@ -44,11 +56,11 @@ class DescargarProgramaForm extends FormBase {
       return ['#markup' => 'Programa no válido'];
     }
 
-    // Guardar NID (NO CAMBIA)
+    // Guardar NID
     $form_state->set('programa_nid', $nid);
 
     // =========================
-    // BACKGROUND (SIN CAMBIOS)
+    // BACKGROUND
     // =========================
     $image_url = '';
 
@@ -98,7 +110,7 @@ class DescargarProgramaForm extends FormBase {
       ',
     ];
 
-    // CAMPOS (SIN CAMBIOS)
+    // CAMPOS
     $form['nombre'] = [
       '#type' => 'textfield',
       '#title' => 'Nombre(s)',
@@ -123,7 +135,7 @@ class DescargarProgramaForm extends FormBase {
       '#required' => TRUE,
     ];
 
-    // TAXONOMÍA (SIN CAMBIOS)
+    // TAXONOMÍA
     $terms = \Drupal::entityTypeManager()
       ->getStorage('taxonomy_term')
       ->loadTree('profesiones');
@@ -156,7 +168,7 @@ class DescargarProgramaForm extends FormBase {
     ];
 
     // =========================
-    // MODAL (SIN CAMBIOS)
+    // MODAL
     // =========================
     $download_url = $form_state->get('download_url');
 
@@ -236,6 +248,7 @@ class DescargarProgramaForm extends FormBase {
       'profesion' => $form_state->getValue('profesion'),
     ];
 
+    // Guardar nodo
     try {
       $node = Node::create([
         'type' => 'registro_programa',
@@ -249,6 +262,7 @@ class DescargarProgramaForm extends FormBase {
       \Drupal::logger('dermau_core')->error($e->getMessage());
     }
 
+    // HubSpot
     $this->hubspotService->createContact([
       'email' => $data['email'],
       'firstname' => $data['nombre'],
@@ -256,6 +270,7 @@ class DescargarProgramaForm extends FormBase {
       'phone' => $data['telefono'],
     ]);
 
+    // PDF
     $programa = Node::load($nid);
 
     if ($programa && $programa->hasField('field_pdf_registro')) {
