@@ -32,21 +32,31 @@ class DescargarProgramaForm extends FormBase {
 
   public function buildForm(array $form, FormStateInterface $form_state, NodeInterface $nid = NULL) {
 
-    // Validar nodo
     if (!$nid || $nid->bundle() !== 'programa') {
-      return [
-        '#markup' => 'Programa no válido',
-      ];
+      return ['#markup' => 'Programa no válido'];
     }
 
-    // Wrapper para CSS
-    $form['#prefix'] = '<div class="descargar-programa-wrapper">';
-    $form['#suffix'] = '</div>';
-
-    // Guardar nid
     $form_state->set('programa_nid', $nid->id());
 
-    // Header bonito
+    // 🔥 Imagen dinámica
+    $image_url = '';
+    if ($nid->hasField('field_imagen_programa') && !$nid->get('field_imagen_programa')->isEmpty()) {
+      $image = $nid->get('field_imagen_programa')->entity;
+      if ($image) {
+        $image_url = \Drupal::service('file_url_generator')
+          ->generateAbsoluteString($image->getFileUri());
+      }
+    }
+
+    // Fallback
+    if (!$image_url) {
+      $image_url = '/themes/custom/tu_tema/images/default-programa.jpg';
+    }
+
+    // 🔥 Wrapper con background
+    $form['#prefix'] = '<div class="programa-background" style="background-image:url(' . $image_url . ')"><div class="programa-overlay"><div class="descargar-programa-wrapper">';
+    $form['#suffix'] = '</div></div></div>';
+
     $titulo_programa = Html::escape($nid->getTitle());
 
     $form['intro'] = [
@@ -64,26 +74,20 @@ class DescargarProgramaForm extends FormBase {
       '#type' => 'textfield',
       '#title' => 'Nombre completo',
       '#required' => TRUE,
-      '#attributes' => [
-        'placeholder' => 'Ingresa tu nombre',
-      ],
+      '#attributes' => ['placeholder' => 'Ingresa tu nombre'],
     ];
 
     $form['email'] = [
       '#type' => 'email',
       '#title' => 'Correo electrónico',
       '#required' => TRUE,
-      '#attributes' => [
-        'placeholder' => 'correo@ejemplo.com',
-      ],
+      '#attributes' => ['placeholder' => 'correo@ejemplo.com'],
     ];
 
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => 'Descargar programa',
-      '#attributes' => [
-        'class' => ['btn-descargar'],
-      ],
+      '#attributes' => ['class' => ['btn-descargar']],
     ];
 
     return $form;
@@ -95,9 +99,6 @@ class DescargarProgramaForm extends FormBase {
     $nombre = $form_state->getValue('nombre');
     $email = $form_state->getValue('email');
 
-    // =========================
-    // 1. Guardar registro
-    // =========================
     try {
       $node = Node::create([
         'type' => 'registro_programa',
@@ -111,9 +112,6 @@ class DescargarProgramaForm extends FormBase {
       \Drupal::logger('dermau_core')->error($e->getMessage());
     }
 
-    // =========================
-    // 2. HubSpot
-    // =========================
     $hubspotData = [
       'email' => $email,
       'firstname' => $nombre,
@@ -121,21 +119,8 @@ class DescargarProgramaForm extends FormBase {
       'phone' => '',
     ];
 
-    $hubspotResult = $this->hubspotService->createContact($hubspotData);
+    $this->hubspotService->createContact($hubspotData);
 
-    if (!$hubspotResult['success']) {
-      \Drupal::logger('enterprise_integrations')->warning(
-        'No se pudo crear el contacto en HubSpot para %email. Mensaje: %message',
-        [
-          '%email' => $hubspotData['email'],
-          '%message' => $hubspotResult['message'],
-        ]
-      );
-    }
-
-    // =========================
-    // 3. Descargar PDF
-    // =========================
     $programa = Node::load($nid);
 
     if ($programa && $programa->hasField('field_pdf_registro')) {
