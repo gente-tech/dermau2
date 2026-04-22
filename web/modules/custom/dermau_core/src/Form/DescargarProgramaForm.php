@@ -39,7 +39,7 @@ class DescargarProgramaForm extends FormBase {
     $form_state->set('programa_nid', $nid->id());
 
     // =========================
-    // 🔥 IMAGEN (FIELD TYPE: IMAGE)
+    // 🔥 IMAGEN (CORRECTA)
     // =========================
     $image_url = '';
 
@@ -55,20 +55,29 @@ class DescargarProgramaForm extends FormBase {
       }
     }
 
-    // Fallback
     if (empty($image_url)) {
       $image_url = '/themes/custom/tu_tema/images/default-programa.jpg';
     }
 
     // =========================
-    // WRAPPER CON BACKGROUND
+    // 🔥 FIX REAL (NO inline style)
     // =========================
-    $form['#prefix'] = '<div class="programa-background" style="background-image:url(' . $image_url . ')">
-                          <div class="programa-overlay">
-                            <div class="descargar-programa-wrapper">';
-    $form['#suffix'] = '      </div>
-                          </div>
-                        </div>';
+    $form['#prefix'] = '
+      <style>
+        .programa-background {
+          background-image: url("' . $image_url . '");
+        }
+      </style>
+      <div class="programa-background">
+        <div class="programa-overlay">
+          <div class="descargar-programa-wrapper">
+    ';
+
+    $form['#suffix'] = '
+          </div>
+        </div>
+      </div>
+    ';
 
     $titulo_programa = Html::escape($nid->getTitle());
 
@@ -118,9 +127,6 @@ class DescargarProgramaForm extends FormBase {
     $nombre = $form_state->getValue('nombre');
     $email = $form_state->getValue('email');
 
-    // =========================
-    // 1. Guardar registro
-    // =========================
     try {
       $node = Node::create([
         'type' => 'registro_programa',
@@ -134,9 +140,6 @@ class DescargarProgramaForm extends FormBase {
       \Drupal::logger('dermau_core')->error($e->getMessage());
     }
 
-    // =========================
-    // 2. HubSpot
-    // =========================
     $hubspotData = [
       'email' => $email,
       'firstname' => $nombre,
@@ -146,9 +149,6 @@ class DescargarProgramaForm extends FormBase {
 
     $this->hubspotService->createContact($hubspotData);
 
-    // =========================
-    // 3. Descargar PDF
-    // =========================
     $programa = Node::load($nid);
 
     if ($programa && $programa->hasField('field_pdf_registro')) {
