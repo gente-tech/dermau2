@@ -30,7 +30,7 @@ class DescargarProgramaForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
 
     // =========================
-    // 🔥 OBTENER ALIAS DESDE URL
+    // 🔥 OBTENER ALIAS
     // =========================
     $request = \Drupal::request();
     $alias = $request->query->get('programa');
@@ -39,13 +39,16 @@ class DescargarProgramaForm extends FormBase {
       return ['#markup' => 'Programa no válido'];
     }
 
-    $alias = ltrim($alias, '/');
+    $alias = ltrim(urldecode($alias), '/');
 
-    // Resolver alias → /node/NID
-    $internal_path = \Drupal::service('path_alias.manager')
-      ->getPathByAlias('/' . $alias);
+    // =========================
+    // 🔥 FIX REAL: usar repository (NO manager)
+    // =========================
+    $alias_service = \Drupal::service('path_alias.repository');
+    $result = $alias_service->lookupByAlias('/' . $alias);
 
-    if (!preg_match('/^\/node\/(\d+)$/', $internal_path, $matches)) {
+    if (!$result || empty($result['path']) || !preg_match('/^\/node\/(\d+)$/', $result['path'], $matches)) {
+      \Drupal::logger('dermau_core')->error('Alias inválido: @alias', ['@alias' => $alias]);
       return ['#markup' => 'Programa no válido'];
     }
 
@@ -248,7 +251,6 @@ class DescargarProgramaForm extends FormBase {
       'profesion' => $form_state->getValue('profesion'),
     ];
 
-    // Guardar nodo
     try {
       $node = Node::create([
         'type' => 'registro_programa',
@@ -262,7 +264,6 @@ class DescargarProgramaForm extends FormBase {
       \Drupal::logger('dermau_core')->error($e->getMessage());
     }
 
-    // HubSpot
     $this->hubspotService->createContact([
       'email' => $data['email'],
       'firstname' => $data['nombre'],
@@ -270,7 +271,6 @@ class DescargarProgramaForm extends FormBase {
       'phone' => $data['telefono'],
     ]);
 
-    // PDF
     $programa = Node::load($nid);
 
     if ($programa && $programa->hasField('field_pdf_registro')) {
