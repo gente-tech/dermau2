@@ -7,12 +7,27 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\NodeInterface;
 use Drupal\node\Entity\Node;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\enterprise_integrations\Service\HubspotService;
+
 
 class DescargarProgramaForm extends FormBase {
+
+  protected $hubspotService;
 
   public function getFormId() {
     return 'descargar_programa_form';
   }
+
+  public function __construct(HubspotService $hubspotService){
+		$this->hubspotService = $hubspotService;
+	}
+
+  public static function create(ContainerInterface $container){
+		return new static(
+			$container->get('enterprise_integrations.hubspot')
+		);
+	}
 
   public function buildForm(array $form, FormStateInterface $form_state, NodeInterface $nid = NULL) {
 
@@ -71,7 +86,25 @@ class DescargarProgramaForm extends FormBase {
     // =========================
     // 2. Enviar a HubSpot
     // =========================
-    $this->enviarHubspot($nombre, $email);
+      // Crear usuario en hubspot
+  		$hubspotData = [
+  		'email' => $email,
+  		'firstname' => $nombre,
+  		'lastname' => ['target_id' => $nid],
+  		'phone' => ['target_id' => $nid],
+  		];
+  
+  		$hubspotResult = $this->hubspotService->createContact($hubspotData);
+  
+  		if (!$hubspotResult['success']) {
+  		\Drupal::logger('enterprise_integrations')->warning(
+  			'No se pudo crear el contacto en HubSpot para %email. Mensaje: %message',
+  			[
+  			'%email' => $hubspotData['email'],
+  			'%message' => $hubspotResult['message'],
+  			]
+  		);
+  		}
 
     // =========================
     // 3. Descargar PDF
@@ -95,35 +128,6 @@ class DescargarProgramaForm extends FormBase {
     \Drupal::messenger()->addError('No se encontró el archivo para descargar.');
   }
 
-  /**
-   * Enviar datos a HubSpot
-   */
-  private function enviarHubspot($nombre, $email) {
 
-    try {
-      $client = \Drupal::httpClient();
-
-      $portalId = 'TU_PORTAL_ID';
-      $formId = 'TU_FORM_ID';
-
-      $client->post("https://api.hsforms.com/submissions/v3/integration/submit/$portalId/$formId", [
-        'json' => [
-          'fields' => [
-            [
-              'name' => 'email',
-              'value' => $email,
-            ],
-            [
-              'name' => 'firstname',
-              'value' => $nombre,
-            ],
-          ],
-        ],
-      ]);
-    }
-    catch (\Exception $e) {
-      \Drupal::logger('dermau_core')->error($e->getMessage());
-    }
-  }
 
 }
