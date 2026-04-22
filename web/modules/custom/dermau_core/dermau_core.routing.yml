@@ -29,14 +29,9 @@ dermau_core.programa_interesado_export_download:
     _permission: "exportar registros programa interesado"
 
 dermau_core.descargar_programa:
-  path: '/descargar-programa/{alias}'
+  path: '/descargar-programa'
   defaults:
     _form: '\Drupal\dermau_core\Form\DescargarProgramaForm'
     _title: 'Descargar programa'
   requirements:
     _permission: 'access content'
-    alias: '.+'
-  options:
-    parameters:
-      alias:
-        type: string
