@@ -45,13 +45,17 @@ class DescargarProgramaForm extends FormBase {
     // 🔥 FIX REAL: usar repository (NO manager)
     // =========================
     $alias_service = \Drupal::service('path_alias.repository');
-    $result = $alias_service->lookupByAlias('/' . $alias);
 
+    $result = $alias_service->lookupByAlias(
+      '/' . $alias,
+      \Drupal::languageManager()->getCurrentLanguage()->getId()
+    );
+    
     if (!$result || empty($result['path']) || !preg_match('/^\/node\/(\d+)$/', $result['path'], $matches)) {
       \Drupal::logger('dermau_core')->error('Alias inválido: @alias', ['@alias' => $alias]);
       return ['#markup' => 'Programa no válido'];
     }
-
+    
     $nid = $matches[1];
     $node = Node::load($nid);
 
