@@ -112,3 +112,41 @@ body {
     padding: 25px;
   }
 }
+
+/* HEADER DEL FORM */
+.form-header {
+  margin-bottom: 25px;
+}
+
+/* TÍTULO PRINCIPAL */
+.descargar-programa-wrapper h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1f2a44;
+  margin-bottom: 6px;
+}
+
+/* NOMBRE DEL PROGRAMA */
+.programa-titulo {
+  font-size: 15px;
+  font-weight: 500;
+  color: #2a7de1;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+/* DIVIDER VISUAL */
+.form-divider {
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(135deg, #3aaed8, #2a7de1);
+  border-radius: 2px;
+  margin: 10px 0 15px;
+}
+
+/* SUBTEXTO */
+.form-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 10px;
+}
