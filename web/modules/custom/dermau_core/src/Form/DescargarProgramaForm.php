@@ -75,9 +75,7 @@ class DescargarProgramaForm extends FormBase {
 
     $titulo_programa = Html::escape($nid->getTitle());
 
-    // =========================
     // HEADER
-    // =========================
     $form['intro'] = [
       '#markup' => '
         <div class="form-header">
@@ -89,9 +87,7 @@ class DescargarProgramaForm extends FormBase {
       ',
     ];
 
-    // =========================
     // CAMPOS
-    // =========================
     $form['nombre'] = [
       '#type' => 'textfield',
       '#title' => 'Nombre(s)',
@@ -116,9 +112,7 @@ class DescargarProgramaForm extends FormBase {
       '#required' => TRUE,
     ];
 
-    // =========================
-    // PROFESIÓN (TAXONOMÍA)
-    // =========================
+    // TAXONOMÍA
     $terms = \Drupal::entityTypeManager()
       ->getStorage('taxonomy_term')
       ->loadTree('profesiones');
@@ -149,11 +143,12 @@ class DescargarProgramaForm extends FormBase {
     ];
 
     // =========================
-    // MODAL (SI YA ENVIÓ)
+    // MODAL (FIX REAL)
     // =========================
     $download_url = $form_state->get('download_url');
 
     if ($download_url) {
+
       $form['modal'] = [
         '#markup' => '
           <div id="modal-descarga" class="custom-modal">
@@ -163,18 +158,32 @@ class DescargarProgramaForm extends FormBase {
               <button class="btn-descargar" id="btn-descargar-pdf">Descargar ahora</button>
             </div>
           </div>
-
-          <script>
-            document.addEventListener("DOMContentLoaded", function(){
-              var modal = document.getElementById("modal-descarga");
-              modal.style.display = "flex";
-
-              document.getElementById("btn-descargar-pdf").addEventListener("click", function(){
-                window.location.href = "' . $download_url . '";
-              });
-            });
-          </script>
         ',
+      ];
+
+      // 🔥 JS BIEN INYECTADO (NO se imprime como texto)
+      $form['#attached']['html_head'][] = [
+        [
+          '#tag' => 'script',
+          '#value' => '
+            window.addEventListener("load", function(){
+
+              var modal = document.getElementById("modal-descarga");
+              if(modal){
+                modal.style.display = "flex";
+              }
+
+              var btn = document.getElementById("btn-descargar-pdf");
+              if(btn){
+                btn.addEventListener("click", function(){
+                  window.location.href = "' . $download_url . '";
+                });
+              }
+
+            });
+          ',
+        ],
+        'modal-script'
       ];
     }
 
@@ -215,9 +224,7 @@ class DescargarProgramaForm extends FormBase {
       'phone' => $data['telefono'],
     ]);
 
-    // =========================
-    // GENERAR URL DE DESCARGA
-    // =========================
+    // Generar URL descarga
     $programa = Node::load($nid);
 
     if ($programa && $programa->hasField('field_pdf_registro')) {
