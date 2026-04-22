@@ -41,3 +41,74 @@ body {
   overflow-x: hidden;
 }
 
+.descargar-programa-wrapper {
+  max-width: 480px;
+  margin: 80px auto;
+  padding: 40px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+.descargar-programa-wrapper h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1f2a44;
+  margin-bottom: 10px;
+}
+
+.descargar-programa-wrapper p {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 25px;
+}
+
+.descargar-programa-wrapper .form-item {
+  margin-bottom: 18px;
+}
+
+.descargar-programa-wrapper label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.descargar-programa-wrapper input[type="text"],
+.descargar-programa-wrapper input[type="email"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #f9fafb;
+}
+
+.descargar-programa-wrapper input:focus {
+  outline: none;
+  border-color: #3aaed8;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(58, 174, 216, 0.15);
+}
+
+.btn-descargar {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #3aaed8, #2a7de1);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-descargar:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 25px rgba(42, 125, 225, 0.3);
+}
+
+@media (max-width: 768px) {
+  .descargar-programa-wrapper {
+    margin: 40px 20px;
+    padding: 25px;
+  }
+}
