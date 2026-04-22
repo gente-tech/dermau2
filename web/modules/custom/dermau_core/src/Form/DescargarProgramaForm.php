@@ -11,6 +11,7 @@ use Drupal\enterprise_integrations\Service\HubspotService;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Drupal\Component\Utility\Html;
+use Drupal\taxonomy\Entity\Term;
 
 class DescargarProgramaForm extends FormBase {
 
@@ -39,17 +40,13 @@ class DescargarProgramaForm extends FormBase {
     $form_state->set('programa_nid', $nid->id());
 
     // =========================
-    // 🔥 IMAGEN (CORRECTA)
+    // IMAGEN BACKGROUND
     // =========================
     $image_url = '';
 
-    if ($nid->hasField('field_imagen_programa') && !$nid->get('field_imagen_programa')->isEmpty()) {
-
-      $item = $nid->get('field_imagen_programa')->first();
-
-      if ($item && $item->entity) {
-        $file = $item->entity;
-
+    if (!$nid->get('field_imagen_programa')->isEmpty()) {
+      $file = $nid->get('field_imagen_programa')->first()->entity;
+      if ($file) {
         $image_url = \Drupal::service('file_url_generator')
           ->generateAbsoluteString($file->getFileUri());
       }
@@ -59,26 +56,21 @@ class DescargarProgramaForm extends FormBase {
       $image_url = '/themes/custom/tu_tema/images/default-programa.jpg';
     }
 
-    // =========================
-    // 🔥 FIX REAL (NO inline style)
-    // =========================
+    // CSS dinámico correcto
     $form['#attached']['html_head'][] = [
       [
         '#tag' => 'style',
-        '#value' => '
-          .programa-background {
-            background-image: url("' . $image_url . '");
-          }
-        ',
+        '#value' => '.programa-background { background-image: url("' . $image_url . '"); }',
       ],
       'programa-background-style'
     ];
+
     $form['#prefix'] = '
       <div class="programa-background">
         <div class="programa-overlay">
           <div class="descargar-programa-wrapper">
     ';
-    
+
     $form['#suffix'] = '
           </div>
         </div>
@@ -87,41 +79,81 @@ class DescargarProgramaForm extends FormBase {
 
     $titulo_programa = Html::escape($nid->getTitle());
 
+    // =========================
+    // HEADER
+    // =========================
     $form['intro'] = [
       '#markup' => '
         <div class="form-header">
           <h2>Descargar programa</h2>
           <p class="programa-titulo">' . $titulo_programa . '</p>
           <div class="form-divider"></div>
-          <p class="form-subtitle">Completa tus datos para acceder al contenido académico.</p>
+          <p class="form-subtitle">Un ejecutivo te contactará para ayudarte con tu proceso de inscripción.</p>
         </div>
       ',
     ];
 
+    // =========================
+    // CAMPOS
+    // =========================
+
     $form['nombre'] = [
       '#type' => 'textfield',
-      '#title' => 'Nombre completo',
+      '#title' => 'Nombre(s)',
       '#required' => TRUE,
-      '#attributes' => [
-        'placeholder' => 'Ingresa tu nombre',
-      ],
+    ];
+
+    $form['apellido'] = [
+      '#type' => 'textfield',
+      '#title' => 'Apellido(s)',
+      '#required' => TRUE,
     ];
 
     $form['email'] = [
       '#type' => 'email',
       '#title' => 'Correo electrónico',
       '#required' => TRUE,
-      '#attributes' => [
-        'placeholder' => 'correo@ejemplo.com',
-      ],
+    ];
+
+    $form['telefono'] = [
+      '#type' => 'textfield',
+      '#title' => 'Teléfono',
+      '#required' => TRUE,
+    ];
+
+    // =========================
+    // TAXONOMÍA PROFESIÓN
+    // =========================
+    $terms = \Drupal::entityTypeManager()
+      ->getStorage('taxonomy_term')
+      ->loadTree('profesiones');
+
+    $options = ['' => 'Selecciona tu profesión'];
+
+    foreach ($terms as $term) {
+      $options[$term->tid] = $term->name;
+    }
+
+    $form['profesion'] = [
+      '#type' => 'select',
+      '#title' => 'Profesión',
+      '#options' => $options,
+      '#required' => TRUE,
+    ];
+
+    // =========================
+    // CHECK LEGAL
+    // =========================
+    $form['privacidad'] = [
+      '#type' => 'checkbox',
+      '#title' => 'He leído y acepto el Aviso de privacidad',
+      '#required' => TRUE,
     ];
 
     $form['submit'] = [
       '#type' => 'submit',
-      '#value' => 'Descargar programa',
-      '#attributes' => [
-        'class' => ['btn-descargar'],
-      ],
+      '#value' => 'Solicitar información',
+      '#attributes' => ['class' => ['btn-descargar']],
     ];
 
     return $form;
@@ -130,14 +162,21 @@ class DescargarProgramaForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
     $nid = $form_state->get('programa_nid');
-    $nombre = $form_state->getValue('nombre');
-    $email = $form_state->getValue('email');
 
+    $data = [
+      'nombre' => $form_state->getValue('nombre'),
+      'apellido' => $form_state->getValue('apellido'),
+      'email' => $form_state->getValue('email'),
+      'telefono' => $form_state->getValue('telefono'),
+      'profesion' => $form_state->getValue('profesion'),
+    ];
+
+    // Guardar nodo
     try {
       $node = Node::create([
         'type' => 'registro_programa',
-        'title' => $nombre . ' - ' . date('Y-m-d H:i:s'),
-        'field_email' => $email,
+        'title' => $data['nombre'] . ' ' . $data['apellido'],
+        'field_email' => $data['email'],
         'field_programa' => ['target_id' => $nid],
       ]);
       $node->save();
@@ -146,15 +185,15 @@ class DescargarProgramaForm extends FormBase {
       \Drupal::logger('dermau_core')->error($e->getMessage());
     }
 
-    $hubspotData = [
-      'email' => $email,
-      'firstname' => $nombre,
-      'lastname' => 'Programa ' . $nid,
-      'phone' => '',
-    ];
+    // HubSpot
+    $this->hubspotService->createContact([
+      'email' => $data['email'],
+      'firstname' => $data['nombre'],
+      'lastname' => $data['apellido'],
+      'phone' => $data['telefono'],
+    ]);
 
-    $this->hubspotService->createContact($hubspotData);
-
+    // Descargar PDF
     $programa = Node::load($nid);
 
     if ($programa && $programa->hasField('field_pdf_registro')) {
@@ -175,8 +214,6 @@ class DescargarProgramaForm extends FormBase {
         exit;
       }
     }
-
-    \Drupal::messenger()->addError('No se encontró el archivo para descargar.');
   }
 
 }
