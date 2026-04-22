@@ -198,3 +198,51 @@ body {
     padding: 20px;
   }
 }
+/* BACKGROUND */
+.programa-background {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* OVERLAY ELEGANTE */
+.programa-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.75),
+    rgba(30, 64, 175, 0.65)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* FORM ENCIMA */
+.descargar-programa-wrapper {
+  position: relative;
+  z-index: 2;
+}
+
+/* GLASS EFFECT */
+.descargar-programa-wrapper {
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+/* HEADER */
+.form-header {
+  margin-bottom: 25px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .programa-background {
+    padding: 20px;
+  }
+}
