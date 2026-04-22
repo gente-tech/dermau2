@@ -36,3 +36,7 @@ dermau_core.descargar_programa:
   requirements:
     _permission: 'access content'
     alias: '.+'
+  options:
+    parameters:
+      alias:
+        type: string
