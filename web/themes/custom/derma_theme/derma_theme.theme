@@ -161,10 +161,11 @@ function derma_theme_preprocess_field(&$variables) {
     return;
   }
 
+  $build = [
+    '#theme' => 'nothing',
+  ];
   $docentes_programas = \Drupal::service('renderer')
-    ->renderPlain([
-      '#theme' => 'nothing'
-    ]);
+    ->renderPlain($build);
 
   foreach ($variables['items'] as &$item) {
     if (!empty($item['content']['#node'])) {
