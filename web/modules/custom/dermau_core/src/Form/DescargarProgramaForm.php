@@ -186,9 +186,9 @@ class DescargarProgramaForm extends FormBase {
           <div id="modal-descarga" class="custom-modal">
             <div class="modal-content">
               <span class="modal-close" id="modal-close">&times;</span>
-              <h3>Muchas gracias</h3>
-              <p>Un ejecutivo te contactará para ayudarte con tu proceso de inscripción.</p>
-              <p style="font-size:13px;color:#6b7280;">Tu descarga comenzará automáticamente...</p>
+              <h3>Agradecemos tu interés en el programa.</h3>
+              <p>Nos contactaremos, vía correo electrónico, para brindarte más información sobre el proceso de inscripción.</p>
+              <p style="font-size:13px;color:#6b7280;">La descarga del programa comenzará automáticamente...</p>
             </div>
           </div>
         ',
