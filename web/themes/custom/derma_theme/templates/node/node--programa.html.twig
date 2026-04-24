@@ -458,7 +458,7 @@
           Académica
         </h2>
       {% endif %}
-      <a href="{{ node.field_plan_de_estudios.entity ? file_url(node.field_plan_de_estudios.entity.fileuri) : '#' }}" class="du-link-download">Descargar Plan
+      <a target="_blank" href="{{ node.field_plan_de_estudios.entity ? file_url(node.field_plan_de_estudios.entity.fileuri) : '#' }}" class="du-link-download">Descargar Plan
         <span class="du-icon__next"></span>
       </a>
     </div>
