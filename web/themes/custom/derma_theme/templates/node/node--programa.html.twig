@@ -252,7 +252,7 @@
 
 {# {{ drupal_entity('block', 'derma_theme_dermautestimoniostwig', check_access=false) }} #}
 
-{{ drupal_entity('block', 'derma_theme_dermautestimonios_3', check_access=false) }}
+{# {{ drupal_entity('block', 'derma_theme_dermautestimonios_3', check_access=false) }} #}
 
 {# {{ drupal_block('dermau_testimonios_block', {
   titulo_parte_1: 'Testimonios de quienes se forman en',
@@ -261,6 +261,80 @@
   texto_boton_highlight: 'Docentes',
   url_boton: 'https://catalogo.dermau.net/docentes'
 }) }} #}
+
+{# testimonios por programa #}
+{% if node.field_testimonios_de_los_estudia is not empty %}
+  <section class="du-testimonials du-testimonials--left">
+    <div class="du-testimonials__container">
+
+      <h2 class="du-testimonials__title">
+        Testimonios de
+        <span class="du-testimonials__title--highlight">
+          estudiantes
+        </span>
+      </h2>
+
+      <div class="du-testimonials__slider-wrapper">
+        <div
+          id="testimonial-swiper-programa-{{ node.id }}"
+          class="swiper du-testimonials__swiper"
+          data-slides-per-view="1"
+          data-content-alignment="left"
+        >
+          <div class="swiper-wrapper">
+
+            {% for item in node.field_testimonios_de_los_estudia %}
+              {% set testimonio = item.entity %}
+
+              {% if testimonio %}
+                {% set foto_url = testimonio.field_foto_estudiante.entity ? file_url(testimonio.field_foto_estudiante.entity.fileuri) : '' %}
+                {% set foto_alt = testimonio.field_foto_estudiante.alt ?: testimonio.field_nombre_estudiante.value %}
+
+                <div class="swiper-slide">
+                  <article class="du-card__testimonial">
+
+                    {% if foto_url %}
+                      <div class="du-card__testimonial-image-box">
+                        <img
+                          src="{{ foto_url }}"
+                          alt="{{ foto_alt }}"
+                          class="du-card__testimonial-img"
+                        />
+                      </div>
+                    {% endif %}
+
+                    <div class="du-card__testimonial-content">
+                      <span class="du-card__testimonial-quote du-card__testimonial-quote--open">“</span>
+
+                      <p class="du-card__testimonial-text">
+                        {{ testimonio.field_testimonio.value }}
+                      </p>
+
+                      <span class="du-card__testimonial-quote du-card__testimonial-quote--close">”</span>
+
+                      <div class="du-card__testimonial-author">
+                        <h4 class="du-card__testimonial-name">
+                          {{ testimonio.field_nombre_estudiante.value }}
+                        </h4>
+                      </div>
+                    </div>
+
+                  </article>
+                </div>
+              {% endif %}
+            {% endfor %}
+
+          </div>
+        </div>
+
+        <div class="swiper-button-prev du-testimonials__prev"></div>
+        <div class="swiper-button-next du-testimonials__next"></div>
+        <div class="swiper-pagination du-testimonials__pagination"></div>
+      </div>
+
+    </div>
+  </section>
+{% endif %}
 <br>
 <br>
 
