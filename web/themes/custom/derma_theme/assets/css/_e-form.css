@@ -131,7 +131,7 @@
     z-index: 3;
   }
 
-  section:has(.du-hero) .du-form-register[data-float="true"] {
+  :has(.du-hero) .du-form-register[data-float="true"] {
     top: 80px;
   }
 
