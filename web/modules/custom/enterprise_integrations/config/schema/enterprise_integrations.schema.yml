@@ -8,16 +8,32 @@ enterprise_integrations.settings:
       mapping:
         api_key:
           type: string
-          label: 'API Key'
-        from_email:
-          type: string
-          label: 'From Email'
-        from_name:
-          type: string
-          label: 'From Name'
-        default_subject:
-          type: string
-          label: 'Default Subject'
-        default_html_template:
-          type: text
-          label: 'Default HTML Template'
+          label: 'API key'
+        message_groups_last_id:
+          type: integer
+          label: 'Last message group ID'
+        message_groups:
+          type: sequence
+          label: 'Message groups'
+          sequence:
+            type: mapping
+            label: 'Message group'
+            mapping:
+              key:
+                type: string
+                label: 'Key'
+              mandrill_template_slug:
+                type: string
+                label: 'Mandrill template slug'
+              send_copy:
+                type: boolean
+                label: 'Send copy'
+              copy_template_slug:
+                type: string
+                label: 'Copy template slug'
+              copy_emails:
+                type: sequence
+                label: 'Copy emails'
+                sequence:
+                  type: string
+                  label: 'Copy email'
