@@ -437,14 +437,16 @@ class ProgramaInteresadoForm extends FormBase
 			]);
 		}
 
-		if (!$hubspotResult['success']) {
-			\Drupal::logger('enterprise_integrations')->warning(
-				'No se pudo crear el contacto en HubSpot para %email. Mensaje: %message',
+		if (!$hubspotResult) {
+
+			$this->loggerFactory->get('dermau_core')->error(
+				'Error enviando contacto/interés a HubSpot para el correo: @email',
 				[
-					'%email' => $hubspotData['email'],
-					'%message' => $hubspotResult['message'],
+					'@email' => $email,
 				]
 			);
+
+			$this->messenger()->addWarning('Ocurrió un error enviando la información a HubSpot.');
 		}
 
 		$request->getSession()->set('registro_exitoso', TRUE);
