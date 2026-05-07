@@ -410,16 +410,13 @@ class ProgramaInteresadoForm extends FormBase
 				break;
 
 			case 'curso':
-			case 'cursos':
 				$interestProperty = 'interesados_cursos';
 				break;
 
 			case 'diplomado':
-			case 'diplomados':
 				$interestProperty = 'interesados_diplomados';
 				break;
 
-			case 'programa especial':
 			case 'programas especiales':
 				$interestProperty = 'interesados_programas_especiales';
 				break;
