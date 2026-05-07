@@ -382,12 +382,32 @@ class ProgramaInteresadoForm extends FormBase
 			}
 		}
 
-		// Crear usuario en hubspot
+		// obtener categoria del programa
+		$node = \Drupal::routeMatch()->getParameter('node');
+
+		$categoria_programa = '';
+
+		if (
+			$node instanceof NodeInterface &&
+			$node->hasField('field_tipo_de_programa') &&
+			!$node->get('field_tipo_de_programa')->isEmpty() &&
+			$node->get('field_tipo_de_programa')->entity
+		) {
+			$categoria_programa = $node->get('field_tipo_de_programa')->entity->label();
+		}
+
+		// Crear usuario en HubSpot.
 		$hubspotData = [
 			'email' => $email,
 			'firstname' => $nombre,
 			'lastname' => $apellido,
 			'phone' => $telefono,
+			'unidad_de_negocio' => 'DermaU',
+			'categoria_usuario' => 'interesado',
+			'tipo_interaccion' => 'preinscripcion_programa',
+			'categoria_programa' => $categoria_programa,
+			'nombre_programa' => $programa,
+			'id_programa' => $node instanceof NodeInterface ? (string) $node->id() : '',
 		];
 
 		$hubspotResult = $this->hubspotService->createContact($hubspotData);

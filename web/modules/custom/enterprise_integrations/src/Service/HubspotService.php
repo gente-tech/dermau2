@@ -79,26 +79,23 @@ final class HubspotService
 		}
 
 		$payload = [
-			'properties' => [
-				'email' => (string) $data['email'],
-			],
+			'properties' => [],
 		];
 
-		if (!empty($data['firstname'])) {
-			$payload['properties']['firstname'] = (string) $data['firstname'];
-		}
+		foreach ($data as $property_name => $property_value) {
+			if ($property_value === NULL || $property_value === '') {
+				continue;
+			}
 
-		if (!empty($data['lastname'])) {
-			$payload['properties']['lastname'] = (string) $data['lastname'];
-		}
-
-		if (!empty($data['phone'])) {
-			$payload['properties']['phone'] = (string) $data['phone'];
+			$payload['properties'][$property_name] = (string) $property_value;
 		}
 
 		$endpoint = $apiUrl . '/crm/v3/objects/contacts';
 
 		try {
+			$this->logger->info('HubSpot payload enviado: <pre>@payload</pre>', [
+				'@payload' => json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE),
+			]);
 			$response = $this->httpClient->request('POST', $endpoint, [
 				'headers' => [
 					'Authorization' => 'Bearer ' . $token,
@@ -145,6 +142,9 @@ final class HubspotService
 				'hubspot_response' => is_array($decodedBody) ? $decodedBody : NULL,
 			];
 		} catch (GuzzleException $e) {
+			$this->logger->error('Payload con error HubSpot: <pre>@payload</pre>', [
+				'@payload' => json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE),
+			]);
 			$this->logger->error(
 				'Excepción Guzzle creando contacto en HubSpot para @email. Error: @error',
 				[
