@@ -216,7 +216,7 @@ class ProgramaInteresadoForm extends FormBase
 		$mostrar_modal = (bool) $session->get('registro_exitoso', FALSE);
 
 		if ($mostrar_modal) {
-		$session->remove('registro_exitoso');
+			$session->remove('registro_exitoso');
 		}
 
 		$form['modal_registro_exitoso'] = [
@@ -300,7 +300,7 @@ class ProgramaInteresadoForm extends FormBase
 			])
 			->execute();
 
-		// Envío de correo
+		// Variables para envío de correo
 		$nombre = trim((string) $form_state->getValue('nombre'));
 		$apellido = trim((string) $form_state->getValue('apellido'));
 		$email = trim((string) $form_state->getValue('email'));
@@ -308,56 +308,103 @@ class ProgramaInteresadoForm extends FormBase
 		$programa = trim((string) $form_state->getValue('programa_title'));
 		$mensaje = trim((string) $form_state->getValue('mensaje'));
 
-		// Obtener plantilla desde configuración
-		$config = \Drupal::config('enterprise_integrations.settings');
-		$template = $config->get('mandrill.default_html_template');
+		// Envío de correo
+		$config_email = $this->mandrillService->getMessageGroupByKey('mail_text_1');
 
-		// Reemplazar tokens
-		$html = $this->mandrillService->renderTemplate($template, [
-			'nombre' => $nombre . ' ' . $apellido,
-			'email' => $email,
-			'telefono' => $telefono,
-			'programa' => $programa,
-			'mensaje' => $mensaje,
-		]);
+		if (!$config_email) {
+			throw new \RuntimeException('No existe la configuración de correo mail_text_1.');
+		}
 
-		// Enviar correo
-		$result = $this->mandrillService->send([
-			'to_email' => $email,
-			'to_name' => $nombre,
-			'subject' => 'Preinscripción programa ' . $programa,
-			'html' => $html,
-			'reply_to' => $email,
-			'tags' => ['programa_interesado'],
-			'metadata' => [
-				'programa' => $programa,
-				'form' => 'programa_interesado',
+		$template_slug = $config_email['mandrill_template_slug'] ?? '';
+
+		if ($template_slug === '') {
+			throw new \RuntimeException('La configuración mail_text_1 no tiene slug de plantilla Mandrill.');
+		}
+
+		$result = $this->mandrillService->sendTemplate(
+			$template_slug,
+			[
+				'subject' => 'Preinscripción programa ' . $programa,
+				'to_email' => $email,
+				'to_name' => $nombre . ' ' . $apellido,
 			],
-		]);
+			[
+				[
+					'name' => 'FNAME',
+					'content' => $nombre . ' ' . $apellido,
+				],
+				[
+					'name' => 'FPROGRAMA',
+					'content' => $programa,
+				],
+				[
+					'name' => 'FEMAIL',
+					'content' => $email,
+				],
+			]
+		);
+
+		// Envío copia oculta de correo, en caso exista.
+		if (
+			!empty($config_email['send_copy']) &&
+			!empty($config_email['copy_template_slug']) &&
+			!empty($config_email['copy_emails']) &&
+			is_array($config_email['copy_emails'])
+		) {
+			foreach ($config_email['copy_emails'] as $copy_email) {
+				$copy_email = trim((string) $copy_email);
+
+				if ($copy_email === '') {
+					continue;
+				}
+
+				$this->mandrillService->sendTemplate(
+					$config_email['copy_template_slug'],
+					[
+						'subject' => 'Notificación preinscripción programa - ' . $programa,
+						'to_email' => $copy_email,
+					],
+					[
+						[
+							'name' => 'FNAME',
+							'content' => $nombre . ' ' . $apellido,
+						],
+						[
+							'name' => 'FPROGRAMA',
+							'content' => $programa,
+						],
+						[
+							'name' => 'FEMAIL',
+							'content' => $email,
+						],
+					]
+				);
+			}
+		}
 
 		// Crear usuario en hubspot
 		$hubspotData = [
-		'email' => $email,
-		'firstname' => $nombre,
-		'lastname' => $apellido,
-		'phone' => $telefono,
+			'email' => $email,
+			'firstname' => $nombre,
+			'lastname' => $apellido,
+			'phone' => $telefono,
 		];
 
 		$hubspotResult = $this->hubspotService->createContact($hubspotData);
 
 		if (!$hubspotResult['success']) {
-		\Drupal::logger('enterprise_integrations')->warning(
-			'No se pudo crear el contacto en HubSpot para %email. Mensaje: %message',
-			[
-			'%email' => $hubspotData['email'],
-			'%message' => $hubspotResult['message'],
-			]
-		);
+			\Drupal::logger('enterprise_integrations')->warning(
+				'No se pudo crear el contacto en HubSpot para %email. Mensaje: %message',
+				[
+					'%email' => $hubspotData['email'],
+					'%message' => $hubspotResult['message'],
+				]
+			);
 		}
 
 		$request->getSession()->set('registro_exitoso', TRUE);
 		$current_path = \Drupal::service('path.current')->getPath();
-		
+
 		// Redireccionar
 		$form_state->setRedirectUrl(
 			Url::fromUserInput($current_path)

@@ -11,28 +11,33 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\enterprise_integrations\Service\MandrillService;
 use Drupal\enterprise_integrations\Service\HubspotService;
 
-class ContactoRegistroForm extends FormBase {
+class ContactoRegistroForm extends FormBase
+{
 
   protected $mandrillService;
   protected $hubspotService;
 
-  public function __construct(MandrillService $mandrillService, HubspotService $hubspotService) {
+  public function __construct(MandrillService $mandrillService, HubspotService $hubspotService)
+  {
     $this->mandrillService = $mandrillService;
-		$this->hubspotService = $hubspotService;
+    $this->hubspotService = $hubspotService;
   }
 
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container)
+  {
     return new static(
       $container->get('enterprise_integrations.mandrill'),
-			$container->get('enterprise_integrations.hubspot')
+      $container->get('enterprise_integrations.hubspot')
     );
   }
 
-  public function getFormId() {
+  public function getFormId()
+  {
     return 'dermau_contacto_registro_form';
   }
 
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state)
+  {
 
     $form['#cache']['max-age'] = 0;
 
@@ -181,15 +186,15 @@ class ContactoRegistroForm extends FormBase {
     */
 
     $form['group_container']['group2']['phone_group']['telefono'] = [
-  '#type' => 'tel',
-  '#attributes' => [
-    'placeholder' => 'Teléfono',
-    'id' => 'du-reg-phone',
-    'class' => ['du-form-input']
-  ],
-  '#required' => TRUE,
-  '#title_display' => 'invisible'
-];
+      '#type' => 'tel',
+      '#attributes' => [
+        'placeholder' => 'Teléfono',
+        'id' => 'du-reg-phone',
+        'class' => ['du-form-input']
+      ],
+      '#required' => TRUE,
+      '#title_display' => 'invisible'
+    ];
 
     /*
     CIUDAD
@@ -262,7 +267,7 @@ class ContactoRegistroForm extends FormBase {
       '#type' => 'submit',
       '#value' => $this->t('Contáctame'),
       '#attributes' => [
-        'class' => ['du-btn','du-btn--primary']
+        'class' => ['du-btn', 'du-btn--primary']
       ]
     ];
 
@@ -285,7 +290,8 @@ class ContactoRegistroForm extends FormBase {
     return $form;
   }
 
-  public function submitForm(array &$form, FormStateInterface $form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state)
+  {
     $ciudad_tid = $form_state->getValue('ciudad');
     $profesion_tid = $form_state->getValue('profesion');
 
@@ -295,206 +301,244 @@ class ContactoRegistroForm extends FormBase {
     $ciudad_nombre = $ciudad_term ? $ciudad_term->getName() : '';
     $profesion_nombre = $profesion_term ? $profesion_term->getName() : '';
 
-  $programa_id = $form_state->getValue('programa');
+    $programa_id = $form_state->getValue('programa');
 
-  /*
+    /*
   ---------------------------------
   Datos del formulario
   ---------------------------------
   */
 
-  $nombre = $form_state->getValue('nombre');
-  $apellido = $form_state->getValue('apellido');
-  $correo_real = $form_state->getValue('email');
+    $nombre = $form_state->getValue('nombre');
+    $apellido = $form_state->getValue('apellido');
+    $correo_real = $form_state->getValue('email');
 
-  /*
+    /*
   ---------------------------------
   Generar username único
   ---------------------------------
   */
 
-  $timestamp = date('YmdHis');
+    $timestamp = date('YmdHis');
 
-  $username = strtolower($nombre . '.' . $apellido . '.' . $timestamp);
+    $username = strtolower($nombre . '.' . $apellido . '.' . $timestamp);
 
-  $email_sistema = $username . '@registro.local';
+    $email_sistema = $username . '@registro.local';
 
-  /*
+    /*
   ---------------------------------
   Crear usuario Drupal
   ---------------------------------
   */
 
-  $user = User::create([
-    'name' => $username,
-    'mail' => $email_sistema,
-    'status' => 0,
-  ]);
+    $user = User::create([
+      'name' => $username,
+      'mail' => $email_sistema,
+      'status' => 0,
+    ]);
 
-  $user->addRole('registro');
+    $user->addRole('registro');
 
-  /*
+    /*
   ---------------------------------
   Guardar campos personalizados
   ---------------------------------
   */
 
-  $user->set('field_correo_real', $correo_real);
-  $user->set('field_programa', $form_state->getValue('programa'));
-  $user->set('field_telefono', $form_state->getValue('telefono'));
-  $user->set('field_ciudad', $form_state->getValue('ciudad'));
-  $user->set('field_profesion', $form_state->getValue('profesion'));
-  $user->set('field_mensaje', $form_state->getValue('mensaje'));
+    $user->set('field_correo_real', $correo_real);
+    $user->set('field_programa', $form_state->getValue('programa'));
+    $user->set('field_telefono', $form_state->getValue('telefono'));
+    $user->set('field_ciudad', $form_state->getValue('ciudad'));
+    $user->set('field_profesion', $form_state->getValue('profesion'));
+    $user->set('field_mensaje', $form_state->getValue('mensaje'));
 
-  $user->save();
+    $user->save();
 
-    /*
-  ---------------------------------
-  Envío de correo
-  ---------------------------------
-  */
+    // variables para enviaar correo
 
-  $programa = '';
-  $node = Node::load($programa_id);
+    $programa = '';
+    $node = Node::load($programa_id);
 
-  if ($node) {
-    $programa = $node->getTitle();
-  }
+    if ($node) {
+      $programa = $node->getTitle();
+    }
 
-  $telefono = trim((string) $form_state->getValue('telefono'));
-  $ciudad = $ciudad_nombre;
-  $profesion = $profesion_nombre;
-  $mensaje = trim((string) $form_state->getValue('mensaje'));
+    $telefono = trim((string) $form_state->getValue('telefono'));
+    $ciudad = $ciudad_nombre;
+    $profesion = $profesion_nombre;
+    $mensaje = trim((string) $form_state->getValue('mensaje'));
 
-  $config = \Drupal::config('enterprise_integrations.settings');
-  $template = (string) $config->get('mandrill.default_html_template');
+    //enviar correo
+    $config_email = $this->mandrillService->getMessageGroupByKey('mail_text_1');
 
-  $html = $this->mandrillService->renderTemplate($template, [
-    'nombre' => trim($nombre . ' ' . $apellido),
-    'email' => $correo_real,
-    'telefono' => $telefono,
-    'programa' => $programa,
-    'ciudad' => $ciudad,
-    'profesion' => $profesion,
-    'mensaje' => $mensaje,
-  ]);
+    if (!$config_email) {
+      throw new \RuntimeException('No existe la configuración de correo mail_text_1.');
+    }
 
-  $result = $this->mandrillService->send([
-    'to_email' => $correo_real,
-    'to_name' => trim($nombre . ' ' . $apellido),
-    'subject' => 'Gracias por registrarte en DermaU',
-    'html' => $html,
-    'reply_to' => $correo_real,
-    'tags' => ['contacto_registro'],
-    'metadata' => [
-      'form' => 'contacto_registro',
-      'programa_id' => (string) $programa_id,
-      'programa' => $programa,
-    ],
-  ]);
+    $template_slug = $config_email['mandrill_template_slug'] ?? '';
 
-  // Crear usuario en hubspot
-  $hubspotData = [
-  'email' => $correo_real,
-  'firstname' => $nombre,
-  'lastname' => $apellido,
-  'phone' => $telefono,
-  ];
+    if ($template_slug === '') {
+      throw new \RuntimeException('La configuración mail_text_1 no tiene slug de plantilla Mandrill.');
+    }
 
-  $hubspotResult = $this->hubspotService->createContact($hubspotData);
-
-  if (!$hubspotResult['success']) {
-    \Drupal::logger('enterprise_integrations')->warning(
-      'No se pudo crear el contacto en HubSpot para %email. Mensaje: %message',
+    $result = $this->mandrillService->sendTemplate(
+      $template_slug,
       [
-      '%email' => $hubspotData['email'],
-      '%message' => $hubspotResult['message'],
+        'subject' => 'Gracias por registrarte en DermaU',
+        'to_email' => $correo_real,
+        'to_name' => trim($nombre . ' ' . $apellido),
+      ],
+      [
+        [
+          'name' => 'FNAME',
+          'content' => trim($nombre . ' ' . $apellido),
+        ],
+        [
+          'name' => 'PROGRAM_NAME',
+          'content' => $programa,
+        ],
       ]
     );
-  }
 
-  /*
+    //envio de copia de correo en caso exista
+    if (
+      !empty($config_email['send_copy']) &&
+      !empty($config_email['copy_template_slug']) &&
+      !empty($config_email['copy_emails']) &&
+      is_array($config_email['copy_emails'])
+    ) {
+      foreach ($config_email['copy_emails'] as $copy_email) {
+        $copy_email = trim((string) $copy_email);
+
+        if ($copy_email === '') {
+          continue;
+        }
+
+        $this->mandrillService->sendTemplate(
+          $config_email['copy_template_slug'],
+          [
+            'subject' => 'Nuevo registro de contacto DermaU',
+            'to_email' => $copy_email,
+          ],
+          [
+            [
+              'name' => 'USER_NAME',
+              'content' => trim($nombre . ' ' . $apellido),
+            ],
+            [
+              'name' => 'PROGRAM_NAME',
+              'content' => $programa,
+            ],
+            [
+              'name' => 'USER_EMAIL',
+              'content' => $correo_real,
+            ],
+          ]
+        );
+      }
+    }
+
+    // Crear usuario en hubspot
+    $hubspotData = [
+      'email' => $correo_real,
+      'firstname' => $nombre,
+      'lastname' => $apellido,
+      'phone' => $telefono,
+    ];
+
+    $hubspotResult = $this->hubspotService->createContact($hubspotData);
+
+    if (!$hubspotResult['success']) {
+      \Drupal::logger('enterprise_integrations')->warning(
+        'No se pudo crear el contacto en HubSpot para %email. Mensaje: %message',
+        [
+          '%email' => $hubspotData['email'],
+          '%message' => $hubspotResult['message'],
+        ]
+      );
+    }
+
+    /*
   ---------------------------------
   Obtener PDF del programa
   ---------------------------------
   */
 
-  $node_pdf = Node::load($programa_id);
-  $pdf_url = '';
+    $node_pdf = Node::load($programa_id);
+    $pdf_url = '';
 
-  if ($node_pdf && $node_pdf->hasField('field_pdf_registro')) {
+    if ($node_pdf && $node_pdf->hasField('field_pdf_registro')) {
 
-    $file = $node_pdf->get('field_pdf_registro')->entity;
+      $file = $node_pdf->get('field_pdf_registro')->entity;
 
-    if ($file) {
+      if ($file) {
 
-      $pdf_url = \Drupal::service('file_url_generator')
-        ->generateAbsoluteString($file->getFileUri());
-
+        $pdf_url = \Drupal::service('file_url_generator')
+          ->generateAbsoluteString($file->getFileUri());
+      }
     }
 
-  }
-
-  /*
+    /*
   ---------------------------------
   Redirección descarga
   ---------------------------------
   */
 
-  $request = \Drupal::request();
+    $request = \Drupal::request();
 
-  $request->getSession()->set('registro_exitoso', TRUE);
-  $current_path = \Drupal::service('path.current')->getPath();
+    $request->getSession()->set('registro_exitoso', TRUE);
+    $current_path = \Drupal::service('path.current')->getPath();
 
-  $form_state->setRedirectUrl(
-    Url::fromUserInput($current_path)
-  );
+    $form_state->setRedirectUrl(
+      Url::fromUserInput($current_path)
+    );
 
-//   if ($pdf_url) {
+    //   if ($pdf_url) {
 
-//     $form_state->setRedirect(
-//   'dermau_core.descargar',
-//   ['node' => $programa_id]
-// );
+    //     $form_state->setRedirect(
+    //   'dermau_core.descargar',
+    //   ['node' => $programa_id]
+    // );
 
-//   }
+    //   }
 
-}
-
-protected function getCiudades() {
-  $options = [];
-
-  $terms = \Drupal::entityTypeManager()
-    ->getStorage('taxonomy_term')
-    ->loadTree('ciudades', 0, NULL, TRUE);
-
-  usort($terms, function ($a, $b) {
-    return strcmp($a->getName(), $b->getName());
-  });
-
-  foreach ($terms as $term) {
-    $options[$term->id()] = $term->getName();
   }
 
-  return $options;
-}
+  protected function getCiudades()
+  {
+    $options = [];
 
-protected function getProfesiones() {
-  $options = [];
+    $terms = \Drupal::entityTypeManager()
+      ->getStorage('taxonomy_term')
+      ->loadTree('ciudades', 0, NULL, TRUE);
 
-  $terms = \Drupal::entityTypeManager()
-    ->getStorage('taxonomy_term')
-    ->loadTree('profesiones', 0, NULL, TRUE);
+    usort($terms, function ($a, $b) {
+      return strcmp($a->getName(), $b->getName());
+    });
 
-  usort($terms, function ($a, $b) {
-    return strcmp($a->getName(), $b->getName());
-  });
+    foreach ($terms as $term) {
+      $options[$term->id()] = $term->getName();
+    }
 
-  foreach ($terms as $term) {
-    $options[$term->id()] = $term->getName();
+    return $options;
   }
 
-  return $options;
-}
+  protected function getProfesiones()
+  {
+    $options = [];
 
+    $terms = \Drupal::entityTypeManager()
+      ->getStorage('taxonomy_term')
+      ->loadTree('profesiones', 0, NULL, TRUE);
+
+    usort($terms, function ($a, $b) {
+      return strcmp($a->getName(), $b->getName());
+    });
+
+    foreach ($terms as $term) {
+      $options[$term->id()] = $term->getName();
+    }
+
+    return $options;
+  }
 }
