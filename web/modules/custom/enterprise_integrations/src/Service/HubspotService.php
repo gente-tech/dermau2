@@ -179,11 +179,15 @@ final class HubspotService
 	{
 		try {
 
+			$config = $this->configFactory->get('enterprise_integrations.hubspot_settings');
+
+			$token = (string) $config->get('hubspot_token');
+
 			$url = 'https://api.hubapi.com/crm/v3/objects/contacts/' . urlencode($email) . '?idProperty=email';
 
 			$response = $this->httpClient->get($url, [
 				'headers' => [
-					'Authorization' => 'Bearer ' . $this->getAccessToken(),
+					'Authorization' => 'Bearer ' . $token,
 					'Content-Type' => 'application/json',
 				],
 			]);
@@ -253,6 +257,10 @@ final class HubspotService
 
 		try {
 
+			$config = $this->configFactory->get('enterprise_integrations.hubspot_settings');
+
+			$token = (string) $config->get('hubspot_token');
+
 			$url = 'https://api.hubapi.com/crm/v3/objects/contacts/' . urlencode($email) . '?idProperty=email';
 
 			$payload = [
@@ -274,13 +282,34 @@ final class HubspotService
 
 			$response = $this->httpClient->patch($url, [
 				'headers' => [
-					'Authorization' => 'Bearer ' . $this->getAccessToken(),
+					'Authorization' => 'Bearer ' . $token,
 					'Content-Type' => 'application/json',
+					'Accept' => 'application/json',
 				],
 				'json' => $payload,
+				'timeout' => 30,
+				'connect_timeout' => 10,
+				'http_errors' => FALSE,
 			]);
 
-			$data = json_decode($response->getBody()->getContents(), TRUE);
+			$statusCode = $response->getStatusCode();
+
+			$body = (string) $response->getBody();
+
+			$data = json_decode($body, TRUE);
+
+			if ($statusCode < 200 || $statusCode >= 300) {
+
+				$this->logger->error(
+					'Error actualizando contacto HubSpot. Status: @status. Response: @response',
+					[
+						'@status' => $statusCode,
+						'@response' => $body,
+					]
+				);
+
+				return NULL;
+			}
 
 			return is_array($data) ? $data : NULL;
 		} catch (\Exception $e) {
