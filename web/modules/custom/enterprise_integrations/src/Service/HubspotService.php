@@ -174,4 +174,213 @@ final class HubspotService
 			];
 		}
 	}
+
+	public function getContactByEmail(string $email): ?array
+	{
+		try {
+
+			$url = 'https://api.hubapi.com/crm/v3/objects/contacts/' . urlencode($email) . '?idProperty=email';
+
+			$response = $this->httpClient->get($url, [
+				'headers' => [
+					'Authorization' => 'Bearer ' . $this->getAccessToken(),
+					'Content-Type' => 'application/json',
+				],
+			]);
+
+			$data = json_decode($response->getBody()->getContents(), TRUE);
+
+			return is_array($data) ? $data : NULL;
+		} catch (\Exception $e) {
+
+			$this->logger->warning('No se encontró contacto HubSpot para el correo @email', [
+				'@email' => $email,
+			]);
+
+			return NULL;
+		}
+	}
+
+	public function mergeHubspotProgramProperty(
+		string $currentValue,
+		string $programaId,
+		string $programaNombre
+	): string {
+
+		$newLine = $programaId . ' | ' . trim($programaNombre);
+
+		// Si está vacío, retorna primera línea.
+		if (trim($currentValue) === '') {
+			return $newLine;
+		}
+
+		$lines = preg_split('/\r\n|\r|\n/', trim($currentValue));
+
+		$updated = FALSE;
+
+		foreach ($lines as &$line) {
+
+			$line = trim($line);
+
+			// Busca líneas que empiecen con:
+			// 80 |
+			if (preg_match('/^' . preg_quote($programaId, '/') . '\s*\|/', $line)) {
+
+				// Reemplaza línea completa.
+				$line = $newLine;
+
+				$updated = TRUE;
+			}
+		}
+
+		unset($line);
+
+		// Si no existe el ID, agrega nueva línea.
+		if (!$updated) {
+			$lines[] = $newLine;
+		}
+
+		// Elimina vacíos y duplicados exactos.
+		$lines = array_unique(array_filter(array_map('trim', $lines)));
+
+		return implode("\n", $lines);
+	}
+
+	public function updateContactByEmail(
+		string $email,
+		array $properties
+	): ?array {
+
+		try {
+
+			$url = 'https://api.hubapi.com/crm/v3/objects/contacts/' . urlencode($email) . '?idProperty=email';
+
+			$payload = [
+				'properties' => [],
+			];
+
+			foreach ($properties as $propertyName => $propertyValue) {
+
+				if ($propertyValue === NULL) {
+					continue;
+				}
+
+				$payload['properties'][$propertyName] = (string) $propertyValue;
+			}
+
+			$this->logger->info('HubSpot update payload: <pre>@payload</pre>', [
+				'@payload' => json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE),
+			]);
+
+			$response = $this->httpClient->patch($url, [
+				'headers' => [
+					'Authorization' => 'Bearer ' . $this->getAccessToken(),
+					'Content-Type' => 'application/json',
+				],
+				'json' => $payload,
+			]);
+
+			$data = json_decode($response->getBody()->getContents(), TRUE);
+
+			return is_array($data) ? $data : NULL;
+		} catch (\Exception $e) {
+
+			$this->logger->error('Error actualizando contacto HubSpot: @message', [
+				'@message' => $e->getMessage(),
+			]);
+
+			return NULL;
+		}
+	}
+
+	public function createOrUpdateContactWithInterest(array $data): ?array
+	{
+
+		try {
+
+			if (empty($data['email'])) {
+				throw new \Exception('El email es obligatorio.');
+			}
+
+			if (empty($data['interest_property'])) {
+				throw new \Exception('interest_property es obligatorio.');
+			}
+
+			if (empty($data['programa_id'])) {
+				throw new \Exception('programa_id es obligatorio.');
+			}
+
+			if (empty($data['programa_nombre'])) {
+				throw new \Exception('programa_nombre es obligatorio.');
+			}
+
+			$email = trim($data['email']);
+
+			$interestProperty = trim($data['interest_property']);
+
+			$programaId = trim((string) $data['programa_id']);
+
+			$programaNombre = trim($data['programa_nombre']);
+
+			// Buscar contacto actual.
+			$contact = $this->getContactByEmail($email);
+
+			// Si no existe, crearlo primero.
+			if (!$contact) {
+
+				$createPayload = [
+					'email' => $email,
+				];
+
+				if (!empty($data['firstname'])) {
+					$createPayload['firstname'] = $data['firstname'];
+				}
+
+				if (!empty($data['lastname'])) {
+					$createPayload['lastname'] = $data['lastname'];
+				}
+
+				if (!empty($data['phone'])) {
+					$createPayload['phone'] = $data['phone'];
+				}
+
+				$this->createContact($createPayload);
+
+				// Volver a consultar.
+				$contact = $this->getContactByEmail($email);
+			}
+
+			if (!$contact) {
+				throw new \Exception('No fue posible obtener el contacto HubSpot.');
+			}
+
+			$currentValue = '';
+
+			if (
+				!empty($contact['properties']) &&
+				isset($contact['properties'][$interestProperty])
+			) {
+				$currentValue = (string) $contact['properties'][$interestProperty];
+			}
+
+			// Mezclar/actualizar líneas.
+			$mergedValue = $this->mergeHubspotProgramProperty(
+				$currentValue,
+				$programaId,
+				$programaNombre
+			);
+
+			// Actualizar HubSpot.
+			return $this->updateContactByEmail($email, [
+				$interestProperty => $mergedValue,
+			]);
+		} catch (\Exception $e) {
+
+			$this->logger->error('Error createOrUpdateContactWithInterest: @message', [
+				'@message' => $e->getMessage(),
+			]);
+
+			return NULL;
+		}
+	}
 }

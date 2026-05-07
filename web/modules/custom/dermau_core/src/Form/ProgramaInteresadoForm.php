@@ -397,20 +397,48 @@ class ProgramaInteresadoForm extends FormBase
 		}
 
 		// Crear usuario en HubSpot.
-		$hubspotData = [
-			'email' => $email,
-			'firstname' => $nombre,
-			'lastname' => $apellido,
-			'phone' => $telefono,
-			'unidad_de_negocio' => 'DermaU',
-			'categoria_usuario' => 'interesado',
-			'tipo_interaccion' => 'preinscripcion_programa',
-			'categoria_programa' => $categoria_programa,
-			'nombre_programa' => $programa,
-			'id_programa' => $node instanceof NodeInterface ? (string) $node->id() : '',
-		];
+		$programaId = $node instanceof NodeInterface
+			? (string) $node->id()
+			: '';
 
-		$hubspotResult = $this->hubspotService->createContact($hubspotData);
+		$interestProperty = '';
+
+		switch (mb_strtolower(trim($categoria_programa))) {
+
+			case 'webinar':
+				$interestProperty = 'interesados_webinar';
+				break;
+
+			case 'curso':
+			case 'cursos':
+				$interestProperty = 'interesados_cursos';
+				break;
+
+			case 'diplomado':
+			case 'diplomados':
+				$interestProperty = 'interesados_diplomados';
+				break;
+
+			case 'programa especial':
+			case 'programas especiales':
+				$interestProperty = 'interesados_programas_especiales';
+				break;
+		}
+
+		$hubspotResult = NULL;
+
+		if ($interestProperty) {
+
+			$hubspotResult = $this->hubspotService->createOrUpdateContactWithInterest([
+				'email' => $email,
+				'firstname' => $nombre,
+				'lastname' => $apellido,
+				'phone' => $telefono,
+				'interest_property' => $interestProperty,
+				'programa_id' => $programaId,
+				'programa_nombre' => $programa,
+			]);
+		}
 
 		if (!$hubspotResult['success']) {
 			\Drupal::logger('enterprise_integrations')->warning(
