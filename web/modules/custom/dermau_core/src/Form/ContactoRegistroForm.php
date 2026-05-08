@@ -368,7 +368,7 @@ class ContactoRegistroForm extends FormBase
     $profesion = $profesion_nombre;
     $mensaje = trim((string) $form_state->getValue('mensaje'));
 
-    //enviar correo
+    // Envío de correo.
     $config_email = $this->mandrillService->getMessageGroupByKey('mail_text_1');
 
     if (!$config_email) {
@@ -384,7 +384,7 @@ class ContactoRegistroForm extends FormBase
     $result = $this->mandrillService->sendTemplate(
       $template_slug,
       [
-        'subject' => 'Gracias por registrarte en DermaU',
+        'subject' => 'Preinscripción programa - ' . $programa,
         'to_email' => $correo_real,
         'to_name' => trim($nombre . ' ' . $apellido),
       ],
@@ -394,13 +394,17 @@ class ContactoRegistroForm extends FormBase
           'content' => trim($nombre . ' ' . $apellido),
         ],
         [
-          'name' => 'PROGRAM_NAME',
+          'name' => 'FPROGRAMA',
           'content' => $programa,
+        ],
+        [
+          'name' => 'FEMAIL',
+          'content' => $correo_real,
         ],
       ]
     );
 
-    //envio de copia de correo en caso exista
+    // Envío copia oculta de correo, en caso exista.
     if (
       !empty($config_email['send_copy']) &&
       !empty($config_email['copy_template_slug']) &&
@@ -417,20 +421,20 @@ class ContactoRegistroForm extends FormBase
         $this->mandrillService->sendTemplate(
           $config_email['copy_template_slug'],
           [
-            'subject' => 'Nuevo registro de contacto DermaU',
+            'subject' => 'Notificación solicitud de información programa - ' . $programa,
             'to_email' => $copy_email,
           ],
           [
             [
-              'name' => 'USER_NAME',
+              'name' => 'FNAME',
               'content' => trim($nombre . ' ' . $apellido),
             ],
             [
-              'name' => 'PROGRAM_NAME',
+              'name' => 'FPROGRAMA',
               'content' => $programa,
             ],
             [
-              'name' => 'USER_EMAIL',
+              'name' => 'FEMAIL',
               'content' => $correo_real,
             ],
           ]
@@ -438,24 +442,65 @@ class ContactoRegistroForm extends FormBase
       }
     }
 
-    // Crear usuario en hubspot
-    $hubspotData = [
-      'email' => $correo_real,
-      'firstname' => $nombre,
-      'lastname' => $apellido,
-      'phone' => $telefono,
-    ];
+    // Crear o actualizar contacto/interés en HubSpot.
+    $categoria_programa = '';
 
-    $hubspotResult = $this->hubspotService->createContact($hubspotData);
+    if (
+      $node instanceof Node &&
+      $node->hasField('field_tipo_de_programa') &&
+      !$node->get('field_tipo_de_programa')->isEmpty() &&
+      $node->get('field_tipo_de_programa')->entity
+    ) {
+      $categoria_programa = $node->get('field_tipo_de_programa')->entity->label();
+    }
 
-    if (!$hubspotResult['success']) {
-      \Drupal::logger('enterprise_integrations')->warning(
-        'No se pudo crear el contacto en HubSpot para %email. Mensaje: %message',
+    $programaId = $node instanceof Node
+      ? (string) $node->id()
+      : '';
+
+    $interestProperty = '';
+
+    switch (mb_strtolower(trim($categoria_programa))) {
+      case 'webinar':
+        $interestProperty = 'interesados_webinar';
+        break;
+
+      case 'curso':
+        $interestProperty = 'interesados_cursos';
+        break;
+
+      case 'diplomado':
+        $interestProperty = 'interesados_diplomados';
+        break;
+
+      case 'programas especiales':
+        $interestProperty = 'interesados_programas_especiales';
+        break;
+    }
+
+    $hubspotResult = NULL;
+
+    if ($interestProperty) {
+      $hubspotResult = $this->hubspotService->createOrUpdateContactWithInterest([
+        'email' => $correo_real,
+        'firstname' => $nombre,
+        'lastname' => $apellido,
+        'phone' => $telefono,
+        'interest_property' => $interestProperty,
+        'programa_id' => $programaId,
+        'programa_nombre' => $programa,
+      ]);
+    }
+
+    if (!$hubspotResult) {
+      \Drupal::logger('dermau_core')->error(
+        'Error enviando contacto/interés a HubSpot desde ContactoRegistroForm para el correo: @email',
         [
-          '%email' => $hubspotData['email'],
-          '%message' => $hubspotResult['message'],
+          '@email' => $correo_real,
         ]
       );
+
+      $this->messenger()->addWarning('Ocurrió un error enviando la información a HubSpot.');
     }
 
     /*
