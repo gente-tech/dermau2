@@ -151,7 +151,17 @@ class DescargarProgramaForm extends FormBase
       '#required' => TRUE,
     ];
 
-    // TAXONOMÍA
+    // TAXONOMÍA - País de nacionalidad.
+    $form['pais_nacionalidad'] = [
+      '#type' => 'select',
+      '#title' => 'País de nacionalidad',
+      '#options' => $this->getPaisesNacionalidad(),
+      '#required' => TRUE,
+      '#empty_option' => 'Selecciona tu país de nacionalidad',
+      '#empty_value' => '',
+    ];
+
+    // TAXONOMÍA - Profesión.
     $terms = \Drupal::entityTypeManager()
       ->getStorage('taxonomy_term')
       ->loadTree('profesiones');
@@ -262,6 +272,7 @@ class DescargarProgramaForm extends FormBase
       'apellido' => $form_state->getValue('apellido'),
       'email' => $form_state->getValue('email'),
       'telefono' => $form_state->getValue('telefono'),
+      'pais_nacionalidad' => $form_state->getValue('pais_nacionalidad'),
       'profesion' => $form_state->getValue('profesion'),
     ];
 
@@ -271,6 +282,7 @@ class DescargarProgramaForm extends FormBase
         'title' => $data['nombre'] . ' ' . $data['apellido'],
         'field_email' => $data['email'],
         'field_programa' => ['target_id' => $nid],
+        'field_pais_de_nacionalidad' => ['target_id' => $data['pais_nacionalidad']],
       ]);
       $node->save();
     } catch (\Exception $e) {
@@ -285,6 +297,14 @@ class DescargarProgramaForm extends FormBase
     $apellido = trim((string) $data['apellido']);
     $email = trim((string) $data['email']);
     $telefono = trim((string) $data['telefono']);
+
+    $pais_nacionalidad_tid = $data['pais_nacionalidad'];
+    $pais_nacionalidad_term = \Drupal::entityTypeManager()
+      ->getStorage('taxonomy_term')
+      ->load($pais_nacionalidad_tid);
+
+    $pais_nacionalidad_nombre = $pais_nacionalidad_term ? $pais_nacionalidad_term->getName() : '';
+    $pais_nacionalidad_hubspot = $this->mapPaisNacionalidadToHubspotValue($pais_nacionalidad_nombre);
 
     // Envío de correo.
     $config_email = $this->mandrillService->getMessageGroupByKey('mail_text_1');
@@ -399,6 +419,7 @@ class DescargarProgramaForm extends FormBase
         'firstname' => $nombre,
         'lastname' => $apellido,
         'phone' => $telefono,
+        'pais_de_nacionalidad' => $pais_nacionalidad_hubspot,
         'interest_property' => $interestProperty,
         'programa_id' => $nid,
         'programa_nombre' => $programa_nombre,
@@ -429,4 +450,37 @@ class DescargarProgramaForm extends FormBase
       }
     }
   }
+
+  protected function getPaisesNacionalidad()
+  {
+    $options = [];
+
+    $terms = \Drupal::entityTypeManager()
+      ->getStorage('taxonomy_term')
+      ->loadTree('pais_de_nacionalidad', 0, NULL, TRUE);
+
+    usort($terms, function ($a, $b) {
+      return strcmp($a->getName(), $b->getName());
+    });
+
+    foreach ($terms as $term) {
+      $options[$term->id()] = $term->getName();
+    }
+
+    return $options;
+  }
+
+  protected function mapPaisNacionalidadToHubspotValue(string $pais): string
+  {
+    $map = [
+      'Colombia' => 'colombia',
+      'Perú' => 'peru',
+      'Ecuador' => 'ecuador',
+      'Panamá' => 'panama',
+      'México' => 'mexico',
+    ];
+
+    return $map[$pais] ?? '';
+  }
+
 }

@@ -197,6 +197,23 @@ class ContactoRegistroForm extends FormBase
     ];
 
     /*
+    PAÍS DE NACIONALIDAD
+    */
+
+    $form['group_container']['group2']['pais_nacionalidad'] = [
+      '#type' => 'select',
+      '#options' => $this->getPaisesNacionalidad(),
+      '#empty_option' => $this->t('Selecciona tu país de nacionalidad'),
+      '#empty_value' => '',
+      '#attributes' => [
+        'class' => ['du-form-select'],
+        'id' => 'du-reg-country'
+      ],
+      '#required' => TRUE,
+      '#title_display' => 'invisible'
+    ];
+
+    /*
     CIUDAD
     */
 
@@ -293,12 +310,16 @@ class ContactoRegistroForm extends FormBase
   public function submitForm(array &$form, FormStateInterface $form_state)
   {
     $ciudad_tid = $form_state->getValue('ciudad');
+    $pais_nacionalidad_tid = $form_state->getValue('pais_nacionalidad');
     $profesion_tid = $form_state->getValue('profesion');
 
     $ciudad_term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($ciudad_tid);
+    $pais_nacionalidad_term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($pais_nacionalidad_tid);
     $profesion_term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($profesion_tid);
 
     $ciudad_nombre = $ciudad_term ? $ciudad_term->getName() : '';
+    $pais_nacionalidad_nombre = $pais_nacionalidad_term ? $pais_nacionalidad_term->getName() : '';
+    $pais_nacionalidad_hubspot = $this->mapPaisNacionalidadToHubspotValue($pais_nacionalidad_nombre);
     $profesion_nombre = $profesion_term ? $profesion_term->getName() : '';
 
     $programa_id = $form_state->getValue('programa');
@@ -348,6 +369,7 @@ class ContactoRegistroForm extends FormBase
     $user->set('field_correo_real', $correo_real);
     $user->set('field_programa', $form_state->getValue('programa'));
     $user->set('field_telefono', $form_state->getValue('telefono'));
+    $user->set('field_pais_de_nacionalidad', $form_state->getValue('pais_nacionalidad'));
     $user->set('field_ciudad', $form_state->getValue('ciudad'));
     $user->set('field_profesion', $form_state->getValue('profesion'));
     $user->set('field_mensaje', $form_state->getValue('mensaje'));
@@ -486,6 +508,7 @@ class ContactoRegistroForm extends FormBase
         'firstname' => $nombre,
         'lastname' => $apellido,
         'phone' => $telefono,
+        'pais_de_nacionalidad' => $pais_nacionalidad_hubspot,
         'interest_property' => $interestProperty,
         'programa_id' => $programaId,
         'programa_nombre' => $programa,
@@ -587,5 +610,37 @@ class ContactoRegistroForm extends FormBase
     }
 
     return $options;
+  }
+
+  protected function getPaisesNacionalidad()
+  {
+    $options = [];
+
+    $terms = \Drupal::entityTypeManager()
+      ->getStorage('taxonomy_term')
+      ->loadTree('pais_de_nacionalidad', 0, NULL, TRUE);
+
+    usort($terms, function ($a, $b) {
+      return strcmp($a->getName(), $b->getName());
+    });
+
+    foreach ($terms as $term) {
+      $options[$term->id()] = $term->getName();
+    }
+
+    return $options;
+  }
+
+  protected function mapPaisNacionalidadToHubspotValue(string $pais): string
+  {
+    $map = [
+      'Colombia' => 'colombia',
+      'Perú' => 'peru',
+      'Ecuador' => 'ecuador',
+      'Panamá' => 'panama',
+      'México' => 'mexico',
+    ];
+
+    return $map[$pais] ?? '';
   }
 }

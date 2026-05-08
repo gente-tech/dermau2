@@ -151,6 +151,20 @@ class ProgramaInteresadoForm extends FormBase
 			'#suffix' => '</div>',
 		];
 
+		$form['group_container']['group2']['pais_nacionalidad'] = [
+			'#type' => 'select',
+			'#title' => $this->t('País de nacionalidad'),
+			'#title_display' => 'invisible',
+			'#options' => $this->getPaisesNacionalidad(),
+			'#empty_option' => $this->t('Selecciona tu país de nacionalidad'),
+			'#empty_value' => '',
+			'#required' => TRUE,
+			'#attributes' => [
+				'class' => ['du-form-select'],
+				'id' => 'du-reg-country',
+			],
+		];
+
 		$form['group_container']['group2']['ciudad'] = [
 			'#type' => 'select',
 			'#title' => $this->t('Ciudad'),
@@ -272,10 +286,16 @@ class ProgramaInteresadoForm extends FormBase
 		$request = \Drupal::request();
 
 		$ciudad_tid = $form_state->getValue('ciudad');
+		$pais_nacionalidad_tid = $form_state->getValue('pais_nacionalidad');
 		$profesion_tid = $form_state->getValue('profesion');
+
 		$ciudad_term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($ciudad_tid);
+		$pais_nacionalidad_term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($pais_nacionalidad_tid);
 		$profesion_term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($profesion_tid);
+
 		$ciudad_nombre = $ciudad_term ? $ciudad_term->getName() : '';
+		$pais_nacionalidad_nombre = $pais_nacionalidad_term ? $pais_nacionalidad_term->getName() : '';
+		$pais_nacionalidad_hubspot = $this->mapPaisNacionalidadToHubspotValue($pais_nacionalidad_nombre);
 		$profesion_nombre = $profesion_term ? $profesion_term->getName() : '';
 
 		$indicativo = trim((string) $form_state->getValue('indicativo'));
@@ -291,6 +311,7 @@ class ProgramaInteresadoForm extends FormBase
 				'indicativo' => $indicativo,
 				'telefono' => $telefono,
 				'ciudad' => $ciudad_nombre,
+				'pais_nacionalidad' => $pais_nacionalidad_nombre,
 				'profesion' => $profesion_nombre,
 				'mensaje' => trim((string) $form_state->getValue('mensaje')),
 				'autorizacion' => (int) $form_state->getValue('autorizacion'),
@@ -431,6 +452,7 @@ class ProgramaInteresadoForm extends FormBase
 				'firstname' => $nombre,
 				'lastname' => $apellido,
 				'phone' => $telefono,
+				'pais_de_nacionalidad' => $pais_nacionalidad_hubspot,
 				'interest_property' => $interestProperty,
 				'programa_id' => $programaId,
 				'programa_nombre' => $programa,
@@ -493,5 +515,37 @@ class ProgramaInteresadoForm extends FormBase
 		}
 
 		return $options;
+	}
+
+	protected function getPaisesNacionalidad()
+	{
+		$options = [];
+
+		$terms = \Drupal::entityTypeManager()
+			->getStorage('taxonomy_term')
+			->loadTree('pais_de_nacionalidad', 0, NULL, TRUE);
+
+		usort($terms, function ($a, $b) {
+			return strcmp($a->getName(), $b->getName());
+		});
+
+		foreach ($terms as $term) {
+			$options[$term->id()] = $term->getName();
+		}
+
+		return $options;
+	}
+
+	protected function mapPaisNacionalidadToHubspotValue(string $pais): string
+	{
+		$map = [
+			'Colombia' => 'colombia',
+			'Perú' => 'peru',
+			'Ecuador' => 'ecuador',
+			'Panamá' => 'panama',
+			'México' => 'mexico',
+		];
+
+		return $map[$pais] ?? '';
 	}
 }

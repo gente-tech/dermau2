@@ -188,6 +188,7 @@ final class HubspotService
 				'firstname',
 				'lastname',
 				'phone',
+				'pais_de_nacionalidad',
 				'unidad_de_negocio',
 				'tipo_interaccion',
 
@@ -419,6 +420,10 @@ final class HubspotService
 					$createPayload['phone'] = $data['phone'];
 				}
 
+				if (!empty($data['pais_de_nacionalidad'])) {
+					$createPayload['pais_de_nacionalidad'] = $data['pais_de_nacionalidad'];
+				}
+
 				if (!empty($data['unidad_de_negocio'])) {
 					$createPayload['unidad_de_negocio'] = $data['unidad_de_negocio'];
 				}
@@ -455,6 +460,22 @@ final class HubspotService
 			$updateProperties = [
 				$interestProperty => $mergedValue,
 			];
+
+			if (!empty($data['pais_de_nacionalidad'])) {
+
+				$currentPaisNacionalidad = '';
+
+				if (
+					!empty($contact['properties']) &&
+					isset($contact['properties']['pais_de_nacionalidad'])
+				) {
+					$currentPaisNacionalidad = trim((string) $contact['properties']['pais_de_nacionalidad']);
+				}
+
+				if ($currentPaisNacionalidad === '') {
+					$updateProperties['pais_de_nacionalidad'] = $data['pais_de_nacionalidad'];
+				}
+			}
 
 			if (!empty($data['unidad_de_negocio'])) {
 				$updateProperties['unidad_de_negocio'] = $data['unidad_de_negocio'];
