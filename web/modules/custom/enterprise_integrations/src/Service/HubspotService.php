@@ -183,7 +183,25 @@ final class HubspotService
 
 			$token = (string) $config->get('hubspot_token');
 
-			$url = 'https://api.hubapi.com/crm/v3/objects/contacts/' . urlencode($email) . '?idProperty=email';
+			$properties = [
+				'email',
+				'firstname',
+				'lastname',
+				'phone',
+				'unidad_de_negocio',
+				'tipo_interaccion',
+				'interesados_cursos',
+				'interesados_webinar',
+				'interesados_diplomados',
+				'interesados_programas_especiales',
+			];
+
+			$query = http_build_query([
+				'idProperty' => 'email',
+				'properties' => implode(',', $properties),
+			]);
+
+			$url = 'https://api.hubapi.com/crm/v3/objects/contacts/' . urlencode($email) . '?' . $query;
 
 			$response = $this->httpClient->get($url, [
 				'headers' => [
@@ -248,6 +266,27 @@ final class HubspotService
 		$lines = array_unique(array_filter(array_map('trim', $lines)));
 
 		return implode("\n", $lines);
+	}
+
+	public function mergeHubspotMultiCheckboxValue(
+		string $currentValue,
+		string $newValue
+	): string {
+
+		$currentItems = [];
+
+		if (trim($currentValue) !== '') {
+			$currentItems = explode(';', $currentValue);
+		}
+
+		$currentItems = array_map('trim', $currentItems);
+		$currentItems = array_filter($currentItems);
+
+		$currentItems[] = trim($newValue);
+
+		$currentItems = array_unique($currentItems);
+
+		return implode(';', $currentItems);
 	}
 
 	public function updateContactByEmail(
@@ -324,7 +363,6 @@ final class HubspotService
 
 	public function createOrUpdateContactWithInterest(array $data): ?array
 	{
-
 		try {
 
 			if (empty($data['email'])) {
@@ -343,13 +381,10 @@ final class HubspotService
 				throw new \Exception('programa_nombre es obligatorio.');
 			}
 
-			$email = trim($data['email']);
-
-			$interestProperty = trim($data['interest_property']);
-
+			$email = trim((string) $data['email']);
+			$interestProperty = trim((string) $data['interest_property']);
 			$programaId = trim((string) $data['programa_id']);
-
-			$programaNombre = trim($data['programa_nombre']);
+			$programaNombre = trim((string) $data['programa_nombre']);
 
 			// Buscar contacto actual.
 			$contact = $this->getContactByEmail($email);
@@ -383,7 +418,7 @@ final class HubspotService
 
 				$this->createContact($createPayload);
 
-				// Volver a consultar.
+				// Volver a consultar con propiedades custom.
 				$contact = $this->getContactByEmail($email);
 			}
 
@@ -400,14 +435,12 @@ final class HubspotService
 				$currentValue = (string) $contact['properties'][$interestProperty];
 			}
 
-			// Mezclar/actualizar líneas.
 			$mergedValue = $this->mergeHubspotProgramProperty(
 				$currentValue,
 				$programaId,
 				$programaNombre
 			);
 
-			// Actualizar HubSpot.
 			$updateProperties = [
 				$interestProperty => $mergedValue,
 			];
@@ -417,7 +450,20 @@ final class HubspotService
 			}
 
 			if (!empty($data['tipo_interaccion'])) {
-				$updateProperties['tipo_interaccion'] = $data['tipo_interaccion'];
+
+				$currentTipoInteraccion = '';
+
+				if (
+					!empty($contact['properties']) &&
+					isset($contact['properties']['tipo_interaccion'])
+				) {
+					$currentTipoInteraccion = (string) $contact['properties']['tipo_interaccion'];
+				}
+
+				$updateProperties['tipo_interaccion'] = $this->mergeHubspotMultiCheckboxValue(
+					$currentTipoInteraccion,
+					(string) $data['tipo_interaccion']
+				);
 			}
 
 			return $this->updateContactByEmail($email, $updateProperties);
