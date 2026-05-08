@@ -376,15 +376,15 @@ class DescargarProgramaForm extends FormBase
     $interestProperty = '';
 
     switch (mb_strtolower(trim($categoria_programa))) {
-      case 'webinars':
+      case 'webinar':
         $interestProperty = 'prospectos_webinar';
         break;
 
-      case 'cursos':
+      case 'curso':
         $interestProperty = 'prospectos_cursos';
         break;
 
-      case 'diplomados':
+      case 'diplomado':
         $interestProperty = 'prospectos_diplomados';
         break;
 
