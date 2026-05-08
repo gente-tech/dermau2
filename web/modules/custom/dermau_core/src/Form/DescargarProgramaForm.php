@@ -393,22 +393,22 @@ class DescargarProgramaForm extends FormBase
         break;
     }
 
-    if ($interestProperty) {
+    if ($interestProperty && $programa instanceof Node) {
       $this->hubspotService->createOrUpdateContactWithInterest([
-        'email' => $data['email'],
-        'firstname' => $data['nombre'],
-        'lastname' => $data['apellido'],
-        'phone' => $data['telefono'],
+        'email' => $email,
+        'firstname' => $nombre,
+        'lastname' => $apellido,
+        'phone' => $telefono,
         'interest_property' => $interestProperty,
         'programa_id' => (string) $nid,
-        'programa_nombre' => $programa ? $programa->getTitle() : '',
+        'programa_nombre' => $programa_nombre,
         'unidad_de_negocio' => 'DermaU',
         'tipo_interaccion' => 'descarga_programa',
       ]);
     }
 
 
-    if ($programa && $programa->hasField('field_pdf_registro')) {
+    if ($programa instanceof Node && $programa->hasField('field_pdf_registro')) {
 
       $file = $programa->get('field_pdf_registro')->entity;
 
