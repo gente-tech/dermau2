@@ -104,15 +104,28 @@
             
             <div class="du-hero__detail-option">
               <span class="du-hero__detail-option-icon">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 4.5H17C17.8284 4.5 18.5 5.17157 18.5 6V17C18.5 17.8284 17.8284 18.5 17 18.5H5C4.17157 18.5 3.5 17.8284 3.5 17V6C3.5 5.17157 4.17157 4.5 5 4.5Z" stroke="#0066BD" stroke-width="1.5"/>
+                  <path d="M7 8H7.01" stroke="#0066BD" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M10 8H15" stroke="#0066BD" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M7 11.5H7.01" stroke="#0066BD" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M10 11.5H15" stroke="#0066BD" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M7 15H7.01" stroke="#0066BD" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M10 15H13.5" stroke="#0066BD" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <span class="du-hero__detail-option-text">{{ node.field_cantidad_de_clases.value }}
+                Clases</span>
+            </div>
+            <div class="du-hero__detail-option">
+              <span class="du-hero__detail-option-icon">
                 <svg width="20" height="23" viewbox="0 0 20 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M5.925 21.8125V5.5375C5.925 5.43473 5.88417 5.33617 5.8115 5.2635C5.73883 5.19083 5.64027 5.15 5.5375 5.15H0.8875C0.784729 5.15 0.686167 5.19083 0.613497 5.2635C0.540826 5.33617 0.5 5.43473 0.5 5.5375V21.8125C0.5 21.9153 0.540826 22.0138 0.613497 22.0865C0.686167 22.1592 0.784729 22.2 0.8875 22.2H5.5375C5.64027 22.2 5.73883 22.1592 5.8115 22.0865C5.88417 22.0138 5.925 21.9153 5.925 21.8125ZM5.925 21.8125C5.925 21.9153 5.96583 22.0138 6.0385 22.0865C6.11117 22.1592 6.20973 22.2 6.3125 22.2H10.9625C11.0653 22.2 11.1638 22.1592 11.2365 22.0865C11.3092 22.0138 11.35 21.9153 11.35 21.8125V0.8875C11.35 0.784729 11.3092 0.686167 11.2365 0.613496C11.1638 0.540826 11.0653 0.5 10.9625 0.5H6.3125C6.20973 0.5 6.11117 0.540826 6.0385 0.613496C5.96583 0.686167 5.925 0.784729 5.925 0.8875V21.8125ZM0.5 8.24922H5.925M0.5 19.0992H5.925H11.35M5.925 3.59922H11.35M18.6769 21.7044L16.4836 8.00161L12.5125 8.63711L14.7058 22.3403" stroke="#0066BD" stroke-linecap="round" stroke-linejoin="round"/>
                   <path d="M14.5625 21.4475C15.7711 20.7661 17.1902 20.5594 18.5429 20.8678" stroke="#0066BD" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </span>
-              {% if node.field_modulos|length > 0 %}
-                <span class="du-hero__detail-option-text">{{ node.field_modulos|length }}
-                  Modulos</span>
-              {% endif %}
+                <span class="du-hero__detail-option-text">{{ node.field_cantidad_de_modulos.value }}
+                  Módulos</span>
             </div>
             <div class="du-hero__detail-option">
               <span class="du-hero__detail-option-icon">
