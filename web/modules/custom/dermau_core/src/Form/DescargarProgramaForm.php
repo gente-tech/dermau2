@@ -393,18 +393,26 @@ class DescargarProgramaForm extends FormBase
         break;
     }
 
-    if ($interestProperty && $programa instanceof Node) {
+    if ($interestProperty) {
       $this->hubspotService->createOrUpdateContactWithInterest([
         'email' => $email,
         'firstname' => $nombre,
         'lastname' => $apellido,
         'phone' => $telefono,
         'interest_property' => $interestProperty,
-        'programa_id' => (string) $nid,
+        'programa_id' => $nid,
         'programa_nombre' => $programa_nombre,
         'unidad_de_negocio' => 'DermaU',
         'tipo_interaccion' => 'descarga_programa',
       ]);
+    } else {
+      \Drupal::logger('dermau_core')->warning(
+        'No se pudo determinar la propiedad HubSpot de prospecto para el programa @nid. Categoría detectada: @categoria',
+        [
+          '@nid' => $nid,
+          '@categoria' => $categoria_programa,
+        ]
+      );
     }
 
 
