@@ -196,12 +196,15 @@ final class HubspotService
 				'interesados_programas_especiales',
 			];
 
-			$query = http_build_query([
-				'idProperty' => 'email',
-				'properties' => implode(',', $properties),
-			]);
+			$queryParts = [
+				'idProperty=' . urlencode('email'),
+			];
 
-			$url = 'https://api.hubapi.com/crm/v3/objects/contacts/' . urlencode($email) . '?' . $query;
+			foreach ($properties as $property) {
+				$queryParts[] = 'properties=' . urlencode($property);
+			}
+
+			$url = 'https://api.hubapi.com/crm/v3/objects/contacts/' . urlencode($email) . '?' . implode('&', $queryParts);
 
 			$response = $this->httpClient->get($url, [
 				'headers' => [
