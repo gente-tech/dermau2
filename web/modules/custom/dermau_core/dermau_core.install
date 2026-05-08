@@ -74,6 +74,13 @@ function dermau_core_schema()
 				'not null' => TRUE,
 				'default' => '',
 			],
+			'pais_nacionalidad' => [
+				'description' => 'País de nacionalidad seleccionado.',
+				'type' => 'varchar',
+				'length' => 100,
+				'not null' => TRUE,
+				'default' => '',
+			],
 			'profesion' => [
 				'description' => 'Profesión seleccionada.',
 				'type' => 'varchar',
@@ -145,6 +152,23 @@ function dermau_core_update_9002() {
 			'description' => 'Correo electrónico del interesado.',
 			'type' => 'varchar',
 			'length' => 150,
+			'not null' => TRUE,
+			'default' => '',
+		]);
+	}
+}
+
+/**
+ * Agrega el país de nacionalidad a la tabla de interesados por programa.
+ */
+function dermau_core_update_9003() {
+	$schema = \Drupal::database()->schema();
+
+	if (!$schema->fieldExists('dermau_programa_interesado', 'pais_nacionalidad')) {
+		$schema->addField('dermau_programa_interesado', 'pais_nacionalidad', [
+			'description' => 'País de nacionalidad seleccionado.',
+			'type' => 'varchar',
+			'length' => 100,
 			'not null' => TRUE,
 			'default' => '',
 		]);
