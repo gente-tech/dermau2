@@ -324,7 +324,7 @@ class ProgramaInteresadoForm extends FormBase
 		$result = $this->mandrillService->sendTemplate(
 			$template_slug,
 			[
-				'subject' => 'Preinscripción programa ' . $programa,
+				'subject' => 'Preinscripción programa - ' . $programa,
 				'to_email' => $email,
 				'to_name' => $nombre . ' ' . $apellido,
 			],

@@ -7,27 +7,36 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\Entity\Node;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\enterprise_integrations\Service\HubspotService;
+use Drupal\enterprise_integrations\Service\MandrillService;
 use Drupal\Component\Utility\Html;
 
-class DescargarProgramaForm extends FormBase {
+class DescargarProgramaForm extends FormBase
+{
 
   protected $hubspotService;
+  protected $mandrillService;
 
-  public function getFormId() {
+  public function getFormId()
+  {
     return 'descargar_programa_form';
   }
 
-  public function __construct(HubspotService $hubspotService){
+  public function __construct(HubspotService $hubspotService, MandrillService $mandrillService)
+  {
     $this->hubspotService = $hubspotService;
+    $this->mandrillService = $mandrillService;
   }
 
-  public static function create(ContainerInterface $container){
+  public static function create(ContainerInterface $container)
+  {
     return new static(
-      $container->get('enterprise_integrations.hubspot')
+      $container->get('enterprise_integrations.hubspot'),
+      $container->get('enterprise_integrations.mandrill')
     );
   }
 
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state)
+  {
 
     // =========================
     // 🔥 OBTENER ALIAS
@@ -47,7 +56,7 @@ class DescargarProgramaForm extends FormBase {
     // =========================
     $internal_path = \Drupal::service('path_alias.manager')
       ->getPathByAlias('/' . $alias);
-    
+
     if (!preg_match('/^\/node\/(\d+)$/', $internal_path, $matches)) {
       \Drupal::logger('dermau_core')->error('Alias no resuelto: @alias => @path', [
         '@alias' => $alias,
@@ -55,7 +64,7 @@ class DescargarProgramaForm extends FormBase {
       ]);
       return ['#markup' => 'Programa no válido'];
     }
-    
+
     $nid = $matches[1];
     $node = Node::load($nid);
 
@@ -243,7 +252,8 @@ class DescargarProgramaForm extends FormBase {
     return $form;
   }
 
-  public function submitForm(array &$form, FormStateInterface $form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state)
+  {
 
     $nid = $form_state->get('programa_nid');
 
@@ -263,19 +273,140 @@ class DescargarProgramaForm extends FormBase {
         'field_programa' => ['target_id' => $nid],
       ]);
       $node->save();
-    }
-    catch (\Exception $e) {
+    } catch (\Exception $e) {
       \Drupal::logger('dermau_core')->error($e->getMessage());
     }
 
-    $this->hubspotService->createContact([
-      'email' => $data['email'],
-      'firstname' => $data['nombre'],
-      'lastname' => $data['apellido'],
-      'phone' => $data['telefono'],
-    ]);
-
+    // Cargar programa una sola vez para correo, HubSpot y descarga.
     $programa = Node::load($nid);
+    $programa_nombre = $programa instanceof Node ? $programa->getTitle() : '';
+
+    $nombre = trim((string) $data['nombre']);
+    $apellido = trim((string) $data['apellido']);
+    $email = trim((string) $data['email']);
+    $telefono = trim((string) $data['telefono']);
+
+    // Envío de correo.
+    $config_email = $this->mandrillService->getMessageGroupByKey('mail_text_1');
+
+    if (!$config_email) {
+      throw new \RuntimeException('No existe la configuración de correo mail_text_1.');
+    }
+
+    $template_slug = $config_email['mandrill_template_slug'] ?? '';
+
+    if ($template_slug === '') {
+      throw new \RuntimeException('La configuración mail_text_1 no tiene slug de plantilla Mandrill.');
+    }
+
+    $this->mandrillService->sendTemplate(
+      $template_slug,
+      [
+        'subject' => 'Descarga programa - ' . $programa_nombre,
+        'to_email' => $email,
+        'to_name' => trim($nombre . ' ' . $apellido),
+      ],
+      [
+        [
+          'name' => 'FNAME',
+          'content' => trim($nombre . ' ' . $apellido),
+        ],
+        [
+          'name' => 'FPROGRAMA',
+          'content' => $programa_nombre,
+        ],
+        [
+          'name' => 'FEMAIL',
+          'content' => $email,
+        ],
+      ]
+    );
+
+    // Envío copia oculta de correo, en caso exista.
+    if (
+      !empty($config_email['send_copy']) &&
+      !empty($config_email['copy_template_slug']) &&
+      !empty($config_email['copy_emails']) &&
+      is_array($config_email['copy_emails'])
+    ) {
+      foreach ($config_email['copy_emails'] as $copy_email) {
+        $copy_email = trim((string) $copy_email);
+
+        if ($copy_email === '') {
+          continue;
+        }
+
+        $this->mandrillService->sendTemplate(
+          $config_email['copy_template_slug'],
+          [
+            'subject' => 'Notificación descarga programa - ' . $programa_nombre,
+            'to_email' => $copy_email,
+          ],
+          [
+            [
+              'name' => 'FNAME',
+              'content' => trim($nombre . ' ' . $apellido),
+            ],
+            [
+              'name' => 'FPROGRAMA',
+              'content' => $programa_nombre,
+            ],
+            [
+              'name' => 'FEMAIL',
+              'content' => $email,
+            ],
+          ]
+        );
+      }
+    }
+
+    // crear usuario en hubspot
+
+    $categoria_programa = '';
+
+    if (
+      $programa instanceof Node &&
+      $programa->hasField('field_tipo_de_programa') &&
+      !$programa->get('field_tipo_de_programa')->isEmpty() &&
+      $programa->get('field_tipo_de_programa')->entity
+    ) {
+      $categoria_programa = $programa->get('field_tipo_de_programa')->entity->label();
+    }
+
+    $interestProperty = '';
+
+    switch (mb_strtolower(trim($categoria_programa))) {
+      case 'webinars':
+        $interestProperty = 'prospectos_webinar';
+        break;
+
+      case 'cursos':
+        $interestProperty = 'prospectos_cursos';
+        break;
+
+      case 'diplomados':
+        $interestProperty = 'prospectos_diplomados';
+        break;
+
+      case 'programas especiales':
+        $interestProperty = 'prospectos_programas_especiales';
+        break;
+    }
+
+    if ($interestProperty) {
+      $this->hubspotService->createOrUpdateContactWithInterest([
+        'email' => $data['email'],
+        'firstname' => $data['nombre'],
+        'lastname' => $data['apellido'],
+        'phone' => $data['telefono'],
+        'interest_property' => $interestProperty,
+        'programa_id' => (string) $nid,
+        'programa_nombre' => $programa ? $programa->getTitle() : '',
+        'unidad_de_negocio' => 'DermaU',
+        'tipo_interaccion' => 'descarga_programa',
+      ]);
+    }
+
 
     if ($programa && $programa->hasField('field_pdf_registro')) {
 
@@ -290,5 +421,4 @@ class DescargarProgramaForm extends FormBase {
       }
     }
   }
-
 }

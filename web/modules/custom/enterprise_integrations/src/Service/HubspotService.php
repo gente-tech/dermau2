@@ -190,10 +190,18 @@ final class HubspotService
 				'phone',
 				'unidad_de_negocio',
 				'tipo_interaccion',
+
+				// Interesados / preinscripción programa.
 				'interesados_cursos',
 				'interesados_webinar',
 				'interesados_diplomados',
 				'interesados_programas_especiales',
+
+				// Prospectos / descarga de programa.
+				'prospectos_cursos',
+				'prospectos_webinar',
+				'prospectos_diplomados',
+				'prospectos_programas_especiales',
 			];
 
 			$queryParts = [
