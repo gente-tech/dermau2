@@ -384,7 +384,7 @@ class ContactoRegistroForm extends FormBase
     $result = $this->mandrillService->sendTemplate(
       $template_slug,
       [
-        'subject' => 'Preinscripción programa - ' . $programa,
+        'subject' => 'Solicitud de información para programa - ' . $programa,
         'to_email' => $correo_real,
         'to_name' => trim($nombre . ' ' . $apellido),
       ],
@@ -489,6 +489,8 @@ class ContactoRegistroForm extends FormBase
         'interest_property' => $interestProperty,
         'programa_id' => $programaId,
         'programa_nombre' => $programa,
+        'unidad_de_negocio' => 'DermaU',
+        'tipo_interaccion' => 'contacto',
       ]);
     }
 

@@ -434,6 +434,8 @@ class ProgramaInteresadoForm extends FormBase
 				'interest_property' => $interestProperty,
 				'programa_id' => $programaId,
 				'programa_nombre' => $programa,
+				'unidad_de_negocio' => 'DermaU',
+				'tipo_interaccion' => 'preinscripcion_programa',
 			]);
 		}
 

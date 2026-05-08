@@ -373,6 +373,14 @@ final class HubspotService
 					$createPayload['phone'] = $data['phone'];
 				}
 
+				if (!empty($data['unidad_de_negocio'])) {
+					$createPayload['unidad_de_negocio'] = $data['unidad_de_negocio'];
+				}
+
+				if (!empty($data['tipo_interaccion'])) {
+					$createPayload['tipo_interaccion'] = $data['tipo_interaccion'];
+				}
+
 				$this->createContact($createPayload);
 
 				// Volver a consultar.
@@ -400,9 +408,19 @@ final class HubspotService
 			);
 
 			// Actualizar HubSpot.
-			return $this->updateContactByEmail($email, [
+			$updateProperties = [
 				$interestProperty => $mergedValue,
-			]);
+			];
+
+			if (!empty($data['unidad_de_negocio'])) {
+				$updateProperties['unidad_de_negocio'] = $data['unidad_de_negocio'];
+			}
+
+			if (!empty($data['tipo_interaccion'])) {
+				$updateProperties['tipo_interaccion'] = $data['tipo_interaccion'];
+			}
+
+			return $this->updateContactByEmail($email, $updateProperties);
 		} catch (\Exception $e) {
 
 			$this->logger->error('Error createOrUpdateContactWithInterest: @message', [
