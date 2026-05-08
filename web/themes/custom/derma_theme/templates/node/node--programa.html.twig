@@ -74,7 +74,7 @@
           </div>
           <div class="du-hero__detail-options">
             {% if node.field_tipo_de_programa.entity.label != 'Webinar' %}
-              {% if node.field_duracion_programa.value|trim is not empty %}
+              {% if node.hasField('field_duracion_programa') and not node.get('field_duracion_programa').isEmpty() %}
                 <div class="du-hero__detail-option">
                   <span class="du-hero__detail-option-icon">
                     <svg width="23" height="23" viewbox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -86,7 +86,7 @@
                 </div>
               {% endif %}
             {% else %}
-              {% if node.field_fecha.0.value|trim is not empty %}
+              {% if node.hasField('field_fecha') and not node.get('field_fecha').isEmpty() %}
                 <div class="du-hero__detail-option">
                   <span class="du-hero__detail-option-icon">
                     <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -106,7 +106,7 @@
               {% endif %}
             {% endif %}
             
-            {% if node.field_cantidad_de_clases.value|trim is not empty %}
+            {% if node.hasField('field_cantidad_de_clases') and not node.get('field_cantidad_de_clases').isEmpty() %}
               <div class="du-hero__detail-option">
                 <span class="du-hero__detail-option-icon">
                   <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -123,7 +123,7 @@
                   Clases</span>
               </div>
             {% endif %}
-            {% if node.field_cantidad_de_modulos.value|trim is not empty %}
+            {% if node.hasField('field_cantidad_de_modulos') and not node.get('field_cantidad_de_modulos').isEmpty() %}
               <div class="du-hero__detail-option">
                 <span class="du-hero__detail-option-icon">
                   <svg width="20" height="23" viewbox="0 0 20 23" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -135,7 +135,7 @@
                     Módulos</span>
               </div>
             {% endif %}
-            {% if node.field_cupos.value|trim is not empty %}
+            {% if node.hasField('field_cupos') and not node.get('field_cupos').isEmpty() %}
               <div class="du-hero__detail-option">
                 <span class="du-hero__detail-option-icon">
                   <svg width="22" height="20" viewbox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -147,7 +147,7 @@
                   Cupos</span>
               </div>
             {% endif %}
-            {% if node.field_metodologia.entity is not empty %}
+            {% if node.hasField('field_metodologia') and not node.get('field_metodologia').isEmpty() and node.field_metodologia.entity is not empty %}
               <div class="du-hero__detail-option">
                 <span class="du-hero__detail-option-icon">
                   <svg width="20" height="17" viewbox="0 0 20 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -157,7 +157,7 @@
                 <span class="du-hero__detail-option-text">{{ node.field_metodologia.entity.name.value }}</span>
               </div>
             {% endif %}
-            {% if node.field_entidad_que_certifica.value|trim is not empty %}
+            {% if node.hasField('field_entidad_que_certifica') and not node.get('field_entidad_que_certifica').isEmpty() %}
               <div class="du-hero__detail-option">
                 <span class="du-hero__detail-option-icon">
                   <svg width="16" height="21" viewbox="0 0 16 21" fill="none" xmlns="http://www.w3.org/2000/svg">
