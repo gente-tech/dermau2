@@ -308,66 +308,16 @@ class DescargarProgramaForm extends FormBase
     $pais_nacionalidad_hubspot = $this->mapPaisNacionalidadToHubspotValue($pais_nacionalidad_nombre);
 
     // Envío de correo.
-    $node = NULL;
     $mail_config_key = '';
 
-    $programa_path = \Drupal::request()->query->get('programa');
-
-    \Drupal::logger('dermau_core')->notice('DEBUG descarga correo - query programa: @programa', [
-      '@programa' => $programa_path ?: '[VACIO]',
-    ]);
-
-    if (!empty($programa_path)) {
-      $programa_path = '/' . ltrim((string) $programa_path, '/');
-
-      $internal_path = \Drupal::service('path_alias.manager')
-        ->getPathByAlias($programa_path);
-
-      \Drupal::logger('dermau_core')->notice('DEBUG descarga correo - internal path: @path', [
-        '@path' => $internal_path ?: '[VACIO]',
-      ]);
-
-      if (preg_match('/^\/node\/(\d+)$/', $internal_path, $matches)) {
-        $node = \Drupal::entityTypeManager()
-          ->getStorage('node')
-          ->load((int) $matches[1]);
-      }
-    }
-
-    \Drupal::logger('dermau_core')->notice('DEBUG descarga correo - resolved node type: @type', [
-      '@type' => is_object($node) ? get_class($node) : gettype($node),
-    ]);
-
-    if ($node instanceof NodeInterface) {
-      \Drupal::logger('dermau_core')->notice('DEBUG descarga correo - node id: @nid, bundle: @bundle', [
-        '@nid' => $node->id(),
-        '@bundle' => $node->bundle(),
-      ]);
-
-      \Drupal::logger('dermau_core')->notice('DEBUG descarga correo - has field_correo_descarga: @has_field', [
-        '@has_field' => $node->hasField('field_correo_descarga') ? 'SI' : 'NO',
-      ]);
-
-      if ($node->hasField('field_correo_descarga')) {
-        \Drupal::logger('dermau_core')->notice('DEBUG descarga correo - field empty: @empty, raw value: @value', [
-          '@empty' => $node->get('field_correo_descarga')->isEmpty() ? 'SI' : 'NO',
-          '@value' => $node->get('field_correo_descarga')->value ?? '[NULL]',
-        ]);
-      }
-    }
-
     if (
-      $node instanceof NodeInterface &&
-      $node->bundle() === 'programa' &&
-      $node->hasField('field_correo_descarga') &&
-      !$node->get('field_correo_descarga')->isEmpty()
+      $programa instanceof NodeInterface &&
+      $programa->bundle() === 'programa' &&
+      $programa->hasField('field_correo_descarga') &&
+      !$programa->get('field_correo_descarga')->isEmpty()
     ) {
-      $mail_config_key = trim((string) $node->get('field_correo_descarga')->value);
+      $mail_config_key = trim((string) $programa->get('field_correo_descarga')->value);
     }
-
-    \Drupal::logger('dermau_core')->notice('DEBUG descarga correo - mail_config_key desde programa: @key', [
-      '@key' => $mail_config_key !== '' ? $mail_config_key : '[VACIO]',
-    ]);
 
     // Si el programa no tiene correo configurado, usar el valor por defecto.
     if ($mail_config_key === '') {
