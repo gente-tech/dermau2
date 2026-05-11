@@ -430,15 +430,18 @@ class ContactoRegistroForm extends FormBase
 
     $subject_resolver = \Drupal::service('enterprise_integrations.token_resolver');
 
-    $subject = $subject_resolver->replace(
-      $config_email['subject'] ?? 'Solicitud de información para programa - [programa]',
-      $subject_tokens
-    );
+    $subject_config = trim((string) ($config_email['subject'] ?? ''));
+    if ($subject_config === '') {
+      $subject_config = 'Solicitud de información para programa - [programa]';
+    }
 
-    $copy_subject = $subject_resolver->replace(
-      $config_email['copy_subject'] ?? 'Notificación solicitud de información programa - [programa]',
-      $subject_tokens
-    );
+    $copy_subject_config = trim((string) ($config_email['copy_subject'] ?? ''));
+    if ($copy_subject_config === '') {
+      $copy_subject_config = 'Notificación solicitud de información programa - [programa]';
+    }
+
+    $subject = $subject_resolver->replace($subject_config, $subject_tokens);
+    $copy_subject = $subject_resolver->replace($copy_subject_config, $subject_tokens);
 
     $result = $this->mandrillService->sendTemplate(
       $template_slug,
