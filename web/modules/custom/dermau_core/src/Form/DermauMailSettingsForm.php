@@ -49,16 +49,16 @@ class DermauMailSettingsForm extends ConfigFormBase
 
 		$form['mail_actions']['programa_interesado'] = [
 			'#type' => 'textfield',
-			'#title' => $this->t('Formulario de preinscripción a programa'),
-			'#description' => $this->t('Ingrese el nombre de la configuración de correo. Ejemplo: mail_text_1'),
+			'#title' => $this->t('Correo por defecto para preinscripción a programa'),
+			'#description' => $this->t('Se usará cuando el programa no tenga configurado el campo Configuración correo preinscripción. Ejemplo: mail_text_1'),
 			'#default_value' => $config->get('mail_actions.programa_interesado') ?? 'mail_text_1',
 			'#required' => TRUE,
 		];
 
 		$form['mail_actions']['descargar_programa'] = [
 			'#type' => 'textfield',
-			'#title' => $this->t('Formulario de descarga de programa'),
-			'#description' => $this->t('Ingrese el nombre de la configuración de correo. Ejemplo: mail_text_2'),
+			'#title' => $this->t('Correo por defecto para descarga de programa'),
+			'#description' => $this->t('Se usará cuando el programa no tenga configurado el campo Configuración correo descarga. Ejemplo: mail_text_2'),
 			'#default_value' => $config->get('mail_actions.descargar_programa') ?? 'mail_text_1',
 			'#required' => TRUE,
 		];
