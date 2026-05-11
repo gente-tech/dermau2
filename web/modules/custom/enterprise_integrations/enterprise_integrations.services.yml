@@ -24,3 +24,6 @@ services:
       - '@config.factory'
       - '@logger.factory'
       - '@database'
+  
+  enterprise_integrations.token_resolver:
+    class: Drupal\enterprise_integrations\Service\TokenResolver
