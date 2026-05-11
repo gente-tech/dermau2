@@ -330,16 +330,44 @@ class ProgramaInteresadoForm extends FormBase
 		$mensaje = trim((string) $form_state->getValue('mensaje'));
 
 		// Envío de correo
-		$config_email = $this->mandrillService->getMessageGroupByKey('mail_text_1');
+		// $config_email = $this->mandrillService->getMessageGroupByKey('mail_text_1');
+
+		// if (!$config_email) {
+		// 	throw new \RuntimeException('No existe la configuración de correo mail_text_1.');
+		// }
+
+		// $template_slug = $config_email['mandrill_template_slug'] ?? '';
+
+		// if ($template_slug === '') {
+		// 	throw new \RuntimeException('La configuración mail_text_1 no tiene slug de plantilla Mandrill.');
+		// }
+
+		// Envío de correo.
+		$mail_config_key = \Drupal::config('dermau_core.mail_settings')
+			->get('mail_actions.programa_interesado') ?? 'mail_text_1';
+
+		$mail_config_key = trim((string) $mail_config_key);
+
+		if ($mail_config_key === '') {
+			$mail_config_key = 'mail_text_1';
+		}
+
+		$config_email = $this->mandrillService->getMessageGroupByKey($mail_config_key);
 
 		if (!$config_email) {
-			throw new \RuntimeException('No existe la configuración de correo mail_text_1.');
+			throw new \RuntimeException(sprintf(
+				'No existe la configuración de correo %s.',
+				$mail_config_key
+			));
 		}
 
 		$template_slug = $config_email['mandrill_template_slug'] ?? '';
 
 		if ($template_slug === '') {
-			throw new \RuntimeException('La configuración mail_text_1 no tiene slug de plantilla Mandrill.');
+			throw new \RuntimeException(sprintf(
+				'La configuración %s no tiene slug de plantilla Mandrill.',
+				$mail_config_key
+			));
 		}
 
 		$result = $this->mandrillService->sendTemplate(
