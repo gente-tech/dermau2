@@ -420,10 +420,30 @@ class ContactoRegistroForm extends FormBase
     }
 
     //enviando correo
+    $subject_tokens = [
+      'programa' => $programa,
+      'nombre_usuario' => trim($nombre . ' ' . $apellido),
+      'nombre' => $nombre,
+      'apellido' => $apellido,
+      'email' => $correo_real,
+    ];
+
+    $subject_resolver = \Drupal::service('enterprise_integrations.token_resolver');
+
+    $subject = $subject_resolver->replace(
+      $config_email['subject'] ?? 'Solicitud de información para programa - [programa]',
+      $subject_tokens
+    );
+
+    $copy_subject = $subject_resolver->replace(
+      $config_email['copy_subject'] ?? 'Notificación solicitud de información programa - [programa]',
+      $subject_tokens
+    );
+
     $result = $this->mandrillService->sendTemplate(
       $template_slug,
       [
-        'subject' => 'Solicitud de información para programa - ' . $programa,
+        'subject' => $subject,
         'to_email' => $correo_real,
         'to_name' => trim($nombre . ' ' . $apellido),
       ],
@@ -460,7 +480,7 @@ class ContactoRegistroForm extends FormBase
         $this->mandrillService->sendTemplate(
           $config_email['copy_template_slug'],
           [
-            'subject' => 'Notificación solicitud de información programa - ' . $programa,
+            'subject' => $copy_subject,
             'to_email' => $copy_email,
           ],
           [

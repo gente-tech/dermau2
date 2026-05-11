@@ -351,10 +351,30 @@ class DescargarProgramaForm extends FormBase
 
     // enviando correo
 
+    $subject_tokens = [
+      'programa' => $programa_nombre,
+      'nombre_usuario' => trim($nombre . ' ' . $apellido),
+      'nombre' => $nombre,
+      'apellido' => $apellido,
+      'email' => $email,
+    ];
+
+    $subject_resolver = \Drupal::service('enterprise_integrations.token_resolver');
+
+    $subject = $subject_resolver->replace(
+      $config_email['subject'] ?? 'Descarga programa - [programa]',
+      $subject_tokens
+    );
+
+    $copy_subject = $subject_resolver->replace(
+      $config_email['copy_subject'] ?? 'Notificación descarga programa - [programa]',
+      $subject_tokens
+    );
+
     $this->mandrillService->sendTemplate(
       $template_slug,
       [
-        'subject' => 'Descarga programa - ' . $programa_nombre,
+        'subject' => $subject,
         'to_email' => $email,
         'to_name' => trim($nombre . ' ' . $apellido),
       ],
@@ -391,7 +411,7 @@ class DescargarProgramaForm extends FormBase
         $this->mandrillService->sendTemplate(
           $config_email['copy_template_slug'],
           [
-            'subject' => 'Notificación descarga programa - ' . $programa_nombre,
+            'subject' => $copy_subject,
             'to_email' => $copy_email,
           ],
           [

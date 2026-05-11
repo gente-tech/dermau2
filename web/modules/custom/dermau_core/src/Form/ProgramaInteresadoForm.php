@@ -374,10 +374,31 @@ class ProgramaInteresadoForm extends FormBase
 		}
 
 		//Enviando correo
+
+		$subject_tokens = [
+			'programa' => $programa,
+			'nombre_usuario' => trim($nombre . ' ' . $apellido),
+			'nombre' => $nombre,
+			'apellido' => $apellido,
+			'email' => $email,
+		];
+
+		$subject_resolver = \Drupal::service('enterprise_integrations.token_resolver');
+
+		$subject = $subject_resolver->replace(
+			$config_email['subject'] ?? 'Preinscripción programa - [programa]',
+			$subject_tokens
+		);
+
+		$copy_subject = $subject_resolver->replace(
+			$config_email['copy_subject'] ?? 'Notificación preinscripción programa - [programa]',
+			$subject_tokens
+		);
+
 		$result = $this->mandrillService->sendTemplate(
 			$template_slug,
 			[
-				'subject' => 'Preinscripción programa - ' . $programa,
+				'subject' => $subject,
 				'to_email' => $email,
 				'to_name' => $nombre . ' ' . $apellido,
 			],
@@ -414,7 +435,7 @@ class ProgramaInteresadoForm extends FormBase
 				$this->mandrillService->sendTemplate(
 					$config_email['copy_template_slug'],
 					[
-						'subject' => 'Notificación preinscripción programa - ' . $programa,
+						'subject' => $copy_subject,
 						'to_email' => $copy_email,
 					],
 					[
