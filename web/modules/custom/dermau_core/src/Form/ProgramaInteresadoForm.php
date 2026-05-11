@@ -436,8 +436,6 @@ class ProgramaInteresadoForm extends FormBase
 		}
 
 		// obtener categoria del programa
-		$node = \Drupal::routeMatch()->getParameter('node');
-
 		$categoria_programa = '';
 
 		if (
