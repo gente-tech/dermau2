@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\enterprise_integrations\Service\HubspotService;
 use Drupal\enterprise_integrations\Service\MandrillService;
 use Drupal\Component\Utility\Html;
+use Drupal\node\NodeInterface;
 
 class DescargarProgramaForm extends FormBase
 {
@@ -307,17 +308,50 @@ class DescargarProgramaForm extends FormBase
     $pais_nacionalidad_hubspot = $this->mapPaisNacionalidadToHubspotValue($pais_nacionalidad_nombre);
 
     // Envío de correo.
-    $config_email = $this->mandrillService->getMessageGroupByKey('mail_text_1');
+    $node = \Drupal::routeMatch()->getParameter('node');
+
+    $mail_config_key = '';
+
+    if (
+      $node instanceof NodeInterface &&
+      $node->bundle() === 'programa' &&
+      $node->hasField('field_correo_descarga') &&
+      !$node->get('field_correo_descarga')->isEmpty()
+    ) {
+      $mail_config_key = trim((string) $node->get('field_correo_descarga')->value);
+    }
+
+    // Si el programa no tiene correo configurado, usar el valor por defecto.
+    if ($mail_config_key === '') {
+      $mail_config_key = \Drupal::config('dermau_core.mail_settings')
+        ->get('mail_actions.descargar_programa') ?? 'mail_text_1';
+
+      $mail_config_key = trim((string) $mail_config_key);
+    }
+
+    if ($mail_config_key === '') {
+      $mail_config_key = 'mail_text_1';
+    }
+
+    $config_email = $this->mandrillService->getMessageGroupByKey($mail_config_key);
 
     if (!$config_email) {
-      throw new \RuntimeException('No existe la configuración de correo mail_text_1.');
+      throw new \RuntimeException(sprintf(
+        'No existe la configuración de correo %s.',
+        $mail_config_key
+      ));
     }
 
     $template_slug = $config_email['mandrill_template_slug'] ?? '';
 
     if ($template_slug === '') {
-      throw new \RuntimeException('La configuración mail_text_1 no tiene slug de plantilla Mandrill.');
+      throw new \RuntimeException(sprintf(
+        'La configuración %s no tiene slug de plantilla Mandrill.',
+        $mail_config_key
+      ));
     }
+
+    // enviando correo
 
     $this->mandrillService->sendTemplate(
       $template_slug,
@@ -482,5 +516,4 @@ class DescargarProgramaForm extends FormBase
 
     return $map[$pais] ?? '';
   }
-
 }
