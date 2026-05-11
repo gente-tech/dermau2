@@ -308,12 +308,33 @@ class DescargarProgramaForm extends FormBase
     $pais_nacionalidad_hubspot = $this->mapPaisNacionalidadToHubspotValue($pais_nacionalidad_nombre);
 
     // Envío de correo.
-    // Envío de correo.
-    $node = \Drupal::routeMatch()->getParameter('node');
-
+    $node = NULL;
     $mail_config_key = '';
 
-    \Drupal::logger('dermau_core')->notice('DEBUG descarga correo - route node type: @type', [
+    $programa_path = \Drupal::request()->query->get('programa');
+
+    \Drupal::logger('dermau_core')->notice('DEBUG descarga correo - query programa: @programa', [
+      '@programa' => $programa_path ?: '[VACIO]',
+    ]);
+
+    if (!empty($programa_path)) {
+      $programa_path = '/' . ltrim((string) $programa_path, '/');
+
+      $internal_path = \Drupal::service('path_alias.manager')
+        ->getPathByAlias($programa_path);
+
+      \Drupal::logger('dermau_core')->notice('DEBUG descarga correo - internal path: @path', [
+        '@path' => $internal_path ?: '[VACIO]',
+      ]);
+
+      if (preg_match('/^\/node\/(\d+)$/', $internal_path, $matches)) {
+        $node = \Drupal::entityTypeManager()
+          ->getStorage('node')
+          ->load((int) $matches[1]);
+      }
+    }
+
+    \Drupal::logger('dermau_core')->notice('DEBUG descarga correo - resolved node type: @type', [
       '@type' => is_object($node) ? get_class($node) : gettype($node),
     ]);
 
