@@ -1,0 +1,17 @@
+dermau_core.mail_settings:
+  type: config_object
+  label: 'DermaU mail settings'
+  mapping:
+    mail_actions:
+      type: mapping
+      label: 'Mail actions'
+      mapping:
+        programa_interesado:
+          type: string
+          label: 'Formulario de preinscripción a programa'
+        descargar_programa:
+          type: string
+          label: 'Formulario de descarga de programa'
+        contacto_registro:
+          type: string
+          label: 'Formulario de contacto / registro'
