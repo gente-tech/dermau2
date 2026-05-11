@@ -104,7 +104,6 @@ class MandrillSettingsForm extends ConfigFormBase
         '#title' => $this->t('Asunto del correo'),
         '#description' => $this->t('Puedes usar variables dinámicas como [programa], [nombre_usuario], [nombre], [apellido], [email].'),
         '#default_value' => $group_default['subject'] ?? '',
-        '#required' => TRUE,
       ];
 
       $form['mandrill']['message_groups_wrapper']['message_groups'][$i]['send_copy'] = [
