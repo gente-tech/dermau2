@@ -212,23 +212,7 @@ class ContactoRegistroForm extends FormBase
       '#required' => TRUE,
       '#title_display' => 'invisible'
     ];
-
-    /*
-    CIUDAD
-    */
-
-    $form['group_container']['group2']['ciudad'] = [
-      '#type' => 'select',
-      '#options' => $this->getCiudades(),
-      '#empty_option' => $this->t('Selecciona tu ciudad'),
-      '#attributes' => [
-        'class' => ['du-form-select'],
-        'id' => 'du-reg-city'
-      ],
-      '#required' => TRUE,
-      '#title_display' => 'invisible'
-    ];
-
+    
     /*
     PROFESION
     */
@@ -309,15 +293,12 @@ class ContactoRegistroForm extends FormBase
 
   public function submitForm(array &$form, FormStateInterface $form_state)
   {
-    $ciudad_tid = $form_state->getValue('ciudad');
     $pais_nacionalidad_tid = $form_state->getValue('pais_nacionalidad');
     $profesion_tid = $form_state->getValue('profesion');
 
-    $ciudad_term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($ciudad_tid);
     $pais_nacionalidad_term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($pais_nacionalidad_tid);
     $profesion_term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($profesion_tid);
 
-    $ciudad_nombre = $ciudad_term ? $ciudad_term->getName() : '';
     $pais_nacionalidad_nombre = $pais_nacionalidad_term ? $pais_nacionalidad_term->getName() : '';
     $pais_nacionalidad_hubspot = $this->mapPaisNacionalidadToHubspotValue($pais_nacionalidad_nombre);
     $profesion_nombre = $profesion_term ? $profesion_term->getName() : '';
@@ -370,7 +351,6 @@ class ContactoRegistroForm extends FormBase
     $user->set('field_programa', $form_state->getValue('programa'));
     $user->set('field_telefono', $form_state->getValue('telefono'));
     $user->set('field_pais_de_nacionalidad', $form_state->getValue('pais_nacionalidad'));
-    $user->set('field_ciudad', $form_state->getValue('ciudad'));
     $user->set('field_profesion', $form_state->getValue('profesion'));
     $user->set('field_mensaje', $form_state->getValue('mensaje'));
 
@@ -386,7 +366,6 @@ class ContactoRegistroForm extends FormBase
     }
 
     $telefono = trim((string) $form_state->getValue('telefono'));
-    $ciudad = $ciudad_nombre;
     $profesion = $profesion_nombre;
     $mensaje = trim((string) $form_state->getValue('mensaje'));
 
@@ -612,25 +591,6 @@ class ContactoRegistroForm extends FormBase
 
     //   }
 
-  }
-
-  protected function getCiudades()
-  {
-    $options = [];
-
-    $terms = \Drupal::entityTypeManager()
-      ->getStorage('taxonomy_term')
-      ->loadTree('ciudades', 0, NULL, TRUE);
-
-    usort($terms, function ($a, $b) {
-      return strcmp($a->getName(), $b->getName());
-    });
-
-    foreach ($terms as $term) {
-      $options[$term->id()] = $term->getName();
-    }
-
-    return $options;
   }
 
   protected function getProfesiones()

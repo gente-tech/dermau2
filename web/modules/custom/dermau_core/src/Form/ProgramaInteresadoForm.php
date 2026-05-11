@@ -165,20 +165,6 @@ class ProgramaInteresadoForm extends FormBase
 			],
 		];
 
-		$form['group_container']['group2']['ciudad'] = [
-			'#type' => 'select',
-			'#title' => $this->t('Ciudad'),
-			'#title_display' => 'invisible',
-			'#options' => $this->getCiudades(),
-			'#empty_option' => $this->t('Selecciona tu ciudad'),
-			'#empty_value' => '',
-			'#required' => TRUE,
-			'#attributes' => [
-				'class' => ['du-form-select'],
-				'id' => 'du-reg-city',
-			],
-		];
-
 		$form['group_container']['group2']['profesion'] = [
 			'#type' => 'select',
 			'#title' => $this->t('Profesión'),
@@ -285,15 +271,12 @@ class ProgramaInteresadoForm extends FormBase
 	{
 		$request = \Drupal::request();
 
-		$ciudad_tid = $form_state->getValue('ciudad');
 		$pais_nacionalidad_tid = $form_state->getValue('pais_nacionalidad');
 		$profesion_tid = $form_state->getValue('profesion');
 
-		$ciudad_term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($ciudad_tid);
 		$pais_nacionalidad_term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($pais_nacionalidad_tid);
 		$profesion_term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($profesion_tid);
 
-		$ciudad_nombre = $ciudad_term ? $ciudad_term->getName() : '';
 		$pais_nacionalidad_nombre = $pais_nacionalidad_term ? $pais_nacionalidad_term->getName() : '';
 		$pais_nacionalidad_hubspot = $this->mapPaisNacionalidadToHubspotValue($pais_nacionalidad_nombre);
 		$profesion_nombre = $profesion_term ? $profesion_term->getName() : '';
@@ -310,7 +293,6 @@ class ProgramaInteresadoForm extends FormBase
 				'email' => trim((string) $form_state->getValue('email')),
 				'indicativo' => $indicativo,
 				'telefono' => $telefono,
-				'ciudad' => $ciudad_nombre,
 				'pais_nacionalidad' => $pais_nacionalidad_nombre,
 				'profesion' => $profesion_nombre,
 				'mensaje' => trim((string) $form_state->getValue('mensaje')),
@@ -534,26 +516,6 @@ class ProgramaInteresadoForm extends FormBase
 		$form_state->setRedirectUrl(
 			Url::fromUserInput($current_path)
 		);
-	}
-
-	protected function getCiudades()
-	{
-		$options = [];
-
-		$terms = \Drupal::entityTypeManager()
-			->getStorage('taxonomy_term')
-			->loadTree('ciudades', 0, NULL, TRUE);
-
-		// Ordenar alfabéticamente por nombre
-		usort($terms, function ($a, $b) {
-			return strcmp($a->getName(), $b->getName());
-		});
-
-		foreach ($terms as $term) {
-			$options[$term->id()] = $term->getName();
-		}
-
-		return $options;
 	}
 
 	protected function getProfesiones()

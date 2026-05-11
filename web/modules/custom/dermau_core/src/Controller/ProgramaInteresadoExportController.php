@@ -40,7 +40,6 @@ class ProgramaInteresadoExportController extends ControllerBase
 			'email',
 			'indicativo',
 			'telefono',
-			'ciudad',
 			'profesion',
 			'mensaje',
 			'autorizacion',
@@ -64,7 +63,6 @@ class ProgramaInteresadoExportController extends ControllerBase
 			'Email',
 			'Indicativo',
 			'Telefono',
-			'Ciudad',
 			'Profesion',
 			'Mensaje',
 			'Autorizacion',
@@ -88,12 +86,11 @@ class ProgramaInteresadoExportController extends ControllerBase
 			$sheet->setCellValue([5, $row_number], (string) $row->email);
 			$sheet->setCellValue([6, $row_number], (string) $row->indicativo);
 			$sheet->setCellValue([7, $row_number], (string) $row->telefono);
-			$sheet->setCellValue([8, $row_number], (string) $row->ciudad);
-			$sheet->setCellValue([9, $row_number], (string) $row->profesion);
-			$sheet->setCellValue([10, $row_number], (string) $row->mensaje);
-			$sheet->setCellValue([11, $row_number], ((int) $row->autorizacion) ? 'Si' : 'No');
-			$sheet->setCellValue([12, $row_number], (string) $row->ip);
-			$sheet->setCellValue([13, $row_number], (string) $row->user_agent);
+			$sheet->setCellValue([8, $row_number], (string) $row->profesion);
+			$sheet->setCellValue([9, $row_number], (string) $row->mensaje);
+			$sheet->setCellValue([10, $row_number], ((int) $row->autorizacion) ? 'Si' : 'No');
+			$sheet->setCellValue([11, $row_number], (string) $row->ip);
+			$sheet->setCellValue([12, $row_number], (string) $row->user_agent);
 			$sheet->setCellValue(
 				[13, $row_number],
 				!empty($row->created) ? date('Y-m-d H:i:s', (int) $row->created) : ''
@@ -103,14 +100,14 @@ class ProgramaInteresadoExportController extends ControllerBase
 		}
 
 		$last_row = max(1, $sheet->getHighestRow());
-		$last_column = 'N';
+		$last_column = 'M';
 
 		/*
     -----------------------------------------
     Estilos encabezado
     -----------------------------------------
     */
-		$sheet->getStyle('A1:N1')->applyFromArray([
+		$sheet->getStyle('A1:M1')->applyFromArray([
 			'font' => [
 				'bold' => TRUE,
 				'size' => 12,
@@ -138,7 +135,7 @@ class ProgramaInteresadoExportController extends ControllerBase
     -----------------------------------------
     */
 		if ($last_row >= 2) {
-			$sheet->getStyle('A2:N' . $last_row)->applyFromArray([
+			$sheet->getStyle('A2:M' . $last_row)->applyFromArray([
 				'font' => [
 					'size' => 11,
 					'color' => ['rgb' => '1F1F1F'],
@@ -160,16 +157,15 @@ class ProgramaInteresadoExportController extends ControllerBase
     Alineación por columnas
     -----------------------------------------
     */
-		$sheet->getStyle('A:N')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+		$sheet->getStyle('A:M')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 
 		$sheet->getStyle('A:A')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 		$sheet->getStyle('B:E')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 		$sheet->getStyle('F:G')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-		$sheet->getStyle('H:J')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-		$sheet->getStyle('K:K')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-		$sheet->getStyle('L:L')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-		$sheet->getStyle('M:M')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-		$sheet->getStyle('N:N')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$sheet->getStyle('H:I')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+		$sheet->getStyle('J:K')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		$sheet->getStyle('L:L')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+		$sheet->getStyle('M:M')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
 		/*
     -----------------------------------------
@@ -203,18 +199,17 @@ class ProgramaInteresadoExportController extends ControllerBase
 		$sheet->getColumnDimension('F')->setWidth(12);
 		$sheet->getColumnDimension('G')->setWidth(18);
 		$sheet->getColumnDimension('H')->setWidth(22);
-		$sheet->getColumnDimension('I')->setWidth(22);
-		$sheet->getColumnDimension('J')->setWidth(40);
-		$sheet->getColumnDimension('K')->setWidth(15);
-		$sheet->getColumnDimension('L')->setWidth(18);
-		$sheet->getColumnDimension('M')->setWidth(45);
-		$sheet->getColumnDimension('N')->setWidth(22);
+		$sheet->getColumnDimension('I')->setWidth(40);
+		$sheet->getColumnDimension('J')->setWidth(15);
+		$sheet->getColumnDimension('K')->setWidth(18);
+		$sheet->getColumnDimension('L')->setWidth(45);
+		$sheet->getColumnDimension('M')->setWidth(22);
 		/*
     -----------------------------------------
     Filtros y congelar encabezado
     -----------------------------------------
     */
-		$sheet->setAutoFilter('A1:N1');
+		$sheet->setAutoFilter('A1:M1');
 		$sheet->freezePane('A2');
 
 		/*
@@ -224,7 +219,7 @@ class ProgramaInteresadoExportController extends ControllerBase
     */
 		for ($i = 2; $i <= $last_row; $i++) {
 			if ($i % 2 === 0) {
-				$sheet->getStyle('A' . $i . ':N' . $i)->applyFromArray([
+				$sheet->getStyle('A' . $i . ':M' . $i)->applyFromArray([
 					'fill' => [
 						'fillType' => Fill::FILL_SOLID,
 						'startColor' => ['rgb' => 'F7FAFC'],
