@@ -4,3 +4,17 @@ dermau_core.programa_interesado_export_form:
   route_name: dermau_core.programa_interesado_export_form
   parent: system.admin_reports
   weight: 100
+
+dermau_core.admin_dermau:
+  title: 'DermaU'
+  description: 'Configuraciones propias de DermaU'
+  route_name: dermau_core.admin_dermau
+  parent: enterprise_integrations.asocolderma
+  weight: 20
+
+dermau_core.mail_settings:
+  title: 'Configuración envío de correos'
+  description: 'Configurar plantillas, asuntos y copias de correos para formularios de DermaU.'
+  route_name: dermau_core.mail_settings
+  parent: dermau_core.admin_dermau
+  weight: 10

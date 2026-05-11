@@ -35,3 +35,19 @@ dermau_core.descargar_programa:
     _title: 'Descargar programa'
   requirements:
     _permission: 'access content'
+
+dermau_core.admin_dermau:
+  path: '/admin/config/asocolderma/dermau'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'DermaU'
+  requirements:
+    _permission: 'administer site configuration'
+
+dermau_core.mail_settings:
+  path: '/admin/config/asocolderma/dermau/configuracion-envio-correos'
+  defaults:
+    _form: '\Drupal\dermau_core\Form\DermauMailSettingsForm'
+    _title: 'Configuración envío de correos'
+  requirements:
+    _permission: 'administer site configuration'
